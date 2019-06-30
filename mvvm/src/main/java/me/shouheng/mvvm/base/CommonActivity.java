@@ -9,6 +9,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import me.shouheng.mvvm.annotation.ViewConfiguration;
+import me.shouheng.mvvm.bus.EventBusManager;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -19,15 +21,18 @@ import java.lang.reflect.ParameterizedType;
  */
 public abstract class CommonActivity<T extends ViewDataBinding, VM extends CommonViewModel> extends AppCompatActivity {
 
-    /**
-     * The base view model.
-     */
     private VM vm;
 
-    /**
-     * The view data binding.
-     */
     private T binding;
+
+    private boolean useEventBus = false;
+
+    {
+        ViewConfiguration configuration = this.getClass().getAnnotation(ViewConfiguration.class);
+        if (configuration != null) {
+            useEventBus = configuration.useEventBus();
+        }
+    }
 
     /**
      * Get the layout resource id from subclass.
@@ -64,6 +69,9 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends Commo
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        if (useEventBus) {
+            EventBusManager.getInstance().register(this);
+        }
         super.onCreate(savedInstanceState);
         if (getLayoutResId() <= 0) {
             throw new IllegalArgumentException("The subclass must provider a valid layout resources id.");
@@ -99,5 +107,13 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends Commo
      */
     public void superOnBackPressed() {
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (useEventBus) {
+            EventBusManager.getInstance().unregister(this);
+        }
+        super.onDestroy();
     }
 }
