@@ -5,9 +5,13 @@ import android.content.Context;
 import me.shouheng.utils.UtilsApp;
 
 /**
- * Initialize MVVMs framework.
+ * MVVMs, easy and convenient MVVM architecture for Android.
+ *  __  __  _  _  _  _  __  __  ___
+ * (  \/  )( )( )( )( )(  \/  )/ __)
+ *  )    (  \\//  \\//  )    ( \__ \
+ * (_/\/\_) (__)  (__) (_/\/\_)(___/
  *
- * @author WngShhng 2019-6-29
+ * @author WngShhng shouheng2015@gmail.com 2019-6-29
  */
 public final class MVVMs {
 

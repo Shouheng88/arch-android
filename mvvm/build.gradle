@@ -30,7 +30,7 @@ dependencies {
     implementation 'org.simple:androideventbus:1.0.5.1'
     implementation 'org.greenrobot:eventbus:3.1.1'
 
-    api 'android.arch.lifecycle:extensions:1.1.1'
     api 'me.shouheng.utils:utils-core:1.1.0'
+    api 'android.arch.lifecycle:extensions:1.1.1'
     annotationProcessor 'android.arch.lifecycle:compiler:1.1.1'
 }
