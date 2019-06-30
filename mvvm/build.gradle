@@ -1,13 +1,13 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
     defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -22,15 +22,14 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    testImplementation rootProject.ext.libraries['test'].values()
+    androidTestImplementation rootProject.ext.libraries['android-test'].values()
 
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'org.simple:androideventbus:1.0.5.1'
-    implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation rootProject.ext.support['appcompat-v7']
+    implementation rootProject.ext.libraries['EventBus']
+    implementation rootProject.ext.libraries['AndroidEventBus']
 
-    api 'me.shouheng.utils:utils-core:1.1.0'
-    api 'android.arch.lifecycle:extensions:1.1.1'
-    annotationProcessor 'android.arch.lifecycle:compiler:1.1.1'
+    api rootProject.ext.libraries['utils']
+    api rootProject.ext.libraries['lifecycle-extensions']
+    annotationProcessor rootProject.ext.libraries['lifecycle-compiler']
 }
