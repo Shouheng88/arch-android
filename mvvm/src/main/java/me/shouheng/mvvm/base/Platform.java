@@ -1,4 +1,4 @@
-package me.shouheng.mvvm;
+package me.shouheng.mvvm.base;
 
 /**
  * The class used to detect the dependencies.

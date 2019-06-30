@@ -1,4 +1,4 @@
-package me.shouheng.mvvm.annotation;
+package me.shouheng.mvvm.base.anno;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

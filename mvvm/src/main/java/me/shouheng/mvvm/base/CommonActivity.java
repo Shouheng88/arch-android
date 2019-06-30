@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import me.shouheng.mvvm.annotation.ViewConfiguration;
+import me.shouheng.mvvm.base.anno.ViewConfiguration;
 import me.shouheng.mvvm.bus.EventBusManager;
 
 import java.lang.reflect.ParameterizedType;

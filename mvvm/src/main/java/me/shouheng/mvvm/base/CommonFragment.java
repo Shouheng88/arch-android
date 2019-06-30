@@ -10,7 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import me.shouheng.mvvm.annotation.ViewConfiguration;
+import me.shouheng.mvvm.base.anno.ViewConfiguration;
 import me.shouheng.mvvm.bus.EventBusManager;
 
 import java.lang.reflect.ParameterizedType;

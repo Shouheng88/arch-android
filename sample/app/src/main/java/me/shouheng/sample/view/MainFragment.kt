@@ -1,7 +1,7 @@
 package me.shouheng.sample.view
 
 import android.os.Bundle
-import me.shouheng.mvvm.annotation.ViewConfiguration
+import me.shouheng.mvvm.base.anno.ViewConfiguration
 import me.shouheng.mvvm.base.CommonFragment
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.FragmentMainBinding

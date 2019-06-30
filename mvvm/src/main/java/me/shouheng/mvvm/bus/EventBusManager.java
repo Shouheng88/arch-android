@@ -4,8 +4,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.lang.reflect.Method;
 
-import static me.shouheng.mvvm.Platform.DEPENDENCY_ANDROID_EVENTBUS;
-import static me.shouheng.mvvm.Platform.DEPENDENCY_EVENTBUS;
+import static me.shouheng.mvvm.base.Platform.DEPENDENCY_ANDROID_EVENTBUS;
+import static me.shouheng.mvvm.base.Platform.DEPENDENCY_EVENTBUS;
 
 /**
  * EventBus manager, mainly used to support EventBus and AndroidEventBus environment.

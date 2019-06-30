@@ -2,7 +2,7 @@ package me.shouheng.sample.view
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import me.shouheng.mvvm.annotation.ViewConfiguration
+import me.shouheng.mvvm.base.anno.ViewConfiguration
 import me.shouheng.mvvm.base.CommonActivity
 import me.shouheng.mvvm.data.Status
 import me.shouheng.sample.R
