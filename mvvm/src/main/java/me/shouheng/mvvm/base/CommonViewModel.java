@@ -1,9 +1,9 @@
 package me.shouheng.mvvm.base;
 
 import android.app.Application;
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.MutableLiveData;
+import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.MutableLiveData;
+import android.support.annotation.NonNull;
 import me.shouheng.mvvm.data.Resources;
 
 import java.util.HashMap;

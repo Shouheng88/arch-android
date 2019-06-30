@@ -1,7 +1,7 @@
 package me.shouheng.sample.view
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
-import androidx.lifecycle.Observer
 import me.shouheng.mvvm.base.CommonActivity
 import me.shouheng.mvvm.data.Status
 import me.shouheng.sample.R
@@ -26,7 +26,7 @@ class MainActivity : CommonActivity<ActivityMainBinding, MainViewModel>() {
 
     private fun addSubscriptions() {
         vm.getObservable(String::class.java).observe(this, Observer {
-            when(it.status) {
+            when(it!!.status) {
                 Status.SUCCESS -> {
                     ToastUtils.showShort(it.data)
                 }
