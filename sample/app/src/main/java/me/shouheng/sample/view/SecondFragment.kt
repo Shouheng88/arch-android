@@ -1,7 +1,7 @@
 package me.shouheng.sample.view
 
 import android.os.Bundle
-import me.shouheng.mvvm.base.anno.ViewConfiguration
+import me.shouheng.mvvm.base.anno.FragmentConfiguration
 import me.shouheng.mvvm.base.CommonFragment
 import me.shouheng.mvvm.bus.EventBusManager
 import me.shouheng.sample.R
@@ -15,7 +15,7 @@ import me.shouheng.utils.stability.LogUtils
  *
  * @author WngShhng 2019-6-29
  */
-@ViewConfiguration(shareViewMode = true)
+@FragmentConfiguration(shareViewMode = true)
 class SecondFragment : CommonFragment<FragmentSecondBinding, SharedViewModel>() {
 
     override fun getLayoutResId() = R.layout.fragment_second

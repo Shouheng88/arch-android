@@ -2,6 +2,7 @@ package me.shouheng.sample
 
 import android.app.Application
 import android.content.Context
+import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.mvvm.MVVMs
 
 /**
@@ -19,5 +20,8 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         MVVMs.onCreate(this)
+        ARouter.openLog()
+        ARouter.openDebug()
+        ARouter.init(this)
     }
 }

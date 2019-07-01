@@ -1,6 +1,13 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+    }
+}
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -31,6 +38,11 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation rootProject.ext.support['appcompat-v7']
     implementation rootProject.ext.libraries['EventBus']
+    implementation rootProject.ext.libraries['arouter']
+    kapt rootProject.ext.libraries['arouter-compiler']
 
     implementation project(path: ':mvvm')
+    implementation project(path: ':component-api')
+    implementation project(path: ':component')
+    implementation project(path: ':component-b')
 }

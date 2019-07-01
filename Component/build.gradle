@@ -1,4 +1,13 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+    }
+}
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -23,4 +32,8 @@ dependencies {
     androidTestImplementation rootProject.ext.libraries['android-test'].values()
 
     implementation rootProject.ext.support['appcompat-v7']
+    implementation rootProject.ext.libraries['arouter']
+    kapt rootProject.ext.libraries['arouter-compiler']
+
+    implementation project(path: ':component-api')
 }

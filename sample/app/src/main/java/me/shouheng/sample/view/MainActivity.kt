@@ -2,7 +2,7 @@ package me.shouheng.sample.view
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import me.shouheng.mvvm.base.anno.ViewConfiguration
+import me.shouheng.mvvm.base.anno.FragmentConfiguration
 import me.shouheng.mvvm.base.CommonActivity
 import me.shouheng.mvvm.data.Status
 import me.shouheng.sample.R
@@ -17,7 +17,7 @@ import org.greenrobot.eventbus.Subscribe
  *
  * @author Wngshhng 2019-6-29
  */
-@ViewConfiguration(useEventBus = false)
+@FragmentConfiguration(useEventBus = false)
 class MainActivity : CommonActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun getLayoutResId() = R.layout.activity_main
