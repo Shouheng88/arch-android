@@ -6,20 +6,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The view configuration annotation.
+ * Configuration annotation for Android Service.
  *
- * @author WngShhng 2019-6-29
+ * @author WngShhng 2019-7-1
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface ViewConfiguration {
-
-    /**
-     * Should the view model be shared between fragments.
-     *
-     * @return true to share
-     */
-    boolean shareViewMode() default false;
+public @interface ServiceConfiguration {
 
     /**
      * Will the event bus will be used in this view.

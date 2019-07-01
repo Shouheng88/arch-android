@@ -10,7 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import me.shouheng.mvvm.base.anno.ViewConfiguration;
+import me.shouheng.mvvm.base.anno.FragmentConfiguration;
 import me.shouheng.mvvm.bus.EventBusManager;
 
 import java.lang.reflect.ParameterizedType;
@@ -20,7 +20,7 @@ import java.lang.reflect.ParameterizedType;
  *
  * @author WngShhng 2019-6-29
  */
-public abstract class CommonFragment<T extends ViewDataBinding, U extends CommonViewModel> extends Fragment {
+public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseViewModel> extends Fragment {
 
     private U vm;
 
@@ -31,7 +31,7 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends Common
     private boolean useEventBus = false;
 
     {
-        ViewConfiguration configuration = this.getClass().getAnnotation(ViewConfiguration.class);
+        FragmentConfiguration configuration = this.getClass().getAnnotation(FragmentConfiguration.class);
         if (configuration != null) {
             shareViewModel = configuration.shareViewMode();
             useEventBus = configuration.useEventBus();
@@ -56,7 +56,7 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends Common
      * Initialize view model according to the generic class type. Override this method to
      * add your owen implementation.
      *
-     * Add {@link ViewConfiguration} to the subclass and set {@link ViewConfiguration#shareViewMode()} true
+     * Add {@link FragmentConfiguration} to the subclass and set {@link FragmentConfiguration#shareViewMode()} true
      * if you want to share view model between several fragments.
      *
      * @return the view model instance.
@@ -97,7 +97,14 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends Common
         if (useEventBus) {
             EventBusManager.getInstance().register(this);
         }
+        vm.onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        vm.onSaveInstanceState(outState);
     }
 
     @Override
@@ -105,6 +112,7 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends Common
         if (useEventBus) {
             EventBusManager.getInstance().unregister(this);
         }
+        vm.onDestroy();
         super.onDestroy();
     }
 }

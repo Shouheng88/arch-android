@@ -4,22 +4,23 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import me.shouheng.mvvm.base.anno.ViewConfiguration;
+import me.shouheng.mvvm.base.anno.ActivityConfiguration;
 import me.shouheng.mvvm.bus.EventBusManager;
 
 import java.lang.reflect.ParameterizedType;
 
 /**
- * The basic common implementation for MMVMs.
+ * The basic common implementation for MMVMs activity.
  *
  * @author WngShhng 2019-6-29
  */
-public abstract class CommonActivity<T extends ViewDataBinding, VM extends CommonViewModel> extends AppCompatActivity {
+public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseViewModel> extends AppCompatActivity {
 
     private VM vm;
 
@@ -27,10 +28,13 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends Commo
 
     private boolean useEventBus = false;
 
+    private boolean needLogin = true;
+
     {
-        ViewConfiguration configuration = this.getClass().getAnnotation(ViewConfiguration.class);
+        ActivityConfiguration configuration = this.getClass().getAnnotation(ActivityConfiguration.class);
         if (configuration != null) {
             useEventBus = configuration.useEventBus();
+            needLogin = configuration.needLogin();
         }
     }
 
@@ -77,6 +81,7 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends Commo
             throw new IllegalArgumentException("The subclass must provider a valid layout resources id.");
         }
         vm = initViewModel();
+        vm.onCreate(savedInstanceState);
         binding = DataBindingUtil.inflate(getLayoutInflater(), getLayoutResId(), null, false);
         beforeSetContentView(savedInstanceState);
         setContentView(binding.getRoot());
@@ -102,6 +107,16 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends Commo
     }
 
     /**
+     * Does the user need login to enter this activity. This value was set by the
+     * {@link ActivityConfiguration#needLogin()}, you can judge this value and implement your logic.
+     *
+     * @return true if the user need login.
+     */
+    protected boolean needLogin() {
+        return needLogin;
+    }
+
+    /**
      * This method is used to call the super {@link #onBackPressed()} instead of the
      * implementation of current activity. Since the current {@link #onBackPressed()} may be override.
      */
@@ -110,10 +125,17 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends Commo
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        vm.onSaveInstanceState(outState);
+    }
+
+    @Override
     protected void onDestroy() {
         if (useEventBus) {
             EventBusManager.getInstance().unregister(this);
         }
+        vm.onDestroy();
         super.onDestroy();
     }
 }
