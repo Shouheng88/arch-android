@@ -10,7 +10,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import me.shouheng.mvvm.annotation.ShareViewModel;
+import me.shouheng.mvvm.base.anno.FragmentConfiguration;
+import me.shouheng.mvvm.bus.EventBusManager;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -19,17 +20,23 @@ import java.lang.reflect.ParameterizedType;
  *
  * @author WngShhng 2019-6-29
  */
-public abstract class CommonFragment<T extends ViewDataBinding, U extends CommonViewModel> extends Fragment {
+public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseViewModel> extends Fragment {
 
-    /**
-     * The base view model.
-     */
     private U vm;
 
-    /**
-     * The view data binding.
-     */
     private T binding;
+
+    private boolean shareViewModel = false;
+
+    private boolean useEventBus = false;
+
+    {
+        FragmentConfiguration configuration = this.getClass().getAnnotation(FragmentConfiguration.class);
+        if (configuration != null) {
+            shareViewModel = configuration.shareViewMode();
+            useEventBus = configuration.useEventBus();
+        }
+    }
 
     /**
      * Get the layout resource id from subclass.
@@ -49,15 +56,14 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends Common
      * Initialize view model according to the generic class type. Override this method to
      * add your owen implementation.
      *
-     * Add {@link ShareViewModel} to the subclass if you want to share view model between
-     * several fragments.
+     * Add {@link FragmentConfiguration} to the subclass and set {@link FragmentConfiguration#shareViewMode()} true
+     * if you want to share view model between several fragments.
      *
      * @return the view model instance.
      */
     protected U initViewModel() {
         Class<U> vmClass = ((Class)((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1]);
-        boolean isSharedViewModel = this.getClass().isAnnotationPresent(ShareViewModel.class);
-        if (isSharedViewModel) {
+        if (shareViewModel) {
             return ViewModelProviders.of(getActivity()).get(vmClass);
         } else {
             return ViewModelProviders.of(this).get(vmClass);
@@ -84,5 +90,29 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends Common
 
     protected T getBinding() {
         return binding;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        if (useEventBus) {
+            EventBusManager.getInstance().register(this);
+        }
+        vm.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        vm.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onDestroy() {
+        if (useEventBus) {
+            EventBusManager.getInstance().unregister(this);
+        }
+        vm.onDestroy();
+        super.onDestroy();
     }
 }

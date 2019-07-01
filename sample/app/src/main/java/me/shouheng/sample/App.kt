@@ -1,7 +1,9 @@
 package me.shouheng.sample
 
 import android.app.Application
-import me.shouheng.utils.UtilsApp
+import android.content.Context
+import com.alibaba.android.arouter.launcher.ARouter
+import me.shouheng.mvvm.MVVMs
 
 /**
  * Application.
@@ -10,8 +12,16 @@ import me.shouheng.utils.UtilsApp
  */
 class App : Application() {
 
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MVVMs.attachBaseContext(base)
+    }
+
     override fun onCreate() {
         super.onCreate()
-        UtilsApp.init(this)
+        MVVMs.onCreate(this)
+        ARouter.openLog()
+        ARouter.openDebug()
+        ARouter.init(this)
     }
 }

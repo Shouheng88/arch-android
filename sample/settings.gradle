@@ -1,2 +1,5 @@
-include ':app', ':mvvm'
+include ':app', ':mvvm', ':component-api', ':component', ':component-b'
 project(':mvvm').projectDir = new File('../mvvm')
+project(':component-api').projectDir = new File('../ComponentApi')
+project(':component').projectDir = new File('../Component')
+project(':component-b').projectDir = new File('../ComponentB')

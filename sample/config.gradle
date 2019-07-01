@@ -1,0 +1,85 @@
+/****************************************************************************
+ *
+ *                         Gradle Configuration
+ *
+ * This is the gradle configuration file, used to define all the dependencies
+ * we may use when start a new project. You can copy this file to any of your
+ * project and include the dependencies you may need.
+ *
+ * Author   : WngShhng
+ * Contact  : shouheng2015@gmail.com
+ * Data     : 2019-06-29 10:08 pm
+ *
+ ****************************************************************************/
+
+ext {
+    // android configuration
+    android = [
+            compileSdkVersion: 28,
+            buildToolsVersion: "28.0.0",
+            minSdkVersion    : 17,
+            targetSdkVersion : 28,
+            versionCode      : 1,
+            versionName      : "1.0",
+    ]
+
+    // versions
+    versions = [
+            "support-library": "28.0.0",
+    ]
+
+    // support libraries
+    support = [
+            "annotations"             : "com.android.support:support-annotations:${versions["support-library"]}",
+            'support-v4'              : "com.android.support:support-v4:${versions["support-library"]}",
+            'appcompat-v7'            : "com.android.support:appcompat-v7:${versions["support-library"]}",
+            'recyclerview-v7'         : "com.android.support:recyclerview-v7:${versions["support-library"]}",
+            "cardview-v7"             : "com.android.support:cardview-v7:${versions["support-library"]}",
+            'support-v13'             : "com.android.support:support-v13:${versions["support-library"]}",
+            'support-fragment'        : "com.android.support:support-fragment:${versions["support-library"]}",
+            'design'                  : "com.android.support:design:${versions["support-library"]}",
+            'animated-vector-drawable': "com.android.support:animated-vector-drawable:${versions["support-library"]}",
+            "multidex"                : "com.android.support:multidex:1.0.3",
+    ]
+
+    // third libraries
+    libraries = [
+            'test'          : [
+                    "mockito-core"                      : "org.mockito:mockito-core:1.+",
+                    "junit"                             : "junit:junit:4.12"
+            ],
+            'android-test'  : [
+                    "runner"                            : "com.android.support.test:runner:1.0.2",
+                    "espresso-core"                     : "com.android.support.test.espresso:espresso-core:3.0.2"
+            ],
+            'rxjava'        : [
+                    "rxjava"                            : "io.reactivex.rxjava2:rxjava:2.2.3",
+                    "rxandroid"                         : "io.reactivex.rxjava2:rxandroid:2.1.0",
+            ],
+            'glide'         : [
+                    "glide"                             : "com.github.bumptech.glide:glide:4.8.0",
+                    "glide-compiler"                    : "com.github.bumptech.glide:compiler:4.8.0",
+                    "glide-loader-okhttp3"              : "com.github.bumptech.glide:okhttp3-integration:4.8.0",
+            ],
+            'retrofit'       : [
+                    "retrofit"                          : "com.squareup.retrofit2:retrofit:2.4.0",
+                    "converter-gson"                    : "com.squareup.retrofit2:converter-gson:2.4.0",
+                    "adapter-rxjava"                    : "com.squareup.retrofit2:adapter-rxjava2:2.4.0",
+            ],
+
+            "okhttp"                   : "com.squareup.okhttp3:okhttp:3.10.0",
+            "gson"                     : "com.google.code.gson:gson:2.8.5",
+
+            "lifecycle-extensions"     : "android.arch.lifecycle:extensions:1.1.1",
+            "lifecycle-compiler"       : "android.arch.lifecycle:compiler:1.1.1",
+
+            "EventBus"                 : "org.greenrobot:eventbus:3.1.1",
+            "AndroidEventBus"          : "org.simple:androideventbus:1.0.5.1",
+
+            "utils"                    : "me.shouheng.utils:utils-core:1.1.0",
+            "compressor"               : "me.shouheng.compressor:compressor:1.3.0",
+
+            "arouter"                  : "com.alibaba:arouter-api:1.5.0",
+            "arouter-compiler"         : "com.alibaba:arouter-compiler:1.2.2",
+    ]
+}

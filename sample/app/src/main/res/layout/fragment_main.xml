@@ -2,7 +2,6 @@
 <layout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:tools="http://schemas.android.com/tools"
                   android:orientation="vertical"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent">
@@ -10,6 +9,18 @@
         <Button
                 android:id="@+id/btn_to_second"
                 android:text="Navigate to SecondFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <Button
+                android:id="@+id/btn_request_user"
+                android:text="Request users"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <Button
+                android:id="@+id/btn_to_component_b"
+                android:text="Navigate to ComponentB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
