@@ -42,6 +42,10 @@ ext {
             "multidex"                : "com.android.support:multidex:1.0.3",
     ]
 
+    plugins = [
+            "AndResGuard"             : "com.tencent.mm:AndResGuard-gradle-plugin:1.2.15"
+    ]
+
     // third libraries
     libraries = [
             'test'          : [
@@ -74,6 +78,7 @@ ext {
             "lifecycle-compiler"        : "android.arch.lifecycle:compiler:1.1.1",  // annotationProcessor
             "room"                      : "android.arch.persistence.room:runtime:1.1.1",
             "room-compiler"             : "android.arch.persistence.room:compiler:1.1.1", // annotationProcessor
+            "room-rxjava2"              : "android.arch.persistence.room:rxjava2",
 
             "EventBus"                  : "org.greenrobot:eventbus:3.1.1",
             "AndroidEventBus"           : "org.simple:androideventbus:1.0.5.1",
@@ -107,6 +112,7 @@ ext {
             "matisse"                   : "com.zhihu.android:matisse:0.5.2-beta4",
             "compressor"                : "me.shouheng.compressor:compressor:1.3.0",
             "glide-transformations"     : "jp.wasabeef:glide-transformations:4.0.1",
+            "photoview"                 : "com.github.chrisbanes:PhotoView:2.3.0",
 
             "holo-color-picker"         : "com.larswerkman:HoloColorPicker:1.5",
             "material-dialogs-core"     : "com.afollestad.material-dialogs:core:0.9.6.0",
@@ -120,5 +126,7 @@ ext {
             "material-drawer"           : "com.mikepenz:materialdrawer:6.0.7@aar",
 
             "hello-charts"              : "com.github.lecho:hellocharts-android:v1.5.8",
+
+            "pdf-generator"             : "com.itextpdf:itextpdf:5.5.11"
     ]
 }

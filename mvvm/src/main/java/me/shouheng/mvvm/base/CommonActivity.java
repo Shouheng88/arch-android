@@ -4,14 +4,18 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import me.shouheng.mvvm.base.anno.ActivityConfiguration;
 import me.shouheng.mvvm.bus.EventBusManager;
+import me.shouheng.utils.permission.PermissionResultHandler;
+import me.shouheng.utils.permission.PermissionResultResolver;
+import me.shouheng.utils.permission.callback.OnGetPermissionCallback;
+import me.shouheng.utils.permission.callback.PermissionResultCallbackImpl;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -20,7 +24,10 @@ import java.lang.reflect.ParameterizedType;
  *
  * @author WngShhng 2019-6-29
  */
-public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseViewModel> extends AppCompatActivity {
+public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseViewModel>
+        extends AppCompatActivity
+        implements PermissionResultResolver
+{
 
     private VM vm;
 
@@ -29,6 +36,8 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
     private boolean useEventBus = false;
 
     private boolean needLogin = true;
+
+    private OnGetPermissionCallback onGetPermissionCallback;
 
     {
         ActivityConfiguration configuration = this.getClass().getAnnotation(ActivityConfiguration.class);
@@ -122,6 +131,18 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
      */
     public void superOnBackPressed() {
         super.onBackPressed();
+    }
+
+    @Override
+    public void setOnGetPermissionCallback(OnGetPermissionCallback onGetPermissionCallback) {
+        this.onGetPermissionCallback = onGetPermissionCallback;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionResultHandler.handlePermissionsResult(this, requestCode, permissions, grantResults,
+                new PermissionResultCallbackImpl(this, onGetPermissionCallback));
     }
 
     @Override
