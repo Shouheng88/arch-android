@@ -79,7 +79,7 @@ ext {
             "utils"                    : "me.shouheng.utils:utils-core:1.1.0",
             "compressor"               : "me.shouheng.compressor:compressor:1.3.0",
 
-            "arouter"                  : "com.alibaba:arouter-api:1.3.1",
-            "arouter-compiler"         : "com.alibaba:arouter-compiler:1.1.4",
+            "arouter"                  : "com.alibaba:arouter-api:1.5.0",
+            "arouter-compiler"         : "com.alibaba:arouter-compiler:1.2.2",
     ]
 }
