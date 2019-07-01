@@ -126,6 +126,24 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
     }
 
     /**
+     * Post one event by EventBus
+     *
+     * @param event the event to post
+     */
+    protected void post(Object event) {
+        EventBusManager.getInstance().post(event);
+    }
+
+    /**
+     * Post one sticky event by EventBus
+     *
+     * @param event the sticky event
+     */
+    protected void postSticky(Object event) {
+        EventBusManager.getInstance().postSticky(event);
+    }
+
+    /**
      * This method is used to call the super {@link #onBackPressed()} instead of the
      * implementation of current activity. Since the current {@link #onBackPressed()} may be override.
      */
