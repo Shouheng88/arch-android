@@ -109,6 +109,24 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
     protected void showShort(final String format, final Object... args) {
         ToastUtils.showShort(format, args);
     }
+  
+    /**
+     * Post one event by EventBusManager
+     *
+     * @param event the event to post
+     */
+    protected void post(Object event) {
+        EventBusManager.getInstance().post(event);
+    }
+
+    /**
+     * Post one sticky event by EventBusManager
+     *
+     * @param event the sticky event
+     */
+    protected void postSticky(Object event) {
+        EventBusManager.getInstance().postSticky(event);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

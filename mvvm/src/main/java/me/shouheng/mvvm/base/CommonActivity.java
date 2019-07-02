@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,10 @@ import android.view.View;
 import me.shouheng.mvvm.base.anno.ActivityConfiguration;
 import me.shouheng.mvvm.bus.EventBusManager;
 import me.shouheng.utils.ui.ToastUtils;
+import me.shouheng.utils.permission.PermissionResultHandler;
+import me.shouheng.utils.permission.PermissionResultResolver;
+import me.shouheng.utils.permission.callback.OnGetPermissionCallback;
+import me.shouheng.utils.permission.callback.PermissionResultCallbackImpl;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -21,7 +26,10 @@ import java.lang.reflect.ParameterizedType;
  *
  * @author WngShhng 2019-6-29
  */
-public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseViewModel> extends AppCompatActivity {
+public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseViewModel>
+        extends AppCompatActivity
+        implements PermissionResultResolver
+{
 
     private VM vm;
 
@@ -30,6 +38,8 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
     private boolean useEventBus = false;
 
     private boolean needLogin = true;
+
+    private OnGetPermissionCallback onGetPermissionCallback;
 
     {
         ActivityConfiguration configuration = this.getClass().getAnnotation(ActivityConfiguration.class);
@@ -131,6 +141,44 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
 
     protected void showShort(final String format, final Object... args) {
         ToastUtils.showShort(format, args);
+    }
+
+    /**
+     * Post one event by EventBus
+     *
+     * @param event the event to post
+     */
+    protected void post(Object event) {
+        EventBusManager.getInstance().post(event);
+    }
+
+    /**
+     * Post one sticky event by EventBus
+     *
+     * @param event the sticky event
+     */
+    protected void postSticky(Object event) {
+        EventBusManager.getInstance().postSticky(event);
+    }
+
+    /**
+     * This method is used to call the super {@link #onBackPressed()} instead of the
+     * implementation of current activity. Since the current {@link #onBackPressed()} may be override.
+     */
+    public void superOnBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public void setOnGetPermissionCallback(OnGetPermissionCallback onGetPermissionCallback) {
+        this.onGetPermissionCallback = onGetPermissionCallback;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionResultHandler.handlePermissionsResult(this, requestCode, permissions, grantResults,
+                new PermissionResultCallbackImpl(this, onGetPermissionCallback));
     }
 
     @Override
