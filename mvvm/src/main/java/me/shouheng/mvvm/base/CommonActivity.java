@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import me.shouheng.mvvm.base.anno.ActivityConfiguration;
 import me.shouheng.mvvm.bus.EventBusManager;
+import me.shouheng.utils.ui.ToastUtils;
 import me.shouheng.utils.permission.PermissionResultHandler;
 import me.shouheng.utils.permission.PermissionResultResolver;
 import me.shouheng.utils.permission.callback.OnGetPermissionCallback;
@@ -125,6 +127,22 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
         return needLogin;
     }
 
+    protected void showShort(final CharSequence text) {
+        ToastUtils.showShort(text);
+    }
+
+    protected void showShort(@StringRes final int resId) {
+        ToastUtils.showShort(resId);
+    }
+
+    protected void showShort(@StringRes final int resId, final Object... args) {
+        ToastUtils.showShort(resId, args);
+    }
+
+    protected void showShort(final String format, final Object... args) {
+        ToastUtils.showShort(format, args);
+    }
+
     /**
      * Post one event by EventBus
      *
@@ -176,5 +194,13 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
         }
         vm.onDestroy();
         super.onDestroy();
+    }
+
+    /**
+     * This method is used to call the super {@link #onBackPressed()} instead of the
+     * implementation of current activity. Since the current {@link #onBackPressed()} may be override.
+     */
+    public void superOnBackPressed() {
+        super.onBackPressed();
     }
 }
