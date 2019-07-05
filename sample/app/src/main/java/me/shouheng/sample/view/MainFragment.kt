@@ -2,8 +2,8 @@ package me.shouheng.sample.view
 
 import android.os.Bundle
 import com.alibaba.android.arouter.launcher.ARouter
-import me.shouheng.component.api.OnGetUserListener
-import me.shouheng.component.api.UserService
+import me.shouheng.api.test.OnGetUserListener
+import me.shouheng.api.test.UserService
 import me.shouheng.mvvm.base.anno.FragmentConfiguration
 import me.shouheng.mvvm.base.CommonFragment
 import me.shouheng.sample.R

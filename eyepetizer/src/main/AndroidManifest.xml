@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="me.shouheng.eyepetizer">
+
+    <application>
+        <activity android:name="me.shouheng.eyepetizer.ComponentBActivity"/>
+    </application>
+
+</manifest>

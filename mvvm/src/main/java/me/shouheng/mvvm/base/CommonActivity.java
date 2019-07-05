@@ -161,14 +161,6 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
         EventBusManager.getInstance().postSticky(event);
     }
 
-    /**
-     * This method is used to call the super {@link #onBackPressed()} instead of the
-     * implementation of current activity. Since the current {@link #onBackPressed()} may be override.
-     */
-    public void superOnBackPressed() {
-        super.onBackPressed();
-    }
-
     @Override
     public void setOnGetPermissionCallback(OnGetPermissionCallback onGetPermissionCallback) {
         this.onGetPermissionCallback = onGetPermissionCallback;
