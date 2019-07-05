@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
@@ -12,7 +12,6 @@ kapt {
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     defaultConfig {
-        applicationId "me.shouheng.sample"
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
@@ -25,24 +24,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    dataBinding {
-        enabled true
-    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation rootProject.ext.libraries['test'].values()
     androidTestImplementation rootProject.ext.libraries['android-test'].values()
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation rootProject.ext.support['appcompat-v7']
-    implementation rootProject.ext.libraries['EventBus']
     implementation rootProject.ext.libraries['arouter']
     kapt rootProject.ext.libraries['arouter-compiler']
 
     implementation project(path: ':mvvm')
     implementation project(path: ':common-biz-api')
-    implementation project(path: ':common-biz')
-    implementation project(path: ':eyepetizer')
 }

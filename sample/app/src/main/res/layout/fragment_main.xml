@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:orientation="vertical"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent">
+    <LinearLayout
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_to_second"
-                android:text="Navigate to SecondFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:text="@string/sample_main_navigate_to_second"
+                style="@style/MenuButton"/>
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_request_user"
-                android:text="Request users"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:text="@string/sample_main_request_user_data"
+                style="@style/MenuButton"/>
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_to_component_b"
-                android:text="Navigate to ComponentB"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:text="@string/sample_main_navigate_to_eyeptizer"
+                style="@style/MenuButton"/>
 
     </LinearLayout>
 

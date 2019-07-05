@@ -11,7 +11,7 @@ import me.shouheng.sample.vm.SharedViewModel
 import me.shouheng.utils.stability.LogUtils
 
 /**
- * The second fragment used to test shared view model.
+ * 用来测试 Fragment 之间共享 ViewModel 的另一个 Fragment
  *
  * @author WngShhng 2019-6-29
  */
@@ -25,7 +25,7 @@ class SecondFragment : CommonFragment<FragmentSecondBinding, SharedViewModel>() 
         // Get and display shared value from MainFragment
         binding.tv.text = vm.shareValue
         binding.btnPost.setOnClickListener {
-            EventBusManager.getInstance().post(SimpleEvent("Message from SecondFragment"))
+            EventBusManager.getInstance().post(SimpleEvent("MSG#00001"))
         }
     }
 }

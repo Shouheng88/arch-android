@@ -1,5 +1,5 @@
-include ':app', ':mvvm', ':component-api', ':component', ':component-b'
+include ':app', ':mvvm', ':common-biz-api', ':common-biz', ':eyepetizer'
 project(':mvvm').projectDir = new File('../mvvm')
-project(':component-api').projectDir = new File('../ComponentApi')
-project(':component').projectDir = new File('../Component')
-project(':component-b').projectDir = new File('../ComponentB')
+project(':common-biz-api').projectDir = new File('../common-biz-api')
+project(':common-biz').projectDir = new File('../common-biz')
+project(':eyepetizer').projectDir = new File('../eyepetizer')

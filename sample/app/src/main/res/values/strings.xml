@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">MVVM 示例工程</string>
+
+    <string name="sample_main_activity_received_msg">%s 接收到 EventBus 传递的信息：%s</string>
+    <string name="sample_main_page_data_loading">主页数据正在加载中……</string>
+    <string name="sample_main_page_data_load_succeed">主页数据加载成功！</string>
+    <string name="sample_main_navigate_to_second">测试 ViewModel 共享的情况</string>
+    <string name="sample_main_request_user_data">请求用户信息</string>
+    <string name="sample_main_navigate_to_eyeptizer">跳转到开眼视频</string>
+    <string name="sample_main_shared_value_between_fragments">这是 Fragment 之间共享的值！</string>
+    <string name="sample_main_send_one_message_by_event_bus">通过 EventBus 发送一个消息</string>
+    <string name="sample_main_got_user">获取到用户信息：%s</string>
 </resources>

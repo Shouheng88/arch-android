@@ -1,41 +1,54 @@
 package me.shouheng.sample.view
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import com.alibaba.android.arouter.launcher.ARouter
-import me.shouheng.component.api.OnGetUserListener
-import me.shouheng.component.api.UserService
-import me.shouheng.mvvm.base.anno.FragmentConfiguration
+import me.shouheng.api.bean.User
 import me.shouheng.mvvm.base.CommonFragment
+import me.shouheng.mvvm.base.anno.FragmentConfiguration
+import me.shouheng.mvvm.data.Status
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.FragmentMainBinding
 import me.shouheng.sample.event.SimpleEvent
 import me.shouheng.sample.vm.SharedViewModel
+import me.shouheng.utils.app.ResUtils
 import me.shouheng.utils.stability.LogUtils
-import me.shouheng.utils.ui.ToastUtils
 import org.greenrobot.eventbus.Subscribe
 
 /**
- * The main fragment.
+ * 主界面显示的碎片
  *
  * @author WngShhng 2019-6-29
  */
 @FragmentConfiguration(shareViewMode = true, useEventBus = true)
-class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>(), OnGetUserListener {
-
-    private lateinit var userService: UserService
+class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
 
     override fun getLayoutResId() = R.layout.fragment_main
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         addSubscriptions()
         initViews()
-        vm.shareValue = "The shared from MainFragment"
+        vm.shareValue = ResUtils.getString(R.string.sample_main_shared_value_between_fragments)
         LogUtils.d(vm)
     }
 
     private fun addSubscriptions() {
-        userService = ARouter.getInstance().navigation(UserService::class.java)
-        userService.registerGetUserListener(this)
+        vm.getObservable(User::class.java).observe(this, Observer {
+            when (it!!.status) {
+                Status.SUCCESS -> {
+                    showShort(R.string.sample_main_got_user, it.data)
+                }
+                Status.FAILED -> {
+                    showShort(it.message)
+                }
+                Status.LOADING -> {
+                    showShort(it.message)
+                }
+                else -> {
+                    // do nothing
+                }
+            }
+        })
     }
 
     private fun initViews() {
@@ -48,7 +61,7 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>(), OnG
                 ?.commit()
         }
         binding.btnRequestUser.setOnClickListener {
-            userService.requestUser()
+            vm.requestUserData()
         }
         binding.btnToComponentB.setOnClickListener {
             ARouter.getInstance().build("/componentb/main").navigation()
@@ -57,15 +70,7 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>(), OnG
 
     @Subscribe
     fun onGetMessage(simpleEvent: SimpleEvent) {
-        ToastUtils.showShort("MainFragment:${simpleEvent.msg}")
+        showShort(R.string.sample_main_activity_received_msg, javaClass.simpleName, simpleEvent.msg)
     }
 
-    override fun onGetUser() {
-        ToastUtils.showShort("Get User!")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        userService.unregisterGetUserListener(this)
-    }
 }
