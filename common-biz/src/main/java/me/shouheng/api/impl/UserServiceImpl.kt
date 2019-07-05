@@ -1,26 +1,26 @@
 package me.shouheng.api.impl
 
 import android.content.Context
-import android.util.Log
 import com.alibaba.android.arouter.facade.annotation.Route
-import me.shouheng.api.test.OnGetUserListener
-import me.shouheng.api.test.OnUserChangeListener
-import me.shouheng.api.test.UserService
+import me.shouheng.api.bean.User
+import me.shouheng.api.sample.OnUserChangeListener
+import me.shouheng.api.sample.UserService
+import me.shouheng.utils.stability.LogUtils
 import java.util.concurrent.CopyOnWriteArrayList
 
-@Route(path = "/component/user_service")
+/**
+ * 用户信息服务实现
+ *
+ * @author WngShhng 2019-07-05
+ */
+@Route(path = "/api/user")
 class UserServiceImpl : UserService {
 
     private val userChangeListeners = CopyOnWriteArrayList<OnUserChangeListener>()
 
-    private val getUserListeners = CopyOnWriteArrayList<OnGetUserListener>()
-
     override fun requestUser() {
         for (listener in userChangeListeners) {
-            listener.onUserChanged()
-        }
-        for (listener in getUserListeners) {
-            listener.onGetUser()
+            listener.onUserChanged(User("WngShhng", 18))
         }
     }
 
@@ -36,20 +36,8 @@ class UserServiceImpl : UserService {
         }
     }
 
-    override fun registerGetUserListener(getUserListener: OnGetUserListener) {
-        if (!getUserListeners.contains(getUserListener)) {
-            getUserListeners.add(getUserListener)
-        }
-    }
-
-    override fun unregisterGetUserListener(getUserListener: OnGetUserListener) {
-        if (getUserListeners.contains(getUserListener)) {
-            getUserListeners.remove(getUserListener)
-        }
-    }
-
     override fun init(context: Context?) {
-        Log.e("Test ", UserServiceImpl::class.java.name + " has init.")
+        LogUtils.i(UserServiceImpl::class.java.name + " has init.")
     }
 
 }

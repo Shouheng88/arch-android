@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
-import me.shouheng.api.test.UserService
+import me.shouheng.api.sample.UserService
 
 @Route(path = "/componentb/main")
 class ComponentBActivity : AppCompatActivity() {

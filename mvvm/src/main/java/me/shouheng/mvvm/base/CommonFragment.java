@@ -63,7 +63,7 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
      *
      * @return the view model instance.
      */
-    protected U initViewModel() {
+    protected U createViewModel() {
         Class<U> vmClass = ((Class)((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1]);
         if (shareViewModel) {
             return ViewModelProviders.of(getActivity()).get(vmClass);
@@ -80,7 +80,6 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
         if (getLayoutResId() <= 0) {
             throw new IllegalArgumentException("The subclass must provider a valid layout resources id.");
         }
-        vm = initViewModel();
         binding = DataBindingUtil.inflate(getLayoutInflater(), getLayoutResId(), null, false);
         doCreateView(savedInstanceState);
         return binding.getRoot();
@@ -133,6 +132,7 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
         if (useEventBus) {
             EventBusManager.getInstance().register(this);
         }
+        vm = createViewModel();
         vm.onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
     }

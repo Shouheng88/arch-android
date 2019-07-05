@@ -68,7 +68,7 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
      *
      * @return the view model will be used.
      */
-    protected VM initViewModel() {
+    protected VM createViewModel() {
         Class<VM> vmClass = ((Class)((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1]);
         return ViewModelProviders.of(this).get(vmClass);
     }
@@ -91,7 +91,7 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
         if (getLayoutResId() <= 0) {
             throw new IllegalArgumentException("The subclass must provider a valid layout resources id.");
         }
-        vm = initViewModel();
+        vm = createViewModel();
         vm.onCreate(savedInstanceState);
         binding = DataBindingUtil.inflate(getLayoutInflater(), getLayoutResId(), null, false);
         beforeSetContentView(savedInstanceState);

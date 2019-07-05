@@ -36,5 +36,6 @@ dependencies {
     implementation rootProject.ext.libraries['arouter']
     kapt rootProject.ext.libraries['arouter-compiler']
 
+    implementation project(path: ':mvvm')
     implementation project(path: ':common-biz-api')
 }

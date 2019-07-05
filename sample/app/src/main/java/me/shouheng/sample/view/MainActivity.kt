@@ -2,8 +2,8 @@ package me.shouheng.sample.view
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import me.shouheng.mvvm.base.anno.FragmentConfiguration
 import me.shouheng.mvvm.base.CommonActivity
+import me.shouheng.mvvm.base.anno.ActivityConfiguration
 import me.shouheng.mvvm.data.Status
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.ActivityMainBinding
@@ -13,11 +13,11 @@ import me.shouheng.utils.ui.ToastUtils
 import org.greenrobot.eventbus.Subscribe
 
 /**
- * The sample main activity
+ * MVVM 框架演示工程
  *
  * @author Wngshhng 2019-6-29
  */
-@FragmentConfiguration(useEventBus = false)
+@ActivityConfiguration(useEventBus = false)
 class MainActivity : CommonActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun getLayoutResId() = R.layout.activity_main
@@ -54,6 +54,6 @@ class MainActivity : CommonActivity<ActivityMainBinding, MainViewModel>() {
 
     @Subscribe
     fun onGetMessage(simpleEvent: SimpleEvent) {
-        ToastUtils.showShort("MainActivity:${simpleEvent.msg}")
+        showShort(R.string.sample_main_activity_received_msg, javaClass.simpleName, simpleEvent.msg)
     }
 }
