@@ -24,6 +24,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding {
+        enabled true
+    }
 }
 
 dependencies {
@@ -35,6 +38,10 @@ dependencies {
     implementation rootProject.ext.support['appcompat-v7']
     implementation rootProject.ext.libraries['arouter']
     kapt rootProject.ext.libraries['arouter-compiler']
+    implementation rootProject.ext.support['recyclerview-v7']
+    implementation rootProject.ext.support['cardview-v7']
+    implementation rootProject.ext.libraries['glide']['glide']
+    implementation rootProject.ext.libraries['brvah']
 
     implementation project(path: ':mvvm')
     implementation project(path: ':service-api')

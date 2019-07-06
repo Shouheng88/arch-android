@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">ComponentB</string>
+    <string name="app_name">开眼视频</string>
+
+    <string name="eye_menu_item_request_user">请求用户信息</string>
 </resources>
