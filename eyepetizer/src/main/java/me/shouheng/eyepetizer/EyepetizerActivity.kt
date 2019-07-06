@@ -2,6 +2,8 @@ package me.shouheng.eyepetizer
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -12,18 +14,23 @@ import me.shouheng.mvvm.base.CommonActivity
 import me.shouheng.mvvm.data.Status
 import me.shouheng.utils.stability.LogUtils
 
-
+/**
+ * 开眼是害怕相关的演示页
+ *
+ * @author WngShhng 2019-07-06
+ */
 @Route(path = "/eyepetizer/main")
 class EyepetizerActivity : CommonActivity<ActivityEyepetizerBinding, EyepetizerViewModel>() {
 
     private lateinit var adapter: HomeAdapter
+    private var loading : Boolean = false
 
     override fun getLayoutResId() = R.layout.activity_eyepetizer
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         initView()
         addSubscriptions()
-        vm.reuestFirstPage()
+        vm.requestFirstPage()
     }
 
     private fun initView() {
@@ -33,11 +40,24 @@ class EyepetizerActivity : CommonActivity<ActivityEyepetizerBinding, EyepetizerV
             showShort(itemList.data.playUrl)
         }
         binding.rv.adapter = adapter
+        val layoutManager = binding.rv.layoutManager as LinearLayoutManager
+        binding.rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+                val totalItemCount = layoutManager.itemCount
+                if (lastVisibleItem + 1 == totalItemCount && dy > 0) {
+                    if (!loading) {
+                        loading = true
+                        vm.requestNextPage()
+                    }
+                }
+            }
+        })
     }
 
     private fun addSubscriptions() {
-        vm.getObservable(HomeBean::class.java).observe(this, Observer { resources
-            ->
+        vm.getObservable(HomeBean::class.java).observe(this, Observer { resources ->
+            loading = false
             when (resources!!.status) {
                 Status.SUCCESS -> {
                     LogUtils.d(resources.data)
@@ -50,7 +70,7 @@ class EyepetizerActivity : CommonActivity<ActivityEyepetizerBinding, EyepetizerV
                     adapter.addData(list)
                 }
                 Status.FAILED -> {
-                    showShort(resources.message)
+                    // temp do nothing
                 }
                 Status.LOADING -> {
                     showShort(resources.message)

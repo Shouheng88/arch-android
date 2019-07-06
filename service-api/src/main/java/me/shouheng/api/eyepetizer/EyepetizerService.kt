@@ -35,4 +35,9 @@ interface OnGetHomeBeansListener {
      * @param homeBean 主页数据
      */
     fun onGetHomeBean(homeBean: HomeBean)
+
+    /**
+     * 错误信息回调
+     */
+    fun onError(errorCode: String, errorMsg: String)
 }

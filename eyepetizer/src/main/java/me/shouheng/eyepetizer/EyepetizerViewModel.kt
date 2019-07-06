@@ -20,6 +20,8 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
 
     private lateinit var eyepetizerService: EyepetizerService
 
+    private var nextPageUrl: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userService = ARouter.getInstance().navigation(UserService::class.java)
@@ -30,10 +32,28 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
         userService.requestUser()
     }
 
-    fun reuestFirstPage() {
+    fun requestFirstPage() {
         getObservable(HomeBean::class.java).value = Resources.loading()
         eyepetizerService.getFirstHomePage(null, object : OnGetHomeBeansListener {
+            override fun onError(errorCode: String, errorMsg: String) {
+                getObservable(HomeBean::class.java).value = Resources.failed(errorCode)
+            }
+
             override fun onGetHomeBean(homeBean: HomeBean) {
+                nextPageUrl = homeBean.nextPageUrl
+                getObservable(HomeBean::class.java).value = Resources.success(homeBean)
+            }
+        })
+    }
+
+    fun requestNextPage() {
+        eyepetizerService.getMoreHomePage(nextPageUrl, object : OnGetHomeBeansListener {
+            override fun onError(errorCode: String, errorMsg: String) {
+                getObservable(HomeBean::class.java).value = Resources.failed(errorMsg)
+            }
+
+            override fun onGetHomeBean(homeBean: HomeBean) {
+                nextPageUrl = homeBean.nextPageUrl
                 getObservable(HomeBean::class.java).value = Resources.success(homeBean)
             }
         })
