@@ -64,7 +64,7 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
             vm.requestUserData()
         }
         binding.btnToComponentB.setOnClickListener {
-            ARouter.getInstance().build("/componentb/main").navigation()
+            ARouter.getInstance().build("/eyepetizer/main").navigation()
         }
     }
 

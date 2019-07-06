@@ -41,6 +41,7 @@ dependencies {
     implementation rootProject.ext.libraries['arouter']
     kapt rootProject.ext.libraries['arouter-compiler']
 
+    // 主项目中需要打入所有的组件
     implementation project(path: ':mvvm')
     implementation project(path: ':service-api')
     implementation project(path: ':service')
