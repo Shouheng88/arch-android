@@ -40,7 +40,6 @@ class VideoDetailActivity : CommonActivity<EyepetizerActivityVideoDetailsBinding
     }
 
     private fun initData() {
-        vm.item = intent.getSerializableExtra(EXTRA_ITEM) as Item
     }
 
     private fun initView() {

@@ -133,7 +133,7 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
             EventBusManager.getInstance().register(this);
         }
         vm = createViewModel();
-        vm.onCreate(savedInstanceState);
+        vm.onCreate(getArguments(), savedInstanceState);
         super.onCreate(savedInstanceState);
     }
 

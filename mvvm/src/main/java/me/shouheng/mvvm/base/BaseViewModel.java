@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import me.shouheng.mvvm.data.Resources;
 
 import java.util.HashMap;
@@ -63,9 +65,10 @@ public class BaseViewModel extends AndroidViewModel {
      * Called when the {@link android.support.v4.app.Fragment#onCreate(Bundle)}
      * or the {@link android.app.Activity#onCreate(Bundle)} was called.
      *
+     * @param extras extras from {@link Intent#getExtras()} of Activity, or {@link Fragment#getArguments()}.
      * @param savedInstanceState saved instance state
      */
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle extras, Bundle savedInstanceState) {
         // default no implementation
     }
 

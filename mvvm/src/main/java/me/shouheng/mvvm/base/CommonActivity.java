@@ -92,7 +92,7 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
             throw new IllegalArgumentException("The subclass must provider a valid layout resources id.");
         }
         vm = createViewModel();
-        vm.onCreate(savedInstanceState);
+        vm.onCreate(getIntent().getExtras(), savedInstanceState);
         binding = DataBindingUtil.inflate(getLayoutInflater(), getLayoutResId(), null, false);
         beforeSetContentView(savedInstanceState);
         setContentView(binding.getRoot());

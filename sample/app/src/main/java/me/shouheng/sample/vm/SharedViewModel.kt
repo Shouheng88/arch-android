@@ -27,7 +27,7 @@ class SharedViewModel(application: Application) : BaseViewModel(application), On
      */
     var shareValue: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(extras: Bundle?, savedInstanceState: Bundle?) {
         userService = ARouter.getInstance().navigation(UserService::class.java)
         userService.registerUserChangeListener(this)
     }

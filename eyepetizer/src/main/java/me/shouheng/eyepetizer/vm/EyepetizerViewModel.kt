@@ -22,8 +22,8 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
 
     private var nextPageUrl: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreate(extras: Bundle?, savedInstanceState: Bundle?) {
+        super.onCreate(extras, savedInstanceState)
         userService = ARouter.getInstance().navigation(UserService::class.java)
         eyepetizerService = ARouter.getInstance().navigation(EyepetizerService::class.java)
     }
