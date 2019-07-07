@@ -1,5 +1,7 @@
 package me.shouheng.api.bean
 
+import java.io.Serializable
+
 /**
  * @author WngShhng (shouheng2015@gmail.com)
  * @version 2019/7/6 17:53
@@ -10,7 +12,7 @@ data class HomeBean(
     val newestIssueType: String,
     val nextPageUrl: String,
     val nextPublishTime: Long
-)
+) : Serializable
 
 data class Issue(
     val count: Int,
@@ -19,7 +21,7 @@ data class Issue(
     val publishTime: Long,
     val releaseTime: Long,
     val type: String
-)
+) : Serializable
 
 data class Item(
     val `data`: Data,
@@ -27,7 +29,7 @@ data class Item(
     val id: Int,
     val tag: Any,
     val type: String
-)
+) : Serializable
 
 data class Data(
     val ad: Boolean,
@@ -74,7 +76,7 @@ data class Data(
     val waterMarks: Any,
     val webAdTrack: Any,
     val webUrl: WebUrl
-)
+) : Serializable
 
 data class PlayInfo(
     val height: Int,
@@ -83,24 +85,24 @@ data class PlayInfo(
     val url: String,
     val urlList: List<Url>,
     val width: Int
-)
+) : Serializable
 
 data class Url(
     val name: String,
     val size: Int,
     val url: String
-)
+) : Serializable
 
 data class Provider(
     val alias: String,
     val icon: String,
     val name: String
-)
+) : Serializable
 
 data class WebUrl(
     val forWeibo: String,
     val raw: String
-)
+) : Serializable
 
 data class Tag(
     val actionUrl: String,
@@ -114,13 +116,13 @@ data class Tag(
     val id: Int,
     val name: String,
     val tagRecType: String
-)
+) : Serializable
 
 data class Consumption(
     val collectionCount: Int,
     val replyCount: Int,
     val shareCount: Int
-)
+) : Serializable
 
 data class Cover(
     val blurred: String,
@@ -128,7 +130,7 @@ data class Cover(
     val feed: String,
     val homepage: String,
     val sharing: Any
-)
+) : Serializable
 
 data class Author(
     val adTrack: Any,
@@ -145,16 +147,16 @@ data class Author(
     val recSort: Int,
     val shield: Shield,
     val videoNum: Int
-)
+) : Serializable
 
 data class Shield(
     val itemId: Int,
     val itemType: String,
     val shielded: Boolean
-)
+) : Serializable
 
 data class Follow(
     val followed: Boolean,
     val itemId: Int,
     val itemType: String
-)
+) : Serializable

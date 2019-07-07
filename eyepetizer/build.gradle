@@ -42,6 +42,8 @@ dependencies {
     implementation rootProject.ext.support['cardview-v7']
     implementation rootProject.ext.libraries['glide']['glide']
     implementation rootProject.ext.libraries['brvah']
+    implementation 'com.shuyu:GSYVideoPlayer:1.6.8'
+    implementation rootProject.ext.libraries['rxjava'].values()
 
     implementation project(path: ':mvvm')
     implementation project(path: ':service-api')

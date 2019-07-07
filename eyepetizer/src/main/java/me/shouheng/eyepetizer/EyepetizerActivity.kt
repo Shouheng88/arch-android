@@ -7,15 +7,17 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.api.bean.HomeBean
 import me.shouheng.api.bean.Item
 import me.shouheng.eyepetizer.databinding.ActivityEyepetizerBinding
+import me.shouheng.eyepetizer.vm.EyepetizerViewModel
 import me.shouheng.mvvm.base.CommonActivity
 import me.shouheng.mvvm.data.Status
 import me.shouheng.utils.stability.LogUtils
 
 /**
- * 开眼是害怕相关的演示页
+ * 开眼视频相关的演示页
  *
  * @author WngShhng 2019-07-06
  */
@@ -37,7 +39,9 @@ class EyepetizerActivity : CommonActivity<ActivityEyepetizerBinding, EyepetizerV
         adapter = HomeAdapter(this)
         adapter.setOnItemClickListener { _, _, position ->
             val itemList = adapter.data[position]
-            showShort(itemList.data.playUrl)
+            ARouter.getInstance().build("/eyepetizer/details")
+                .withSerializable(VideoDetailActivity.EXTRA_ITEM, itemList)
+                .navigation()
         }
         binding.rv.adapter = adapter
         val layoutManager = binding.rv.layoutManager as LinearLayoutManager
@@ -64,7 +68,9 @@ class EyepetizerActivity : CommonActivity<ActivityEyepetizerBinding, EyepetizerV
                     val list = mutableListOf<Item>()
                     resources.data.issueList.forEach {
                         it.itemList.forEach { item ->
-                            if ("banner2" != item.type) list.add(item)
+                            if (item.data.cover != null
+                                && item.data.author != null
+                            ) list.add(item)
                         }
                     }
                     adapter.addData(list)

@@ -7,6 +7,8 @@
 
     <application>
         <activity android:name="me.shouheng.eyepetizer.EyepetizerActivity"/>
+        <activity android:name="me.shouheng.eyepetizer.VideoDetailActivity"
+                  android:theme="@style/VideoTheme"/>
     </application>
 
 </manifest>

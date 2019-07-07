@@ -1,4 +1,4 @@
-package me.shouheng.eyepetizer
+package me.shouheng.eyepetizer.vm
 
 import android.app.Application
 import android.os.Bundle
