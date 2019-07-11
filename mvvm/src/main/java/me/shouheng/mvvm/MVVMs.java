@@ -11,9 +11,24 @@ import me.shouheng.utils.UtilsApp;
  *  )    (  \\//  \\//  )    ( \__ \
  * (_/\/\_) (__)  (__) (_/\/\_)(___/
  *
- * @author WngShhng shouheng2015@gmail.com 2019-6-29
+ * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>, Date: 2019-6-29
  */
 public final class MVVMs {
+
+    private static Application app;
+
+    /**
+     * Get the application
+     *
+     * @return the application
+     */
+    public static Application getApp() {
+        if (app == null) {
+            throw new IllegalStateException("Sorry, you should call MVVMs.onCreate() " +
+                    "method on your custom application first.");
+        }
+        return app;
+    }
 
     /**
      * Call this method in your custom {@link Application#attachBaseContext(Context)}
@@ -30,6 +45,7 @@ public final class MVVMs {
      * @param application the application
      */
     public static void onCreate(Application application) {
+        MVVMs.app = application;
         UtilsApp.init(application);
     }
 }

@@ -1,4 +1,4 @@
-package me.shouheng.mvvm.data;
+package me.shouheng.mvvm.bean;
 
 /**
  * The loading status used between view and view model.

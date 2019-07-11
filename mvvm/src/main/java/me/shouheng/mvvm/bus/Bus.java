@@ -4,30 +4,30 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.lang.reflect.Method;
 
-import static me.shouheng.mvvm.base.Platform.DEPENDENCY_ANDROID_EVENTBUS;
-import static me.shouheng.mvvm.base.Platform.DEPENDENCY_EVENTBUS;
+import static me.shouheng.mvvm.utils.Platform.DEPENDENCY_ANDROID_EVENTBUS;
+import static me.shouheng.mvvm.utils.Platform.DEPENDENCY_EVENTBUS;
 
 /**
  * EventBus manager, mainly used to support EventBus and AndroidEventBus environment.
  *
  * @author WngShhng 2019-6-29
  */
-public final class EventBusManager {
+public final class Bus {
 
-    private static volatile EventBusManager manager;
+    private static volatile Bus manager;
 
-    public static EventBusManager getInstance() {
+    public static Bus get() {
         if (manager == null) {
-            synchronized (EventBusManager.class) {
+            synchronized (Bus.class) {
                 if (manager == null) {
-                    manager = new EventBusManager();
+                    manager = new Bus();
                 }
             }
         }
         return manager;
     }
 
-    private EventBusManager() {
+    private Bus() {
     }
 
     public void register(Object subscriber) {

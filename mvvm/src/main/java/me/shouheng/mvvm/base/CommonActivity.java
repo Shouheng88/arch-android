@@ -1,5 +1,6 @@
 package me.shouheng.mvvm.base;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -12,12 +13,16 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import me.shouheng.mvvm.base.anno.ActivityConfiguration;
-import me.shouheng.mvvm.bus.EventBusManager;
-import me.shouheng.utils.ui.ToastUtils;
+import me.shouheng.mvvm.bus.Bus;
+import me.shouheng.utils.app.ActivityUtils;
+import me.shouheng.utils.permission.Permission;
 import me.shouheng.utils.permission.PermissionResultHandler;
 import me.shouheng.utils.permission.PermissionResultResolver;
+import me.shouheng.utils.permission.PermissionUtils;
 import me.shouheng.utils.permission.callback.OnGetPermissionCallback;
+import me.shouheng.utils.permission.callback.PermissionResultCallback;
 import me.shouheng.utils.permission.callback.PermissionResultCallbackImpl;
+import me.shouheng.utils.ui.ToastUtils;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -85,7 +90,7 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         if (useEventBus) {
-            EventBusManager.getInstance().register(this);
+            Bus.get().register(this);
         }
         super.onCreate(savedInstanceState);
         if (getLayoutResId() <= 0) {
@@ -127,6 +132,11 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
         return needLogin;
     }
 
+    /**
+     * Make a simple toast.
+     *
+     * @param text the content to display
+     */
     protected void showShort(final CharSequence text) {
         ToastUtils.showShort(text);
     }
@@ -149,7 +159,7 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
      * @param event the event to post
      */
     protected void post(Object event) {
-        EventBusManager.getInstance().post(event);
+        Bus.get().post(event);
     }
 
     /**
@@ -158,7 +168,52 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
      * @param event the sticky event
      */
     protected void postSticky(Object event) {
-        EventBusManager.getInstance().postSticky(event);
+        Bus.get().postSticky(event);
+    }
+
+    /**
+     * Start given activity.
+     *
+     * @param clz the activity
+     */
+    protected void startActivity(@NonNull Class<? extends Activity> clz) {
+        ActivityUtils.start(this, clz);
+    }
+
+    protected void startActivity(@NonNull Class<? extends Activity> activityClass,
+                              int requestCode) {
+        ActivityUtils.start(this, activityClass, requestCode);
+    }
+
+    /**
+     * Check single permission. For multiple permissions at the same time, call
+     * {@link #checkPermissions(OnGetPermissionCallback, int...)}.
+     *
+     * @param permission the permission to check
+     * @param onGetPermissionCallback the callback when got the required permission
+     */
+    protected void checkPermission(@Permission.PermissionCode int permission, OnGetPermissionCallback onGetPermissionCallback) {
+        PermissionUtils.checkPermissions(this, onGetPermissionCallback, permission);
+    }
+
+    /**
+     * Check multiple permissions at the same time.
+     *
+     * @param onGetPermissionCallback the callback when got all permissions required.
+     * @param permissions the permissions to request.
+     */
+    protected void checkPermissions(OnGetPermissionCallback onGetPermissionCallback, @Permission.PermissionCode int...permissions) {
+        PermissionUtils.checkPermissions(this, onGetPermissionCallback, permissions);
+    }
+
+    /**
+     * Get the permission check result callback, the default implementation was {@link PermissionResultCallbackImpl}.
+     * Override this method to add your own implementation.
+     *
+     * @return the permission result callback
+     */
+    protected PermissionResultCallback getPermissionResultCallback() {
+        return new PermissionResultCallbackImpl(this, onGetPermissionCallback);
     }
 
     @Override
@@ -169,8 +224,8 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PermissionResultHandler.handlePermissionsResult(this, requestCode, permissions, grantResults,
-                new PermissionResultCallbackImpl(this, onGetPermissionCallback));
+        PermissionResultHandler.handlePermissionsResult(this,
+                requestCode, permissions, grantResults, getPermissionResultCallback());
     }
 
     @Override
@@ -182,7 +237,7 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
     @Override
     protected void onDestroy() {
         if (useEventBus) {
-            EventBusManager.getInstance().unregister(this);
+            Bus.get().unregister(this);
         }
         vm.onDestroy();
         super.onDestroy();

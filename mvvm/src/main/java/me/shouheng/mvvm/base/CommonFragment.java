@@ -1,5 +1,6 @@
 package me.shouheng.mvvm.base;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -12,7 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import me.shouheng.mvvm.base.anno.FragmentConfiguration;
-import me.shouheng.mvvm.bus.EventBusManager;
+import me.shouheng.mvvm.bus.Bus;
+import me.shouheng.utils.app.ActivityUtils;
+import me.shouheng.utils.permission.Permission;
+import me.shouheng.utils.permission.PermissionUtils;
+import me.shouheng.utils.permission.callback.OnGetPermissionCallback;
+import me.shouheng.utils.stability.LogUtils;
 import me.shouheng.utils.ui.ToastUtils;
 
 import java.lang.reflect.ParameterizedType;
@@ -28,9 +34,9 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
 
     private T binding;
 
-    private boolean shareViewModel = false;
+    private boolean shareViewModel;
 
-    private boolean useEventBus = false;
+    private boolean useEventBus;
 
     {
         FragmentConfiguration configuration = this.getClass().getAnnotation(FragmentConfiguration.class);
@@ -93,6 +99,11 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
         return binding;
     }
 
+    /**
+     * Make a simple toast.
+     *
+     * @param text the content to display
+     */
     protected void showShort(final CharSequence text) {
         ToastUtils.showShort(text);
     }
@@ -110,27 +121,70 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
     }
   
     /**
-     * Post one event by EventBusManager
+     * Post one event by Bus
      *
      * @param event the event to post
      */
     protected void post(Object event) {
-        EventBusManager.getInstance().post(event);
+        Bus.get().post(event);
     }
 
     /**
-     * Post one sticky event by EventBusManager
+     * Post one sticky event by Bus
      *
      * @param event the sticky event
      */
     protected void postSticky(Object event) {
-        EventBusManager.getInstance().postSticky(event);
+        Bus.get().postSticky(event);
+    }
+
+    /**
+     * Start given activity.
+     *
+     * @param clz the activity
+     */
+    protected void startActivity(@NonNull Class<? extends Activity> clz) {
+        ActivityUtils.start(getContext(), clz);
+    }
+
+    protected void startActivity(@NonNull Class<? extends Activity> activityClass,
+                              int requestCode) {
+        ActivityUtils.start(this, activityClass, requestCode);
+    }
+
+    /**
+     * Check single permission. For multiple permissions at the same time, call
+     * {@link #checkPermissions(OnGetPermissionCallback, int...)}.
+     *
+     * @param permission the permission to check
+     * @param onGetPermissionCallback the callback when got the required permission
+     */
+    protected void checkPermission(@Permission.PermissionCode int permission, OnGetPermissionCallback onGetPermissionCallback) {
+        if (getActivity() instanceof CommonActivity) {
+            PermissionUtils.checkPermissions((CommonActivity) getActivity(), onGetPermissionCallback, permission);
+        } else {
+            LogUtils.i("Request permission failed due to the associated activity was not instance of CommonActivity");
+        }
+    }
+
+    /**
+     * Check multiple permissions at the same time.
+     *
+     * @param onGetPermissionCallback the callback when got all permissions required.
+     * @param permissions the permissions to request.
+     */
+    protected void checkPermissions(OnGetPermissionCallback onGetPermissionCallback, @Permission.PermissionCode int...permissions) {
+        if (getActivity() instanceof CommonActivity) {
+            PermissionUtils.checkPermissions((CommonActivity) getActivity(), onGetPermissionCallback, permissions);
+        } else {
+            LogUtils.i("Request permissions failed due to the associated activity was not instance of CommonActivity");
+        }
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         if (useEventBus) {
-            EventBusManager.getInstance().register(this);
+            Bus.get().register(this);
         }
         vm = createViewModel();
         vm.onCreate(getArguments(), savedInstanceState);
@@ -146,7 +200,7 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
     @Override
     public void onDestroy() {
         if (useEventBus) {
-            EventBusManager.getInstance().unregister(this);
+            Bus.get().unregister(this);
         }
         vm.onDestroy();
         super.onDestroy();

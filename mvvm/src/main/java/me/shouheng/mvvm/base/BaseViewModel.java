@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import me.shouheng.mvvm.data.Resources;
+import me.shouheng.mvvm.bean.Resources;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +16,9 @@ import java.util.Map;
 
 /**
  * Basic implementation of common ViewModel.
+ *
+ * The view model has no pre-defined model associated, for MVVMs don't want to take care of the
+ * model logic. You can get the data source anywhere, which is perhaps useful for small project.
  *
  * @author WngShhng 2019-6-29
  */

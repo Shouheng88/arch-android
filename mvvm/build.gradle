@@ -30,7 +30,8 @@ dependencies {
     implementation rootProject.ext.libraries['AndroidEventBus']
 
     api rootProject.ext.libraries['utils']
-    api rootProject.ext.libraries['lifecycle-extensions']
+    api rootProject.ext.libraries['compressor']
+    implementation rootProject.ext.libraries['lifecycle-extensions']
     annotationProcessor rootProject.ext.libraries['lifecycle-compiler']
 }
 
