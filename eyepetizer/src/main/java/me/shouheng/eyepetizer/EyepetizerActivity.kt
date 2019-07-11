@@ -13,7 +13,7 @@ import me.shouheng.api.bean.Item
 import me.shouheng.eyepetizer.databinding.ActivityEyepetizerBinding
 import me.shouheng.eyepetizer.vm.EyepetizerViewModel
 import me.shouheng.mvvm.base.CommonActivity
-import me.shouheng.mvvm.data.Status
+import me.shouheng.mvvm.bean.Status
 import me.shouheng.utils.stability.LogUtils
 
 /**
@@ -79,7 +79,7 @@ class EyepetizerActivity : CommonActivity<ActivityEyepetizerBinding, EyepetizerV
                     // temp do nothing
                 }
                 Status.LOADING -> {
-                    showShort(resources.message)
+                    // temp do nothing
                 }
                 else -> {
                     // do nothing

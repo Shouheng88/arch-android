@@ -6,7 +6,8 @@ import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.api.bean.User
 import me.shouheng.mvvm.base.CommonFragment
 import me.shouheng.mvvm.base.anno.FragmentConfiguration
-import me.shouheng.mvvm.data.Status
+import me.shouheng.mvvm.bean.Status
+import me.shouheng.mvvm.common.ContainerActivity
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.FragmentMainBinding
 import me.shouheng.sample.event.SimpleEvent
@@ -39,10 +40,10 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
                     showShort(R.string.sample_main_got_user, it.data)
                 }
                 Status.FAILED -> {
-                    showShort(it.message)
+                    showShort(it.errorMessage)
                 }
                 Status.LOADING -> {
-                    showShort(it.message)
+                    // do nothing
                 }
                 else -> {
                     // do nothing
@@ -65,6 +66,11 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
         }
         binding.btnToComponentB.setOnClickListener {
             ARouter.getInstance().build("/eyepetizer/main").navigation()
+        }
+        binding.btnToSample.setOnClickListener {
+            ContainerActivity.open(SampleFragment::class.java)
+                .put(SampleFragment.ARGS_KEY_TEXT, "Here is the text from the arguments.")
+                .launch(context!!)
         }
     }
 

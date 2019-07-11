@@ -4,7 +4,7 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import me.shouheng.mvvm.base.CommonActivity
 import me.shouheng.mvvm.base.anno.ActivityConfiguration
-import me.shouheng.mvvm.data.Status
+import me.shouheng.mvvm.bean.Status
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.ActivityMainBinding
 import me.shouheng.sample.event.SimpleEvent
@@ -35,10 +35,10 @@ class MainActivity : CommonActivity<ActivityMainBinding, MainViewModel>() {
                     ToastUtils.showShort(it.data)
                 }
                 Status.FAILED -> {
-                    ToastUtils.showShort(it.message)
+                    ToastUtils.showShort(it.errorMessage)
                 }
                 Status.LOADING -> {
-                    ToastUtils.showShort(it.message)
+                    // temp do nothing
                 }
                 else -> {
                     // do nothing

@@ -7,7 +7,7 @@ import me.shouheng.api.bean.User
 import me.shouheng.api.sample.OnUserChangeListener
 import me.shouheng.api.sample.UserService
 import me.shouheng.mvvm.base.BaseViewModel
-import me.shouheng.mvvm.data.Resources
+import me.shouheng.mvvm.bean.Resources
 
 /**
  * 在 Fragment 之间共享的 ViewModel

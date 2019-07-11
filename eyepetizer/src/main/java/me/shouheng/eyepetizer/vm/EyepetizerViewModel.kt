@@ -8,7 +8,7 @@ import me.shouheng.api.eyepetizer.EyepetizerService
 import me.shouheng.api.eyepetizer.OnGetHomeBeansListener
 import me.shouheng.api.sample.UserService
 import me.shouheng.mvvm.base.BaseViewModel
-import me.shouheng.mvvm.data.Resources
+import me.shouheng.mvvm.bean.Resources
 
 /**
  * @author WngShhng (shouheng2015@gmail.com)
@@ -36,7 +36,7 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
         getObservable(HomeBean::class.java).value = Resources.loading()
         eyepetizerService.getFirstHomePage(null, object : OnGetHomeBeansListener {
             override fun onError(errorCode: String, errorMsg: String) {
-                getObservable(HomeBean::class.java).value = Resources.failed(errorCode)
+                getObservable(HomeBean::class.java).value = Resources.failed(errorCode, errorMsg)
             }
 
             override fun onGetHomeBean(homeBean: HomeBean) {
@@ -49,7 +49,7 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
     fun requestNextPage() {
         eyepetizerService.getMoreHomePage(nextPageUrl, object : OnGetHomeBeansListener {
             override fun onError(errorCode: String, errorMsg: String) {
-                getObservable(HomeBean::class.java).value = Resources.failed(errorMsg)
+                getObservable(HomeBean::class.java).value = Resources.failed(errorCode, errorMsg)
             }
 
             override fun onGetHomeBean(homeBean: HomeBean) {

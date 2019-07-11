@@ -3,7 +3,7 @@ package me.shouheng.sample.view
 import android.os.Bundle
 import me.shouheng.mvvm.base.anno.FragmentConfiguration
 import me.shouheng.mvvm.base.CommonFragment
-import me.shouheng.mvvm.bus.EventBusManager
+import me.shouheng.mvvm.bus.Bus
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.FragmentSecondBinding
 import me.shouheng.sample.event.SimpleEvent
@@ -25,7 +25,7 @@ class SecondFragment : CommonFragment<FragmentSecondBinding, SharedViewModel>() 
         // Get and display shared value from MainFragment
         binding.tv.text = vm.shareValue
         binding.btnPost.setOnClickListener {
-            EventBusManager.getInstance().post(SimpleEvent("MSG#00001"))
+            Bus.get().post(SimpleEvent("MSG#00001"))
         }
     }
 }

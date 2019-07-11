@@ -5,9 +5,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.api.sample.MainDataService
 import me.shouheng.api.sample.OnGetMainDataListener
 import me.shouheng.mvvm.base.BaseViewModel
-import me.shouheng.mvvm.data.Resources
-import me.shouheng.sample.R
-import me.shouheng.utils.app.ResUtils
+import me.shouheng.mvvm.bean.Resources
 
 /**
  * 主界面对应的 ViewModel
@@ -17,13 +15,11 @@ import me.shouheng.utils.app.ResUtils
 class MainViewModel(application: Application) : BaseViewModel(application) {
 
     fun startLoad() {
-        getObservable(String::class.java).value = Resources.loading(
-            ResUtils.getString(R.string.sample_main_page_data_loading))
+        getObservable(String::class.java).value = Resources.loading()
         ARouter.getInstance().navigation(MainDataService::class.java)
             ?.loadData(object : OnGetMainDataListener{
                 override fun onGetData() {
-                    getObservable(String::class.java).value = Resources.loading(
-                        ResUtils.getString(R.string.sample_main_page_data_load_succeed))
+                    getObservable(String::class.java).value = Resources.loading()
                 }
             })
     }
