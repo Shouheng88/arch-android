@@ -3,7 +3,6 @@ package me.shouheng.eyepetizer.vm
 import android.app.Application
 import android.os.Bundle
 import me.shouheng.api.bean.Item
-import me.shouheng.eyepetizer.VideoDetailActivity
 import me.shouheng.eyepetizer.VideoDetailActivity.Companion.EXTRA_ITEM
 import me.shouheng.mvvm.base.BaseViewModel
 

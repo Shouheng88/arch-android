@@ -29,6 +29,7 @@ dependencies {
     implementation rootProject.ext.libraries['EventBus']
     implementation rootProject.ext.libraries['AndroidEventBus']
 
+    api rootProject.ext.libraries['okhttp']
     api rootProject.ext.libraries['utils']
     api rootProject.ext.libraries['compressor']
     implementation rootProject.ext.libraries['lifecycle-extensions']

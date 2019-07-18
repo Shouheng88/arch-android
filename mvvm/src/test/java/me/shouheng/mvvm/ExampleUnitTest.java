@@ -1,4 +1,4 @@
-package me.shouheng.mmvm;
+package me.shouheng.mvvm;
 
 import org.junit.Test;
 

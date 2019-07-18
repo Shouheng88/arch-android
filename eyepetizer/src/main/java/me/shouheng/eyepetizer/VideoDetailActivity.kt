@@ -14,7 +14,6 @@ import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import me.shouheng.api.bean.Item
 import me.shouheng.eyepetizer.databinding.EyepetizerActivityVideoDetailsBinding
 import me.shouheng.eyepetizer.vm.VideoDetailsViewModel
 import me.shouheng.mvvm.base.CommonActivity
