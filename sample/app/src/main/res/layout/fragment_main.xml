@@ -27,6 +27,11 @@
                 android:text="@string/sample_main_navigate_to_sample"
                 style="@style/MenuButton"/>
 
+        <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_download"
+                android:text="@string/sample_main_download"
+                style="@style/MenuButton"/>
+
     </LinearLayout>
 
 </layout>

@@ -1,5 +1,6 @@
 package me.shouheng.sample.view
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import com.alibaba.android.arouter.launcher.ARouter
@@ -8,13 +9,20 @@ import me.shouheng.mvvm.base.CommonFragment
 import me.shouheng.mvvm.base.anno.FragmentConfiguration
 import me.shouheng.mvvm.bean.Status
 import me.shouheng.mvvm.common.ContainerActivity
+import me.shouheng.mvvm.http.DownloadListener
+import me.shouheng.mvvm.http.Downloader
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.FragmentMainBinding
 import me.shouheng.sample.event.SimpleEvent
 import me.shouheng.sample.vm.SharedViewModel
 import me.shouheng.utils.app.ResUtils
 import me.shouheng.utils.stability.LogUtils
+import me.shouheng.utils.store.PathUtils
+import me.shouheng.utils.ui.ToastUtils
+import me.shouheng.utils.ui.ViewUtils
 import org.greenrobot.eventbus.Subscribe
+import java.io.File
+import java.lang.Exception
 
 /**
  * 主界面显示的碎片
@@ -23,6 +31,8 @@ import org.greenrobot.eventbus.Subscribe
  */
 @FragmentConfiguration(shareViewMode = true, useEventBus = true)
 class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
+
+    private val downloadUrl = "https://dldir1.qq.com/music/clntupate/QQMusic_YQQFloatLayer.exe"
 
     override fun getLayoutResId() = R.layout.fragment_main
 
@@ -52,6 +62,7 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
         })
     }
 
+    @SuppressLint("MissingPermission")
     private fun initViews() {
         binding.btnToSecond.setOnClickListener {
             val fragment = SecondFragment()
@@ -71,6 +82,26 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
             ContainerActivity.open(SampleFragment::class.java)
                 .put(SampleFragment.ARGS_KEY_TEXT, "Here is the text from the arguments.")
                 .launch(context!!)
+        }
+        binding.btnDownload.setOnClickListener {
+            val dest = File(PathUtils.getExternalStoragePath(), "test.mp4")
+            Downloader.getInstance().download(downloadUrl, dest, object : DownloadListener {
+                override fun onStart() {
+                    showShort("Download : start")
+                }
+
+                override fun onProgress(readLength: Long, contentLength: Long) {
+                    showShort("Download : onProgress $readLength/$contentLength")
+                }
+
+                override fun onComplete(file: File?) {
+                    showShort("Download : complete : ${file?.absoluteFile}")
+                }
+
+                override fun onError(ex: Exception?) {
+                    showShort("Download: error : $ex")
+                }
+            })
         }
     }
 
