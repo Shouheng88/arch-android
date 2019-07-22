@@ -84,24 +84,25 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
                 .launch(context!!)
         }
         binding.btnDownload.setOnClickListener {
-            val dest = File(PathUtils.getExternalStoragePath(), "test.mp4")
-            Downloader.getInstance().download(downloadUrl, dest, object : DownloadListener {
-                override fun onStart() {
-                    showShort("Download : start")
-                }
+            Downloader.getInstance()
+                .setOnlyWifi(true)
+                .download(downloadUrl, PathUtils.getExternalStoragePath(), object : DownloadListener {
+                    override fun onError(errorCode: Int) {
+                        showShort("Download : error $errorCode")
+                    }
 
-                override fun onProgress(readLength: Long, contentLength: Long) {
-                    showShort("Download : onProgress $readLength/$contentLength")
-                }
+                    override fun onStart() {
+                        showShort("Download : start")
+                    }
 
-                override fun onComplete(file: File?) {
-                    showShort("Download : complete : ${file?.absoluteFile}")
-                }
+                    override fun onProgress(readLength: Long, contentLength: Long) {
+                        LogUtils.d("Download : onProgress $readLength/$contentLength")
+                    }
 
-                override fun onError(ex: Exception?) {
-                    showShort("Download: error : $ex")
-                }
-            })
+                    override fun onComplete(file: File?) {
+                        showShort("Download : complete : ${file?.absoluteFile}")
+                    }
+                })
         }
     }
 

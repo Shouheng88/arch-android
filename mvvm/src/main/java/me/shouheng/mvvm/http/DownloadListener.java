@@ -33,7 +33,7 @@ public interface DownloadListener {
     /**
      * Will be called when the download error occurred.
      *
-     * @param ex the exception
+     * @param errorCode the error code
      */
-    void onError(Exception ex);
+    void onError(int errorCode);
 }
