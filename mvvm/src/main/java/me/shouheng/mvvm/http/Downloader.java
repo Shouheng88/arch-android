@@ -24,7 +24,29 @@ import java.util.concurrent.TimeUnit;
 import static android.Manifest.permission.*;
 
 /**
- * The downloader used to download files from network
+ * The downloader used to download files from network. Sample
+ *
+ * <code>
+ * Downloader.getInstance()
+ *     .setOnlyWifi(true)
+ *     .download(downloadUrl, PathUtils.getExternalStoragePath(), object : DownloadListener {
+ *         override fun onError(errorCode: Int) {
+ *             showShort("Download : error $errorCode")
+ *         }
+ *
+ *         override fun onStart() {
+ *             showShort("Download : start")
+ *         }
+ *
+ *         override fun onProgress(readLength: Long, contentLength: Long) {
+ *             LogUtils.d("Download : onProgress $readLength/$contentLength")
+ *         }
+ *
+ *         override fun onComplete(file: File?) {
+ *             showShort("Download : complete : ${file?.absoluteFile}")
+ *         }
+ *     })
+ * </code>
  *
  * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
  */
@@ -124,7 +146,7 @@ public final class Downloader {
     }
 
     /**
-     * Download file of given url
+     * Download file of given url. The program will get file name from url.
      *
      * @param url              the remote url
      * @param filePath         the file path that the file was saved to
@@ -135,6 +157,14 @@ public final class Downloader {
         this.download(url, filePath, getFileName(url), downloadListener);
     }
 
+    /**
+     * Download file of given url.
+     *
+     * @param url              the url
+     * @param filePath         the file path to save file
+     * @param fileName         the file name of downloaded file
+     * @param downloadListener the download state callback
+     */
     @RequiresPermission(allOf = {ACCESS_WIFI_STATE, INTERNET, ACCESS_NETWORK_STATE, WRITE_EXTERNAL_STORAGE})
     public void download(@NonNull String url, @NonNull String filePath, @Nullable String fileName, @Nullable DownloadListener downloadListener) {
         this.downloadListener = downloadListener;

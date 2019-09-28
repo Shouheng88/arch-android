@@ -12,7 +12,15 @@ import me.shouheng.utils.stability.LogUtils;
 
 /**
  * The common container activity for fragment:
- * Call {@link #open(Class)} method directly to get a builder for container.
+ * Call {@link #open(Class)} method directly to get a builder for container. Sample:
+ *
+ * <code>
+ * ContainerActivity.open(SampleFragment::class.java)
+ *     // set arguments for the fragment
+ *     .put(SampleFragment.ARGS_KEY_TEXT, "Here is the text from the arguments.")
+ *     // launch the container activity
+ *     .launch(context!!)
+ * </code>
  *
  * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
  */
@@ -25,7 +33,7 @@ public class ContainerActivity extends CommonActivity<MvvmsActivityContainerBind
 
     /**
      * Get a {@link ActivityUtils.Builder} object to build a request for container activity.
-     * You can set argument of your fragment by the methods provided by the builder.
+     * You can set argument of your fragment by the methods provided by the builder directly.
      *
      * @param fragment  the fragment class
      * @param <F>       the fragment class type

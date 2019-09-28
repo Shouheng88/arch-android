@@ -9,6 +9,7 @@ import me.shouheng.sample.R
 import me.shouheng.sample.databinding.ActivityMainBinding
 import me.shouheng.sample.event.SimpleEvent
 import me.shouheng.sample.vm.MainViewModel
+import me.shouheng.utils.data.StringUtils
 import me.shouheng.utils.ui.ToastUtils
 import org.greenrobot.eventbus.Subscribe
 
@@ -54,6 +55,6 @@ class MainActivity : CommonActivity<ActivityMainBinding, MainViewModel>() {
 
     @Subscribe
     fun onGetMessage(simpleEvent: SimpleEvent) {
-        toast(R.string.sample_main_activity_received_msg, javaClass.simpleName, simpleEvent.msg)
+        toast(StringUtils.format(R.string.sample_main_activity_received_msg, javaClass.simpleName, simpleEvent.msg))
     }
 }

@@ -16,6 +16,7 @@ import me.shouheng.sample.databinding.FragmentMainBinding
 import me.shouheng.sample.event.SimpleEvent
 import me.shouheng.sample.vm.SharedViewModel
 import me.shouheng.utils.app.ResUtils
+import me.shouheng.utils.data.StringUtils
 import me.shouheng.utils.stability.LogUtils
 import me.shouheng.utils.store.PathUtils
 import org.greenrobot.eventbus.Subscribe
@@ -44,7 +45,7 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
         vm.getObservable(User::class.java).observe(this, Observer {
             when (it!!.status) {
                 Status.SUCCESS -> {
-                    toast(R.string.sample_main_got_user, it.data)
+                    toast(StringUtils.format(R.string.sample_main_got_user, it.data))
                 }
                 Status.FAILED -> {
                     toast(it.errorMessage)
@@ -105,7 +106,7 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
 
     @Subscribe
     fun onGetMessage(simpleEvent: SimpleEvent) {
-        toast(R.string.sample_main_activity_received_msg, javaClass.simpleName, simpleEvent.msg)
+        toast(StringUtils.format(R.string.sample_main_activity_received_msg, javaClass.simpleName, simpleEvent.msg))
     }
 
 }
