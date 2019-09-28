@@ -15,10 +15,8 @@ import me.shouheng.utils.stability.LogUtils
  *
  * @author WngShhng 2019-6-29
  */
-@FragmentConfiguration(shareViewMode = true)
+@FragmentConfiguration(shareViewMode = true, layoutResId = R.layout.fragment_second)
 class SecondFragment : CommonFragment<FragmentSecondBinding, SharedViewModel>() {
-
-    override fun getLayoutResId() = R.layout.fragment_second
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         LogUtils.d(vm)

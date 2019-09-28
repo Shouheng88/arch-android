@@ -18,10 +18,8 @@ import org.greenrobot.eventbus.Subscribe
  *
  * @author Wngshhng 2019-6-29
  */
-@ActivityConfiguration(useEventBus = false)
+@ActivityConfiguration(useEventBus = false, layoutResId = R.layout.activity_main)
 class MainActivity : CommonActivity<ActivityMainBinding, MainViewModel>() {
-
-    override fun getLayoutResId() = R.layout.activity_main
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         addSubscriptions()

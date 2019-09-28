@@ -31,10 +31,18 @@ public @interface FragmentConfiguration {
     boolean useEventBus() default false;
 
     /**
-     * 获取布局资源
+     * Get layout resource id.
      *
-     * @return 资源 id
+     * @return the layout resource id.
      */
     @LayoutRes
     int layoutResId() default 0;
+
+    /**
+     * The page name used for umeng etc. The activity or fragment class simple name will
+     * be used if you didn't set this value.
+     *
+     * @return page name
+     */
+    String pageName() default "";
 }

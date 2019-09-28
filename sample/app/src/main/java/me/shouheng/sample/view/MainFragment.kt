@@ -27,12 +27,10 @@ import java.io.File
  *
  * @author WngShhng 2019-6-29
  */
-@FragmentConfiguration(shareViewMode = true, useEventBus = true)
+@FragmentConfiguration(shareViewMode = true, useEventBus = true, layoutResId = R.layout.fragment_main)
 class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
 
     private val downloadUrl = "https://dldir1.qq.com/music/clntupate/QQMusic_YQQFloatLayer.exe"
-
-    override fun getLayoutResId() = R.layout.fragment_main
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         addSubscriptions()
