@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -38,11 +39,14 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
 
     private boolean useEventBus;
 
+    private int layoutResId;
+
     {
         FragmentConfiguration configuration = this.getClass().getAnnotation(FragmentConfiguration.class);
         if (configuration != null) {
             shareViewModel = configuration.shareViewMode();
             useEventBus = configuration.useEventBus();
+            layoutResId = configuration.layoutResId();
         }
     }
 
@@ -51,7 +55,9 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
      *
      * @return layout resource id.
      */
-    protected abstract int getLayoutResId();
+    protected int getLayoutResId() {
+        return 0;
+    }
 
     /**
      * Do create view business.
@@ -80,13 +86,14 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        if (getLayoutResId() <= 0) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (getLayoutResId() != 0) {
+            layoutResId = getLayoutResId();
+        }
+        if (layoutResId <= 0) {
             throw new IllegalArgumentException("The subclass must provider a valid layout resources id.");
         }
-        binding = DataBindingUtil.inflate(getLayoutInflater(), getLayoutResId(), null, false);
+        binding = DataBindingUtil.inflate(getLayoutInflater(), layoutResId, null, false);
         doCreateView(savedInstanceState);
         return binding.getRoot();
     }
@@ -104,22 +111,14 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
      *
      * @param text the content to display
      */
-    protected void showShort(final CharSequence text) {
+    protected void toast(final CharSequence text) {
         ToastUtils.showShort(text);
     }
 
-    protected void showShort(@StringRes final int resId) {
+    protected void toast(@StringRes final int resId) {
         ToastUtils.showShort(resId);
     }
 
-    protected void showShort(@StringRes final int resId, final Object... args) {
-        ToastUtils.showShort(resId, args);
-    }
-
-    protected void showShort(final String format, final Object... args) {
-        ToastUtils.showShort(format, args);
-    }
-  
     /**
      * Post one event by Bus
      *
@@ -147,8 +146,7 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
         ActivityUtils.start(getContext(), clz);
     }
 
-    protected void startActivity(@NonNull Class<? extends Activity> activityClass,
-                              int requestCode) {
+    protected void startActivity(@NonNull Class<? extends Activity> activityClass, int requestCode) {
         ActivityUtils.start(this, activityClass, requestCode);
     }
 

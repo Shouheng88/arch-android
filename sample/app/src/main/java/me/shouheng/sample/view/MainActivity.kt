@@ -54,6 +54,6 @@ class MainActivity : CommonActivity<ActivityMainBinding, MainViewModel>() {
 
     @Subscribe
     fun onGetMessage(simpleEvent: SimpleEvent) {
-        showShort(R.string.sample_main_activity_received_msg, javaClass.simpleName, simpleEvent.msg)
+        toast(R.string.sample_main_activity_received_msg, javaClass.simpleName, simpleEvent.msg)
     }
 }

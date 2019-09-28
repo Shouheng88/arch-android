@@ -18,11 +18,8 @@ import me.shouheng.sample.vm.SharedViewModel
 import me.shouheng.utils.app.ResUtils
 import me.shouheng.utils.stability.LogUtils
 import me.shouheng.utils.store.PathUtils
-import me.shouheng.utils.ui.ToastUtils
-import me.shouheng.utils.ui.ViewUtils
 import org.greenrobot.eventbus.Subscribe
 import java.io.File
-import java.lang.Exception
 
 /**
  * 主界面显示的碎片
@@ -47,10 +44,10 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
         vm.getObservable(User::class.java).observe(this, Observer {
             when (it!!.status) {
                 Status.SUCCESS -> {
-                    showShort(R.string.sample_main_got_user, it.data)
+                    toast(R.string.sample_main_got_user, it.data)
                 }
                 Status.FAILED -> {
-                    showShort(it.errorMessage)
+                    toast(it.errorMessage)
                 }
                 Status.LOADING -> {
                     // do nothing
@@ -88,11 +85,11 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
                 .setOnlyWifi(true)
                 .download(downloadUrl, PathUtils.getExternalStoragePath(), object : DownloadListener {
                     override fun onError(errorCode: Int) {
-                        showShort("Download : error $errorCode")
+                        toast("Download : error $errorCode")
                     }
 
                     override fun onStart() {
-                        showShort("Download : start")
+                        toast("Download : start")
                     }
 
                     override fun onProgress(readLength: Long, contentLength: Long) {
@@ -100,7 +97,7 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
                     }
 
                     override fun onComplete(file: File?) {
-                        showShort("Download : complete : ${file?.absoluteFile}")
+                        toast("Download : complete : ${file?.absoluteFile}")
                     }
                 })
         }
@@ -108,7 +105,7 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
 
     @Subscribe
     fun onGetMessage(simpleEvent: SimpleEvent) {
-        showShort(R.string.sample_main_activity_received_msg, javaClass.simpleName, simpleEvent.msg)
+        toast(R.string.sample_main_activity_received_msg, javaClass.simpleName, simpleEvent.msg)
     }
 
 }

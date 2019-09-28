@@ -1,5 +1,7 @@
 package me.shouheng.mvvm.base.anno;
 
+import android.support.annotation.LayoutRes;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -27,4 +29,12 @@ public @interface ActivityConfiguration {
      * @return true if the user must be logined
      */
     boolean needLogin() default true;
+
+    /**
+     * 获取布局资源
+     *
+     * @return 资源 id
+     */
+    @LayoutRes
+    int layoutResId() default 0;
 }

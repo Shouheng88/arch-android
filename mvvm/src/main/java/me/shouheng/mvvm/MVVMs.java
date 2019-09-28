@@ -5,13 +5,20 @@ import android.content.Context;
 import me.shouheng.utils.UtilsApp;
 
 /**
- * MVVMs, easy and convenient MVVM architecture for Android.
- *  __  __  _  _  _  _  __  __  ___
- * (  \/  )( )( )( )( )(  \/  )/ __)
- *  )    (  \\//  \\//  )    ( \__ \
- * (_/\/\_) (__)  (__) (_/\/\_)(___/
+ * ========================================================
  *
- * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>, Date: 2019-6-29
+ *          MM    MM VV     VV VV     VV MM    MM
+ *          MMM  MMM VV     VV VV     VV MMM  MMM
+ *          MM MM MM  VV   VV   VV   VV  MM MM MM
+ *          MM    MM   VV VV     VV VV   MM    MM
+ *          MM    MM    VVV       VVV    MM    MM
+ *
+ *                     == WngShhng ==
+ *
+ *    AN EASY AND CONVENIENT MVVM ARCHITECTURE FOR ANDROID.
+ *
+ * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @version Date: 2019-6-29
  */
 public final class MVVMs {
 

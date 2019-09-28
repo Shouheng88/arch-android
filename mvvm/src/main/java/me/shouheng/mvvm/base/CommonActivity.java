@@ -5,10 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
+import android.support.annotation.*;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -29,12 +26,11 @@ import java.lang.reflect.ParameterizedType;
 /**
  * The basic common implementation for MMVMs activity.
  *
- * @author WngShhng 2019-6-29
+ * @author WngShhng
+ * @version 2019-6-29
  */
 public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseViewModel>
-        extends AppCompatActivity
-        implements PermissionResultResolver
-{
+        extends AppCompatActivity implements PermissionResultResolver  {
 
     private VM vm;
 
@@ -44,6 +40,8 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
 
     private boolean needLogin = true;
 
+    private int layoutResId;
+
     private OnGetPermissionCallback onGetPermissionCallback;
 
     {
@@ -51,15 +49,9 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
         if (configuration != null) {
             useEventBus = configuration.useEventBus();
             needLogin = configuration.needLogin();
+            layoutResId = configuration.layoutResId();
         }
     }
-
-    /**
-     * Get the layout resource id from subclass.
-     *
-     * @return layout resource id.
-     */
-    protected abstract int getLayoutResId();
 
     /**
      * Do create view business.
@@ -93,12 +85,15 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
             Bus.get().register(this);
         }
         super.onCreate(savedInstanceState);
-        if (getLayoutResId() <= 0) {
+        if (getLayoutResId() != 0) {
+            layoutResId = getLayoutResId();
+        }
+        if (layoutResId <= 0) {
             throw new IllegalArgumentException("The subclass must provider a valid layout resources id.");
         }
         vm = createViewModel();
         vm.onCreate(getIntent().getExtras(), savedInstanceState);
-        binding = DataBindingUtil.inflate(getLayoutInflater(), getLayoutResId(), null, false);
+        binding = DataBindingUtil.inflate(getLayoutInflater(), layoutResId, null, false);
         beforeSetContentView(savedInstanceState);
         setContentView(binding.getRoot());
         doCreateView(savedInstanceState);
@@ -110,6 +105,15 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
 
     protected T getBinding() {
         return binding;
+    }
+
+    /**
+     * Get the layout resource id from subclass.
+     *
+     * @return layout resource id.
+     */
+    protected int getLayoutResId() {
+        return 0;
     }
 
     /**
@@ -137,20 +141,12 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
      *
      * @param text the content to display
      */
-    protected void showShort(final CharSequence text) {
+    protected void toast(final CharSequence text) {
         ToastUtils.showShort(text);
     }
 
-    protected void showShort(@StringRes final int resId) {
+    protected void toast(@StringRes final int resId) {
         ToastUtils.showShort(resId);
-    }
-
-    protected void showShort(@StringRes final int resId, final Object... args) {
-        ToastUtils.showShort(resId, args);
-    }
-
-    protected void showShort(final String format, final Object... args) {
-        ToastUtils.showShort(format, args);
     }
 
     /**
@@ -180,8 +176,7 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
         ActivityUtils.start(this, clz);
     }
 
-    protected void startActivity(@NonNull Class<? extends Activity> activityClass,
-                              int requestCode) {
+    protected void startActivity(@NonNull Class<? extends Activity> activityClass, int requestCode) {
         ActivityUtils.start(this, activityClass, requestCode);
     }
 
