@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_activity_helper"
+            android:text="@string/menu_activity_helper"
+            style="@style/MenuButton" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_permission"
+            android:text="@string/menu_permission_utils"
+            style="@style/MenuButton" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_crash"
+            android:text="@string/menu_crash_utils"
+            style="@style/MenuButton" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_log"
+            android:text="@string/menu_log_utils"
+            style="@style/MenuButton" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:onClick="testShellUtils"
+            android:text="@string/menu_shell_utils"
+            style="@style/MenuButton" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:onClick="testIntentUtils"
+            android:text="IntentUtils"
+            style="@style/MenuButton" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:onClick="testAppUtils"
+            android:text="AppUtils"
+            style="@style/MenuButton" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:onClick="testSPUtils"
+            android:text="SPUtils"
+            style="@style/MenuButton" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:onClick="testDeviceUtils"
+            android:text="DeviceUtils"
+            style="@style/MenuButton" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:onClick="testNetworkUtils"
+            android:text="NetworkUtils"
+            style="@style/MenuButton" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:onClick="testPathUtils"
+            android:text="PathUtils"
+            style="@style/MenuButton" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:onClick="testImageUtils"
+            android:text="ImageUtils"
+            style="@style/MenuButton" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:onClick="testViewUtils"
+            android:text="ViewUtils"
+            style="@style/MenuButton" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:onClick="testEncryptUtils"
+            android:text="EncryptUtils"
+            style="@style/MenuButton" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:onClick="testTimeUtils"
+            android:text="TimeUtils"
+            style="@style/MenuButton" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:onClick="testToastUtils"
+            android:text="ToastUtils"
+            style="@style/MenuButton" />
+
+    </LinearLayout>
+
+</ScrollView>

@@ -3,8 +3,16 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="me.shouheng.sample">
 
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
             android:allowBackup="false"
             android:icon="@mipmap/ic_launcher"
@@ -22,6 +30,34 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".utils.ui.TestToastUtilsActivity"/>
+        <activity android:name=".utils.data.TestTimeUtilsActivity" />
+        <activity android:name=".utils.data.TestEncryptUtilsActivity" />
+        <activity android:name=".utils.ui.TestViewUtilsActivity" />
+        <activity android:name=".utils.ui.TestImageUtilsActivity" />
+        <activity android:name=".utils.store.TestPathUtilsActivity" />
+        <activity android:name=".utils.device.TestNetworkUtilsActivity" />
+        <activity android:name=".utils.device.TestDeviceUtilsActivity" />
+        <activity android:name=".utils.app.TestAppUtilsActivity" />
+        <activity android:name=".utils.intent.TestIntentActivity" />
+        <activity android:name=".utils.MainActivity"/>
+        <activity android:name=".utils.permission.TestPermissionActivity" />
+        <activity android:name=".utils.activity.TestActivityHelper" />
+        <activity android:name=".utils.activity.TestActivityResult" />
+        <activity android:name=".utils.stability.TestLogActivity" />
+        <activity android:name=".utils.stability.TestCrashActivity" />
+        <activity android:name=".utils.device.TestShellActivity" />
+        <activity android:name=".utils.store.TestSpUtilsActivity" />
+        <provider
+                android:name="android.support.v4.content.FileProvider"
+                android:authorities="${applicationId}.fileProvider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/provider_paths" />
+        </provider>
+        <meta-data android:name="META_DATA" android:value="test-value"/>
     </application>
 
 </manifest>

@@ -1,14 +1,14 @@
 package me.shouheng.sample
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Debug
 import android.support.v4.content.ContextCompat
 import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.mvvm.MVVMs
-import me.shouheng.utils.permission.PermissionUtils
 import me.shouheng.utils.stability.CrashHelper
 import me.shouheng.utils.stability.LogUtils
 
@@ -22,6 +22,11 @@ class App : Application() {
 
         // initialize mvvms
         MVVMs.attachBaseContext(base)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Debug.startMethodTracingSampling("trace_log", /*byte*/8*1024*1024, /*ms*/200)
+        } else {
+            Debug.startMethodTracing("trace_log")
+        }
     }
 
     override fun onCreate() {

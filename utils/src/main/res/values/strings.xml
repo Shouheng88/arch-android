@@ -1,0 +1,24 @@
+<resources>
+
+    <string name="permission_storage_permission">Storage</string>
+    <string name="permission_location_permission">Location</string>
+    <string name="permission_microphone_permission">Microphone</string>
+    <string name="permission_phone_permission">Phone</string>
+    <string name="permission_sms_permission">Sms</string>
+    <string name="permission_sensor_permission">Sensor</string>
+    <string name="permission_contacts_permission">Contacts</string>
+    <string name="permission_camera_permission">Camera</string>
+    <string name="permission_calendar_permission">Calendar</string>
+    <string name="permission_set_permission">Permission settings</string>
+    <plurals name="permission_denied_message">
+        <item quantity="one">Permission denied. Please try again after grant the <![CDATA[<b>%s</b>]]> permission.</item>
+        <item quantity="other">Permissions denied. Please try again after grant <![CDATA[<b>%s</b>]]> permissions.</item>
+    </plurals>
+    <plurals name="permission_set_in_settings_message">
+        <item quantity="one">Permission required.\n\nGrant permission to this application and try again:\n\n Open app info page in settings, tap \'Permissions\', enable <![CDATA[<b>%s</b>]]> permission.</item>
+        <item quantity="other">Permissions required.\n\nGrant permissions to this application and try again:\n\n Open app info page in settings, tap \'Permissions\', enable <![CDATA[<b>%s</b>]]> permissions.</item>
+    </plurals>
+    <string name="permission_to_set">to set</string>
+    <string name="permission_cancel">Cancel</string>
+
+</resources>

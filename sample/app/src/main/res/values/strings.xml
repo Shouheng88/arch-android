@@ -9,7 +9,35 @@
     <string name="sample_main_navigate_to_eyeptizer">跳转到开眼视频</string>
     <string name="sample_main_navigate_to_sample">跳转到 Fragment 容器</string>
     <string name="sample_main_download">测试下载文件</string>
+    <string name="sample_main_launch_utils">进入工具类测试页面</string>
     <string name="sample_main_shared_value_between_fragments">这是 Fragment 之间共享的值！</string>
     <string name="sample_main_send_one_message_by_event_bus">通过 EventBus 发送一个消息</string>
     <string name="sample_main_got_user">获取到用户信息：%s</string>
+
+    <string name="menu_activity_helper">ActivityHelper</string>
+    <string name="menu_permission_utils">PermissionUtils</string>
+    <string name="menu_crash_utils">CrashHelper</string>
+    <string name="menu_log_utils">LogUtils</string>
+    <string name="menu_shell_utils">ShellUtils</string>
+
+    <string name="activity_helper_web_intent">启动 http://www.baidu.com</string>
+    <string name="activity_helper_activity_result">启动 Activity 并获取结果</string>
+    <string name="activity_helper_finish">销毁当前 Activity</string>
+    <string name="activity_helper_shared_activity">启动与当前 Activity 共享元素的 Activity （API 21）</string>
+    <string name="activity_helper_animation">使用动画效果启动 Activity</string>
+
+    <string name="crash_helper_list_logs">列出当前的崩溃日志</string>
+    <string name="crash_helper_force_crash">强制 Crash</string>
+
+    <string name="shell_utils_input_hint">Command ..</string>
+
+    <string name="permission_check_storage_permission">请求存储权限</string>
+    <string name="permission_check_camera_permission">请求相机权限</string>
+    <string name="permission_check_location_permission">请求位置权限</string>
+    <string name="permission_check_permissions">请求存储、位置、相机权限</string>
+    <string name="permission_get_storage_permission">已得到存储权限</string>
+    <string name="permission_get_camera_permission">已得到相机权限</string>
+    <string name="permission_get_location_permission">已得到位置权限</string>
+    <string name="permission_get_permissions">已得到存储、位置、相机权限</string>
+
 </resources>

@@ -1,5 +1,6 @@
-include ':app', ':mvvm', ':service-api', ':service', ':eyepetizer'
+include ':app', ':mvvm', ':service-api', ':service', ':eyepetizer', ':utils'
 project(':mvvm').projectDir = new File('../mvvm')
 project(':service-api').projectDir = new File('../service-api')
 project(':service').projectDir = new File('../service')
 project(':eyepetizer').projectDir = new File('../eyepetizer')
+project(':utils').projectDir = new File('../utils')

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <translate
+        android:fromXDelta="100%p"
+        android:duration="@integer/slide_in"
+        android:interpolator="@android:anim/anticipate_overshoot_interpolator"
+        android:toXDelta="0" />
+    <alpha
+        android:duration="@integer/slide_in"
+        android:interpolator="@android:anim/anticipate_overshoot_interpolator"
+        android:fromAlpha="0.3"
+        android:toAlpha="1.0" />
+</set>

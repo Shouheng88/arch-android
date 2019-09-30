@@ -14,7 +14,9 @@ import me.shouheng.mvvm.http.Downloader
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.FragmentMainBinding
 import me.shouheng.sample.event.SimpleEvent
+import me.shouheng.sample.utils.MainActivity
 import me.shouheng.sample.vm.SharedViewModel
+import me.shouheng.utils.app.ActivityUtils
 import me.shouheng.utils.app.ResUtils
 import me.shouheng.utils.data.StringUtils
 import me.shouheng.utils.stability.LogUtils
@@ -99,6 +101,9 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
                         toast("Download : complete : ${file?.absoluteFile}")
                     }
                 })
+        }
+        binding.btnUtils.setOnClickListener {
+            ActivityUtils.start(context!!, MainActivity::class.java)
         }
     }
 

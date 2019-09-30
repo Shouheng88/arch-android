@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="me.shouheng.sample.utils.store.TestSpUtilsActivity">
+
+    <android.support.v7.widget.AppCompatButton
+        android:onClick="writeString2DefaultSP"
+        android:text="写入字符串到默认 SP"
+        style="@style/MenuButton" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:onClick="writeBoolean2DefaultSP"
+        android:text="写入布尔类型到默认 SP"
+        style="@style/MenuButton" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:onClick="writeInteger2DefaultSP"
+        android:text="写入整数到默认 SP"
+        style="@style/MenuButton" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:onClick="writeString2SP"
+        android:text="写入字符串到新建 SP"
+        style="@style/MenuButton" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:onClick="writeBoolean2SP"
+        android:text="写入布尔类型到新建 SP"
+        style="@style/MenuButton" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:onClick="writeInteger2SP"
+        android:text="写入整数到新建 SP"
+        style="@style/MenuButton" />
+
+</LinearLayout>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="slide_out">250</integer>
+    <integer name="slide_in">250</integer>
+    <integer name="ease_in">500</integer>
+    <integer name="ease_out">500</integer>
+    <integer name="fade_in">500</integer>
+    <integer name="fade_out">1000</integer>
+</resources>
