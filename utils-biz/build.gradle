@@ -33,5 +33,6 @@ dependencies {
 
     implementation rootProject.ext.support['appcompat-v7']
     implementation rootProject.ext.libraries['arouter']
+    implementation rootProject.ext.libraries['utils']
     kapt rootProject.ext.libraries['arouter-compiler']
 }
