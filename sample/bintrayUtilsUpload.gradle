@@ -5,7 +5,7 @@ publish {
     groupId = 'me.shouheng.utils'
     artifactId = 'utils-core'
     repoName = 'Android'
-    publishVersion = '1.2.0'
+    publishVersion = '1.2.1'
     desc = 'The utils for Android.'
     website = 'https://github.com/Shouheng88/Android-Utils'
 }

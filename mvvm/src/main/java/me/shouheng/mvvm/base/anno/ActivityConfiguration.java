@@ -35,8 +35,7 @@ public @interface ActivityConfiguration {
      *
      * @return the layout resource id.
      */
-    @LayoutRes
-    int layoutResId() default 0;
+    @LayoutRes int layoutResId() default 0;
 
     /**
      * The page name used for umeng etc. The activity or fragment class simple name will

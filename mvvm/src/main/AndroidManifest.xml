@@ -5,10 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application>
-        <activity
-                android:name=".common.ContainerActivity"
-                android:label="@string/title_activity_container"
-                android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".comn.ContainerActivity"
+                  android:label="@string/mvvm_title_activity_container"
+                  android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

@@ -24,7 +24,24 @@ import me.shouheng.utils.ui.ToastUtils;
 import java.lang.reflect.ParameterizedType;
 
 /**
- * The base common fragment implementation for MVVMs.
+ * The base common fragment implementation for MVVMs. Sample:
+ *
+ * <code>
+ * @FragmentConfiguration(shareViewMode = true, useEventBus = true, layoutResId = R.layout.fragment_main)
+ * class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
+ *
+ *     private val downloadUrl = "https://dldir1.qq.com/music/clntupate/QQMusic_YQQFloatLayer.exe"
+ *
+ *     override fun doCreateView(savedInstanceState: Bundle?) {
+ *         addSubscriptions()
+ *         initViews()
+ *         vm.shareValue = ResUtils.getString(R.string.sample_main_shared_value_between_fragments)
+ *         LogUtils.d(vm)
+ *     }
+ *
+ *     // ...
+ * }
+ * </code>
  *
  * @author WngShhng 2019-6-29
  */

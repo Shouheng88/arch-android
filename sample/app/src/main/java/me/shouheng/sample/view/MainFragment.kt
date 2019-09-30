@@ -8,7 +8,7 @@ import me.shouheng.api.bean.User
 import me.shouheng.mvvm.base.CommonFragment
 import me.shouheng.mvvm.base.anno.FragmentConfiguration
 import me.shouheng.mvvm.bean.Status
-import me.shouheng.mvvm.common.ContainerActivity
+import me.shouheng.mvvm.comn.ContainerActivity
 import me.shouheng.mvvm.http.DownloadListener
 import me.shouheng.mvvm.http.Downloader
 import me.shouheng.sample.R

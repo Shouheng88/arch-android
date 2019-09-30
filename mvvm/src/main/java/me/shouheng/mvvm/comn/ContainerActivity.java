@@ -1,4 +1,4 @@
-package me.shouheng.mvvm.common;
+package me.shouheng.mvvm.comn;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -3,7 +3,7 @@ package me.shouheng.sample.view
 import android.os.Bundle
 import me.shouheng.mvvm.base.CommonFragment
 import me.shouheng.mvvm.base.anno.FragmentConfiguration
-import me.shouheng.mvvm.common.EmptyViewModel
+import me.shouheng.mvvm.comn.EmptyViewModel
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.FragmentSampleBinding
 

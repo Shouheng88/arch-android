@@ -1,5 +1,8 @@
 package me.shouheng.mvvm.bus;
 
+import me.shouheng.mvvm.base.anno.ActivityConfiguration;
+import me.shouheng.mvvm.base.anno.FragmentConfiguration;
+import me.shouheng.mvvm.base.anno.ServiceConfiguration;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.lang.reflect.Method;
@@ -9,6 +12,10 @@ import static me.shouheng.mvvm.utils.Platform.DEPENDENCY_EVENTBUS;
 
 /**
  * EventBus manager, mainly used to support EventBus and AndroidEventBus environment.
+ * For activity and fragment extend from {@link me.shouheng.mvvm.base.CommonActivity} and
+ * {@link me.shouheng.mvvm.base.CommonFragment}, use {@link FragmentConfiguration#useEventBus()}
+ * {@link ActivityConfiguration#useEventBus()} and {@link ServiceConfiguration#useEventBus()}
+ * to use EventBus. You don't need to call methods of Bus to register and unregisterEventBus.
  *
  * @author WngShhng 2019-6-29
  */
