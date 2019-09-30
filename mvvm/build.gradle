@@ -29,6 +29,9 @@ dependencies {
     implementation rootProject.ext.libraries['EventBus']
     implementation rootProject.ext.libraries['AndroidEventBus']
 
+    implementation rootProject.ext.libraries['umeng-common']
+    implementation rootProject.ext.libraries['umeng-analytics']
+
     api rootProject.ext.libraries['okhttp']
     api rootProject.ext.libraries['utils']
     api rootProject.ext.libraries['compressor']

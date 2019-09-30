@@ -9,11 +9,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.umeng.analytics.MobclickAgent;
 import me.shouheng.mvvm.base.anno.FragmentConfiguration;
 import me.shouheng.mvvm.bus.Bus;
+import me.shouheng.mvvm.utils.Platform;
 import me.shouheng.utils.app.ActivityUtils;
 import me.shouheng.utils.permission.Permission;
 import me.shouheng.utils.permission.PermissionUtils;
@@ -57,12 +60,15 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
 
     private int layoutResId;
 
+    private String pageName;
+
     {
         FragmentConfiguration configuration = this.getClass().getAnnotation(FragmentConfiguration.class);
         if (configuration != null) {
             shareViewModel = configuration.shareViewMode();
             useEventBus = configuration.useEventBus();
             layoutResId = configuration.layoutResId();
+            pageName = TextUtils.isEmpty(configuration.pageName()) ? getClass().getSimpleName() : configuration.pageName();
         }
     }
 
@@ -209,6 +215,22 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         vm.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Platform.DEPENDENCY_UMENG_ANALYTICS) {
+            MobclickAgent.onPageStart(pageName);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Platform.DEPENDENCY_UMENG_ANALYTICS) {
+            MobclickAgent.onPageEnd(pageName);
+        }
     }
 
     @Override

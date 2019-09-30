@@ -8,9 +8,12 @@ import android.os.Bundle;
 import android.support.annotation.*;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
+import com.umeng.analytics.MobclickAgent;
 import me.shouheng.mvvm.base.anno.ActivityConfiguration;
 import me.shouheng.mvvm.bus.Bus;
+import me.shouheng.mvvm.utils.Platform;
 import me.shouheng.utils.app.ActivityUtils;
 import me.shouheng.utils.permission.Permission;
 import me.shouheng.utils.permission.PermissionResultHandler;
@@ -19,6 +22,7 @@ import me.shouheng.utils.permission.PermissionUtils;
 import me.shouheng.utils.permission.callback.OnGetPermissionCallback;
 import me.shouheng.utils.permission.callback.PermissionResultCallback;
 import me.shouheng.utils.permission.callback.PermissionResultCallbackImpl;
+import me.shouheng.utils.stability.LogUtils;
 import me.shouheng.utils.ui.ToastUtils;
 
 import java.lang.reflect.ParameterizedType;
@@ -42,6 +46,8 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
 
     private int layoutResId;
 
+    private String pageName;
+
     private OnGetPermissionCallback onGetPermissionCallback;
 
     {
@@ -50,6 +56,7 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
             useEventBus = configuration.useEventBus();
             needLogin = configuration.needLogin();
             layoutResId = configuration.layoutResId();
+            pageName = TextUtils.isEmpty(configuration.pageName()) ? getClass().getSimpleName() : configuration.pageName();
         }
     }
 
@@ -227,6 +234,25 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         vm.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Platform.DEPENDENCY_UMENG_ANALYTICS) {
+            MobclickAgent.onResume(this);
+            MobclickAgent.onPageStart(pageName);
+            LogUtils.d(pageName);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (Platform.DEPENDENCY_UMENG_ANALYTICS) {
+            MobclickAgent.onPause(this);
+            MobclickAgent.onPageEnd(pageName);
+        }
     }
 
     @Override
