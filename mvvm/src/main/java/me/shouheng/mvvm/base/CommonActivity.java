@@ -1,17 +1,21 @@
 package me.shouheng.mvvm.base;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.*;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import com.umeng.analytics.MobclickAgent;
 import me.shouheng.mvvm.base.anno.ActivityConfiguration;
+import me.shouheng.mvvm.base.anno.StatusBarMode;
 import me.shouheng.mvvm.bus.Bus;
 import me.shouheng.mvvm.utils.Platform;
 import me.shouheng.utils.app.ActivityUtils;
@@ -50,6 +54,10 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
 
     private int layoutResId;
 
+    @ColorInt private int statusBarColor = -1;
+
+    @StatusBarMode private int statusBarMode;
+
     private String pageName;
 
     private OnGetPermissionCallback onGetPermissionCallback;
@@ -63,6 +71,8 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
             pageName = TextUtils.isEmpty(configuration.pageName()) ? getClass().getSimpleName() : configuration.pageName();
             hasFragment = configuration.hasFragment();
             useUmengManaual = configuration.useUmengManual();
+            statusBarMode = configuration.statuBarMode();
+            statusBarColor = configuration.statusBarColor();
         }
     }
 
@@ -96,6 +106,12 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         if (useEventBus) {
             Bus.get().register(this);
+        }
+        if (statusBarMode != StatusBarMode.DEFAULT) {
+            setStatusBarLightMode(statusBarMode == StatusBarMode.LIGHT);
+        }
+        if (statusBarColor != -1) {
+            setStatusBarColor(statusBarColor);
         }
         super.onCreate(savedInstanceState);
         if (getLayoutResId() != 0) {
@@ -280,5 +296,25 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
      */
     public void superOnBackPressed() {
         super.onBackPressed();
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private void setStatusBarLightMode(boolean isLightMode) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
+        View decorView = getWindow().getDecorView();
+        int vis = decorView.getSystemUiVisibility();
+        if (isLightMode) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            vis |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        } else {
+            vis &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        }
+        decorView.setSystemUiVisibility(vis);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setStatusBarColor(@ColorInt int color) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
+        getWindow().setStatusBarColor(color);
     }
 }
