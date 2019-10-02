@@ -39,6 +39,6 @@ dependencies {
     annotationProcessor rootProject.ext.libraries['lifecycle-compiler']
 }
 
-//apply {
-//    from ('../sample/bintrayMvvmUpload.gradle')
-//}
+apply {
+    from ('../sample/bintrayMvvmUpload.gradle')
+}
