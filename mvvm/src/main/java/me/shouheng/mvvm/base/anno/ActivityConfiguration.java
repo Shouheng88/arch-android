@@ -1,5 +1,6 @@
 package me.shouheng.mvvm.base.anno;
 
+import android.support.annotation.ColorInt;
 import android.support.annotation.LayoutRes;
 
 import java.lang.annotation.ElementType;
@@ -58,4 +59,18 @@ public @interface ActivityConfiguration {
      * @return true if use umeng analytics
      */
     boolean useUmengManual() default true;
+
+    /**
+     * Status bar light mode.
+     *
+     * @return status bar mode
+     */
+    @StatusBarMode int statuBarMode() default StatusBarMode.DEFAULT;
+
+    /**
+     * Set status bar color, you can set any color except -1.
+     *
+     * @return status bar color
+     */
+    @ColorInt int statusBarColor() default -1;
 }
