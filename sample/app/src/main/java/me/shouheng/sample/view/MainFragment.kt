@@ -105,6 +105,10 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
         binding.btnUtils.setOnClickListener {
             ActivityUtils.start(context!!, MainActivity::class.java)
         }
+        binding.btnPref.setOnClickListener {
+            val sp = SamplePreference()
+            activity!!.fragmentManager.beginTransaction().replace(R.id.fragment_container, sp).commit()
+        }
     }
 
     @Subscribe

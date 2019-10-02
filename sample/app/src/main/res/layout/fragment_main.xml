@@ -37,6 +37,11 @@
                 android:text="@string/sample_main_launch_utils"
                 style="@style/MenuButton"/>
 
+        <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_pref"
+                android:text="@string/sample_main_preferences"
+                style="@style/MenuButton"/>
+
     </LinearLayout>
 
 </layout>

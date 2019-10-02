@@ -1,6 +1,7 @@
 package me.shouheng.mvvm.base.anno;
 
 import android.support.annotation.LayoutRes;
+import android.support.annotation.XmlRes;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -36,6 +37,13 @@ public @interface FragmentConfiguration {
      * @return the layout resource id.
      */
     @LayoutRes int layoutResId() default 0;
+
+    /**
+     * Get references resource id for {@link android.preference.PreferenceFragment}.
+     *
+     * @return preference resource id
+     */
+    @XmlRes int preferencesResId() default 0;
 
     /**
      * The page name used for umeng etc. The activity or fragment class simple name will
