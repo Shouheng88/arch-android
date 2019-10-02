@@ -44,4 +44,18 @@ public @interface ActivityConfiguration {
      * @return the page name
      */
     String pageName() default "";
+
+    /**
+     * Whether current activity contains fragment
+     *
+     * @return true if contains
+     */
+    boolean hasFragment() default false;
+
+    /**
+     * Whether the umeng analytics will be used.
+     *
+     * @return true if use umeng analytics
+     */
+    boolean useUmengManual() default true;
 }

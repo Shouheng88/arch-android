@@ -58,6 +58,8 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
 
     private boolean useEventBus;
 
+    private boolean useUmengManaual = true;
+
     private int layoutResId;
 
     private String pageName;
@@ -69,6 +71,7 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
             useEventBus = configuration.useEventBus();
             layoutResId = configuration.layoutResId();
             pageName = TextUtils.isEmpty(configuration.pageName()) ? getClass().getSimpleName() : configuration.pageName();
+            useUmengManaual = configuration.useUmengManual();
         }
     }
 
@@ -220,7 +223,7 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
     @Override
     public void onResume() {
         super.onResume();
-        if (Platform.DEPENDENCY_UMENG_ANALYTICS) {
+        if (useUmengManaual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
             MobclickAgent.onPageStart(pageName);
         }
     }
@@ -228,7 +231,7 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
     @Override
     public void onPause() {
         super.onPause();
-        if (Platform.DEPENDENCY_UMENG_ANALYTICS) {
+        if (useUmengManaual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
             MobclickAgent.onPageEnd(pageName);
         }
     }

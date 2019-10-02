@@ -44,6 +44,10 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
 
     private boolean needLogin = true;
 
+    private boolean hasFragment = false;
+
+    private boolean useUmengManaual = true;
+
     private int layoutResId;
 
     private String pageName;
@@ -57,6 +61,8 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
             needLogin = configuration.needLogin();
             layoutResId = configuration.layoutResId();
             pageName = TextUtils.isEmpty(configuration.pageName()) ? getClass().getSimpleName() : configuration.pageName();
+            hasFragment = configuration.hasFragment();
+            useUmengManaual = configuration.useUmengManual();
         }
     }
 
@@ -239,9 +245,11 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
     @Override
     protected void onResume() {
         super.onResume();
-        if (Platform.DEPENDENCY_UMENG_ANALYTICS) {
+        if (useUmengManaual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
+            if (!hasFragment) {
+                MobclickAgent.onPageStart(pageName);
+            }
             MobclickAgent.onResume(this);
-            MobclickAgent.onPageStart(pageName);
             LogUtils.d(pageName);
         }
     }
@@ -249,9 +257,11 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
     @Override
     protected void onPause() {
         super.onPause();
-        if (Platform.DEPENDENCY_UMENG_ANALYTICS) {
+        if (useUmengManaual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
+            if (!hasFragment) {
+                MobclickAgent.onPageEnd(pageName);
+            }
             MobclickAgent.onPause(this);
-            MobclickAgent.onPageEnd(pageName);
         }
     }
 

@@ -44,4 +44,11 @@ public @interface FragmentConfiguration {
      * @return page name
      */
     String pageName() default "";
+
+    /**
+     * Whether the umeng analytics will be used.
+     *
+     * @return true if use umeng analytics
+     */
+    boolean useUmengManual() default true;
 }
