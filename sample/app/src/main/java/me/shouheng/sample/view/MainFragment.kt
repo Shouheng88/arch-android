@@ -14,8 +14,7 @@ import me.shouheng.mvvm.http.Downloader
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.FragmentMainBinding
 import me.shouheng.sample.event.SimpleEvent
-import me.shouheng.sample.utils.MainActivity
-import me.shouheng.sample.vm.SharedViewModel
+`import me.shouheng.sample.vm.SharedViewModel
 import me.shouheng.utils.app.ActivityUtils
 import me.shouheng.utils.app.ResUtils
 import me.shouheng.utils.data.StringUtils
@@ -107,7 +106,7 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
         }
         binding.btnPref.setOnClickListener {
             val sp = SamplePreference()
-            activity!!.fragmentManager.beginTransaction().replace(R.id.fragment_container, sp).commit()
+            activity!!.fragmentManager.beginTransaction().replace(R.id.fragment_container, sp).addToBackStack("").commit()
         }
     }
 
