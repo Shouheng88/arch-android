@@ -20,10 +20,8 @@ import org.greenrobot.eventbus.Subscribe
  *
  * @author Wngshhng 2019-6-29
  */
-@ActivityConfiguration(useEventBus = false,
-    layoutResId = R.layout.activity_main,
-    statuBarMode = StatusBarMode.LIGHT,
-    statusBarColor = Color.BLUE)
+@ActivityConfiguration(useEventBus = false, layoutResId = R.layout.activity_main,
+    statuBarMode = StatusBarMode.LIGHT, statusBarColor = 0xffffff)
 class MainActivity : CommonActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun doCreateView(savedInstanceState: Bundle?) {
