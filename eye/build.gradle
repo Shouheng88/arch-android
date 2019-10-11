@@ -24,15 +24,27 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding {
+        enabled true
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation rootProject.ext.libraries['test'].values()
     androidTestImplementation rootProject.ext.libraries['android-test'].values()
 
     implementation rootProject.ext.support['appcompat-v7']
     implementation rootProject.ext.libraries['arouter']
-    implementation rootProject.ext.libraries['utils']
     kapt rootProject.ext.libraries['arouter-compiler']
+    implementation rootProject.ext.support['recyclerview-v7']
+    implementation rootProject.ext.support['cardview-v7']
+    implementation rootProject.ext.libraries['glide']['glide']
+    implementation rootProject.ext.libraries['brvah']
+    implementation 'com.shuyu:GSYVideoPlayer:1.6.8'
+    implementation rootProject.ext.libraries['rxjava'].values()
+
+    implementation project(path: ':mvvm')
+    implementation project(path: ':api')
 }
