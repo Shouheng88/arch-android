@@ -32,7 +32,7 @@ dependencies {
     implementation rootProject.ext.libraries['umeng-common']
     implementation rootProject.ext.libraries['umeng-analytics']
 
-    api rootProject.ext.libraries['okhttp']
+    implementation rootProject.ext.libraries['okhttp']
     api rootProject.ext.libraries['utils']
     api rootProject.ext.libraries['compressor']
     implementation rootProject.ext.libraries['lifecycle-extensions']
