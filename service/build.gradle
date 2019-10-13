@@ -40,5 +40,5 @@ dependencies {
     implementation rootProject.ext.libraries['gson']
 
     implementation project(path: ':mvvm')
-    implementation project(path: ':service-api')
+    implementation project(path: ':api')
 }
