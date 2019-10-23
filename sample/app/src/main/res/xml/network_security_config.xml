@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">valipl.cp31.ott.cibntv.net</domain>
+        <domain includeSubdomains="true">baobab.kaiyanapp.com</domain>
+    </domain-config>
+</network-security-config>

@@ -1,3 +1,3 @@
 <resources>
-    <string name="app_name">mmvm</string>
+    <string name="mvvm_title_activity_container">ContainerActivity</string>
 </resources>

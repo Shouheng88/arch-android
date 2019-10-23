@@ -3,7 +3,7 @@ package me.shouheng.sample.view
 import android.os.Bundle
 import me.shouheng.mvvm.base.anno.FragmentConfiguration
 import me.shouheng.mvvm.base.CommonFragment
-import me.shouheng.mvvm.bus.EventBusManager
+import me.shouheng.mvvm.bus.Bus
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.FragmentSecondBinding
 import me.shouheng.sample.event.SimpleEvent
@@ -15,17 +15,15 @@ import me.shouheng.utils.stability.LogUtils
  *
  * @author WngShhng 2019-6-29
  */
-@FragmentConfiguration(shareViewMode = true)
+@FragmentConfiguration(shareViewMode = true, layoutResId = R.layout.fragment_second)
 class SecondFragment : CommonFragment<FragmentSecondBinding, SharedViewModel>() {
-
-    override fun getLayoutResId() = R.layout.fragment_second
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         LogUtils.d(vm)
         // Get and display shared value from MainFragment
         binding.tv.text = vm.shareValue
         binding.btnPost.setOnClickListener {
-            EventBusManager.getInstance().post(SimpleEvent("MSG#00001"))
+            Bus.get().post(SimpleEvent("MSG#00001"))
         }
     }
 }

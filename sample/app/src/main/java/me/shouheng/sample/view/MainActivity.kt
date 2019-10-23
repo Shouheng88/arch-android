@@ -1,14 +1,17 @@
 package me.shouheng.sample.view
 
 import android.arch.lifecycle.Observer
+import android.graphics.Color
 import android.os.Bundle
 import me.shouheng.mvvm.base.CommonActivity
 import me.shouheng.mvvm.base.anno.ActivityConfiguration
-import me.shouheng.mvvm.data.Status
+import me.shouheng.mvvm.base.anno.StatusBarMode
+import me.shouheng.mvvm.bean.Status
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.ActivityMainBinding
 import me.shouheng.sample.event.SimpleEvent
 import me.shouheng.sample.vm.MainViewModel
+import me.shouheng.utils.data.StringUtils
 import me.shouheng.utils.ui.ToastUtils
 import org.greenrobot.eventbus.Subscribe
 
@@ -17,10 +20,9 @@ import org.greenrobot.eventbus.Subscribe
  *
  * @author Wngshhng 2019-6-29
  */
-@ActivityConfiguration(useEventBus = false)
+@ActivityConfiguration(useEventBus = false, layoutResId = R.layout.activity_main,
+    statuBarMode = StatusBarMode.LIGHT, statusBarColor = 0xffffff)
 class MainActivity : CommonActivity<ActivityMainBinding, MainViewModel>() {
-
-    override fun getLayoutResId() = R.layout.activity_main
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         addSubscriptions()
@@ -35,10 +37,10 @@ class MainActivity : CommonActivity<ActivityMainBinding, MainViewModel>() {
                     ToastUtils.showShort(it.data)
                 }
                 Status.FAILED -> {
-                    ToastUtils.showShort(it.message)
+                    ToastUtils.showShort(it.errorMessage)
                 }
                 Status.LOADING -> {
-                    ToastUtils.showShort(it.message)
+                    // temp do nothing
                 }
                 else -> {
                     // do nothing
@@ -54,6 +56,6 @@ class MainActivity : CommonActivity<ActivityMainBinding, MainViewModel>() {
 
     @Subscribe
     fun onGetMessage(simpleEvent: SimpleEvent) {
-        showShort(R.string.sample_main_activity_received_msg, javaClass.simpleName, simpleEvent.msg)
+        toast(StringUtils.format(R.string.sample_main_activity_received_msg, javaClass.simpleName, simpleEvent.msg))
     }
 }

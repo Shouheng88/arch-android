@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import me.shouheng.mvvm.data.Resources;
+import android.support.v4.app.Fragment;
+import me.shouheng.mvvm.bean.Resources;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +16,9 @@ import java.util.Map;
 
 /**
  * Basic implementation of common ViewModel.
+ *
+ * The view model has no pre-defined model associated, for MVVMs don't want to take care of the
+ * model logic. You can get the data source anywhere, which is perhaps useful for small project.
  *
  * @author WngShhng 2019-6-29
  */
@@ -63,9 +68,10 @@ public class BaseViewModel extends AndroidViewModel {
      * Called when the {@link android.support.v4.app.Fragment#onCreate(Bundle)}
      * or the {@link android.app.Activity#onCreate(Bundle)} was called.
      *
+     * @param extras extras from {@link Intent#getExtras()} of Activity, or {@link Fragment#getArguments()}.
      * @param savedInstanceState saved instance state
      */
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle extras, Bundle savedInstanceState) {
         // default no implementation
     }
 

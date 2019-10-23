@@ -1,5 +1,8 @@
 package me.shouheng.mvvm.base.anno;
 
+import android.support.annotation.ColorInt;
+import android.support.annotation.LayoutRes;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -27,4 +30,47 @@ public @interface ActivityConfiguration {
      * @return true if the user must be logined
      */
     boolean needLogin() default true;
+
+    /**
+     * Get layout resource id.
+     *
+     * @return the layout resource id.
+     */
+    @LayoutRes int layoutResId() default 0;
+
+    /**
+     * The page name used for umeng etc. The activity or fragment class simple name will
+     * be used if you didn't set this value.
+     *
+     * @return the page name
+     */
+    String pageName() default "";
+
+    /**
+     * Whether current activity contains fragment
+     *
+     * @return true if contains
+     */
+    boolean hasFragment() default false;
+
+    /**
+     * Whether the umeng analytics will be used.
+     *
+     * @return true if use umeng analytics
+     */
+    boolean useUmengManual() default true;
+
+    /**
+     * Status bar light mode.
+     *
+     * @return status bar mode
+     */
+    @StatusBarMode int statuBarMode() default StatusBarMode.DEFAULT;
+
+    /**
+     * Set status bar color, you can set any color except -1.
+     *
+     * @return status bar color
+     */
+    @ColorInt int statusBarColor() default -1;
 }

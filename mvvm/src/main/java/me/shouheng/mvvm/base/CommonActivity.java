@@ -1,35 +1,44 @@
 package me.shouheng.mvvm.base;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
+import android.support.annotation.*;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
+import com.umeng.analytics.MobclickAgent;
 import me.shouheng.mvvm.base.anno.ActivityConfiguration;
-import me.shouheng.mvvm.bus.EventBusManager;
-import me.shouheng.utils.ui.ToastUtils;
+import me.shouheng.mvvm.base.anno.StatusBarMode;
+import me.shouheng.mvvm.bus.Bus;
+import me.shouheng.mvvm.utils.Platform;
+import me.shouheng.utils.app.ActivityUtils;
+import me.shouheng.utils.permission.Permission;
 import me.shouheng.utils.permission.PermissionResultHandler;
 import me.shouheng.utils.permission.PermissionResultResolver;
+import me.shouheng.utils.permission.PermissionUtils;
 import me.shouheng.utils.permission.callback.OnGetPermissionCallback;
+import me.shouheng.utils.permission.callback.PermissionResultCallback;
 import me.shouheng.utils.permission.callback.PermissionResultCallbackImpl;
+import me.shouheng.utils.stability.LogUtils;
+import me.shouheng.utils.ui.ToastUtils;
 
 import java.lang.reflect.ParameterizedType;
 
 /**
  * The basic common implementation for MMVMs activity.
  *
- * @author WngShhng 2019-6-29
+ * @author WngShhng
+ * @version 2019-6-29
  */
 public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseViewModel>
-        extends AppCompatActivity
-        implements PermissionResultResolver
-{
+        extends AppCompatActivity implements PermissionResultResolver  {
 
     private VM vm;
 
@@ -39,6 +48,18 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
 
     private boolean needLogin = true;
 
+    private boolean hasFragment = false;
+
+    private boolean useUmengManaual = true;
+
+    private int layoutResId;
+
+    @ColorInt private int statusBarColor = -1;
+
+    @StatusBarMode private int statusBarMode;
+
+    private String pageName;
+
     private OnGetPermissionCallback onGetPermissionCallback;
 
     {
@@ -46,15 +67,14 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
         if (configuration != null) {
             useEventBus = configuration.useEventBus();
             needLogin = configuration.needLogin();
+            layoutResId = configuration.layoutResId();
+            pageName = TextUtils.isEmpty(configuration.pageName()) ? getClass().getSimpleName() : configuration.pageName();
+            hasFragment = configuration.hasFragment();
+            useUmengManaual = configuration.useUmengManual();
+            statusBarMode = configuration.statuBarMode();
+            statusBarColor = configuration.statusBarColor();
         }
     }
-
-    /**
-     * Get the layout resource id from subclass.
-     *
-     * @return layout resource id.
-     */
-    protected abstract int getLayoutResId();
 
     /**
      * Do create view business.
@@ -85,15 +105,24 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         if (useEventBus) {
-            EventBusManager.getInstance().register(this);
+            Bus.get().register(this);
+        }
+        if (statusBarMode != StatusBarMode.DEFAULT) {
+            setStatusBarLightMode(statusBarMode == StatusBarMode.LIGHT);
+        }
+        if (statusBarColor != -1) {
+            setStatusBarColor(statusBarColor);
         }
         super.onCreate(savedInstanceState);
-        if (getLayoutResId() <= 0) {
+        if (getLayoutResId() != 0) {
+            layoutResId = getLayoutResId();
+        }
+        if (layoutResId <= 0) {
             throw new IllegalArgumentException("The subclass must provider a valid layout resources id.");
         }
         vm = createViewModel();
-        vm.onCreate(savedInstanceState);
-        binding = DataBindingUtil.inflate(getLayoutInflater(), getLayoutResId(), null, false);
+        vm.onCreate(getIntent().getExtras(), savedInstanceState);
+        binding = DataBindingUtil.inflate(getLayoutInflater(), layoutResId, null, false);
         beforeSetContentView(savedInstanceState);
         setContentView(binding.getRoot());
         doCreateView(savedInstanceState);
@@ -105,6 +134,15 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
 
     protected T getBinding() {
         return binding;
+    }
+
+    /**
+     * Get the layout resource id from subclass.
+     *
+     * @return layout resource id.
+     */
+    protected int getLayoutResId() {
+        return 0;
     }
 
     /**
@@ -127,20 +165,17 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
         return needLogin;
     }
 
-    protected void showShort(final CharSequence text) {
+    /**
+     * Make a simple toast.
+     *
+     * @param text the content to display
+     */
+    protected void toast(final CharSequence text) {
         ToastUtils.showShort(text);
     }
 
-    protected void showShort(@StringRes final int resId) {
+    protected void toast(@StringRes final int resId) {
         ToastUtils.showShort(resId);
-    }
-
-    protected void showShort(@StringRes final int resId, final Object... args) {
-        ToastUtils.showShort(resId, args);
-    }
-
-    protected void showShort(final String format, final Object... args) {
-        ToastUtils.showShort(format, args);
     }
 
     /**
@@ -149,7 +184,7 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
      * @param event the event to post
      */
     protected void post(Object event) {
-        EventBusManager.getInstance().post(event);
+        Bus.get().post(event);
     }
 
     /**
@@ -158,7 +193,51 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
      * @param event the sticky event
      */
     protected void postSticky(Object event) {
-        EventBusManager.getInstance().postSticky(event);
+        Bus.get().postSticky(event);
+    }
+
+    /**
+     * Start given activity.
+     *
+     * @param clz the activity
+     */
+    protected void startActivity(@NonNull Class<? extends Activity> clz) {
+        ActivityUtils.start(this, clz);
+    }
+
+    protected void startActivity(@NonNull Class<? extends Activity> activityClass, int requestCode) {
+        ActivityUtils.start(this, activityClass, requestCode);
+    }
+
+    /**
+     * Check single permission. For multiple permissions at the same time, call
+     * {@link #checkPermissions(OnGetPermissionCallback, int...)}.
+     *
+     * @param permission the permission to check
+     * @param onGetPermissionCallback the callback when got the required permission
+     */
+    protected void checkPermission(@Permission.PermissionCode int permission, OnGetPermissionCallback onGetPermissionCallback) {
+        PermissionUtils.checkPermissions(this, onGetPermissionCallback, permission);
+    }
+
+    /**
+     * Check multiple permissions at the same time.
+     *
+     * @param onGetPermissionCallback the callback when got all permissions required.
+     * @param permissions the permissions to request.
+     */
+    protected void checkPermissions(OnGetPermissionCallback onGetPermissionCallback, @Permission.PermissionCode int...permissions) {
+        PermissionUtils.checkPermissions(this, onGetPermissionCallback, permissions);
+    }
+
+    /**
+     * Get the permission check result callback, the default implementation was {@link PermissionResultCallbackImpl}.
+     * Override this method to add your own implementation.
+     *
+     * @return the permission result callback
+     */
+    protected PermissionResultCallback getPermissionResultCallback() {
+        return new PermissionResultCallbackImpl(this, onGetPermissionCallback);
     }
 
     @Override
@@ -169,8 +248,8 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PermissionResultHandler.handlePermissionsResult(this, requestCode, permissions, grantResults,
-                new PermissionResultCallbackImpl(this, onGetPermissionCallback));
+        PermissionResultHandler.handlePermissionsResult(this,
+                requestCode, permissions, grantResults, getPermissionResultCallback());
     }
 
     @Override
@@ -180,9 +259,32 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (useUmengManaual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
+            if (!hasFragment) {
+                MobclickAgent.onPageStart(pageName);
+            }
+            MobclickAgent.onResume(this);
+            LogUtils.d(pageName);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (useUmengManaual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
+            if (!hasFragment) {
+                MobclickAgent.onPageEnd(pageName);
+            }
+            MobclickAgent.onPause(this);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         if (useEventBus) {
-            EventBusManager.getInstance().unregister(this);
+            Bus.get().unregister(this);
         }
         vm.onDestroy();
         super.onDestroy();
@@ -194,5 +296,25 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
      */
     public void superOnBackPressed() {
         super.onBackPressed();
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private void setStatusBarLightMode(boolean isLightMode) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
+        View decorView = getWindow().getDecorView();
+        int vis = decorView.getSystemUiVisibility();
+        if (isLightMode) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            vis |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        } else {
+            vis &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        }
+        decorView.setSystemUiVisibility(vis);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setStatusBarColor(@ColorInt int color) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
+        getWindow().setStatusBarColor(color);
     }
 }

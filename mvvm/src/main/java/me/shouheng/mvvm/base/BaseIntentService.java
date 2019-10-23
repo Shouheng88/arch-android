@@ -2,7 +2,7 @@ package me.shouheng.mvvm.base;
 
 import android.app.IntentService;
 import me.shouheng.mvvm.base.anno.ServiceConfiguration;
-import me.shouheng.mvvm.bus.EventBusManager;
+import me.shouheng.mvvm.bus.Bus;
 
 /**
  * Base intent service implementation to handle {@link ServiceConfiguration} annotation.
@@ -25,7 +25,7 @@ public abstract class BaseIntentService extends IntentService {
     public void onCreate() {
         super.onCreate();
         if (useEventBus) {
-            EventBusManager.getInstance().register(this);
+            Bus.get().register(this);
         }
     }
 
@@ -33,7 +33,7 @@ public abstract class BaseIntentService extends IntentService {
     public void onDestroy() {
         super.onDestroy();
         if (useEventBus) {
-            EventBusManager.getInstance().unregister(this);
+            Bus.get().unregister(this);
         }
     }
 }

@@ -17,6 +17,7 @@ allprojects {
         jcenter()
         maven { url "https://jitpack.io" }
         maven { url "https://dl.bintray.com/easymark/Android" }
+        maven { url 'https://dl.bintray.com/umsdk/release' }
     }
     tasks.withType(Javadoc) {
         options.addStringOption('Xdoclint:none', '-quiet')

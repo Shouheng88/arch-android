@@ -1,5 +1,6 @@
 package me.shouheng.mvvm.base;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -8,17 +9,42 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.umeng.analytics.MobclickAgent;
 import me.shouheng.mvvm.base.anno.FragmentConfiguration;
-import me.shouheng.mvvm.bus.EventBusManager;
+import me.shouheng.mvvm.bus.Bus;
+import me.shouheng.mvvm.utils.Platform;
+import me.shouheng.utils.app.ActivityUtils;
+import me.shouheng.utils.permission.Permission;
+import me.shouheng.utils.permission.PermissionUtils;
+import me.shouheng.utils.permission.callback.OnGetPermissionCallback;
+import me.shouheng.utils.stability.LogUtils;
 import me.shouheng.utils.ui.ToastUtils;
 
 import java.lang.reflect.ParameterizedType;
 
 /**
- * The base common fragment implementation for MVVMs.
+ * The base common fragment implementation for MVVMs. Sample:
+ *
+ * <code>
+ * @FragmentConfiguration(shareViewMode = true, useEventBus = true, layoutResId = R.layout.fragment_main)
+ * class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
+ *
+ *     private val downloadUrl = "https://dldir1.qq.com/music/clntupate/QQMusic_YQQFloatLayer.exe"
+ *
+ *     override fun doCreateView(savedInstanceState: Bundle?) {
+ *         addSubscriptions()
+ *         initViews()
+ *         vm.shareValue = ResUtils.getString(R.string.sample_main_shared_value_between_fragments)
+ *         LogUtils.d(vm)
+ *     }
+ *
+ *     // ...
+ * }
+ * </code>
  *
  * @author WngShhng 2019-6-29
  */
@@ -28,15 +54,24 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
 
     private T binding;
 
-    private boolean shareViewModel = false;
+    private boolean shareViewModel;
 
-    private boolean useEventBus = false;
+    private boolean useEventBus;
+
+    private boolean useUmengManaual = true;
+
+    private int layoutResId;
+
+    private String pageName;
 
     {
         FragmentConfiguration configuration = this.getClass().getAnnotation(FragmentConfiguration.class);
         if (configuration != null) {
             shareViewModel = configuration.shareViewMode();
             useEventBus = configuration.useEventBus();
+            layoutResId = configuration.layoutResId();
+            pageName = TextUtils.isEmpty(configuration.pageName()) ? getClass().getSimpleName() : configuration.pageName();
+            useUmengManaual = configuration.useUmengManual();
         }
     }
 
@@ -45,7 +80,9 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
      *
      * @return layout resource id.
      */
-    protected abstract int getLayoutResId();
+    protected int getLayoutResId() {
+        return 0;
+    }
 
     /**
      * Do create view business.
@@ -74,13 +111,14 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        if (getLayoutResId() <= 0) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (getLayoutResId() != 0) {
+            layoutResId = getLayoutResId();
+        }
+        if (layoutResId <= 0) {
             throw new IllegalArgumentException("The subclass must provider a valid layout resources id.");
         }
-        binding = DataBindingUtil.inflate(getLayoutInflater(), getLayoutResId(), null, false);
+        binding = DataBindingUtil.inflate(getLayoutInflater(), layoutResId, null, false);
         doCreateView(savedInstanceState);
         return binding.getRoot();
     }
@@ -93,47 +131,86 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
         return binding;
     }
 
-    protected void showShort(final CharSequence text) {
+    /**
+     * Make a simple toast.
+     *
+     * @param text the content to display
+     */
+    protected void toast(final CharSequence text) {
         ToastUtils.showShort(text);
     }
 
-    protected void showShort(@StringRes final int resId) {
+    protected void toast(@StringRes final int resId) {
         ToastUtils.showShort(resId);
     }
 
-    protected void showShort(@StringRes final int resId, final Object... args) {
-        ToastUtils.showShort(resId, args);
-    }
-
-    protected void showShort(final String format, final Object... args) {
-        ToastUtils.showShort(format, args);
-    }
-  
     /**
-     * Post one event by EventBusManager
+     * Post one event by Bus
      *
      * @param event the event to post
      */
     protected void post(Object event) {
-        EventBusManager.getInstance().post(event);
+        Bus.get().post(event);
     }
 
     /**
-     * Post one sticky event by EventBusManager
+     * Post one sticky event by Bus
      *
      * @param event the sticky event
      */
     protected void postSticky(Object event) {
-        EventBusManager.getInstance().postSticky(event);
+        Bus.get().postSticky(event);
+    }
+
+    /**
+     * Start given activity.
+     *
+     * @param clz the activity
+     */
+    protected void startActivity(@NonNull Class<? extends Activity> clz) {
+        ActivityUtils.start(getContext(), clz);
+    }
+
+    protected void startActivity(@NonNull Class<? extends Activity> activityClass, int requestCode) {
+        ActivityUtils.start(this, activityClass, requestCode);
+    }
+
+    /**
+     * Check single permission. For multiple permissions at the same time, call
+     * {@link #checkPermissions(OnGetPermissionCallback, int...)}.
+     *
+     * @param permission the permission to check
+     * @param onGetPermissionCallback the callback when got the required permission
+     */
+    protected void checkPermission(@Permission.PermissionCode int permission, OnGetPermissionCallback onGetPermissionCallback) {
+        if (getActivity() instanceof CommonActivity) {
+            PermissionUtils.checkPermissions((CommonActivity) getActivity(), onGetPermissionCallback, permission);
+        } else {
+            LogUtils.i("Request permission failed due to the associated activity was not instance of CommonActivity");
+        }
+    }
+
+    /**
+     * Check multiple permissions at the same time.
+     *
+     * @param onGetPermissionCallback the callback when got all permissions required.
+     * @param permissions the permissions to request.
+     */
+    protected void checkPermissions(OnGetPermissionCallback onGetPermissionCallback, @Permission.PermissionCode int...permissions) {
+        if (getActivity() instanceof CommonActivity) {
+            PermissionUtils.checkPermissions((CommonActivity) getActivity(), onGetPermissionCallback, permissions);
+        } else {
+            LogUtils.i("Request permissions failed due to the associated activity was not instance of CommonActivity");
+        }
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         if (useEventBus) {
-            EventBusManager.getInstance().register(this);
+            Bus.get().register(this);
         }
         vm = createViewModel();
-        vm.onCreate(savedInstanceState);
+        vm.onCreate(getArguments(), savedInstanceState);
         super.onCreate(savedInstanceState);
     }
 
@@ -144,9 +221,25 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (useUmengManaual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
+            MobclickAgent.onPageStart(pageName);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (useUmengManaual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
+            MobclickAgent.onPageEnd(pageName);
+        }
+    }
+
+    @Override
     public void onDestroy() {
         if (useEventBus) {
-            EventBusManager.getInstance().unregister(this);
+            Bus.get().unregister(this);
         }
         vm.onDestroy();
         super.onDestroy();

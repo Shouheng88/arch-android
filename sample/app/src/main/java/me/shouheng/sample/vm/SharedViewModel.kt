@@ -7,7 +7,7 @@ import me.shouheng.api.bean.User
 import me.shouheng.api.sample.OnUserChangeListener
 import me.shouheng.api.sample.UserService
 import me.shouheng.mvvm.base.BaseViewModel
-import me.shouheng.mvvm.data.Resources
+import me.shouheng.mvvm.bean.Resources
 
 /**
  * 在 Fragment 之间共享的 ViewModel
@@ -27,7 +27,7 @@ class SharedViewModel(application: Application) : BaseViewModel(application), On
      */
     var shareValue: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(extras: Bundle?, savedInstanceState: Bundle?) {
         userService = ARouter.getInstance().navigation(UserService::class.java)
         userService.registerUserChangeListener(this)
     }
