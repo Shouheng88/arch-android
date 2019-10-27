@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Debug
+import android.support.multidex.MultiDexApplication
 import android.support.v4.content.ContextCompat
 import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.mvvm.MVVMs
@@ -15,7 +16,7 @@ import me.shouheng.utils.stability.LogUtils
 /**
  * @author WngShhng 2019-6-29
  */
-class App : Application() {
+class App : MultiDexApplication() {
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)

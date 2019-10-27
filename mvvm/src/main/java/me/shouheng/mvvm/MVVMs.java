@@ -2,6 +2,9 @@ package me.shouheng.mvvm;
 
 import android.app.Application;
 import android.content.Context;
+
+import me.shouheng.mvvm.utils.Platform;
+import me.shouheng.uix.UIX;
 import me.shouheng.utils.UtilsApp;
 
 /**
@@ -108,5 +111,7 @@ public final class MVVMs {
     public static void onCreate(Application application) {
         MVVMs.app = application;
         UtilsApp.init(application);
+        // If you want to use uix, you don't need to initialize it in your application manually.
+        if (Platform.DEPENDENCY_UIX_ANALYTICS) UIX.INSTANCE.init(application);
     }
 }
