@@ -7,6 +7,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import me.shouheng.mvvm.bean.Resources;
 
@@ -82,6 +83,18 @@ public class BaseViewModel extends AndroidViewModel {
      * @param outState saved instance state
      */
     public void onSaveInstanceState(@NonNull Bundle outState) {
+        // default no implementation
+    }
+
+    /**
+     * Called when the {@link Activity#onActivityResult(int, int, Intent)}
+     * or {@link Fragment#onActivityResult(int, int, Intent)} as called.
+     *
+     * @param requestCode the request code
+     * @param resultCode  the result code
+     * @param data        the intent data
+     */
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         // default no implementation
     }
 

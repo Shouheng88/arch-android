@@ -3,6 +3,7 @@ package me.shouheng.mvvm.base;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Build;
@@ -268,6 +269,12 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
             MobclickAgent.onResume(this);
             LogUtils.d(pageName);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        vm.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
