@@ -31,16 +31,7 @@ dependencies {
     androidTestImplementation rootProject.ext.libraries['android-test'].values()
 
     implementation rootProject.ext.support['appcompat-v7']
-    implementation rootProject.ext.libraries['EventBus']
-    implementation rootProject.ext.libraries['AndroidEventBus']
 
-    implementation rootProject.ext.libraries['umeng-common']
-    implementation rootProject.ext.libraries['umeng-analytics']
-
-    implementation rootProject.ext.libraries['okhttp']
-    implementation rootProject.ext.libraries['uix-core']
-    api rootProject.ext.libraries['utils']
-    api rootProject.ext.libraries['compressor']
     implementation rootProject.ext.libraries['lifecycle-extensions']
     annotationProcessor rootProject.ext.libraries['lifecycle-compiler']
 }

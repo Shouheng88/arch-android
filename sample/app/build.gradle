@@ -47,6 +47,7 @@ dependencies {
     implementation rootProject.ext.libraries['EventBus']
     implementation rootProject.ext.libraries['arouter']
     kapt rootProject.ext.libraries['arouter-compiler']
+    implementation rootProject.ext.libraries['utils']
 
     // 主项目中需要打入所有的组件
     implementation project(path: ':mvvm')

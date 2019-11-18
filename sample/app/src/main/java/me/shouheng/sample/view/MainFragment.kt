@@ -8,9 +8,6 @@ import me.shouheng.api.bean.User
 import me.shouheng.mvvm.base.CommonFragment
 import me.shouheng.mvvm.base.anno.FragmentConfiguration
 import me.shouheng.mvvm.bean.Status
-import me.shouheng.mvvm.comn.ContainerActivity
-import me.shouheng.mvvm.http.DownloadListener
-import me.shouheng.mvvm.http.Downloader
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.FragmentMainBinding
 import me.shouheng.sample.event.SimpleEvent
@@ -19,19 +16,20 @@ import me.shouheng.utils.app.ActivityUtils
 import me.shouheng.utils.app.ResUtils
 import me.shouheng.utils.data.StringUtils
 import me.shouheng.utils.stability.LogUtils
-import me.shouheng.utils.store.PathUtils
+import me.shouheng.utils.ui.ToastUtils
 import org.greenrobot.eventbus.Subscribe
-import java.io.File
 
 /**
  * 主界面显示的碎片
  *
  * @author WngShhng 2019-6-29
  */
-@FragmentConfiguration(shareViewMode = true, useEventBus = true, layoutResId = R.layout.fragment_main)
+@FragmentConfiguration(shareViewMode = true)
 class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
 
     private val downloadUrl = "https://dldir1.qq.com/music/clntupate/QQMusic_YQQFloatLayer.exe"
+
+    override fun getLayoutResId() = R.layout.fragment_main
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         addSubscriptions()
@@ -44,10 +42,10 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
         vm.getObservable(User::class.java).observe(this, Observer {
             when (it!!.status) {
                 Status.SUCCESS -> {
-                    toast(StringUtils.format(R.string.sample_main_got_user, it.data))
+                    ToastUtils.showShort(StringUtils.format(R.string.sample_main_got_user, it.data))
                 }
                 Status.FAILED -> {
-                    toast(it.errorMessage)
+                    ToastUtils.showShort(it.errorMessage)
                 }
                 Status.LOADING -> {
                     // do nothing
@@ -76,43 +74,22 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
             ARouter.getInstance().build("/eyepetizer/main").navigation()
         }
         binding.btnToSample.setOnClickListener {
-            ContainerActivity.open(SampleFragment::class.java)
-                .put(SampleFragment.ARGS_KEY_TEXT, "Here is the text from the arguments.")
-                .launch(context!!)
+            ToastUtils.showShort("Not support!")
         }
         binding.btnDownload.setOnClickListener {
-            Downloader.getInstance()
-                .setOnlyWifi(true)
-                .download(downloadUrl, PathUtils.getExternalStoragePath(), object : DownloadListener {
-                    override fun onError(errorCode: Int) {
-                        toast("Download : error $errorCode")
-                    }
-
-                    override fun onStart() {
-                        toast("Download : start")
-                    }
-
-                    override fun onProgress(readLength: Long, contentLength: Long) {
-                        LogUtils.d("Download : onProgress $readLength/$contentLength")
-                    }
-
-                    override fun onComplete(file: File?) {
-                        toast("Download : complete : ${file?.absoluteFile}")
-                    }
-                })
+            ToastUtils.showShort("Not support!")
         }
         binding.btnUtils.setOnClickListener {
             ActivityUtils.start(context!!, MainActivity::class.java)
         }
         binding.btnPref.setOnClickListener {
-            val sp = SamplePreference()
-            activity!!.fragmentManager.beginTransaction().replace(R.id.fragment_container, sp).addToBackStack("").commit()
+            ToastUtils.showShort("Not support!")
         }
     }
 
     @Subscribe
     fun onGetMessage(simpleEvent: SimpleEvent) {
-        toast(StringUtils.format(R.string.sample_main_activity_received_msg, javaClass.simpleName, simpleEvent.msg))
+        ToastUtils.showShort(StringUtils.format(R.string.sample_main_activity_received_msg, javaClass.simpleName, simpleEvent.msg))
     }
 
 }

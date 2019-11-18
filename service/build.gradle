@@ -38,6 +38,7 @@ dependencies {
     implementation rootProject.ext.libraries['retrofit'].values()
     implementation rootProject.ext.libraries['okhttp']
     implementation rootProject.ext.libraries['gson']
+    implementation rootProject.ext.libraries['utils']
 
     implementation project(path: ':mvvm')
     implementation project(path: ':api')

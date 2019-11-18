@@ -49,6 +49,7 @@ dependencies {
     implementation rootProject.ext.libraries['brvah']
     implementation 'com.shuyu:GSYVideoPlayer:1.6.8'
     implementation rootProject.ext.libraries['rxjava'].values()
+    implementation rootProject.ext.libraries['utils']
 
     implementation project(path: ':mvvm')
     implementation project(path: ':api')

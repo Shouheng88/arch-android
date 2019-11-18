@@ -1,34 +1,14 @@
 package me.shouheng.mvvm.base;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.*;
-import android.support.v4.app.Fragment;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
-import android.view.WindowManager;
-import com.umeng.analytics.MobclickAgent;
-import me.shouheng.mvvm.base.anno.ActivityConfiguration;
-import me.shouheng.mvvm.base.anno.StatusBarMode;
-import me.shouheng.mvvm.bus.Bus;
-import me.shouheng.mvvm.utils.Platform;
-import me.shouheng.utils.app.ActivityUtils;
-import me.shouheng.utils.permission.Permission;
-import me.shouheng.utils.permission.PermissionResultHandler;
-import me.shouheng.utils.permission.PermissionResultResolver;
-import me.shouheng.utils.permission.PermissionUtils;
-import me.shouheng.utils.permission.callback.OnGetPermissionCallback;
-import me.shouheng.utils.permission.callback.PermissionResultCallback;
-import me.shouheng.utils.permission.callback.PermissionResultCallbackImpl;
-import me.shouheng.utils.stability.LogUtils;
-import me.shouheng.utils.ui.ToastUtils;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -38,44 +18,13 @@ import java.lang.reflect.ParameterizedType;
  * @author WngShhng
  * @version 2019-6-29
  */
-public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseViewModel>
-        extends AppCompatActivity implements PermissionResultResolver  {
+public abstract class CommonActivity<T extends ViewDataBinding, U extends BaseViewModel> extends AppCompatActivity {
 
-    private VM vm;
+    private U vm;
 
     private T binding;
 
-    private boolean useEventBus = false;
-
-    private boolean needLogin = true;
-
-    private boolean hasFragment = false;
-
-    private boolean useUmengManaual = true;
-
     private int layoutResId;
-
-    @ColorInt private int statusBarColor = -1;
-
-    @StatusBarMode private int statusBarMode;
-
-    private String pageName;
-
-    private OnGetPermissionCallback onGetPermissionCallback;
-
-    {
-        ActivityConfiguration configuration = this.getClass().getAnnotation(ActivityConfiguration.class);
-        if (configuration != null) {
-            useEventBus = configuration.useEventBus();
-            needLogin = configuration.needLogin();
-            layoutResId = configuration.layoutResId();
-            pageName = TextUtils.isEmpty(configuration.pageName()) ? getClass().getSimpleName() : configuration.pageName();
-            hasFragment = configuration.hasFragment();
-            useUmengManaual = configuration.useUmengManual();
-            statusBarMode = configuration.statuBarMode();
-            statusBarColor = configuration.statusBarColor();
-        }
-    }
 
     /**
      * Do create view business.
@@ -89,8 +38,8 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
      *
      * @return the view model will be used.
      */
-    protected VM createViewModel() {
-        Class<VM> vmClass = ((Class)((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1]);
+    protected U createViewModel() {
+        Class<U> vmClass = ((Class)((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1]);
         return ViewModelProviders.of(this).get(vmClass);
     }
 
@@ -105,15 +54,6 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        if (useEventBus) {
-            Bus.get().register(this);
-        }
-        if (statusBarMode != StatusBarMode.DEFAULT) {
-            setStatusBarLightMode(statusBarMode == StatusBarMode.LIGHT);
-        }
-        if (statusBarColor != -1) {
-            setStatusBarColor(statusBarColor);
-        }
         super.onCreate(savedInstanceState);
         if (getLayoutResId() != 0) {
             layoutResId = getLayoutResId();
@@ -129,7 +69,7 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
         doCreateView(savedInstanceState);
     }
 
-    protected VM getVM() {
+    protected U getVM() {
         return vm;
     }
 
@@ -142,133 +82,13 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
      *
      * @return layout resource id.
      */
-    protected int getLayoutResId() {
-        return 0;
-    }
-
-    /**
-     * Get current fragnent of given resources id.
-     *
-     * @param resId the resources id.
-     * @return the fragment.
-     */
-    protected Fragment getCurrentFragment(@IdRes int resId) {
-        return getSupportFragmentManager().findFragmentById(resId);
-    }
-
-    /**
-     * Does the user need login to enter this activity. This value was set by the
-     * {@link ActivityConfiguration#needLogin()}, you can judge this value and implement your logic.
-     *
-     * @return true if the user need login.
-     */
-    protected boolean needLogin() {
-        return needLogin;
-    }
-
-    /**
-     * Make a simple toast.
-     *
-     * @param text the content to display
-     */
-    protected void toast(final CharSequence text) {
-        ToastUtils.showShort(text);
-    }
-
-    protected void toast(@StringRes final int resId) {
-        ToastUtils.showShort(resId);
-    }
-
-    /**
-     * Post one event by EventBus
-     *
-     * @param event the event to post
-     */
-    protected void post(Object event) {
-        Bus.get().post(event);
-    }
-
-    /**
-     * Post one sticky event by EventBus
-     *
-     * @param event the sticky event
-     */
-    protected void postSticky(Object event) {
-        Bus.get().postSticky(event);
-    }
-
-    /**
-     * Start given activity.
-     *
-     * @param clz the activity
-     */
-    protected void startActivity(@NonNull Class<? extends Activity> clz) {
-        ActivityUtils.start(this, clz);
-    }
-
-    protected void startActivity(@NonNull Class<? extends Activity> activityClass, int requestCode) {
-        ActivityUtils.start(this, activityClass, requestCode);
-    }
-
-    /**
-     * Check single permission. For multiple permissions at the same time, call
-     * {@link #checkPermissions(OnGetPermissionCallback, int...)}.
-     *
-     * @param permission the permission to check
-     * @param onGetPermissionCallback the callback when got the required permission
-     */
-    protected void checkPermission(@Permission.PermissionCode int permission, OnGetPermissionCallback onGetPermissionCallback) {
-        PermissionUtils.checkPermissions(this, onGetPermissionCallback, permission);
-    }
-
-    /**
-     * Check multiple permissions at the same time.
-     *
-     * @param onGetPermissionCallback the callback when got all permissions required.
-     * @param permissions the permissions to request.
-     */
-    protected void checkPermissions(OnGetPermissionCallback onGetPermissionCallback, @Permission.PermissionCode int...permissions) {
-        PermissionUtils.checkPermissions(this, onGetPermissionCallback, permissions);
-    }
-
-    /**
-     * Get the permission check result callback, the default implementation was {@link PermissionResultCallbackImpl}.
-     * Override this method to add your own implementation.
-     *
-     * @return the permission result callback
-     */
-    protected PermissionResultCallback getPermissionResultCallback() {
-        return new PermissionResultCallbackImpl(this, onGetPermissionCallback);
-    }
-
-    @Override
-    public void setOnGetPermissionCallback(OnGetPermissionCallback onGetPermissionCallback) {
-        this.onGetPermissionCallback = onGetPermissionCallback;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PermissionResultHandler.handlePermissionsResult(this,
-                requestCode, permissions, grantResults, getPermissionResultCallback());
-    }
+    @LayoutRes
+    protected abstract int getLayoutResId();
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         vm.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (useUmengManaual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
-            if (!hasFragment) {
-                MobclickAgent.onPageStart(pageName);
-            }
-            MobclickAgent.onResume(this);
-            LogUtils.d(pageName);
-        }
     }
 
     @Override
@@ -278,50 +98,8 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        if (useUmengManaual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
-            if (!hasFragment) {
-                MobclickAgent.onPageEnd(pageName);
-            }
-            MobclickAgent.onPause(this);
-        }
-    }
-
-    @Override
     protected void onDestroy() {
-        if (useEventBus) {
-            Bus.get().unregister(this);
-        }
         vm.onDestroy();
         super.onDestroy();
-    }
-
-    /**
-     * This method is used to call the super {@link #onBackPressed()} instead of the
-     * implementation of current activity. Since the current {@link #onBackPressed()} may be override.
-     */
-    public void superOnBackPressed() {
-        super.onBackPressed();
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    private void setStatusBarLightMode(boolean isLightMode) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
-        View decorView = getWindow().getDecorView();
-        int vis = decorView.getSystemUiVisibility();
-        if (isLightMode) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            vis |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-        } else {
-            vis &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-        }
-        decorView.setSystemUiVisibility(vis);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void setStatusBarColor(@ColorInt int color) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
-        getWindow().setStatusBarColor(color);
     }
 }

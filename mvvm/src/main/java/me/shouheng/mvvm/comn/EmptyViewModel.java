@@ -5,8 +5,7 @@ import android.support.annotation.NonNull;
 import me.shouheng.mvvm.base.BaseViewModel;
 
 /**
- * Empty view model with no business method. Mainly used as the generic type
- * for {@link me.shouheng.mvvm.comn.ContainerActivity}.
+ * Empty view model with no business method.
  * If you have just want to use the data binding but the view model, use this
  * view model as a generic type for your activity.
  *
