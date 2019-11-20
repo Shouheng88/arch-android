@@ -84,6 +84,7 @@ ext {
             "AndroidEventBus"           : "org.simple:androideventbus:1.0.5.1",
 
             "utils"                     : "me.shouheng.utils:utils-core:1.2.1",
+            "uix-core"                  : "me.shouheng.ui:uix-core:1.1.0",
 
             "arouter"                   : "com.alibaba:arouter-api:1.5.0",
             "arouter-compiler"          : "com.alibaba:arouter-compiler:1.2.2", // annotationProcessor

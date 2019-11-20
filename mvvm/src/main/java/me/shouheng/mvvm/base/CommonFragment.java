@@ -2,6 +2,7 @@ package me.shouheng.mvvm.base;
 
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
@@ -226,6 +227,11 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
         if (useUmengManaual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
             MobclickAgent.onPageStart(pageName);
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        vm.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

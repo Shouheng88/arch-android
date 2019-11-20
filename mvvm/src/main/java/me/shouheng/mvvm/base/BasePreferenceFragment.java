@@ -2,6 +2,7 @@ package me.shouheng.mvvm.base;
 
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
@@ -183,6 +184,12 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
         if (useUmengManaual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
             MobclickAgent.onPageStart(pageName);
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        vm.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

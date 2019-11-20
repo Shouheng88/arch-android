@@ -18,6 +18,11 @@ android {
     dataBinding {
         enabled true
     }
+    android {
+        lintOptions {
+            abortOnError false
+        }
+    }
 }
 
 dependencies {
@@ -33,12 +38,13 @@ dependencies {
     implementation rootProject.ext.libraries['umeng-analytics']
 
     implementation rootProject.ext.libraries['okhttp']
+    implementation rootProject.ext.libraries['uix-core']
     api rootProject.ext.libraries['utils']
     api rootProject.ext.libraries['compressor']
     implementation rootProject.ext.libraries['lifecycle-extensions']
     annotationProcessor rootProject.ext.libraries['lifecycle-compiler']
 }
 
-//apply {
-//    from ('../sample/bintrayMvvmUpload.gradle')
-//}
+apply {
+    from ('../sample/bintrayMvvmUpload.gradle')
+}
