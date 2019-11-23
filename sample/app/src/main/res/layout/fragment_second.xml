@@ -10,6 +10,7 @@
         <TextView android:id="@+id/tv"
                 android:gravity="center"
                 tools:text="Hello world!"
+                android:layout_margin="40dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 

@@ -1,89 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="setting_category_personal">
+    <PreferenceCategory android:title="@string/setting_category_personal">
 
-        <Preference android:title="setting_category_personal_theme"
-            android:summary="setting_category_personal_theme_sub"
+        <Preference android:title="@string/setting_category_personal_theme"
+            android:summary="@string/setting_category_personal_theme_sub"
             android:persistent="false"
             android:key="key_setting_theme"/>
 
-        <SwitchPreference android:title="setting_category_personal_beautify_date"
-            android:summary="setting_category_personal_beautify_date_sub"
+        <SwitchPreference android:title="@string/setting_category_personal_beautify_date"
+            android:summary="@string/setting_category_personal_beautify_date_sub"
             android:defaultValue="true"
             android:key="key_setting_date_result"/>
 
-        <Preference
-            android:key="key_setting_custom_fab"
-            android:persistent="false"
-            android:title="setting_category_personal_fab"
-            android:summary="setting_category_personal_fab_sub"/>
-
-        <SwitchPreference android:title="setting_category_personal_navbar"
-            android:key="key_setting_nav_bar_result"
-            android:defaultValue="true"
-            android:summary="setting_category_personal_navbar_sub"/>
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="setting_category_universal">
-
-        <Preference
-            android:title="setting_category_universal_note"
-            android:key="key_setting_note"
-            android:persistent="false"
-            android:summary="setting_category_universal_note_sub"/>
-
-        <Preference
-            android:key="key_setting_security"
-            android:persistent="false"
-            android:title="setting_category_universal_security"
-            android:summary="setting_category_universal_security_sub" />
-
-        <Preference
-            android:key="key_setting_backup"
-            android:persistent="false"
-            android:title="setting_category_universal_backup"
-            android:summary="setting_category_universal_backup_sub"/>
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="setting_category_help">
-
-        <Preference
-            android:key="key_setting_guide"
-            android:persistent="false"
-            android:title="setting_category_help_user_guide"
-            android:summary="setting_category_help_user_guide_sub"/>
-
-        <Preference
-            android:key="key_setting_feedback"
-            android:persistent="false"
-            android:title="setting_category_help_feedback"
-            android:summary="setting_category_help_feedback_sub"/>
-
-        <Preference android:title="setting_category_help_translate"
-            android:persistent="false"
-            android:summary="setting_category_help_translate_sub"
-            android:key="key_setting_translate"/>
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="setting_category_others">
-
-        <Preference
-            android:key="key_setting_about"
-            android:persistent="false"
-            android:title="setting_category_others_about_app"
-            android:summary="setting_category_others_about_app_sub"/>
-
-        <Preference android:title="setting_category_others_about_privacy"
-            android:persistent="false"
-            android:key="key_setting_privacy"/>
-
-        <Preference android:title="setting_category_others_about_open_source"
-            android:persistent="false"
-            android:key="key_setting_open_source"/>
+        <Preference android:title="@string/setting_category_others_about_open_source"
+                android:persistent="false"
+                android:key="key_setting_open_source"/>
 
     </PreferenceCategory>
 

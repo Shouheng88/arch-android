@@ -187,7 +187,7 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
         if (getActivity() instanceof CommonActivity) {
             PermissionUtils.checkPermissions((CommonActivity) getActivity(), onGetPermissionCallback, permission);
         } else {
-            LogUtils.i("Request permission failed due to the associated activity was not instance of CommonActivity");
+            LogUtils.w("Request permission failed due to the associated activity was not instance of CommonActivity");
         }
     }
 
@@ -201,7 +201,7 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
         if (getActivity() instanceof CommonActivity) {
             PermissionUtils.checkPermissions((CommonActivity) getActivity(), onGetPermissionCallback, permissions);
         } else {
-            LogUtils.i("Request permissions failed due to the associated activity was not instance of CommonActivity");
+            LogUtils.w("Request permissions failed due to the associated activity was not instance of CommonActivity");
         }
     }
 

@@ -1,7 +1,6 @@
 package me.shouheng.sample.view
 
 import android.arch.lifecycle.Observer
-import android.graphics.Color
 import android.os.Bundle
 import me.shouheng.mvvm.base.CommonActivity
 import me.shouheng.mvvm.base.anno.ActivityConfiguration
@@ -20,8 +19,10 @@ import org.greenrobot.eventbus.Subscribe
  *
  * @author Wngshhng 2019-6-29
  */
-@ActivityConfiguration(useEventBus = false, layoutResId = R.layout.activity_main,
-    statuBarMode = StatusBarMode.LIGHT, statusBarColor = 0xffffff)
+@ActivityConfiguration(useEventBus = false,
+    layoutResId = R.layout.activity_main,
+    statuBarMode = StatusBarMode.LIGHT,
+    statusBarColor = 0xdddddd)
 class MainActivity : CommonActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun doCreateView(savedInstanceState: Bundle?) {
@@ -33,18 +34,10 @@ class MainActivity : CommonActivity<ActivityMainBinding, MainViewModel>() {
     private fun addSubscriptions() {
         vm.getObservable(String::class.java).observe(this, Observer {
             when(it!!.status) {
-                Status.SUCCESS -> {
-                    ToastUtils.showShort(it.data)
-                }
-                Status.FAILED -> {
-                    ToastUtils.showShort(it.errorMessage)
-                }
-                Status.LOADING -> {
-                    // temp do nothing
-                }
-                else -> {
-                    // do nothing
-                }
+                Status.SUCCESS -> { ToastUtils.showShort(it.data) }
+                Status.FAILED -> { ToastUtils.showShort(it.message) }
+                Status.LOADING -> {/* temp do nothing */ }
+                else -> {/* temp do nothing */ }
             }
         })
     }
@@ -52,6 +45,7 @@ class MainActivity : CommonActivity<ActivityMainBinding, MainViewModel>() {
     private fun initViews() {
         val fragment = MainFragment()
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit()
+        setSupportActionBar(binding.toolbar)
     }
 
     @Subscribe

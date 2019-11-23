@@ -3,9 +3,26 @@
         xmlns:tools="http://schemas.android.com/tools"
         tools:context=".view.MainActivity">
 
-    <FrameLayout
-            android:id="@+id/fragment_container"
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"/>
+
+        <View
+                android:background="@color/cold_theme_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+        <FrameLayout
+                android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+    </LinearLayout>
 
 </layout>

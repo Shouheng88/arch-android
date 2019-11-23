@@ -19,14 +19,14 @@ public final class Resources<T> {
     public final T data;
 
     /**
-     * The error code, read only.
+     * The code, read only.
      */
-    public final String errorCode;
+    public final String code;
 
     /**
      * The message of current resources, read only.
      */
-    public final String errorMessage;
+    public final String message;
 
     /**
      * Field for appendix for current resource.
@@ -48,12 +48,12 @@ public final class Resources<T> {
      */
     public final Object udf4;
 
-    private Resources(Status status, T data, String errorCode, String errorMessage,
+    private Resources(Status status, T data, String code, String message,
                       long udf1, double udf2, String udf3, Object udf4) {
         this.status = status;
         this.data = data;
-        this.errorCode = errorCode;
-        this.errorMessage = errorMessage;
+        this.code = code;
+        this.message = message;
         this.udf1 = udf1;
         this.udf2 = udf2;
         this.udf3 = udf3;
@@ -137,8 +137,8 @@ public final class Resources<T> {
         return "Resources{" +
                 "status=" + status +
                 ", data=" + data +
-                ", errorCode='" + errorCode + '\'' +
-                ", errorMessage='" + errorMessage + '\'' +
+                ", code='" + code + '\'' +
+                ", message='" + message + '\'' +
                 ", udf1=" + udf1 +
                 ", udf2=" + udf2 +
                 ", udf3='" + udf3 + '\'' +

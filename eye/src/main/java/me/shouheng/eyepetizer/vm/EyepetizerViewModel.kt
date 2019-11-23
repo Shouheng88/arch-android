@@ -42,6 +42,8 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
             override fun onGetHomeBean(homeBean: HomeBean) {
                 nextPageUrl = homeBean.nextPageUrl
                 getObservable(HomeBean::class.java).value = Resources.success(homeBean)
+                // 再请求一页
+                requestNextPage()
             }
         })
     }

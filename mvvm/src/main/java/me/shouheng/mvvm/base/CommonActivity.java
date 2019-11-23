@@ -8,13 +8,21 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.*;
+import android.support.annotation.ColorInt;
+import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
+
 import com.umeng.analytics.MobclickAgent;
+
+import java.lang.reflect.ParameterizedType;
+
 import me.shouheng.mvvm.base.anno.ActivityConfiguration;
 import me.shouheng.mvvm.base.anno.StatusBarMode;
 import me.shouheng.mvvm.bus.Bus;
@@ -27,10 +35,7 @@ import me.shouheng.utils.permission.PermissionUtils;
 import me.shouheng.utils.permission.callback.OnGetPermissionCallback;
 import me.shouheng.utils.permission.callback.PermissionResultCallback;
 import me.shouheng.utils.permission.callback.PermissionResultCallbackImpl;
-import me.shouheng.utils.stability.LogUtils;
 import me.shouheng.utils.ui.ToastUtils;
-
-import java.lang.reflect.ParameterizedType;
 
 /**
  * The basic common implementation for MMVMs activity.
@@ -267,7 +272,6 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
                 MobclickAgent.onPageStart(pageName);
             }
             MobclickAgent.onResume(this);
-            LogUtils.d(pageName);
         }
     }
 
