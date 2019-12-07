@@ -1,7 +1,6 @@
 package me.shouheng.sample
 
 import android.Manifest
-import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
@@ -20,7 +19,6 @@ class App : MultiDexApplication() {
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
-
         // initialize mvvms
         MVVMs.attachBaseContext(base)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -32,16 +30,12 @@ class App : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
-
         // initialize mvvms
         MVVMs.onCreate(this)
-
         // custom LogUtils, must be called after MVVMs.onCreate()
         customLog()
-
         // custom ARouter
         customARouter()
-
         // custom crash
         customCrash()
     }

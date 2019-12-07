@@ -17,6 +17,7 @@ import me.shouheng.sample.event.SimpleEvent
 import me.shouheng.sample.vm.SharedViewModel
 import me.shouheng.utils.app.ActivityUtils
 import me.shouheng.utils.app.ResUtils
+import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.data.StringUtils
 import me.shouheng.utils.stability.LogUtils
 import me.shouheng.utils.store.PathUtils
@@ -43,18 +44,10 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
     private fun addSubscriptions() {
         vm.getObservable(User::class.java).observe(this, Observer {
             when (it!!.status) {
-                Status.SUCCESS -> {
-                    toast(StringUtils.format(R.string.sample_main_got_user, it.data))
-                }
-                Status.FAILED -> {
-                    toast(it.errorMessage)
-                }
-                Status.LOADING -> {
-                    // do nothing
-                }
-                else -> {
-                    // do nothing
-                }
+                Status.SUCCESS -> { toast(StringUtils.format(R.string.sample_main_got_user, it.data)) }
+                Status.FAILED -> { toast(it.message) }
+                Status.LOADING -> {/* do nothing */ }
+                else -> {/* do nothing */ }
             }
         })
     }
@@ -74,10 +67,11 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
         }
         binding.btnToComponentB.setOnClickListener {
             ARouter.getInstance().build("/eyepetizer/main").navigation()
+            ActivityUtils.overridePendingTransition(activity!!, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
         }
         binding.btnToSample.setOnClickListener {
             ContainerActivity.open(SampleFragment::class.java)
-                .put(SampleFragment.ARGS_KEY_TEXT, "Here is the text from the arguments.")
+                .put(SampleFragment.ARGS_KEY_TEXT, ResUtils.getString(R.string.sample_main_argument_to_fragment))
                 .launch(context!!)
         }
         binding.btnDownload.setOnClickListener {

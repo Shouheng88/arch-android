@@ -3,5 +3,7 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">valipl.cp31.ott.cibntv.net</domain>
         <domain includeSubdomains="true">baobab.kaiyanapp.com</domain>
+        <domain includeSubdomains="true">img.kaiyanapp.com</domain>
+        <domain includeSubdomains="true">*</domain>
     </domain-config>
 </network-security-config>

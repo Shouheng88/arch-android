@@ -13,7 +13,11 @@ import me.shouheng.api.bean.Item
 import me.shouheng.eyepetizer.databinding.ActivityEyepetizerBinding
 import me.shouheng.eyepetizer.vm.EyepetizerViewModel
 import me.shouheng.mvvm.base.CommonActivity
+import me.shouheng.mvvm.base.anno.ActivityConfiguration
+import me.shouheng.mvvm.base.anno.StatusBarMode
 import me.shouheng.mvvm.bean.Status
+import me.shouheng.utils.app.ActivityUtils
+import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.stability.LogUtils
 
 /**
@@ -22,6 +26,7 @@ import me.shouheng.utils.stability.LogUtils
  * @author WngShhng 2019-07-06
  */
 @Route(path = "/eyepetizer/main")
+@ActivityConfiguration(statuBarMode = StatusBarMode.LIGHT)
 class EyepetizerActivity : CommonActivity<ActivityEyepetizerBinding, EyepetizerViewModel>() {
 
     private lateinit var adapter: HomeAdapter
@@ -75,15 +80,9 @@ class EyepetizerActivity : CommonActivity<ActivityEyepetizerBinding, EyepetizerV
                     }
                     adapter.addData(list)
                 }
-                Status.FAILED -> {
-                    // temp do nothing
-                }
-                Status.LOADING -> {
-                    // temp do nothing
-                }
-                else -> {
-                    // do nothing
-                }
+                Status.FAILED -> {/* temp do nothing */ }
+                Status.LOADING -> {/* temp do nothing */ }
+                else -> {/* temp do nothing */ }
             }
         })
     }
@@ -100,5 +99,9 @@ class EyepetizerActivity : CommonActivity<ActivityEyepetizerBinding, EyepetizerV
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        ActivityUtils.finishActivity(this, ActivityDirection.ANIMATE_SLIDE_BOTTOM_FROM_TOP)
     }
 }

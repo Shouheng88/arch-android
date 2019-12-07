@@ -1,47 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
-            android:orientation="vertical"
-            android:padding="16dp"
+    <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btn_to_second"
-                android:text="@string/sample_main_navigate_to_second"
-                style="@style/MenuButton"/>
+        <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btn_request_user"
-                android:text="@string/sample_main_request_user_data"
-                style="@style/MenuButton"/>
+            <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_to_second"
+                    android:text="@string/sample_main_navigate_to_second"
+                    style="@style/MenuButton"/>
 
-        <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btn_to_component_b"
-                android:text="@string/sample_main_navigate_to_eyeptizer"
-                style="@style/MenuButton"/>
+            <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_request_user"
+                    android:text="@string/sample_main_request_user_data"
+                    style="@style/MenuButton"/>
 
-        <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btn_to_sample"
-                android:text="@string/sample_main_navigate_to_sample"
-                style="@style/MenuButton"/>
+            <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_to_component_b"
+                    android:text="@string/sample_main_navigate_to_eyeptizer"
+                    style="@style/MenuButton"/>
 
-        <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btn_download"
-                android:text="@string/sample_main_download"
-                style="@style/MenuButton"/>
+            <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_to_sample"
+                    android:text="@string/sample_main_navigate_to_sample"
+                    style="@style/MenuButton"/>
 
-        <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btn_utils"
-                android:text="@string/sample_main_launch_utils"
-                style="@style/MenuButton"/>
+            <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_download"
+                    android:text="@string/sample_main_download"
+                    style="@style/MenuButton"/>
 
-        <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btn_pref"
-                android:text="@string/sample_main_preferences"
-                style="@style/MenuButton"/>
+            <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_utils"
+                    android:visibility="gone"
+                    android:text="@string/sample_main_launch_utils"
+                    style="@style/MenuButton"/>
 
-    </LinearLayout>
+            <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_pref"
+                    android:text="@string/sample_main_preferences"
+                    style="@style/MenuButton"/>
+
+        </LinearLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
 
 </layout>
