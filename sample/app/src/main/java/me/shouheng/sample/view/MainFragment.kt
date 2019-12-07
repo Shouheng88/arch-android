@@ -17,6 +17,7 @@ import me.shouheng.sample.event.SimpleEvent
 import me.shouheng.sample.vm.SharedViewModel
 import me.shouheng.utils.app.ActivityUtils
 import me.shouheng.utils.app.ResUtils
+import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.data.StringUtils
 import me.shouheng.utils.stability.LogUtils
 import me.shouheng.utils.store.PathUtils
@@ -66,7 +67,7 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
         }
         binding.btnToComponentB.setOnClickListener {
             ARouter.getInstance().build("/eyepetizer/main").navigation()
-            ActivityUtils.overridePendingTransition(activity!!, ActivityUtils.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
+            ActivityUtils.overridePendingTransition(activity!!, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
         }
         binding.btnToSample.setOnClickListener {
             ContainerActivity.open(SampleFragment::class.java)

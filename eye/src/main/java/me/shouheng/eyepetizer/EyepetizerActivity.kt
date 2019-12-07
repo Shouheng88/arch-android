@@ -17,6 +17,7 @@ import me.shouheng.mvvm.base.anno.ActivityConfiguration
 import me.shouheng.mvvm.base.anno.StatusBarMode
 import me.shouheng.mvvm.bean.Status
 import me.shouheng.utils.app.ActivityUtils
+import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.stability.LogUtils
 
 /**
@@ -101,6 +102,6 @@ class EyepetizerActivity : CommonActivity<ActivityEyepetizerBinding, EyepetizerV
     }
 
     override fun onBackPressed() {
-        ActivityUtils.finishActivity(this, ActivityUtils.ANIMATE_SLIDE_BOTTOM_FROM_TOP)
+        ActivityUtils.finishActivity(this, ActivityDirection.ANIMATE_SLIDE_BOTTOM_FROM_TOP)
     }
 }
