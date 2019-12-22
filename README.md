@@ -3,6 +3,7 @@
 ![SLicense](https://img.shields.io/hexpm/l/plug.svg)
 ![Version](https://img.shields.io/maven-metadata/v/https/dl.bintray.com/easymark/Android/me/shouheng/mvvm/mvvm-core/maven-metadata.xml.svg)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/412a91540f254721ac63757eeded9ba5)](https://www.codacy.com/manual/Shouheng88/Android-MVVMs?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Shouheng88/Android-MVVMs&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/Shouheng88/Android-MVVMs.svg?branch=master)](https://travis-ci.org/Shouheng88/Android-MVVMs)
 
 该项目主要基于 Android Jetpack 中的 LiveData, ViewModel, Databinding, Lifecycle 等进行封装，提供了一个干净的框架来实现 Android 应用的快速开发。
 
