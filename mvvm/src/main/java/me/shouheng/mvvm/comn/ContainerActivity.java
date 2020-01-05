@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -13,6 +14,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import me.shouheng.mvvm.R;
 import me.shouheng.mvvm.base.CommonActivity;
 import me.shouheng.mvvm.databinding.MvvmsActivityContainerBinding;
+import me.shouheng.mvvm.utils.Platform;
+import me.shouheng.uix.page.fragment.FragmentKeyDown;
 import me.shouheng.utils.app.ActivityUtils;
 import me.shouheng.utils.stability.L;
 
@@ -152,6 +155,17 @@ public class ContainerActivity extends CommonActivity<MvvmsActivityContainerBind
         } catch (IllegalAccessException e) {
             L.d(e);
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.container);
+        if (Platform.DEPENDENCY_UIX_ANALYTICS
+                && fragment instanceof FragmentKeyDown
+                && (((FragmentKeyDown) fragment).onFragmentKeyDown(keyCode, event))) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     /**
