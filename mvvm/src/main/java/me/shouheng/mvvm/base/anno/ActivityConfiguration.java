@@ -1,6 +1,5 @@
 package me.shouheng.mvvm.base.anno;
 
-import android.support.annotation.ColorInt;
 import android.support.annotation.LayoutRes;
 
 import java.lang.annotation.ElementType;
@@ -11,7 +10,8 @@ import java.lang.annotation.Target;
 /**
  * The activity configuration annotation.
  *
- * @author WngShhng 2019-7-01
+ * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @version 2019-7-01
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
@@ -39,38 +39,16 @@ public @interface ActivityConfiguration {
     @LayoutRes int layoutResId() default 0;
 
     /**
-     * The page name used for umeng etc. The activity or fragment class simple name will
-     * be used if you didn't set this value.
+     * Umeng configuration, use default value.
      *
-     * @return the page name
+     * @return umeng configuration
      */
-    String pageName() default "";
+    UmengConfiguration umengConfiguration() default @UmengConfiguration;
 
     /**
-     * Whether current activity contains fragment
+     * Status bar configuration, use default value.
      *
-     * @return true if contains
+     * @return status bar configuration
      */
-    boolean hasFragment() default false;
-
-    /**
-     * Whether the umeng analytics will be used.
-     *
-     * @return true if use umeng analytics
-     */
-    boolean useUmengManual() default true;
-
-    /**
-     * Status bar light mode.
-     *
-     * @return status bar mode
-     */
-    @StatusBarMode int statuBarMode() default StatusBarMode.DEFAULT;
-
-    /**
-     * Set status bar color, you can set any color except -1.
-     *
-     * @return status bar color
-     */
-    @ColorInt int statusBarColor() default -1;
+    StatusBarConfiguration statusBarConfiguration() default @StatusBarConfiguration;
 }

@@ -14,11 +14,12 @@ import me.shouheng.eyepetizer.databinding.ActivityEyepetizerBinding
 import me.shouheng.eyepetizer.vm.EyepetizerViewModel
 import me.shouheng.mvvm.base.CommonActivity
 import me.shouheng.mvvm.base.anno.ActivityConfiguration
+import me.shouheng.mvvm.base.anno.StatusBarConfiguration
 import me.shouheng.mvvm.base.anno.StatusBarMode
 import me.shouheng.mvvm.bean.Status
 import me.shouheng.utils.app.ActivityUtils
 import me.shouheng.utils.constant.ActivityDirection
-import me.shouheng.utils.stability.LogUtils
+import me.shouheng.utils.stability.L
 
 /**
  * 开眼视频相关的演示页
@@ -26,7 +27,7 @@ import me.shouheng.utils.stability.LogUtils
  * @author WngShhng 2019-07-06
  */
 @Route(path = "/eyepetizer/main")
-@ActivityConfiguration(statuBarMode = StatusBarMode.LIGHT)
+@ActivityConfiguration(statusBarConfiguration = StatusBarConfiguration(statusBarMode = StatusBarMode.LIGHT))
 class EyepetizerActivity : CommonActivity<ActivityEyepetizerBinding, EyepetizerViewModel>() {
 
     private lateinit var adapter: HomeAdapter
@@ -69,7 +70,7 @@ class EyepetizerActivity : CommonActivity<ActivityEyepetizerBinding, EyepetizerV
             loading = false
             when (resources!!.status) {
                 Status.SUCCESS -> {
-                    LogUtils.d(resources.data)
+                    L.d(resources.data)
                     val list = mutableListOf<Item>()
                     resources.data.issueList.forEach {
                         it.itemList.forEach { item ->

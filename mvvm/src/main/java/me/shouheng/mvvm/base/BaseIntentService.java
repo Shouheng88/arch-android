@@ -7,7 +7,8 @@ import me.shouheng.mvvm.bus.Bus;
 /**
  * Base intent service implementation to handle {@link ServiceConfiguration} annotation.
  *
- * @author WngShhng 2019-7-01
+ * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @version 2019-7-01
  */
 public abstract class BaseIntentService extends IntentService {
 

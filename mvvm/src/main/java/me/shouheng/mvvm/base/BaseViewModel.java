@@ -9,11 +9,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import me.shouheng.mvvm.bean.Resources;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import me.shouheng.mvvm.bean.Resources;
 
 /**
  * Basic implementation of common ViewModel.
@@ -21,7 +22,8 @@ import java.util.Map;
  * The view model has no pre-defined model associated, for MVVMs don't want to take care of the
  * model logic. You can get the data source anywhere, which is perhaps useful for small project.
  *
- * @author WngShhng 2019-6-29
+ * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @version 2019-6-29
  */
 public class BaseViewModel extends AndroidViewModel {
 

@@ -1,14 +1,14 @@
 package me.shouheng.sample.view
 
 import android.os.Bundle
-import me.shouheng.mvvm.base.anno.FragmentConfiguration
 import me.shouheng.mvvm.base.CommonFragment
+import me.shouheng.mvvm.base.anno.FragmentConfiguration
 import me.shouheng.mvvm.bus.Bus
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.FragmentSecondBinding
 import me.shouheng.sample.event.SimpleEvent
 import me.shouheng.sample.vm.SharedViewModel
-import me.shouheng.utils.stability.LogUtils
+import me.shouheng.utils.stability.L
 
 /**
  * 用来测试 Fragment 之间共享 ViewModel 的另一个 Fragment
@@ -19,7 +19,7 @@ import me.shouheng.utils.stability.LogUtils
 class SecondFragment : CommonFragment<FragmentSecondBinding, SharedViewModel>() {
 
     override fun doCreateView(savedInstanceState: Bundle?) {
-        LogUtils.d(vm)
+        L.d(vm)
         // Get and display shared value from MainFragment
         binding.tv.text = vm.shareValue
         binding.btnPost.setOnClickListener {

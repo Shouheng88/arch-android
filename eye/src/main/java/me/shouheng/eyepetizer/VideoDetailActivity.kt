@@ -1,6 +1,7 @@
 package me.shouheng.eyepetizer
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -17,14 +18,23 @@ import io.reactivex.schedulers.Schedulers
 import me.shouheng.eyepetizer.databinding.EyepetizerActivityVideoDetailsBinding
 import me.shouheng.eyepetizer.vm.VideoDetailsViewModel
 import me.shouheng.mvvm.base.CommonActivity
-import me.shouheng.utils.stability.LogUtils
+import me.shouheng.mvvm.base.anno.ActivityConfiguration
+import me.shouheng.mvvm.base.anno.StatusBarConfiguration
+import me.shouheng.utils.stability.L
 import me.shouheng.utils.ui.ImageUtils
 
 /**
+ * Video play and message activity.
+ * 
  * @author WngShhng (shouheng2015@gmail.com)
  * @version 2019/7/7 14:16
  */
 @Route(path = "/eyepetizer/details")
+@ActivityConfiguration(
+    statusBarConfiguration = StatusBarConfiguration(
+        statusBarColor = Color.TRANSPARENT
+    )
+)
 class VideoDetailActivity : CommonActivity<EyepetizerActivityVideoDetailsBinding, VideoDetailsViewModel>() {
 
     companion object {
@@ -86,7 +96,7 @@ class VideoDetailActivity : CommonActivity<EyepetizerActivityVideoDetailsBinding
                     }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
                         binding.ivBg.setImageBitmap(it!!)
                     }, {
-                        LogUtils.e(it)
+                        L.e(it)
                     })
                     return true
                 }

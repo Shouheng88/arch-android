@@ -14,23 +14,27 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.umeng.analytics.MobclickAgent;
-import me.shouheng.mvvm.base.anno.FragmentConfiguration;
-import me.shouheng.mvvm.bus.Bus;
-import me.shouheng.mvvm.utils.Platform;
-import me.shouheng.utils.app.ActivityUtils;
-import me.shouheng.utils.permission.Permission;
-import me.shouheng.utils.permission.PermissionUtils;
-import me.shouheng.utils.permission.callback.OnGetPermissionCallback;
-import me.shouheng.utils.stability.LogUtils;
-import me.shouheng.utils.ui.ToastUtils;
 
 import java.lang.reflect.ParameterizedType;
 
+import me.shouheng.mvvm.base.anno.FragmentConfiguration;
+import me.shouheng.mvvm.base.anno.UmengConfiguration;
+import me.shouheng.mvvm.bus.Bus;
+import me.shouheng.mvvm.utils.Platform;
+import me.shouheng.utils.app.ActivityUtils;
+import me.shouheng.utils.constant.ActivityDirection;
+import me.shouheng.utils.permission.Permission;
+import me.shouheng.utils.permission.PermissionUtils;
+import me.shouheng.utils.permission.callback.OnGetPermissionCallback;
+import me.shouheng.utils.stability.L;
+import me.shouheng.utils.ui.ToastUtils;
+
 /**
- * The base common fragment implementation for MVVMs. Sample:
+ * The base common fragment implementation for MVVMs. Example:
  *
- * <code>
+ * <blockquote><pre>
  * @FragmentConfiguration(shareViewMode = true, useEventBus = true, layoutResId = R.layout.fragment_main)
  * class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
  *
@@ -40,14 +44,16 @@ import java.lang.reflect.ParameterizedType;
  *         addSubscriptions()
  *         initViews()
  *         vm.shareValue = ResUtils.getString(R.string.sample_main_shared_value_between_fragments)
- *         LogUtils.d(vm)
+ *         L.d(vm)
  *     }
  *
  *     // ...
  * }
- * </code>
+ * </pre>
+ * </blockquote>
  *
- * @author WngShhng 2019-6-29
+ * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @version 2019-6-29
  */
 public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseViewModel> extends Fragment {
 
@@ -59,10 +65,12 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
 
     private boolean useEventBus;
 
-    private boolean useUmengManaual = true;
-
     private int layoutResId;
 
+    /**
+     * Grouped values with {@link FragmentConfiguration#umengConfiguration()}.
+     */
+    private boolean useUmengManual = false;
     private String pageName;
 
     {
@@ -71,8 +79,10 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
             shareViewModel = configuration.shareViewMode();
             useEventBus = configuration.useEventBus();
             layoutResId = configuration.layoutResId();
-            pageName = TextUtils.isEmpty(configuration.pageName()) ? getClass().getSimpleName() : configuration.pageName();
-            useUmengManaual = configuration.useUmengManual();
+            UmengConfiguration umengConfiguration = configuration.umengConfiguration();
+            pageName = TextUtils.isEmpty(umengConfiguration.pageName()) ?
+                    getClass().getSimpleName() : umengConfiguration.pageName();
+            useUmengManual = umengConfiguration.useUmengManual();
         }
     }
 
@@ -176,6 +186,10 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
         ActivityUtils.start(this, activityClass, requestCode);
     }
 
+    protected void startActivity(@NonNull Class<? extends Activity> activityClass, int requestCode, @ActivityDirection int direction) {
+        ActivityUtils.start(this, activityClass, requestCode, direction);
+    }
+
     /**
      * Check single permission. For multiple permissions at the same time, call
      * {@link #checkPermissions(OnGetPermissionCallback, int...)}.
@@ -187,7 +201,7 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
         if (getActivity() instanceof CommonActivity) {
             PermissionUtils.checkPermissions((CommonActivity) getActivity(), onGetPermissionCallback, permission);
         } else {
-            LogUtils.w("Request permission failed due to the associated activity was not instance of CommonActivity");
+            L.w("Request permission failed due to the associated activity was not instance of CommonActivity");
         }
     }
 
@@ -201,7 +215,7 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
         if (getActivity() instanceof CommonActivity) {
             PermissionUtils.checkPermissions((CommonActivity) getActivity(), onGetPermissionCallback, permissions);
         } else {
-            LogUtils.w("Request permissions failed due to the associated activity was not instance of CommonActivity");
+            L.w("Request permissions failed due to the associated activity was not instance of CommonActivity");
         }
     }
 
@@ -224,7 +238,7 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
     @Override
     public void onResume() {
         super.onResume();
-        if (useUmengManaual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
+        if (useUmengManual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
             MobclickAgent.onPageStart(pageName);
         }
     }
@@ -237,7 +251,7 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
     @Override
     public void onPause() {
         super.onPause();
-        if (useUmengManaual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
+        if (useUmengManual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
             MobclickAgent.onPageEnd(pageName);
         }
     }

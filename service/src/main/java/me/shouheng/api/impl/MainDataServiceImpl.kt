@@ -5,7 +5,7 @@ import android.os.AsyncTask
 import com.alibaba.android.arouter.facade.annotation.Route
 import me.shouheng.api.sample.MainDataService
 import me.shouheng.api.sample.OnGetMainDataListener
-import me.shouheng.utils.stability.LogUtils
+import me.shouheng.utils.stability.L
 
 /**
  * 主界面数据加载服务实现
@@ -25,7 +25,7 @@ class MainDataServiceImpl : MainDataService {
     }
 
     override fun init(context: Context?) {
-        LogUtils.i(MainDataServiceImpl::class.java.name + " has init.")
+        L.i(MainDataServiceImpl::class.java.name + " has init.")
     }
 }
 

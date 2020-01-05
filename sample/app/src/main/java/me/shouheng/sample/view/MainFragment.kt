@@ -19,7 +19,7 @@ import me.shouheng.utils.app.ActivityUtils
 import me.shouheng.utils.app.ResUtils
 import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.data.StringUtils
-import me.shouheng.utils.stability.LogUtils
+import me.shouheng.utils.stability.L
 import me.shouheng.utils.store.PathUtils
 import org.greenrobot.eventbus.Subscribe
 import java.io.File
@@ -38,7 +38,7 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
         addSubscriptions()
         initViews()
         vm.shareValue = ResUtils.getString(R.string.sample_main_shared_value_between_fragments)
-        LogUtils.d(vm)
+        L.d(vm)
     }
 
     private fun addSubscriptions() {
@@ -87,7 +87,7 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
                     }
 
                     override fun onProgress(readLength: Long, contentLength: Long) {
-                        LogUtils.d("Download : onProgress $readLength/$contentLength")
+                        L.d("Download : onProgress $readLength/$contentLength")
                     }
 
                     override fun onComplete(file: File?) {
@@ -99,8 +99,10 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
             ActivityUtils.start(context!!, MainActivity::class.java)
         }
         binding.btnPref.setOnClickListener {
-            val sp = SamplePreference()
-            activity!!.fragmentManager.beginTransaction().replace(R.id.fragment_container, sp).addToBackStack("").commit()
+            ContainerActivity.openFragment(SamplePreference::class.java).launch(context!!)
+        }
+        binding.btnCrash.setOnClickListener {
+            1/0
         }
     }
 

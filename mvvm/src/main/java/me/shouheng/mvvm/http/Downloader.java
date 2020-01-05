@@ -7,12 +7,6 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresPermission;
-import me.shouheng.mvvm.http.interceptor.ProgressInterceptor;
-import me.shouheng.mvvm.http.interceptor.ProgressResponseCallback;
-import me.shouheng.utils.device.NetworkUtils;
-import me.shouheng.utils.stability.LogUtils;
-import me.shouheng.utils.store.IOUtils;
-import okhttp3.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +15,22 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
-import static android.Manifest.permission.*;
+import me.shouheng.mvvm.http.interceptor.ProgressInterceptor;
+import me.shouheng.mvvm.http.interceptor.ProgressResponseCallback;
+import me.shouheng.utils.device.NetworkUtils;
+import me.shouheng.utils.stability.L;
+import me.shouheng.utils.store.IOUtils;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
+import static android.Manifest.permission.ACCESS_NETWORK_STATE;
+import static android.Manifest.permission.ACCESS_WIFI_STATE;
+import static android.Manifest.permission.INTERNET;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 /**
  * The downloader used to download files from network. Sample
@@ -39,7 +48,7 @@ import static android.Manifest.permission.*;
  *         }
  *
  *         override fun onProgress(readLength: Long, contentLength: Long) {
- *             LogUtils.d("Download : onProgress $readLength/$contentLength")
+ *             L.d("Download : onProgress $readLength/$contentLength")
  *         }
  *
  *         override fun onComplete(file: File?) {
@@ -114,7 +123,7 @@ public final class Downloader {
             URL url = new URL(imgUrl);
             return new File(url.getFile()).getName();
         } catch (MalformedURLException ex) {
-            LogUtils.e(ex);
+            L.e(ex);
             return null;
         }
     }
@@ -170,7 +179,7 @@ public final class Downloader {
         this.downloadListener = downloadListener;
         this.url = url;
         this.filePath = filePath;
-        if (fileName == null) LogUtils.w("The parameter 'fileName' was null, timestamp will be used.");
+        if (fileName == null) L.w("The parameter 'fileName' was null, timestamp will be used.");
         this.fileName = fileName == null ? String.valueOf(System.currentTimeMillis()) : fileName;
 
         if (!NetworkUtils.isConnected()) {

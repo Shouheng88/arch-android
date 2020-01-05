@@ -7,7 +7,7 @@ import io.reactivex.schedulers.Schedulers
 import me.shouheng.api.eyepetizer.EyepetizerService
 import me.shouheng.api.eyepetizer.OnGetHomeBeansListener
 import me.shouheng.api.eyeptizer.APIRetrofit
-import me.shouheng.utils.stability.LogUtils
+import me.shouheng.utils.stability.L
 
 /**
  * @author WngShhng (shouheng2015@gmail.com)
@@ -23,7 +23,7 @@ class EyepetizerServiceImpl : EyepetizerService {
             .subscribe({
                 onGetHomeBeansListener.onGetHomeBean(it)
             }, {
-                LogUtils.e(it)
+                L.e(it)
             })
     }
 
@@ -34,7 +34,7 @@ class EyepetizerServiceImpl : EyepetizerService {
             .subscribe({
                 onGetHomeBeansListener.onGetHomeBean(it)
             }, {
-                LogUtils.e(it)
+                L.e(it)
             })
     }
 

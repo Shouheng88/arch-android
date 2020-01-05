@@ -11,7 +11,8 @@ import java.lang.annotation.Target;
 /**
  * The fragment configuration annotation.
  *
- * @author WngShhng 2019-6-29
+ * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @version 2019-6-29
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
@@ -46,17 +47,9 @@ public @interface FragmentConfiguration {
     @XmlRes int preferencesResId() default 0;
 
     /**
-     * The page name used for umeng etc. The activity or fragment class simple name will
-     * be used if you didn't set this value.
+     * Umeng configuration
      *
-     * @return page name
+     * @return umeng configuration
      */
-    String pageName() default "";
-
-    /**
-     * Whether the umeng analytics will be used.
-     *
-     * @return true if use umeng analytics
-     */
-    boolean useUmengManual() default true;
+    UmengConfiguration umengConfiguration() default @UmengConfiguration;
 }

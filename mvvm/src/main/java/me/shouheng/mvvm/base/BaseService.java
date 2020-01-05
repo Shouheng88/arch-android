@@ -7,7 +7,8 @@ import me.shouheng.mvvm.bus.Bus;
 /**
  * Base service to handle {@link ServiceConfiguration} annotation.
  *
- * @author WngShhng 2019-7-1
+ * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @version 2019-7-1
  */
 public abstract class BaseService extends Service {
 

@@ -3,6 +3,7 @@ package me.shouheng.mvvm.base;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -17,17 +18,19 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.umeng.analytics.MobclickAgent;
 
 import java.lang.reflect.ParameterizedType;
 
 import me.shouheng.mvvm.base.anno.ActivityConfiguration;
+import me.shouheng.mvvm.base.anno.StatusBarConfiguration;
 import me.shouheng.mvvm.base.anno.StatusBarMode;
+import me.shouheng.mvvm.base.anno.UmengConfiguration;
 import me.shouheng.mvvm.bus.Bus;
 import me.shouheng.mvvm.utils.Platform;
 import me.shouheng.utils.app.ActivityUtils;
+import me.shouheng.utils.constant.ActivityDirection;
 import me.shouheng.utils.permission.Permission;
 import me.shouheng.utils.permission.PermissionResultHandler;
 import me.shouheng.utils.permission.PermissionResultResolver;
@@ -35,12 +38,56 @@ import me.shouheng.utils.permission.PermissionUtils;
 import me.shouheng.utils.permission.callback.OnGetPermissionCallback;
 import me.shouheng.utils.permission.callback.PermissionResultCallback;
 import me.shouheng.utils.permission.callback.PermissionResultCallbackImpl;
+import me.shouheng.utils.ui.BarUtils;
 import me.shouheng.utils.ui.ToastUtils;
 
 /**
  * The basic common implementation for MMVMs activity.
  *
- * @author WngShhng
+ * Example:
+ * <blockquote><pre>
+ * @ActivityConfiguration(
+ *     useEventBus = false,
+ *     layoutResId = R.layout.activity_main,
+ *     statusBarConfiguration = StatusBarConfiguration(
+ *         statusBarMode = StatusBarMode.LIGHT,
+ *         statusBarColor = 0xdddddd
+ *     )
+ * )
+ * class MainActivity : CommonActivity<ActivityMainBinding, MainViewModel>() {
+ *
+ *     override fun doCreateView(savedInstanceState: Bundle?) {
+ *         addSubscriptions()
+ *         initViews()
+ *         vm.startLoad()
+ *     }
+ *
+ *     private fun addSubscriptions() {
+ *         vm.getObservable(String::class.java).observe(this, Observer {
+ *             when(it!!.status) {
+ *                 Status.SUCCESS -> { ToastUtils.showShort(it.data) }
+ *                 Status.FAILED -> { ToastUtils.showShort(it.message) }
+ *                 Status.LOADING -> { }
+ *                 else -> {}
+ *             }
+ *         })
+ *     }
+ *
+ *     private fun initViews() {
+ *         val fragment = MainFragment()
+ *         supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit()
+ *         setSupportActionBar(binding.toolbar)
+ *     }
+ *
+ *     @Subscribe
+ *     fun onGetMessage(simpleEvent: SimpleEvent) {
+ *         toast(StringUtils.format(R.string.sample_main_activity_received_msg, javaClass.simpleName, simpleEvent.msg))
+ *     }
+ * }
+ * </pre>
+ * </blockquote>
+ *
+ * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
  * @version 2019-6-29
  */
 public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseViewModel>
@@ -50,21 +97,22 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
 
     private T binding;
 
+    private int layoutResId;
     private boolean useEventBus = false;
-
     private boolean needLogin = true;
 
-    private boolean hasFragment = false;
-
-    private boolean useUmengManaual = true;
-
-    private int layoutResId;
-
-    @ColorInt private int statusBarColor = -1;
-
-    @StatusBarMode private int statusBarMode;
-
+    /**
+     * Grouped values with {@link ActivityConfiguration#umengConfiguration()}.
+     */
     private String pageName;
+    private boolean hasFragment = false;
+    private boolean useUmengManual = false;
+
+    /**
+     * Grouped values with {@link ActivityConfiguration#statusBarConfiguration()}.
+     */
+    @ColorInt private int statusBarColor = -1;
+    @StatusBarMode private int statusBarMode;
 
     private OnGetPermissionCallback onGetPermissionCallback;
 
@@ -74,11 +122,14 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
             useEventBus = configuration.useEventBus();
             needLogin = configuration.needLogin();
             layoutResId = configuration.layoutResId();
-            pageName = TextUtils.isEmpty(configuration.pageName()) ? getClass().getSimpleName() : configuration.pageName();
-            hasFragment = configuration.hasFragment();
-            useUmengManaual = configuration.useUmengManual();
-            statusBarMode = configuration.statuBarMode();
-            statusBarColor = configuration.statusBarColor();
+            UmengConfiguration umengConfiguration = configuration.umengConfiguration();
+            pageName = TextUtils.isEmpty(umengConfiguration.pageName()) ?
+                    getClass().getSimpleName() : umengConfiguration.pageName();
+            hasFragment = umengConfiguration.hasFragment();
+            useUmengManual = umengConfiguration.useUmengManual();
+            StatusBarConfiguration statusBarConfiguration = configuration.statusBarConfiguration();
+            statusBarMode = statusBarConfiguration.statusBarMode();
+            statusBarColor = statusBarConfiguration.statusBarColor();
         }
     }
 
@@ -114,10 +165,7 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
             Bus.get().register(this);
         }
         if (statusBarMode != StatusBarMode.DEFAULT) {
-            setStatusBarLightMode(statusBarMode == StatusBarMode.LIGHT);
-        }
-        if (statusBarColor != -1) {
-            setStatusBarColor(statusBarColor);
+            BarUtils.setStatusBarLightMode(this, statusBarMode == StatusBarMode.LIGHT);
         }
         super.onCreate(savedInstanceState);
         if (getLayoutResId() != 0) {
@@ -131,6 +179,9 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
         binding = DataBindingUtil.inflate(getLayoutInflater(), layoutResId, null, false);
         beforeSetContentView(savedInstanceState);
         setContentView(binding.getRoot());
+        if (statusBarColor != -1) {
+            BarUtils.setStatusBarColor(this, statusBarColor);
+        }
         doCreateView(savedInstanceState);
     }
 
@@ -215,6 +266,39 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
         ActivityUtils.start(this, activityClass, requestCode);
     }
 
+    protected void startActivity(@NonNull Class<? extends Activity> activityClass, int requestCode, @ActivityDirection int direction) {
+        ActivityUtils.start(this, activityClass, requestCode, direction);
+    }
+
+    /**
+     * To find view by id
+     *
+     * @param id  id
+     * @param <V> the view type
+     * @return    the view
+     */
+    protected <V extends View> V f(@IdRes int id) {
+        return findViewById(id);
+    }
+
+    /**
+     * Correspond to fragment's {@link Fragment#getContext()}
+     *
+     * @return context
+     */
+    protected Context getContext() {
+        return this;
+    }
+
+    /**
+     * Correspond to fragment's {@link Fragment#getActivity()}
+     *
+     * @return activity
+     */
+    protected Activity getActivity() {
+        return this;
+    }
+
     /**
      * Check single permission. For multiple permissions at the same time, call
      * {@link #checkPermissions(OnGetPermissionCallback, int...)}.
@@ -267,7 +351,7 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
     @Override
     protected void onResume() {
         super.onResume();
-        if (useUmengManaual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
+        if (useUmengManual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
             if (!hasFragment) {
                 MobclickAgent.onPageStart(pageName);
             }
@@ -284,7 +368,7 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
     @Override
     protected void onPause() {
         super.onPause();
-        if (useUmengManaual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
+        if (useUmengManual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
             if (!hasFragment) {
                 MobclickAgent.onPageEnd(pageName);
             }
@@ -307,20 +391,6 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
      */
     public void superOnBackPressed() {
         super.onBackPressed();
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    private void setStatusBarLightMode(boolean isLightMode) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
-        View decorView = getWindow().getDecorView();
-        int vis = decorView.getSystemUiVisibility();
-        if (isLightMode) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            vis |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-        } else {
-            vis &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-        }
-        decorView.setSystemUiVisibility(vis);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

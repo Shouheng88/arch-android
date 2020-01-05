@@ -2,15 +2,22 @@ package me.shouheng.sample
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Debug
 import android.support.multidex.MultiDexApplication
 import android.support.v4.content.ContextCompat
 import com.alibaba.android.arouter.launcher.ARouter
+import me.shouheng.mvvm.BuildConfig
 import me.shouheng.mvvm.MVVMs
+import me.shouheng.sample.view.MainActivity
+import me.shouheng.uix.page.CrashActivity
+import me.shouheng.utils.app.ActivityUtils
 import me.shouheng.utils.stability.CrashHelper
-import me.shouheng.utils.stability.LogUtils
+import me.shouheng.utils.stability.L
+import me.shouheng.utils.store.PathUtils
+import java.io.File
 
 /**
  * @author WngShhng 2019-6-29
@@ -32,7 +39,7 @@ class App : MultiDexApplication() {
         super.onCreate()
         // initialize mvvms
         MVVMs.onCreate(this)
-        // custom LogUtils, must be called after MVVMs.onCreate()
+        // custom L, must be called after MVVMs.onCreate()
         customLog()
         // custom ARouter
         customARouter()
@@ -41,7 +48,7 @@ class App : MultiDexApplication() {
     }
 
     private fun customLog() {
-        LogUtils.getConfig()
+        L.getConfig()
             .setLogSwitch(true)
             .setLogHeadSwitch(true)
             .setBorderSwitch(true)
@@ -59,9 +66,16 @@ class App : MultiDexApplication() {
     private fun customCrash() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             == PackageManager.PERMISSION_GRANTED) {
-            CrashHelper.init(this, "") { crashInfo, e ->
-                LogUtils.e(crashInfo)
-                LogUtils.e(e)
+            CrashHelper.init(this,
+                File(PathUtils.getExternalAppFilesPath(), "crash")
+            ) { crashInfo, _ ->
+                ActivityUtils.open(CrashActivity::class.java)
+                    .put(CrashActivity.EXTRA_KEY_CRASH_INFO, crashInfo)
+                    .put(CrashActivity.EXTRA_KEY_CRASH_IMAGE, R.drawable.uix_crash_error_image)
+                    .put(CrashActivity.EXTRA_KEY_RESTART_ACTIVITY, MainActivity::class.java)
+                    .put(CrashActivity.EXTRA_KEY_CRASH_TIPS, "Oops, crashed!")
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    .launch(this)
             }
         }
     }

@@ -11,6 +11,7 @@
     <string name="sample_main_download">测试下载文件</string>
     <string name="sample_main_launch_utils">进入工具类测试页面</string>
     <string name="sample_main_preferences">打开 Preference 页面</string>
+    <string name="sample_main_crash">崩一个</string>
     <string name="sample_main_shared_value_between_fragments">这是 MainFragment 与当前 Fragment 之间共享的值！</string>
     <string name="sample_main_send_one_message_by_event_bus">通过 EventBus 发送一个消息</string>
     <string name="sample_main_got_user">获取到用户信息：%s</string>
@@ -19,7 +20,7 @@
     <string name="menu_activity_helper">ActivityHelper</string>
     <string name="menu_permission_utils">PermissionUtils</string>
     <string name="menu_crash_utils">CrashHelper</string>
-    <string name="menu_log_utils">LogUtils</string>
+    <string name="menu_log_utils">L</string>
     <string name="menu_shell_utils">ShellUtils</string>
 
     <string name="activity_helper_web_intent">启动 http://www.baidu.com</string>

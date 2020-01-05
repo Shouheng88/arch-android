@@ -38,8 +38,8 @@ dependencies {
     implementation rootProject.ext.libraries['umeng-analytics']
 
     implementation rootProject.ext.libraries['okhttp']
-    implementation "me.shouheng.ui:uix-core:1.1.3"
-    api "me.shouheng.utils:utils-core:1.3.5"
+    implementation "me.shouheng.ui:uix-core:1.1.4"
+    api "me.shouheng.utils:utils-core:1.3.6"
     api "me.shouheng.compressor:compressor:1.3.1"
     implementation rootProject.ext.libraries['lifecycle-extensions']
     annotationProcessor rootProject.ext.libraries['lifecycle-compiler']

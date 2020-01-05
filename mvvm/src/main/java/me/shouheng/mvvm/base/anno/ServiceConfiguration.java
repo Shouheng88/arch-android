@@ -8,7 +8,8 @@ import java.lang.annotation.Target;
 /**
  * Configuration annotation for Android Service.
  *
- * @author WngShhng 2019-7-1
+ * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @version 2019-7-1
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

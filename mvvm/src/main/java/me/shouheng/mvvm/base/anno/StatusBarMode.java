@@ -19,17 +19,17 @@ import java.lang.annotation.Target;
 public @interface StatusBarMode {
 
     /**
-     * Default status bar color
+     * Default status bar color.
      */
     int DEFAULT     = 0;
 
     /**
-     * Light status bar
+     * Light mode: BLACK text on status bar.
      */
     int LIGHT       = 1;
 
     /**
-     * Dark status bar
+     * Dark mode: WHITE text on status bar.
      */
     int DARK        = 2;
 }

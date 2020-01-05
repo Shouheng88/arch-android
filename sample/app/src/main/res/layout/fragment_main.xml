@@ -47,6 +47,11 @@
                     android:text="@string/sample_main_preferences"
                     style="@style/MenuButton"/>
 
+            <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_crash"
+                    android:text="@string/sample_main_crash"
+                    style="@style/MenuButton"/>
+
         </LinearLayout>
 
     </android.support.design.widget.CoordinatorLayout>

@@ -5,7 +5,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import me.shouheng.api.bean.User
 import me.shouheng.api.sample.OnUserChangeListener
 import me.shouheng.api.sample.UserService
-import me.shouheng.utils.stability.LogUtils
+import me.shouheng.utils.stability.L
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
@@ -37,7 +37,7 @@ class UserServiceImpl : UserService {
     }
 
     override fun init(context: Context?) {
-        LogUtils.i(UserServiceImpl::class.java.name + " has init.")
+        L.i(UserServiceImpl::class.java.name + " has init.")
     }
 
 }

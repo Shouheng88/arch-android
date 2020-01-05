@@ -37,7 +37,7 @@ import me.shouheng.utils.UtilsApp;
  *         super.onCreate()
  *         // initialize mvvms
  *         MVVMs.onCreate(this)
- *         // custom LogUtils, must be called after MVVMs.onCreate()
+ *         // custom L, must be called after MVVMs.onCreate()
  *         customLog()
  *         // custom ARouter
  *         customARouter()
@@ -47,7 +47,7 @@ import me.shouheng.utils.UtilsApp;
  *     }
  *
  *     private fun customLog() {
- *         LogUtils.getConfig()
+ *         L.getConfig()
  *             .setLogSwitch(true)
  *             .setLogHeadSwitch(true)
  *             .setBorderSwitch(true)
@@ -66,8 +66,8 @@ import me.shouheng.utils.UtilsApp;
  *         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
  *             == PackageManager.PERMISSION_GRANTED) {
  *             CrashHelper.init(this, "") { crashInfo, e ->
- *                 LogUtils.e(crashInfo)
- *                 LogUtils.e(e)
+ *                 L.e(crashInfo)
+ *                 L.e(e)
  *             }
  *         }
  *     }

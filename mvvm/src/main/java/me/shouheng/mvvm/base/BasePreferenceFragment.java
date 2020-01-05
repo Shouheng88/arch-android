@@ -4,24 +4,29 @@ import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+
 import com.umeng.analytics.MobclickAgent;
+
+import java.lang.reflect.ParameterizedType;
+
 import me.shouheng.mvvm.base.anno.FragmentConfiguration;
+import me.shouheng.mvvm.base.anno.UmengConfiguration;
 import me.shouheng.mvvm.bus.Bus;
 import me.shouheng.mvvm.utils.Platform;
 import me.shouheng.utils.app.ActivityUtils;
+import me.shouheng.utils.app.ResUtils;
 import me.shouheng.utils.permission.Permission;
 import me.shouheng.utils.permission.PermissionUtils;
 import me.shouheng.utils.permission.callback.OnGetPermissionCallback;
-import me.shouheng.utils.stability.LogUtils;
+import me.shouheng.utils.stability.L;
 import me.shouheng.utils.ui.ToastUtils;
-
-import java.lang.reflect.ParameterizedType;
 
 /**
  * base preference fragment for mvvm
@@ -35,11 +40,13 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
 
     private boolean useEventBus;
 
-    private boolean useUmengManaual = true;
-
     private int preferencesResId;
 
+    /**
+     * Grouped values with {@link FragmentConfiguration#umengConfiguration()}.
+     */
     private String pageName;
+    private boolean useUmengManual = false;
 
     /**
      * Get preferences resources id.
@@ -55,8 +62,10 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
         if (configuration != null) {
             useEventBus = configuration.useEventBus();
             preferencesResId = configuration.preferencesResId();
-            pageName = TextUtils.isEmpty(configuration.pageName()) ? getClass().getSimpleName() : configuration.pageName();
-            useUmengManaual = configuration.useUmengManual();
+            UmengConfiguration umengConfiguration = configuration.umengConfiguration();
+            pageName = TextUtils.isEmpty(umengConfiguration.pageName()) ?
+                    getClass().getSimpleName() : umengConfiguration.pageName();
+            useUmengManual = umengConfiguration.useUmengManual();
         }
     }
 
@@ -154,7 +163,7 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
         if (getActivity() instanceof CommonActivity) {
             PermissionUtils.checkPermissions((CommonActivity) getActivity(), onGetPermissionCallback, permission);
         } else {
-            LogUtils.i("Request permission failed due to the associated activity was not instance of CommonActivity");
+            L.i("Request permission failed due to the associated activity was not instance of CommonActivity");
         }
     }
 
@@ -168,8 +177,22 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
         if (getActivity() instanceof CommonActivity) {
             PermissionUtils.checkPermissions((CommonActivity) getActivity(), onGetPermissionCallback, permissions);
         } else {
-            LogUtils.i("Request permissions failed due to the associated activity was not instance of CommonActivity");
+            L.i("Request permissions failed due to the associated activity was not instance of CommonActivity");
         }
+    }
+
+    /**
+     * Find preference from string resource key.
+     *
+     * @param keyRes preference key resources
+     * @return       preference
+     */
+    protected <T extends Preference> T f(@StringRes int keyRes) {
+        return (T) findPreference(ResUtils.getString(keyRes));
+    }
+
+    protected <T extends Preference> T f(CharSequence key) {
+        return (T) findPreference(key);
     }
 
     @Override
@@ -181,7 +204,7 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
     @Override
     public void onResume() {
         super.onResume();
-        if (useUmengManaual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
+        if (useUmengManual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
             MobclickAgent.onPageStart(pageName);
         }
     }
@@ -195,7 +218,7 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
     @Override
     public void onPause() {
         super.onPause();
-        if (useUmengManaual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
+        if (useUmengManual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
             MobclickAgent.onPageEnd(pageName);
         }
     }
