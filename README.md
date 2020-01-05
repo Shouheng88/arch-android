@@ -239,6 +239,9 @@ Bus.get().post()
 
 ## 4、更新日志
 
+- 版本 1.2.11
+    - 修改底层库的依赖关系
+    - ContainerActivity 增加 WebViewFragment 返回事件处理
 - 版本 1.2.9
     - utils 库升级到 1.3.6
     - 友盟和状态栏到配置从 ActivityConfiguration 注解中独立出来
