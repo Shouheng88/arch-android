@@ -14,7 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.shouheng.mvvm.base.anno.ViewModelConfiguration;
 import me.shouheng.mvvm.bean.Resources;
+import me.shouheng.mvvm.bus.Bus;
 
 /**
  * Basic implementation of common ViewModel.
@@ -31,8 +33,23 @@ public class BaseViewModel extends AndroidViewModel {
 
     private Map<Class, MutableLiveData> listLiveDataMap = new HashMap<>();
 
+    /**
+     * 当前 VM 是否使用 EventBus
+     */
+    private boolean useEventBus = false;
+
     public BaseViewModel(@NonNull Application application) {
         super(application);
+    }
+
+    {
+        ViewModelConfiguration configuration = this.getClass().getAnnotation(ViewModelConfiguration.class);
+        if (configuration != null) {
+            useEventBus = configuration.useEventBus();
+            if (useEventBus) {
+                Bus.get().register(this);
+            }
+        }
     }
 
     /**
@@ -106,5 +123,30 @@ public class BaseViewModel extends AndroidViewModel {
      */
     public void onDestroy() {
         // default no implementation
+    }
+
+    /**
+     * Post one event by EventBus
+     *
+     * @param event the event to post
+     */
+    protected void post(Object event) {
+        Bus.get().post(event);
+    }
+
+    /**
+     * Post one sticky event by EventBus
+     *
+     * @param event the sticky event
+     */
+    protected void postSticky(Object event) {
+        Bus.get().postSticky(event);
+    }
+
+    @Override
+    protected void onCleared() {
+        if (useEventBus) {
+            Bus.get().unregister(this);
+        }
     }
 }
