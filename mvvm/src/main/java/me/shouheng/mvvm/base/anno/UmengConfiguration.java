@@ -35,6 +35,6 @@ public @interface UmengConfiguration {
      *
      * @return true if use umeng analytics
      */
-    boolean useUmengManual() default true;
+    boolean useUmengManual() default false;
 
 }
