@@ -29,27 +29,39 @@ public final class Resources<T> {
     public final String message;
 
     /**
-     * Field for appendix for current resource.
+     * Appendix filed
      */
-    public final long udf1;
+    public final Long udf1;
 
     /**
-     * Field for appendix for current resource.
+     * Appendix filed
      */
-    public final double udf2;
+    public final Double udf2;
 
     /**
-     * Field for appendix for current resource.
+     * Appendix filed
      */
-    public final String udf3;
+    public final Boolean udf3;
 
     /**
-     * Field for appendix for current resource.
+     * Appendix filed
      */
-    public final Object udf4;
+    public final String udf4;
 
-    private Resources(Status status, T data, String code, String message,
-                      long udf1, double udf2, String udf3, Object udf4) {
+    /**
+     * Appendix filed
+     */
+    public final Object udf5;
+
+    private Resources(Status status,
+                      T data,
+                      String code,
+                      String message,
+                      Long udf1,
+                      Double udf2,
+                      Boolean udf3,
+                      String udf4,
+                      Object udf5) {
         this.status = status;
         this.data = data;
         this.code = code;
@@ -58,78 +70,91 @@ public final class Resources<T> {
         this.udf2 = udf2;
         this.udf3 = udf3;
         this.udf4 = udf4;
+        this.udf5 = udf5;
     }
 
     public static <U> Resources<U> success(U data) {
-        return new Resources<>(Status.SUCCESS, data, null, null, 0, 0, null, null);
+        return new Resources<>(Status.SUCCESS, data, null, null, null, null, false, null, null);
     }
 
     public static <U> Resources<U> success(U data, long udf1) {
-        return new Resources<>(Status.SUCCESS, data, null, null, udf1, 0, null, null);
+        return new Resources<>(Status.SUCCESS, data, null, null, udf1, null, false, null, null);
     }
 
     public static <U> Resources<U> success(U data, double udf2) {
-        return new Resources<>(Status.SUCCESS, data, null, null, 0, udf2, null, null);
+        return new Resources<>(Status.SUCCESS, data, null, null, null, udf2, false, null, null);
     }
 
-    public static <U> Resources<U> success(U data, String udf3) {
-        return new Resources<>(Status.SUCCESS, data, null, null, 0, 0, udf3, null);
+    public static <U> Resources<U> success(U data, boolean udf3) {
+        return new Resources<>(Status.SUCCESS, data, null, null, null, null, udf3, null, null);
     }
 
-    public static <U> Resources<U> success(U data, Object udf4) {
-        return new Resources<>(Status.SUCCESS, data, null, null, 0, 0, null, udf4);
+    public static <U> Resources<U> success(U data, String udf4) {
+        return new Resources<>(Status.SUCCESS, data, null, null, null, null, null, udf4, null);
     }
 
-    public static <U> Resources<U> success(U data, long udf1, double udf2, String udf3, Object udf4) {
-        return new Resources<>(Status.SUCCESS, data, null, null, udf1, udf2, udf3, udf4);
+    public static <U> Resources<U> success(U data, Object udf5) {
+        return new Resources<>(Status.SUCCESS, data, null, null, null, null, null, null, udf5);
+    }
+
+    public static <U> Resources<U> success(U data, Long udf1, Double udf2, Boolean udf3, String udf4, Object udf5) {
+        return new Resources<>(Status.SUCCESS, data, null, null, udf1, udf2, udf3, udf4, udf5);
     }
 
     public static <U> Resources<U> failed(String errorCode, String errorMessage) {
-        return new Resources<>(Status.FAILED, null, errorCode, errorMessage, 0, 0, null, null);
+        return new Resources<>(Status.FAILED, null, errorCode, errorMessage, null, null, null, null, null);
     }
 
     public static <U> Resources<U> failed(String errorCode, String errorMessage, long udf1) {
-        return new Resources<>(Status.FAILED, null, errorCode, errorMessage, udf1, 0, null, null);
+        return new Resources<>(Status.FAILED, null, errorCode, errorMessage, udf1, null, null, null, null);
     }
 
     public static <U> Resources<U> failed(String errorCode, String errorMessage, double udf2) {
-        return new Resources<>(Status.FAILED, null, errorCode, errorMessage, 0, udf2, null, null);
+        return new Resources<>(Status.FAILED, null, errorCode, errorMessage, null, udf2, null, null, null);
     }
 
-    public static <U> Resources<U> failed(String errorCode, String errorMessage, String udf3) {
-        return new Resources<>(Status.FAILED, null, errorCode, errorMessage, 0, 0, udf3, null);
+    public static <U> Resources<U> failed(String errorCode, String errorMessage, boolean udf3) {
+        return new Resources<>(Status.FAILED, null, errorCode, errorMessage, null, null, udf3, null, null);
     }
 
-    public static <U> Resources<U> failed(String errorCode, String errorMessage, Object udf4) {
-        return new Resources<>(Status.FAILED, null, errorCode, errorMessage, 0, 0, null, udf4);
+    public static <U> Resources<U> failed(String errorCode, String errorMessage, String udf4) {
+        return new Resources<>(Status.FAILED, null, errorCode, errorMessage, null, null, null, udf4, null);
     }
 
-    public static <U> Resources<U> failed(String errorCode, String errorMessage, long udf1, double udf2, String udf3, Object udf4) {
-        return new Resources<>(Status.FAILED, null, errorCode, errorMessage, udf1, udf2, udf3, udf4);
+    public static <U> Resources<U> failed(String errorCode, String errorMessage, Object udf5) {
+        return new Resources<>(Status.FAILED, null, errorCode, errorMessage, null, null, null, null, udf5);
+    }
+
+    public static <U> Resources<U> failed(String errorCode, String errorMessage, Long udf1, Double udf2, Boolean udf3, String udf4, Object udf5) {
+        return new Resources<>(Status.FAILED, null, errorCode, errorMessage, udf1, udf2, udf3, udf4, udf5);
     }
 
     public static <U> Resources<U> loading() {
-        return new Resources<>(Status.LOADING, null, null, null, 0, 0, null, null);
+        return new Resources<>(Status.LOADING, null, null, null, null, null, null, null, null);
     }
 
     public static <U> Resources<U> loading(long udf1) {
-        return new Resources<>(Status.LOADING, null, null, null, udf1, 0, null, null);
+        return new Resources<>(Status.LOADING, null, null, null, udf1, null, null, null, null);
     }
 
     public static <U> Resources<U> loading(double udf2) {
-        return new Resources<>(Status.LOADING, null, null, null, 0, udf2, null, null);
+        return new Resources<>(Status.LOADING, null, null, null, null, udf2, null, null, null);
     }
 
-    public static <U> Resources<U> loading(String udf3) {
-        return new Resources<>(Status.LOADING, null, null, null, 0, 0, udf3, null);
+    public static <U> Resources<U> loading(boolean udf3) {
+        return new Resources<>(Status.LOADING, null, null, null, null, null, udf3, null, null);
     }
 
-    public static <U> Resources<U> loading(Object udf4) {
-        return new Resources<>(Status.LOADING, null, null, null, 0, 0, null, udf4);
+    public static <U> Resources<U> loading(String udf4) {
+        return new Resources<>(Status.LOADING, null, null, null, null, null, null, udf4, null);
     }
 
-    public static <U> Resources<U> loading(long udf1, double udf2, String udf3, Object udf4) {
-        return new Resources<>(Status.LOADING, null, null, null, udf1, udf2, udf3, udf4);
+    public static <U> Resources<U> loading(Object udf5) {
+        return new Resources<>(Status.LOADING, null, null, null, null, null, null, null, udf5);
+    }
+
+    public static <U> Resources<U> loading(long udf1, double udf2, boolean udf3, String udf4, Object udf5) {
+        return new Resources<>(Status.LOADING, null, null, null, udf1, udf2, udf3, udf4, udf5);
     }
 
     @Override
@@ -143,6 +168,7 @@ public final class Resources<T> {
                 ", udf2=" + udf2 +
                 ", udf3='" + udf3 + '\'' +
                 ", udf4=" + udf4 +
+                ", udf5=" + udf5 +
                 '}';
     }
 }
