@@ -104,6 +104,9 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
         binding.btnCrash.setOnClickListener {
             1/0
         }
+        binding.btnVmPost.setOnClickListener {
+            vm.postMessage()
+        }
     }
 
     @Subscribe

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <FrameLayout android:padding="16dp"
             android:orientation="vertical"
@@ -14,8 +15,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
-        <android.support.v7.widget.AppCompatButton
+        <me.shouheng.uix.button.Button
                 android:id="@+id/btn_post"
+                app:btn_corner_radius="5dp"
                 android:text="@string/sample_main_send_one_message_by_event_bus"
                 style="@style/MenuButton"/>
 

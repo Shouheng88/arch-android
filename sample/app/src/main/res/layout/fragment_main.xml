@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
@@ -7,49 +8,70 @@
 
         <LinearLayout
                 android:orientation="vertical"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <android.support.v7.widget.AppCompatButton
+            <android.support.v7.widget.AppCompatTextView
+                    android:text="@string/sample_main_tips"
+                    android:padding="20dp"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <me.shouheng.uix.button.Button
                     android:id="@+id/btn_to_second"
+                    app:btn_corner_radius="5dp"
                     android:text="@string/sample_main_navigate_to_second"
                     style="@style/MenuButton"/>
 
-            <android.support.v7.widget.AppCompatButton
+            <me.shouheng.uix.button.Button
                     android:id="@+id/btn_request_user"
+                    app:btn_corner_radius="5dp"
                     android:text="@string/sample_main_request_user_data"
                     style="@style/MenuButton"/>
 
-            <android.support.v7.widget.AppCompatButton
+            <me.shouheng.uix.button.Button
                     android:id="@+id/btn_to_component_b"
+                    app:btn_corner_radius="5dp"
                     android:text="@string/sample_main_navigate_to_eyeptizer"
                     style="@style/MenuButton"/>
 
-            <android.support.v7.widget.AppCompatButton
+            <me.shouheng.uix.button.Button
                     android:id="@+id/btn_to_sample"
+                    app:btn_corner_radius="5dp"
                     android:text="@string/sample_main_navigate_to_sample"
                     style="@style/MenuButton"/>
 
-            <android.support.v7.widget.AppCompatButton
+            <me.shouheng.uix.button.Button
                     android:id="@+id/btn_download"
+                    app:btn_corner_radius="5dp"
                     android:text="@string/sample_main_download"
                     style="@style/MenuButton"/>
 
-            <android.support.v7.widget.AppCompatButton
+            <me.shouheng.uix.button.Button
                     android:id="@+id/btn_utils"
+                    app:btn_corner_radius="5dp"
                     android:visibility="gone"
                     android:text="@string/sample_main_launch_utils"
                     style="@style/MenuButton"/>
 
-            <android.support.v7.widget.AppCompatButton
+            <me.shouheng.uix.button.Button
                     android:id="@+id/btn_pref"
+                    app:btn_corner_radius="5dp"
                     android:text="@string/sample_main_preferences"
                     style="@style/MenuButton"/>
 
-            <android.support.v7.widget.AppCompatButton
+            <me.shouheng.uix.button.Button
                     android:id="@+id/btn_crash"
+                    app:btn_corner_radius="5dp"
                     android:text="@string/sample_main_crash"
+                    style="@style/MenuButton"/>
+
+            <me.shouheng.uix.button.Button
+                    android:id="@+id/btn_vm_post"
+                    app:btn_corner_radius="5dp"
+                    android:text="@string/sample_main_vm_post"
                     style="@style/MenuButton"/>
 
         </LinearLayout>

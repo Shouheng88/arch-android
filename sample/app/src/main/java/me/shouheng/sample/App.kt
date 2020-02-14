@@ -2,7 +2,6 @@ package me.shouheng.sample
 
 import android.Manifest
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Debug
@@ -12,8 +11,9 @@ import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.mvvm.BuildConfig
 import me.shouheng.mvvm.MVVMs
 import me.shouheng.sample.view.MainActivity
+import me.shouheng.uix.UIXConfig
 import me.shouheng.uix.page.CrashActivity
-import me.shouheng.utils.app.ActivityUtils
+import me.shouheng.utils.app.ResUtils
 import me.shouheng.utils.stability.CrashHelper
 import me.shouheng.utils.stability.L
 import me.shouheng.utils.store.PathUtils
@@ -45,6 +45,8 @@ class App : MultiDexApplication() {
         customARouter()
         // custom crash
         customCrash()
+        // custom UIX
+        customUIX()
     }
 
     private fun customLog() {
@@ -69,14 +71,18 @@ class App : MultiDexApplication() {
             CrashHelper.init(this,
                 File(PathUtils.getExternalAppFilesPath(), "crash")
             ) { crashInfo, _ ->
-                ActivityUtils.open(CrashActivity::class.java)
-                    .put(CrashActivity.EXTRA_KEY_CRASH_INFO, crashInfo)
-                    .put(CrashActivity.EXTRA_KEY_CRASH_IMAGE, R.drawable.uix_crash_error_image)
-                    .put(CrashActivity.EXTRA_KEY_RESTART_ACTIVITY, MainActivity::class.java)
-                    .put(CrashActivity.EXTRA_KEY_CRASH_TIPS, "Oops, crashed!")
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    .launch(this)
+                CrashActivity.Companion.Builder(this)
+                    .setButtonColor(ResUtils.getColor(R.color.cold_theme_accent))
+                    .setTips("Oops, crashed!")
+                    .setCrashImage(R.drawable.uix_crash_error_image)
+                    .setCrashInfo(crashInfo)
+                    .setRestartActivity(MainActivity::class.java)
+                    .launch()
             }
         }
+    }
+
+    private fun customUIX() {
+        UIXConfig.Button.normalColor = ResUtils.getColor(R.color.cold_theme_accent)
     }
 }

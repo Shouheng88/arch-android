@@ -8,6 +8,7 @@ import me.shouheng.api.sample.OnUserChangeListener
 import me.shouheng.api.sample.UserService
 import me.shouheng.mvvm.base.BaseViewModel
 import me.shouheng.mvvm.bean.Resources
+import me.shouheng.sample.event.SimpleEvent
 
 /**
  * 在 Fragment 之间共享的 ViewModel
@@ -34,6 +35,10 @@ class SharedViewModel(application: Application) : BaseViewModel(application), On
 
     fun requestUserData() {
         userService.requestUser()
+    }
+
+    fun postMessage() {
+        post(SimpleEvent("Message from SharedViewModel!"))
     }
 
     override fun onUserChanged(user: User) {
