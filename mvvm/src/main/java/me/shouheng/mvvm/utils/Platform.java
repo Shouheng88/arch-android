@@ -15,7 +15,7 @@ public class Platform {
         DEPENDENCY_ANDROID_EVENTBUS = findClassByClassName("org.simple.eventbus.EventBus");
         DEPENDENCY_EVENTBUS = findClassByClassName("org.greenrobot.eventbus.EventBus");
         DEPENDENCY_UMENG_ANALYTICS = findClassByClassName("com.umeng.analytics.MobclickAgent");
-        DEPENDENCY_UIX_ANALYTICS = findClassByClassName("me.shouheng.uix.UIX");
+        DEPENDENCY_UIX_ANALYTICS = findClassByClassName("me.shouheng.uix.common.UIX");
     }
 
     private static boolean findClassByClassName(String className) {

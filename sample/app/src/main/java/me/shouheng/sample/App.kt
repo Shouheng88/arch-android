@@ -1,18 +1,13 @@
 package me.shouheng.sample
 
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
-import android.os.Debug
 import android.support.multidex.MultiDexApplication
-import android.support.v4.content.ContextCompat
 import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.mvvm.BuildConfig
 import me.shouheng.mvvm.MVVMs
 import me.shouheng.sample.view.MainActivity
-import me.shouheng.uix.UIXConfig
-import me.shouheng.uix.page.CrashActivity
+import me.shouheng.uix.pages.CrashReportActivity
+import me.shouheng.uix.widget.button.NormalButton
 import me.shouheng.utils.app.ResUtils
 import me.shouheng.utils.stability.CrashHelper
 import me.shouheng.utils.stability.L
@@ -28,11 +23,11 @@ class App : MultiDexApplication() {
         super.attachBaseContext(base)
         // initialize mvvms
         MVVMs.attachBaseContext(base)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Debug.startMethodTracingSampling("trace_log", /*byte*/8*1024*1024, /*ms*/200)
-        } else {
-            Debug.startMethodTracing("trace_log")
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            Debug.startMethodTracingSampling("trace_log", /*byte*/8*1024*1024, /*ms*/200)
+//        } else {
+//            Debug.startMethodTracing("trace_log")
+//        }
     }
 
     override fun onCreate() {
@@ -66,23 +61,20 @@ class App : MultiDexApplication() {
     }
 
     private fun customCrash() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            == PackageManager.PERMISSION_GRANTED) {
-            CrashHelper.init(this,
-                File(PathUtils.getExternalAppFilesPath(), "crash")
-            ) { crashInfo, _ ->
-                CrashActivity.Companion.Builder(this)
-                    .setButtonColor(ResUtils.getColor(R.color.cold_theme_accent))
-                    .setTips("Oops, crashed!")
-                    .setCrashImage(R.drawable.uix_crash_error_image)
-                    .setCrashInfo(crashInfo)
-                    .setRestartActivity(MainActivity::class.java)
-                    .launch()
-            }
+        CrashHelper.init(this,
+            File(PathUtils.getExternalAppFilesPath(), "crash")
+        ) { crashInfo, _ ->
+            CrashReportActivity.Companion.Builder(this)
+                .setTitle("Oops, crashed!")
+                .setContent("Please the manger to report this issue.")
+                .setImage(R.drawable.uix_crash_error_image)
+                .setMessage(crashInfo)
+                .setRestartActivity(MainActivity::class.java)
+                .launch()
         }
     }
 
     private fun customUIX() {
-        UIXConfig.Button.normalColor = ResUtils.getColor(R.color.cold_theme_accent)
+        NormalButton.GlobalConfig.normalColor = ResUtils.getColor(R.color.cold_theme_accent)
     }
 }

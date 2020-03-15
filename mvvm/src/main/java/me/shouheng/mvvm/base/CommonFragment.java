@@ -197,7 +197,7 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
      * @param permission the permission to check
      * @param onGetPermissionCallback the callback when got the required permission
      */
-    protected void checkPermission(@Permission.PermissionCode int permission, OnGetPermissionCallback onGetPermissionCallback) {
+    protected void checkPermission(@Permission int permission, OnGetPermissionCallback onGetPermissionCallback) {
         if (getActivity() instanceof CommonActivity) {
             PermissionUtils.checkPermissions((CommonActivity) getActivity(), onGetPermissionCallback, permission);
         } else {
@@ -211,7 +211,7 @@ public abstract class CommonFragment<T extends ViewDataBinding, U extends BaseVi
      * @param onGetPermissionCallback the callback when got all permissions required.
      * @param permissions the permissions to request.
      */
-    protected void checkPermissions(OnGetPermissionCallback onGetPermissionCallback, @Permission.PermissionCode int...permissions) {
+    protected void checkPermissions(OnGetPermissionCallback onGetPermissionCallback, @Permission int...permissions) {
         if (getActivity() instanceof CommonActivity) {
             PermissionUtils.checkPermissions((CommonActivity) getActivity(), onGetPermissionCallback, permissions);
         } else {

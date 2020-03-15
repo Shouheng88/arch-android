@@ -306,7 +306,7 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
      * @param permission the permission to check
      * @param onGetPermissionCallback the callback when got the required permission
      */
-    protected void checkPermission(@Permission.PermissionCode int permission, OnGetPermissionCallback onGetPermissionCallback) {
+    protected void checkPermission(@Permission int permission, OnGetPermissionCallback onGetPermissionCallback) {
         PermissionUtils.checkPermissions(this, onGetPermissionCallback, permission);
     }
 
@@ -316,7 +316,7 @@ public abstract class CommonActivity<T extends ViewDataBinding, VM extends BaseV
      * @param onGetPermissionCallback the callback when got all permissions required.
      * @param permissions the permissions to request.
      */
-    protected void checkPermissions(OnGetPermissionCallback onGetPermissionCallback, @Permission.PermissionCode int...permissions) {
+    protected void checkPermissions(OnGetPermissionCallback onGetPermissionCallback, @Permission int...permissions) {
         PermissionUtils.checkPermissions(this, onGetPermissionCallback, permissions);
     }
 

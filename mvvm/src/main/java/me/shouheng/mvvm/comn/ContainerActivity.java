@@ -15,7 +15,7 @@ import me.shouheng.mvvm.R;
 import me.shouheng.mvvm.base.CommonActivity;
 import me.shouheng.mvvm.databinding.MvvmsActivityContainerBinding;
 import me.shouheng.mvvm.utils.Platform;
-import me.shouheng.uix.page.fragment.FragmentKeyDown;
+import me.shouheng.uix.pages.web.FragmentKeyDown;
 import me.shouheng.utils.app.ActivityUtils;
 import me.shouheng.utils.stability.L;
 
