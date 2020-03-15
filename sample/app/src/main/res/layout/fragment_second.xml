@@ -15,7 +15,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
-        <me.shouheng.uix.button.Button
+        <me.shouheng.uix.widget.button.NormalButton
                 android:id="@+id/btn_post"
                 app:btn_corner_radius="5dp"
                 android:text="@string/sample_main_send_one_message_by_event_bus"

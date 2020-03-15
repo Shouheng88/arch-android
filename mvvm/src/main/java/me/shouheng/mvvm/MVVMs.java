@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import me.shouheng.mvvm.utils.Platform;
-import me.shouheng.uix.UIX;
+import me.shouheng.uix.common.UIX;
 import me.shouheng.utils.UtilsApp;
 
 /**
