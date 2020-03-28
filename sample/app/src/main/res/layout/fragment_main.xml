@@ -20,6 +20,18 @@
                     android:layout_height="wrap_content"/>
 
             <me.shouheng.uix.widget.button.NormalButton
+                    android:id="@+id/btn_observable"
+                    app:btn_corner_radius="5dp"
+                    android:text="@string/sample_main_navigate_observable"
+                    style="@style/MenuButton"/>
+
+            <me.shouheng.uix.widget.button.NormalButton
+                    android:id="@+id/btn_observable_list"
+                    app:btn_corner_radius="5dp"
+                    android:text="@string/sample_main_navigate_observable_list"
+                    style="@style/MenuButton"/>
+
+            <me.shouheng.uix.widget.button.NormalButton
                     android:id="@+id/btn_to_second"
                     app:btn_corner_radius="5dp"
                     android:text="@string/sample_main_navigate_to_second"

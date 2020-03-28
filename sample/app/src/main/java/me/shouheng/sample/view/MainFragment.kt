@@ -50,6 +50,18 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
                 else -> {/* do nothing */ }
             }
         })
+        vm.getObservable(String::class.java, 0x0001).observe(this, Observer {
+            toast("#0x0001: ${it!!.data}")
+        })
+        vm.getObservable(String::class.java, 0x0002).observe(this, Observer {
+            toast("#0x0002: ${it!!.data}")
+        })
+        vm.getListObservable(String::class.java, 0x0001).observe(this, Observer {
+            toast("#0x0001: ${it!!.data}")
+        })
+        vm.getListObservable(String::class.java, 0x0002).observe(this, Observer {
+            toast("#0x0002: ${it!!.data}")
+        })
     }
 
     @SuppressLint("MissingPermission")
@@ -61,6 +73,24 @@ class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
                 ?.addToBackStack("Second")
                 ?.replace(R.id.fragment_container, fragment)
                 ?.commit()
+        }
+        binding.btnObservable.setOnClickListener {
+            if (it.tag == null) {
+                it.tag = "SSS"
+                vm.sendObservableFlag(0x0001)
+            } else {
+                it.tag = null
+                vm.sendObservableFlag(0x0002)
+            }
+        }
+        binding.btnObservableList.setOnClickListener {
+            if (it.tag == null) {
+                it.tag = "SSS"
+                vm.sendObservableListFlag(0x0001)
+            } else {
+                it.tag = null
+                vm.sendObservableListFlag(0x0002)
+            }
         }
         binding.btnRequestUser.setOnClickListener {
             vm.requestUserData()

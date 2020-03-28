@@ -41,6 +41,14 @@ class SharedViewModel(application: Application) : BaseViewModel(application), On
         post(SimpleEvent("Message from SharedViewModel!"))
     }
 
+    fun sendObservableFlag(flag: Int) {
+        getObservable(String::class.java, flag).value = Resources.success("Hello from Observable with flag!")
+    }
+
+    fun sendObservableListFlag(flag: Int) {
+        getListObservable(String::class.java, flag).value = Resources.success("Hello from list Observable with flag!")
+    }
+
     override fun onUserChanged(user: User) {
         getObservable(User::class.java).value = Resources.success(user)
     }

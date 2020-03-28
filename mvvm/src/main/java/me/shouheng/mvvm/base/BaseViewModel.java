@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.SparseArray;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,10 @@ public class BaseViewModel extends AndroidViewModel {
 
     private Map<Class, MutableLiveData> listLiveDataMap = new HashMap<>();
 
+    private Map<Class, SparseArray<MutableLiveData>> sparseIntArrayMap = new HashMap<>();
+
+    private Map<Class, SparseArray<MutableLiveData>> listSparseIntArrayMap = new HashMap<>();
+
     /**
      * 当前 VM 是否使用 EventBus
      */
@@ -56,8 +61,8 @@ public class BaseViewModel extends AndroidViewModel {
      * Get the LiveData of given type.
      *
      * @param dataType the data type.
-     * @param <T> the data type.
-     * @return the live data.
+     * @param <T>      the data type.
+     * @return         the live data.
      */
     public <T> MutableLiveData<Resources<T>> getObservable(Class<T> dataType) {
         MutableLiveData<Resources<T>> liveData = liveDataMap.get(dataType);
@@ -69,11 +74,33 @@ public class BaseViewModel extends AndroidViewModel {
     }
 
     /**
-     * Get live data of given list type.
+     * Get the LiveData of given type and flag
+     *
+     * @param dataType the data type
+     * @param flag     the flag
+     * @param <T>      the generic data type.
+     * @return         the live data.
+     */
+    public <T> MutableLiveData<Resources<T>> getObservable(Class<T> dataType, int flag) {
+        SparseArray<MutableLiveData> array = sparseIntArrayMap.get(dataType);
+        if (array == null) {
+            array = new SparseArray<>();
+            sparseIntArrayMap.put(dataType, array);
+        }
+        MutableLiveData<Resources<T>> liveData = array.get(flag);
+        if (liveData == null) {
+            liveData = new MutableLiveData<>();
+            array.put(flag, liveData);
+        }
+        return liveData;
+    }
+
+    /**
+     * Get the LiveData of given list type.
      *
      * @param dataType the data type of element in list.
-     * @param <T> the generic data type.
-     * @return the live data.
+     * @param <T>      the generic data type.
+     * @return         the live data.
      */
     public <T> MutableLiveData<Resources<List<T>>> getListObservable(Class<T> dataType) {
         MutableLiveData<Resources<List<T>>> liveData = listLiveDataMap.get(dataType);
@@ -85,10 +112,32 @@ public class BaseViewModel extends AndroidViewModel {
     }
 
     /**
+     * Get the LiveData of given list type and flag
+     *
+     * @param dataType the data type
+     * @param flag     the flag
+     * @param <T>      the generic data type.
+     * @return         the live data.
+     */
+    public <T> MutableLiveData<Resources<T>> getListObservable(Class<T> dataType, int flag) {
+        SparseArray<MutableLiveData> array = listSparseIntArrayMap.get(dataType);
+        if (array == null) {
+            array = new SparseArray<>();
+            listSparseIntArrayMap.put(dataType, array);
+        }
+        MutableLiveData<Resources<T>> liveData = array.get(flag);
+        if (liveData == null) {
+            liveData = new MutableLiveData<>();
+            array.put(flag, liveData);
+        }
+        return liveData;
+    }
+
+    /**
      * Called when the {@link android.support.v4.app.Fragment#onCreate(Bundle)}
      * or the {@link android.app.Activity#onCreate(Bundle)} was called.
      *
-     * @param extras extras from {@link Intent#getExtras()} of Activity, or {@link Fragment#getArguments()}.
+     * @param extras             extras from {@link Intent#getExtras()} of Activity, or {@link Fragment#getArguments()}.
      * @param savedInstanceState saved instance state
      */
     public void onCreate(Bundle extras, Bundle savedInstanceState) {
