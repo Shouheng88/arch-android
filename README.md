@@ -268,6 +268,7 @@ vm.getObservable(String::class.java, FLAG_ARTICLE_CONTENT)....
 1. Github: https://github.com/Shouheng88
 2. 掘金：https://juejin.im/user/585555e11b69e6006c907a2a
 3. CSDN：https://blog.csdn.net/github_35186068
+4. 简书：https://www.jianshu.com/u/e1ad842673e2
 
 ### 4.2 关于项目
 
@@ -277,8 +278,10 @@ vm.getObservable(String::class.java, FLAG_ARTICLE_CONTENT)....
 
 我们致力于为广大开发者和个人开发者提供快速开发应用的解决方案。您可以通过下面的渠道来支持我们的项目，
 
-<img src="images/ali.jpg" height="300">
-<img src="images/mm.png" height="300">
+<div style="display:flex;" id="target">
+<img src="images/ali.jpg" width="25%" />
+<img src="images/mm.png" style="margin-left:10px;" width="25%"/>
+</div>
 
 ## License
 
