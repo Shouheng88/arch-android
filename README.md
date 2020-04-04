@@ -1,27 +1,35 @@
-# MVVMs：Android Jetpack MVVM 基础框架
+# MVVMs：Android MVVM 快速开发框架
 
 ![SLicense](https://img.shields.io/hexpm/l/plug.svg)
 ![Version](https://img.shields.io/maven-metadata/v/https/dl.bintray.com/easymark/Android/me/shouheng/mvvm/mvvm-core/maven-metadata.xml.svg)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/412a91540f254721ac63757eeded9ba5)](https://www.codacy.com/manual/Shouheng88/Android-MVVMs?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Shouheng88/Android-MVVMs&amp;utm_campaign=Badge_Grade)
 [![Build Status](https://travis-ci.org/Shouheng88/Android-MVVMs.svg?branch=master)](https://travis-ci.org/Shouheng88/Android-MVVMs)
 
-该项目主要基于 Android Jetpack 中的 LiveData, ViewModel, Databinding, Lifecycle 等进行封装，提供了一个干净的框架来实现 Android 应用的快速开发。
+该项目提供了基于 Android Jetpack 的 LiveData、ViewModel、Databinding 和 Lifecycle 的 Android MVVM 快速开发框架，用来帮助开发者快速开发 Android 应用。该项目通过注解和泛型降低了集成 Jetpack 的难度，对 ViewModel 和 View 层的数据交互格式进行了封装，同时提供了应用开发过程所必需的其他开发组件。
 
-## 1、功能和特性
+## 1、主要的功能和特性
 
-作为一个 MVVM 框架，该项目的亮点在于：
+- 基于注解对 Activity 和 Fragment 等进行配置：相比于传统的赋值的方式，我们引入了注解解析，这样可以使各个功能类的配置信息一目了然。
 
-- 在该项目中，我们提出了基于注解对 Activity 和 Fragment 等进行配置的概念，你可以直接通过注解来将配置您的 Activity 来简化你的代码。
+- 对 ViewModel 进行了封装：用户可以直接通过实现 ViewModel 的方法来感知 Activity 等的生命周期的调用，可以直接从我们提供的方法中读取传入到 View 层的 Bundle 信息，这样你就无需手动从 Bundle 中读取并赋值给 ViewModel 了。
 
-- 我们对 ViewModel 进行了封装，你可以直接通过实现 ViewModel 的方法来感知 Activity 等的生命周期的调用，从而在各个生命周期里实现数据逻辑处理。
-- 在 ViewModel 和 View 层之间封装了 Resource 对象来规范两者之间数据交互的格式。
-- 在 ViewModel 中提供了一个 Hashmap 用来根据类型获取 LiveData，这样你甚至不需要手动创建 LiveData 就可以直接获取数据并进行监听，这使得你的代码更加简洁。
-- **最重要的，整个项目不仅包含 MVVM 框架的封装，它由三部分组成：MVVM 封装，工具类库收集和封装，常用的 UI 类库组件化封装。** 这三个库都是开源并且单独维护，目的就在于分别维护来对三个模块分别优化并丰富其内容。
-- 作为一个 MVVM 库，它的上手速度快，学习成本极低。
+- 规范了 ViewModel 和 View 层之间数据交互格式：封装了 Resource 对象，并且提供了一系列的便捷操作的方法。
+
+- 可以根据类型获取 LiveData 无需手动声明：你可以通过我们封装的 ViewModel 的方法直接获取 LiveData 对象并进行监听，无需手动声明变量，这将使你的代码更加简洁。
+
+- 提供了一个 Fragment 容器类：一个支持自定义指令的 ContainerActivity 用来打开简单的 Fragment。
+
+- 提供了 EventBus 封装：不论你使用的是 EventBus 还是 AndroidEventBus，用我们封装的类和方法都可以轻松发送和接收消息，你要做的仅仅是引入对应的依赖而已。
+
+- 上手快，学习成本低：在该库和示例代码中，我们并没有提供 DataBinding 相关的逻辑。该库重点解决的是 ViewModel 和 View 层的交互问题。因此，你只需要知道 LiveData 是两者之间交互的桥梁即可，上手成本非常低！
+
+- Android 开发完整的解决方案：该项目主要提供的是 MVVM 封装，此外，我们还提供了 Android 工具类，UI 类库组件化封装。这三个库都是开源并且单独维护，通过一系列标准化的类和方法来帮助开发者降低 Android 开发的难度。
 
 ## 2、在项目中引用
 
-在项目中接入我们的库是非常简单的。首先，在项目的 Gradle 中加入 jcenter仓库：
+### 2.1 引入 jcenter
+
+该库已经上传到了 jcenter 仓库。你需要在项目的 Gradle 中加入 jcenter 仓库：
 
 ```gradle
 repositories {
@@ -29,13 +37,17 @@ repositories {
 }
 ```
 
-然后在你的项目依赖中直接引用我们的库即可：
+### 2.2 添加项目依赖
+
+然后，在项目依赖中直接引用我们的库即可：
 
 ```gradle
 implementation 'me.shouheng.mvvm:mvvm-core:latest-version'
 ```
 
-然后，你需要在项目的自定义 Application 中对该类库进行初始化。你需要在两个地方调用 MVVMs 的静态方法。你无需担心它们的耗时问题，因为这里只是用来初始化 MVVM 中的一个全局的 Context。
+### 2.3 对类库进行初始化
+
+最后，在自定义 Application 中对 MVVMs 进行初始化。你只需要分别在 Application 的 `attachBaseContext()` 和 `onCreate()` 方法中调用 MVVMs 的对应方法即可。这样做只不过是为了我们在类库中方便调用全局的 Context，是不会给你的应用的性能带来额外的开销的。
 
 ```kotlin
 class App : Application() {
@@ -54,58 +66,72 @@ class App : Application() {
     }
 ```
 
-另外，在我们的框架中引用了我们的开源的工具库 [Android-utils](https://github.com/Shouheng88/Android-utils)，因此，如果你需要对该工具类库进行个性化的定制，你可以在 MVVMs 初始化之后进行配置。【具体内容可以参考该工具库的项目说明】
+## 3、各个功能模块的具体应用
 
-## 3、在项目中使用 MVVMs
+### 3.1 项目依赖关系
 
-在把该框架应用到您的项目之前还是先来了解一下，我们都为您准备了哪些功能。
+首先，我们从项目的依赖上面来看一下，该库功能构成。
 
-首先该项目的依赖关系是这样的：
-
-```gradle
-dependencies {
-    implementation rootProject.ext.support['appcompat-v7']
-    implementation rootProject.ext.libraries['EventBus']
-    implementation rootProject.ext.libraries['AndroidEventBus']
-
-    implementation rootProject.ext.libraries['umeng-common']
-    implementation rootProject.ext.libraries['umeng-analytics']
-
-    implementation rootProject.ext.libraries['okhttp']
-    api rootProject.ext.libraries['utils']
-    api rootProject.ext.libraries['compressor']
-    implementation rootProject.ext.libraries['lifecycle-extensions']
-    annotationProcessor rootProject.ext.libraries['lifecycle-compiler']
-}
+```groovy
+compileOnly "org.greenrobot:eventbus:3.1.1"
+compileOnly "org.simple:androideventbus:1.0.5.1"
+compileOnly "com.umeng.umsdk:common:1.5.4"
+compileOnly "com.umeng.umsdk:analytics:7.5.4"
+compileOnly "me.shouheng.ui:uix-core:1.3.3"
+api "me.shouheng.utils:utils-core:2.0"
+api "me.shouheng.compressor:compressor:1.3.1"
 ```
 
-也就是说，我们为您提供了
+也就是说，我们提供了对友盟、两种 EventBus 和 [AndroidUIX](https://github.com/Shouheng88/Android-uix) 组件库的支持。同时，提供了 [AndroidUtils](https://github.com/Shouheng88/Android-utils) 工具库和图片压缩工具库 [Compressor](https://github.com/Shouheng88/Compressor) 的实现。关于后面的两个库的使用，参考对应的文档即可，下文不再进行说明。
 
-- EventBus 的集成方案
-- 友盟统计分析的集成方案
-- 基于 OkHttp 的文件下载方案
-- 另外两个必选的：工具类库和图片压缩框架的方案
-- Android Jetpack 的集成方案
+### 3.2 项目的组成结构
 
-下面是这些方案的使用说明。
+然后，我们再具体看下项目的包结构：
 
-### 3.1 Android Jetpack 整合说明
+```
+/--mvvm
+    /--base     : 基础各个抽象的顶层类，自定义注解等
+    /--bean     : ViewModel 和 View 的数据交互格式
+    /--bus      : EventBus 的实现
+    /--comn     : 一个空的 ViewModel 以及一个容器 Activity
+    /--http     : 基于 okhttp 的下载工具类
+    /--utils    : 项目内部使用的一些工具类
+```
 
-使用 MVVMs 去定义一个 Activity 是下面这个样子：
+### 3.3 View ViewModel DataBindg 的整合示范
+
+按照之前的配置方式对 MVVMs 配置之后就可以实现我们的业务代码了。首先，我们看下 View ViewModel DataBindg 如何整合到一起的。
 
 ```kotlin
-@ActivityConfiguration(useEventBus = false, layoutResId = R.layout.activity_main,
-    statuBarMode = StatusBarMode.LIGHT, statusBarColor = 0xffffff)
+// 基于注解对 Activity 进行配置
+@ActivityConfiguration(
+    // 使用 EventBus
+    useEventBus = true,
+    // 指定布局文件
+    layoutResId = R.layout.activity_main,
+    // 对状态栏配置
+    statusBarConfiguration = StatusBarConfiguration(
+        statusBarMode = StatusBarMode.DARK,
+        statusBarColor = Color.BLACK
+    ),
+    // 对友盟进行配置
+    umengConfiguration = UmengConfiguration(
+        pageName = "MainActivity"
+    )
+)
 class MainActivity : CommonActivity<ActivityMainBinding, MainViewModel>() {
 
+    // 在这里实现自己的 ui 逻辑
     override fun doCreateView(savedInstanceState: Bundle?) {
         addSubscriptions()
         initViews()
         vm.startLoad()
     }
 
+    // 创建数据监听
     private fun addSubscriptions() {
         vm.getObservable(String::class.java).observe(this, Observer {
+            // 根据数据状态进行业务处理
             when(it!!.status) {
                 Status.SUCCESS -> {ToastUtils.showShort(it.data)}
                 Status.FAILED -> {ToastUtils.showShort(it.errorMessage)}
@@ -115,6 +141,7 @@ class MainActivity : CommonActivity<ActivityMainBinding, MainViewModel>() {
         })
     }
 
+    // 页面初始化
     private fun initViews() {
         val fragment = MainFragment()
         supportFragmentManager
@@ -123,54 +150,52 @@ class MainActivity : CommonActivity<ActivityMainBinding, MainViewModel>() {
             .commit()
     }
 
+    // 对 EvnetBus 抛出的事件进行处理
     @Subscribe
     fun onGetMessage(simpleEvent: SimpleEvent) {
         toast(StringUtils.format(R.string.sample_main_activity_received_msg, javaClass.simpleName, simpleEvent.msg))
     }
 }
+
+// ViewModel 的实现
+class MainViewModel(application: Application) : BaseViewModel(application) {
+
+    fun startLoad() {
+        // 获取 LiveData 并通知数据给 ui 层
+        getObservable(String::class.java).value = Resources.loading()
+        ARouter.getInstance().navigation(MainDataService::class.java)
+            ?.loadData(object : OnGetMainDataListener{
+                override fun onGetData() {
+                    // 通知结果数据给 ui 层
+                    getObservable(String::class.java).value = Resources.loading()
+                }
+            })
+    }
+}
 ```
 
-你可以通过注解来指定当前 Activity 的布局，是否使用 EventBus，状态栏的信息等。然后你需要在 CommonActivity 中传入两个类型，一个是 DataBinding 一个是 ViewModel. 在 CommonActivity 内部我们可以通过注解和泛型来获取布局和 ViewModel 的信息。所以，这样配置了之后你就可以直接通过 binding 和 vm 来分别获取 DataBinding 和 ViewModel 了。对于 CommonActivity，我们也在其中定义了一些常用的工具类方法，比如 Toast 和权限请求等，来方便你进行调用。
+根据上述示例，我们可以作如下结论：
 
-虽然布局与该框架无关，但是我强烈建议您按照下面的这样的方式去书写
+1. 我们通过注解来对 Activity 进行个性化配置，比如配置友盟、状态栏、布局和 EventBus 等。
+2. 自定义 Activity 应该继承 CommonActivity 并且需要传入 DataBinding 和 ViewModel 两个实例。要得到 DataBinding，你将布局的根目录替换为 `<layout>` 标签即可。
+3. 获取 LiveData 并对数据进行监听，根据数据的状态对业务逻辑进行处理。
 
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".view.MainActivity">
+### 3.4 从 ViewModel 中获取 LiveData
 
-    <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-</layout>
-```
-
-即通过 layout 标签进行定义，同时我强烈建议你不要把 ViewModel 注入到 Layout 当中。这可能是一个很好的创意，但是实践上会存在一些问题：
-
-1. 首先是编译的问题，直接把数据注入到 xml 当中可能会带来非常多的让人不愉快的异常。
-2. 其次，IDE 对于注入的检查功能没有那么强大，使用注入的方式可能会带来不运行时错误。
-3. 最后，Databinding 的功能并没有想象中的那么强大，它只能对数据进行简单的处理，如果数据过于复杂则不得不将部分逻辑置于 java 代码中。这就导致了一部分逻辑位于 xml 中，一部分逻辑位于 java 中。
-
-对于 Fragment，你也可以按照上面这样去通过注解的方式进行定义，具体可以参考示例代码。
-
-### 3.2 介绍下 ViewModel
-
-正如上面介绍的那样，我们的 ViewModel 为你提供了一些便捷的方法用来“感知” View 的生命周期：
+按照上述代码，我们 ViewModel 的实现看上去非常简洁，甚至没有声明任何全局变量就实现了跟 View 层的数据交换，这是怎么做到的呢？参考如下源代码：
 
 ```java
 public class BaseViewModel extends AndroidViewModel {
 
+    // 数据类型到 LiveData 的映射关系
     private Map<Class, MutableLiveData> liveDataMap = new HashMap<>();
-
-    private Map<Class, MutableLiveData> listLiveDataMap = new HashMap<>();
+    private Map<Class, SparseArray<MutableLiveData>> sparseIntArrayMap = new HashMap<>();
 
     public BaseViewModel(@NonNull Application application) {
         super(application);
     }
 
+    // 这里获取 LiveData 的时候本质上是一个单例的操作
     public <T> MutableLiveData<Resources<T>> getObservable(Class<T> dataType) {
         MutableLiveData<Resources<T>> liveData = liveDataMap.get(dataType);
         if (liveData == null) {
@@ -180,62 +205,37 @@ public class BaseViewModel extends AndroidViewModel {
         return liveData;
     }
 
-    public <T> MutableLiveData<Resources<List<T>>> getListObservable(Class<T> dataType) {
-        MutableLiveData<Resources<List<T>>> liveData = listLiveDataMap.get(dataType);
+    public <T> MutableLiveData<Resources<T>> getObservable(Class<T> dataType, int flag) {
+        SparseArray<MutableLiveData> array = sparseIntArrayMap.get(dataType);
+        if (array == null) {
+            array = new SparseArray<>();
+            sparseIntArrayMap.put(dataType, array);
+        }
+        MutableLiveData<Resources<T>> liveData = array.get(flag);
         if (liveData == null) {
             liveData = new MutableLiveData<>();
-            listLiveDataMap.put(dataType, liveData);
+            array.put(flag, liveData);
         }
         return liveData;
-    }
-
-    public void onCreate(Bundle extras, Bundle savedInstanceState) {
-        // default no implementation
-    }
-
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        // default no implementation
-    }
-
-    public void onDestroy() {
-        // default no implementation
     }
 }
 ```
 
-此外，我们通过定义了 liveDataMap 和 listLiveDataMap 两个哈希表来帮助你简化获取 LiveData 实例的过程。比如，当你希望得到一个 String 类型的 LiveData 的时候，你可以通过下面的方法进行获取
+这里的操作本质上是单例的运用，也就是从 Map 中获取指定类型对应的单例的 LiveData，获取不到就实例化一个并塞到 Map 中。
 
-```java
-vm.getObservable(String::class.java)
+也许你已经注意到了这里是 Class 到 LiveData 的映射，如果我存在同一个 Class，而我希望它们映射到多个 LiveData 怎么办呢？比如，当我获取一个文章的标题和内容数据监听的时候，标题和内容都是 String 类型，我怎么知道发生变化的是文章的内容还是标题呢？为了解决这个问题，我们提供了 `getObservable(Class<T>)` 的重载方法 `getObservable(Class<T>, int)`。这里增加了一个 int 类型的 flag 用来作区分。比如，获取获取文章标题和内容监听的时候可以这么写：
+
+```kotlin
+// 声明两个 flag
+val FLAG_ARTICLE_TITLE      = 0x0001
+val FLAG_ARTICLE_CONTENT    = 0x0002
+
+// 获取文章标题的数据监听
+vm.getObservable(String::class.java, FLAG_ARTICLE_TITLE)....
+
+// 获取文章内容的数据监听
+vm.getObservable(String::class.java, FLAG_ARTICLE_CONTENT)....
 ```
-
-在 ViewModel 内部，你通过上述方法来获取 LiveData 进行赋值，在 View 层同样通过上述方法来获取 LivaData 进行监听，这样就实现了 View 层和 ViewModel 的“连接”。另外，对于 List 类型的数据和普通的类型的数据，我们需要区别对待。比如当你希望得到 List<String> 类型的 LiveData 的时候，你应该调用 `vm.getListObservable(String::class.java)` 而不是 `vm.getObservable(String::class.java)`。这是因为 List<String> 类型会在运行时被擦除为 List，是无法区分其泛型的，因此我们单独定义了一个哈希表。
-
-### 3.3 EventBus 的使用
-
-对于 EventBus，你可以使用 greenrobot 的或者 androideventbus，两者有细微的区别。在我们的框架中，你是无需关注这些区别的。你可以通过注解中的 useEventBus 属性来指定当前的 View 需要使用 EventBus。然后你就可以直接通过
-
-```java
-Bus.get().post()
-```
-
-来发送消息。并通过注解 `@Subscribe` 来对事件进行监听：
-
-```java
-    @Subscribe
-    fun onGetMessage(simpleEvent: SimpleEvent) {
-        // ....
-    }
-```
-
-### 3.4 工具类库和图片压缩
-
-这两个库是与该框架一起“捆绑”的。这两个类库的地址分别是：
-
-1. https://github.com/Shouheng88/Compressor
-2. https://github.com/Shouheng88/Android-utils
-
-图片压缩框架整合了两种图片压缩方式来供你自由选择。与其他的框架不同，工具类库我们单独从框架中剥离了出来，以在后期不断对其进行丰富和优化。你可以通过参考这两个项目的说明来了解如何使用。
 
 ## 4、更新日志
 
