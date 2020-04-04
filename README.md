@@ -31,21 +31,21 @@
 
 ## 1、主要的功能和特性
 
-- 基于注解对 Activity 和 Fragment 等进行配置：相比于传统的赋值的方式，我们引入了注解解析，这样可以使各个功能类的配置信息一目了然。
+- **基于注解对 Activity 和 Fragment 等进行配置**：相比于传统的赋值的方式，我们引入了注解解析，这样可以使各个功能类的配置信息一目了然。
 
-- 对 ViewModel 进行了封装：用户可以直接通过实现 ViewModel 的方法来感知 Activity 等的生命周期的调用，可以直接从我们提供的方法中读取传入到 View 层的 Bundle 信息，这样你就无需手动从 Bundle 中读取并赋值给 ViewModel 了。
+- **对 ViewModel 进行了封装**：用户可以直接通过实现 ViewModel 的方法来感知 Activity 等的生命周期的调用，可以直接从我们提供的方法中读取传入到 View 层的 Bundle 信息，这样你就无需手动从 Bundle 中读取并赋值给 ViewModel 了。
 
-- 规范了 ViewModel 和 View 层之间数据交互格式：封装了 Resource 对象，并且提供了一系列的便捷操作的方法。
+- **规范了 ViewModel 和 View 层之间数据交互格式**：封装了 Resource 对象，并且提供了一系列的便捷操作的方法。
 
-- 可以根据类型获取 LiveData 无需手动声明：你可以通过我们封装的 ViewModel 的方法直接获取 LiveData 对象并进行监听，无需手动声明变量，这将使你的代码更加简洁。
+- **可以根据类型获取 LiveData 无需手动声明**：你可以通过我们封装的 ViewModel 的方法直接获取 LiveData 对象并进行监听，无需手动声明变量，这将使你的代码更加简洁。
 
-- 提供了一个 Fragment 容器类：一个支持自定义指令的 ContainerActivity 用来打开简单的 Fragment。
+- **提供了一个 Fragment 容器类**：一个支持自定义指令的 ContainerActivity 用来打开简单的 Fragment。
 
-- 提供了 EventBus 封装：不论你使用的是 EventBus 还是 AndroidEventBus，用我们封装的类和方法都可以轻松发送和接收消息，你要做的仅仅是引入对应的依赖而已。
+- **提供了 EventBus 封装**：不论你使用的是 EventBus 还是 AndroidEventBus，用我们封装的类和方法都可以轻松发送和接收消息，你要做的仅仅是引入对应的依赖而已。
 
-- 上手快，学习成本低：在该库和示例代码中，我们并没有提供 DataBinding 相关的逻辑。该库重点解决的是 ViewModel 和 View 层的交互问题。因此，你只需要知道 LiveData 是两者之间交互的桥梁即可，上手成本非常低！
+- **上手快，学习成本低**：在该库和示例代码中，我们并没有提供 DataBinding 相关的逻辑。该库重点解决的是 ViewModel 和 View 层的交互问题。因此，你只需要知道 LiveData 是两者之间交互的桥梁即可，上手成本非常低！
 
-- Android 开发完整的解决方案：该项目主要提供的是 MVVM 封装，此外，我们还提供了 Android 工具类，UI 类库组件化封装。这三个库都是开源并且单独维护，通过一系列标准化的类和方法来帮助开发者降低 Android 开发的难度。
+- **提供了 Android 开发完整的解决方案**：该项目主要提供的是 MVVM 封装，此外，我们还提供了 Android 工具类，UI 类库组件化封装。这三个库都是开源并且单独维护，通过一系列标准化的类和方法来帮助开发者降低 Android 开发的难度。
 
 ## 2、在项目中引用
 
