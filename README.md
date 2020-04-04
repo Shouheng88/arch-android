@@ -1,7 +1,7 @@
 ![banner](/images/banner.jpg)
 ![Offical](/images/offical.png)
 
-# MVVMs：Android MVVM 快速开发框架
+<h1 align="center">MVVMs：Android MVVM 快速开发框架</h1>
 
 <p align="center">
   <a href="http://www.apache.org/licenses/LICENSE-2.0">
