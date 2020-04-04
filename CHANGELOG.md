@@ -1,0 +1,12 @@
+- 版本 1.2.11
+    - 修改底层库的依赖关系
+    - ContainerActivity 增加 WebViewFragment 返回事件处理
+- 版本 1.2.9
+    - utils 库升级到 1.3.6
+    - 友盟和状态栏到配置从 ActivityConfiguration 注解中独立出来
+    - ContainerActivity 增加一些新的特性支持
+    - CommonActivity 等中增加了一些新的便利方法
+- 版本 1.2.5
+    - 稳定，增加了一些新的功能
+- 版本 1.1.0：
+    - 增加了基本的类库

@@ -1,9 +1,31 @@
+![banner](/images/banner.jpg)
+![Offical](/images/offical.png)
+
 # MVVMs：Android MVVM 快速开发框架
 
-![SLicense](https://img.shields.io/hexpm/l/plug.svg)
-![Version](https://img.shields.io/maven-metadata/v/https/dl.bintray.com/easymark/Android/me/shouheng/mvvm/mvvm-core/maven-metadata.xml.svg)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/412a91540f254721ac63757eeded9ba5)](https://www.codacy.com/manual/Shouheng88/Android-MVVMs?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Shouheng88/Android-MVVMs&amp;utm_campaign=Badge_Grade)
-[![Build Status](https://travis-ci.org/Shouheng88/Android-MVVMs.svg?branch=master)](https://travis-ci.org/Shouheng88/Android-MVVMs)
+<p align="center">
+  <a href="http://www.apache.org/licenses/LICENSE-2.0">
+    <img src="https://img.shields.io/hexpm/l/plug.svg" alt="License" />
+  </a>
+  <a href="https://bintray.com/beta/#/easymark/Android/mvvm-core?tab=overview">
+    <img src="https://img.shields.io/maven-metadata/v/https/dl.bintray.com/easymark/Android/me/shouheng/mvvm/mvvm-core/maven-metadata.xml.svg" alt="Version" />
+  </a>
+  <a href="https://www.codacy.com/manual/Shouheng88/Android-MVVMs?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Shouheng88/Android-MVVMs&amp;utm_campaign=Badge_Grade">
+    <img src="https://api.codacy.com/project/badge/Grade/412a91540f254721ac63757eeded9ba5" alt="Code Grade"/>
+  </a>
+  <a href="https://travis-ci.org/Shouheng88/Android-MVVMs">
+    <img src="https://travis-ci.org/Shouheng88/Android-MVVMs.svg?branch=master" alt="Build"/>
+  </a>
+    <a href="https://developer.android.com/about/versions/android-4.2.html">
+    <img src="https://img.shields.io/badge/API-17%2B-blue.svg?style=flat-square" alt="Min Sdk Version" />
+  </a>
+   <a href="https://github.com/Shouheng88">
+    <img src="https://img.shields.io/badge/Author-CodeBrick-orange.svg?style=flat-square" alt="Author" />
+  </a>
+  <a target="_blank" href="https://shang.qq.com/wpa/qunwpa?idkey=2711a5fa2e3ecfbaae34bd2cf2c98a5b25dd7d5cc56a3928abee84ae7a984253">
+    <img src="https://img.shields.io/badge/QQ%E7%BE%A4-1018235573-orange.svg?style=flat-square" alt="QQ Group" />
+  </a>
+</P>
 
 该项目提供了基于 Android Jetpack 的 LiveData、ViewModel、Databinding 和 Lifecycle 的 Android MVVM 快速开发框架，用来帮助开发者快速开发 Android 应用。该项目通过注解和泛型降低了集成 Jetpack 的难度，对 ViewModel 和 View 层的数据交互格式进行了封装，同时提供了应用开发过程所必需的其他开发组件。
 
@@ -237,22 +259,9 @@ vm.getObservable(String::class.java, FLAG_ARTICLE_TITLE)....
 vm.getObservable(String::class.java, FLAG_ARTICLE_CONTENT)....
 ```
 
-## 4、更新日志
+## 4、关于
 
-- 版本 1.2.11
-    - 修改底层库的依赖关系
-    - ContainerActivity 增加 WebViewFragment 返回事件处理
-- 版本 1.2.9
-    - utils 库升级到 1.3.6
-    - 友盟和状态栏到配置从 ActivityConfiguration 注解中独立出来
-    - ContainerActivity 增加一些新的特性支持
-    - CommonActivity 等中增加了一些新的便利方法
-- 版本 1.2.5
-    - 稳定，增加了一些新的功能
-- 版本 1.1.0：
-    - 增加了基本的类库
-
-## 5、关于作者
+### 4.1 关于作者
 
 你可以通过访问下面的链接来获取作者的信息：
 
@@ -260,10 +269,21 @@ vm.getObservable(String::class.java, FLAG_ARTICLE_CONTENT)....
 2. 掘金：https://juejin.im/user/585555e11b69e6006c907a2a
 3. CSDN：https://blog.csdn.net/github_35186068
 
+### 4.2 关于项目
+
+- [更新日志](CHANGELOG.md)
+
+## 5、捐赠项目
+
+我们致力于为广大开发者和个人开发者提供快速开发应用的解决方案。您可以通过下面的渠道来支持我们的项目，
+
+<img src="images/ali.jpg" height="300">
+<img src="images/mm.png" height="300">
+
 ## License
 
 ```
-Copyright (c) 2019 WngShhng.
+Copyright (c) 2019-2020 CodeBrick.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
