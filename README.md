@@ -94,15 +94,7 @@ class App : Application() {
 
 首先，我们从项目的依赖上面来看一下，该库功能构成。
 
-```groovy
-compileOnly "org.greenrobot:eventbus:3.1.1"
-compileOnly "org.simple:androideventbus:1.0.5.1"
-compileOnly "com.umeng.umsdk:common:1.5.4"
-compileOnly "com.umeng.umsdk:analytics:7.5.4"
-compileOnly "me.shouheng.ui:uix-core:1.3.3"
-api "me.shouheng.utils:utils-core:2.0"
-api "me.shouheng.compressor:compressor:1.3.1"
-```
+![依赖关系](images/mvvm_dependence.png)
 
 也就是说，我们提供了对友盟、两种 EventBus 和 [AndroidUIX](https://github.com/Shouheng88/Android-uix) 组件库的支持。同时，提供了 [AndroidUtils](https://github.com/Shouheng88/Android-utils) 工具库和图片压缩工具库 [Compressor](https://github.com/Shouheng88/Compressor) 的实现。关于后面的两个库的使用，参考对应的文档即可，下文不再进行说明。
 
