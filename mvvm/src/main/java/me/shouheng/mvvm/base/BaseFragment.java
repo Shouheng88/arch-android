@@ -4,14 +4,15 @@ import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.annotation.XmlRes;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.umeng.analytics.MobclickAgent;
 
@@ -22,7 +23,7 @@ import me.shouheng.mvvm.base.anno.UmengConfiguration;
 import me.shouheng.mvvm.bus.Bus;
 import me.shouheng.mvvm.utils.Platform;
 import me.shouheng.utils.app.ActivityUtils;
-import me.shouheng.utils.app.ResUtils;
+import me.shouheng.utils.constant.ActivityDirection;
 import me.shouheng.utils.permission.Permission;
 import me.shouheng.utils.permission.PermissionUtils;
 import me.shouheng.utils.permission.callback.OnGetPermissionCallback;
@@ -30,34 +31,47 @@ import me.shouheng.utils.stability.L;
 import me.shouheng.utils.ui.ToastUtils;
 
 /**
- * base preference fragment for mvvm
+ * The base common fragment implementation for MVVMs. Example:
+ *
+ * <blockquote><pre>
+ * @FragmentConfiguration(shareViewMode = true, useEventBus = true, layoutResId = R.layout.fragment_main)
+ * class MainFragment : CommonFragment<FragmentMainBinding, SharedViewModel>() {
+ *
+ *     private val downloadUrl = "https://dldir1.qq.com/music/clntupate/QQMusic_YQQFloatLayer.exe"
+ *
+ *     override fun doCreateView(savedInstanceState: Bundle?) {
+ *         addSubscriptions()
+ *         initViews()
+ *         vm.shareValue = ResUtils.getString(R.string.sample_main_shared_value_between_fragments)
+ *         L.d(vm)
+ *     }
+ *
+ *     // ...
+ * }
+ * </pre>
+ * </blockquote>
  *
  * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
- * @version 2019-10-02 13:15
+ * @version 2019-6-29
  */
-public abstract class BasePreferenceFragment<U extends BaseViewModel> extends PreferenceFragment  {
+public abstract class BaseFragment<U extends BaseViewModel> extends Fragment {
 
     private U vm;
+
+    private boolean shareViewModel;
 
     private boolean useEventBus;
 
     /**
      * Grouped values with {@link FragmentConfiguration#umengConfiguration()}.
      */
-    private String pageName;
     private boolean useUmengManual = false;
-
-    /**
-     * Get preferences resources id.
-     *
-     * @return preferences resources id
-     */
-    @XmlRes
-    protected abstract int getPreferencesResId();
+    private String pageName;
 
     {
         FragmentConfiguration configuration = this.getClass().getAnnotation(FragmentConfiguration.class);
         if (configuration != null) {
+            shareViewModel = configuration.shareViewModel();
             useEventBus = configuration.useEventBus();
             UmengConfiguration umengConfiguration = configuration.umengConfiguration();
             pageName = TextUtils.isEmpty(umengConfiguration.pageName()) ?
@@ -66,21 +80,13 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
         }
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        if (useEventBus) {
-            Bus.get().register(this);
-        }
-        vm = createViewModel();
-        vm.onCreate(getArguments(), savedInstanceState);
-        super.onCreate(savedInstanceState);
-        int preferencesResId = getPreferencesResId();
-        if (preferencesResId <= 0) {
-            throw new IllegalArgumentException("The subclass must provider a valid preference resources id.");
-        }
-        addPreferencesFromResource(preferencesResId);
-        doCreateView(savedInstanceState);
-    }
+    /**
+     * Get the layout resource id from subclass.
+     *
+     * @return layout resource id.
+     */
+    @LayoutRes
+    protected abstract int getLayoutResId();
 
     /**
      * Do create view business.
@@ -100,7 +106,23 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
      */
     protected U createViewModel() {
         Class<U> vmClass = ((Class)((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
-        return ViewModelProviders.of((FragmentActivity) getActivity()).get(vmClass);
+        if (shareViewModel) {
+            return ViewModelProviders.of(getActivity()).get(vmClass);
+        } else {
+            return ViewModelProviders.of(this).get(vmClass);
+        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        int layoutResId = getLayoutResId();
+        if (layoutResId <= 0) {
+            throw new IllegalArgumentException("The subclass must provider a valid layout resources id.");
+        }
+        View root = LayoutInflater.from(getContext()).inflate(layoutResId, null, false);
+        doCreateView(savedInstanceState);
+        return root;
     }
 
     protected U getVM() {
@@ -144,7 +166,15 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
      * @param clz the activity
      */
     protected void startActivity(@NonNull Class<? extends Activity> clz) {
-        ActivityUtils.start(getActivity(), clz);
+        ActivityUtils.start(getContext(), clz);
+    }
+
+    protected void startActivity(@NonNull Class<? extends Activity> activityClass, int requestCode) {
+        ActivityUtils.start(this, activityClass, requestCode);
+    }
+
+    protected void startActivity(@NonNull Class<? extends Activity> activityClass, int requestCode, @ActivityDirection int direction) {
+        ActivityUtils.start(this, activityClass, requestCode, direction);
     }
 
     /**
@@ -158,7 +188,7 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
         if (getActivity() instanceof CommonActivity) {
             PermissionUtils.checkPermissions((CommonActivity) getActivity(), onGetPermissionCallback, permission);
         } else {
-            L.i("Request permission failed due to the associated activity was not instance of CommonActivity");
+            L.w("Request permission failed due to the associated activity was not instance of CommonActivity");
         }
     }
 
@@ -172,22 +202,18 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
         if (getActivity() instanceof CommonActivity) {
             PermissionUtils.checkPermissions((CommonActivity) getActivity(), onGetPermissionCallback, permissions);
         } else {
-            L.i("Request permissions failed due to the associated activity was not instance of CommonActivity");
+            L.w("Request permissions failed due to the associated activity was not instance of CommonActivity");
         }
     }
 
-    /**
-     * Find preference from string resource key.
-     *
-     * @param keyRes preference key resources
-     * @return       preference
-     */
-    protected <T extends Preference> T f(@StringRes int keyRes) {
-        return (T) findPreference(ResUtils.getString(keyRes));
-    }
-
-    protected <T extends Preference> T f(CharSequence key) {
-        return (T) findPreference(key);
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        if (useEventBus) {
+            Bus.get().register(this);
+        }
+        vm = createViewModel();
+        vm.onCreate(getArguments(), savedInstanceState);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -206,7 +232,6 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         vm.onActivityResult(requestCode, resultCode, data);
     }
 

@@ -12,8 +12,10 @@ import me.shouheng.utils.app.ResUtils
  * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
  * @version 2019-10-02 13:30
  */
-@FragmentConfiguration(preferencesResId = R.xml.preferences)
+@FragmentConfiguration()
 class SamplePreference : BasePreferenceFragment<EmptyViewModel>() {
+
+    override fun getPreferencesResId(): Int = R.xml.preferences
 
     override fun doCreateView(savedInstanceState: Bundle?) {
     }

@@ -15,8 +15,10 @@ import me.shouheng.utils.stability.L
  *
  * @author WngShhng 2019-6-29
  */
-@FragmentConfiguration(shareViewMode = true, layoutResId = R.layout.fragment_second)
-class SecondFragment : CommonFragment<FragmentSecondBinding, SharedViewModel>() {
+@FragmentConfiguration(shareViewModel = true)
+class SecondFragment : CommonFragment<SharedViewModel, FragmentSecondBinding>() {
+
+    override fun getLayoutResId(): Int = R.layout.fragment_second
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         L.d(vm)

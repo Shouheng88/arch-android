@@ -12,8 +12,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import me.shouheng.mvvm.R;
-import me.shouheng.mvvm.base.CommonActivity;
-import me.shouheng.mvvm.databinding.MvvmsActivityContainerBinding;
+import me.shouheng.mvvm.base.BaseActivity;
 import me.shouheng.mvvm.utils.Platform;
 import me.shouheng.uix.pages.web.FragmentKeyDown;
 import me.shouheng.utils.app.ActivityUtils;
@@ -37,7 +36,7 @@ import me.shouheng.utils.stability.L;
  *
  * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
  */
-public class ContainerActivity extends CommonActivity<MvvmsActivityContainerBinding, EmptyViewModel> {
+public class ContainerActivity extends BaseActivity<EmptyViewModel> {
 
     /**
      * Global command handler.

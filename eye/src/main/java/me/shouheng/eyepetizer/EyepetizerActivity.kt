@@ -13,9 +13,6 @@ import me.shouheng.api.bean.Item
 import me.shouheng.eyepetizer.databinding.ActivityEyepetizerBinding
 import me.shouheng.eyepetizer.vm.EyepetizerViewModel
 import me.shouheng.mvvm.base.CommonActivity
-import me.shouheng.mvvm.base.anno.ActivityConfiguration
-import me.shouheng.mvvm.base.anno.StatusBarConfiguration
-import me.shouheng.mvvm.base.anno.StatusBarMode
 import me.shouheng.mvvm.bean.Status
 import me.shouheng.utils.app.ActivityUtils
 import me.shouheng.utils.constant.ActivityDirection
@@ -27,8 +24,7 @@ import me.shouheng.utils.stability.L
  * @author WngShhng 2019-07-06
  */
 @Route(path = "/eyepetizer/main")
-@ActivityConfiguration(statusBarConfiguration = StatusBarConfiguration(statusBarMode = StatusBarMode.LIGHT))
-class EyepetizerActivity : CommonActivity<ActivityEyepetizerBinding, EyepetizerViewModel>() {
+class EyepetizerActivity : CommonActivity<EyepetizerViewModel, ActivityEyepetizerBinding>() {
 
     private lateinit var adapter: HomeAdapter
     private var loading : Boolean = false

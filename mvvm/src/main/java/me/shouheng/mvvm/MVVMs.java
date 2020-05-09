@@ -1,7 +1,6 @@
 package me.shouheng.mvvm;
 
 import android.app.Application;
-import android.content.Context;
 
 import me.shouheng.mvvm.utils.Platform;
 import me.shouheng.uix.common.UIX;
@@ -92,15 +91,6 @@ public final class MVVMs {
                     "method on your custom application first.");
         }
         return app;
-    }
-
-    /**
-     * Call this method in your custom {@link Application#attachBaseContext(Context)}
-     *
-     * @param context the context
-     */
-    public static void attachBaseContext(Context context) {
-        // no-op
     }
 
     /**

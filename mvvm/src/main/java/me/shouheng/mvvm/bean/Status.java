@@ -10,15 +10,21 @@ public enum Status {
     /**
      * status success
      */
-    SUCCESS,
+    SUCCESS(0),
 
     /**
      * status failed
      */
-    FAILED,
+    FAILED(1),
 
     /**
      * status loading
      */
-    LOADING
+    LOADING(2);
+
+    public final int id;
+
+    Status(int id) {
+        this.id = id;
+    }
 }

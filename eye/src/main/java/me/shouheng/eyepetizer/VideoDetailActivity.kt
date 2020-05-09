@@ -1,7 +1,6 @@
 package me.shouheng.eyepetizer
 
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.os.Bundle
 import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -19,7 +18,6 @@ import me.shouheng.eyepetizer.databinding.EyepetizerActivityVideoDetailsBinding
 import me.shouheng.eyepetizer.vm.VideoDetailsViewModel
 import me.shouheng.mvvm.base.CommonActivity
 import me.shouheng.mvvm.base.anno.ActivityConfiguration
-import me.shouheng.mvvm.base.anno.StatusBarConfiguration
 import me.shouheng.utils.stability.L
 import me.shouheng.utils.ui.ImageUtils
 
@@ -30,12 +28,8 @@ import me.shouheng.utils.ui.ImageUtils
  * @version 2019/7/7 14:16
  */
 @Route(path = "/eyepetizer/details")
-@ActivityConfiguration(
-    statusBarConfiguration = StatusBarConfiguration(
-        statusBarColor = Color.TRANSPARENT
-    )
-)
-class VideoDetailActivity : CommonActivity<EyepetizerActivityVideoDetailsBinding, VideoDetailsViewModel>() {
+@ActivityConfiguration()
+class VideoDetailActivity : CommonActivity<VideoDetailsViewModel, EyepetizerActivityVideoDetailsBinding>() {
 
     companion object {
         const val EXTRA_ITEM = "video_details_item"

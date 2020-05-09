@@ -1,7 +1,5 @@
 package me.shouheng.mvvm.base.anno;
 
-import android.support.annotation.LayoutRes;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -32,23 +30,9 @@ public @interface ActivityConfiguration {
     boolean needLogin() default true;
 
     /**
-     * Get layout resource id.
-     *
-     * @return the layout resource id.
-     */
-    @LayoutRes int layoutResId() default 0;
-
-    /**
      * Umeng configuration, use default value.
      *
      * @return umeng configuration
      */
-    UmengConfiguration umengConfiguration() default @UmengConfiguration;
-
-    /**
-     * Status bar configuration, use default value.
-     *
-     * @return status bar configuration
-     */
-    StatusBarConfiguration statusBarConfiguration() default @StatusBarConfiguration;
+    UmengConfiguration umeng() default @UmengConfiguration;
 }

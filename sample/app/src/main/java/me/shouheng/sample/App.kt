@@ -21,8 +21,6 @@ class App : MultiDexApplication() {
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
-        // initialize mvvms
-        MVVMs.attachBaseContext(base)
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            Debug.startMethodTracingSampling("trace_log", /*byte*/8*1024*1024, /*ms*/200)
 //        } else {

@@ -1,8 +1,5 @@
 package me.shouheng.mvvm.base.anno;
 
-import android.support.annotation.LayoutRes;
-import android.support.annotation.XmlRes;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -23,7 +20,7 @@ public @interface FragmentConfiguration {
      *
      * @return true to share
      */
-    boolean shareViewMode() default false;
+    boolean shareViewModel() default false;
 
     /**
      * Will the event bus will be used in this view.
@@ -31,20 +28,6 @@ public @interface FragmentConfiguration {
      * @return true if you want to use event bus.
      */
     boolean useEventBus() default false;
-
-    /**
-     * Get layout resource id.
-     *
-     * @return the layout resource id.
-     */
-    @LayoutRes int layoutResId() default 0;
-
-    /**
-     * Get references resource id for {@link android.preference.PreferenceFragment}.
-     *
-     * @return preference resource id
-     */
-    @XmlRes int preferencesResId() default 0;
 
     /**
      * Umeng configuration
