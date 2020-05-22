@@ -5,12 +5,6 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.api.bean.User
-import me.shouheng.mvvm.base.CommonFragment
-import me.shouheng.mvvm.base.anno.FragmentConfiguration
-import me.shouheng.mvvm.bean.Status
-import me.shouheng.mvvm.comn.ContainerActivity
-import me.shouheng.mvvm.http.DownloadListener
-import me.shouheng.mvvm.http.Downloader
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.FragmentMainBinding
 import me.shouheng.sample.event.SimpleEvent
@@ -21,6 +15,12 @@ import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.data.StringUtils
 import me.shouheng.utils.stability.L
 import me.shouheng.utils.store.PathUtils
+import me.shouheng.vmlib.anno.FragmentConfiguration
+import me.shouheng.vmlib.base.CommonFragment
+import me.shouheng.vmlib.bean.Status
+import me.shouheng.vmlib.comn.ContainerActivity
+import me.shouheng.vmlib.network.download.DownloadListener
+import me.shouheng.vmlib.network.download.Downloader
 import org.greenrobot.eventbus.Subscribe
 import java.io.File
 
@@ -32,7 +32,8 @@ import java.io.File
 @FragmentConfiguration(shareViewModel = true, useEventBus = true)
 class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
 
-    private val downloadUrl = "https://dldir1.qq.com/music/clntupate/QQMusic_YQQFloatLayer.exe"
+    private val downloadUrl = "https://images.unsplash.com/photo-1501879779179-4576bae71d8" +
+            "d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&dl=vladimir-riabinin-diMBLU4FzDQ-unsplash.jpg"
 
     override fun getLayoutResId(): Int = R.layout.fragment_main
 
@@ -44,6 +45,7 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
     }
 
     private fun addSubscriptions() {
+        // 监听用户消息
         vm.getObservable(User::class.java).observe(this, Observer {
             when (it!!.status) {
                 Status.SUCCESS -> { toast(StringUtils.format(R.string.sample_main_got_user, it.data)) }
@@ -52,17 +54,33 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
                 else -> {/* do nothing */ }
             }
         })
-        vm.getObservable(String::class.java, 0x0001).observe(this, Observer {
-            toast("#0x0001: ${it!!.data}")
+
+        // ============================ 测试 VM 的 getObservable 系列方法 ============================
+        // 监听：String+Flag#0x0001，指定了 single=true，两个注册只有一个能收到
+        vm.getObservable(String::class.java, FLAG_1, true).observe(this, Observer {
+            toast("#1.1: " + it!!.data)
+            L.d("#1.1: " + it.data)
         })
-        vm.getObservable(String::class.java, 0x0002).observe(this, Observer {
-            toast("#0x0002: ${it!!.data}")
+        vm.getObservable(String::class.java, FLAG_1, true).observe(this, Observer {
+            toast("#1.2: " + it!!.data)
+            L.d("#1.2: " + it.data)
         })
-        vm.getListObservable(String::class.java, 0x0001).observe(this, Observer {
-            toast("#0x0001: ${it!!.data}")
+        // 监听：String+Flag#0x0002，默认 single=true，两个注册都能收到消息
+        vm.getObservable(String::class.java, FLAG_2).observe(this, Observer {
+            toast("#2.1: ${it!!.data}")
+            L.d("#2.1: " + it.data)
         })
-        vm.getListObservable(String::class.java, 0x0002).observe(this, Observer {
-            toast("#0x0002: ${it!!.data}")
+        vm.getObservable(String::class.java, FLAG_2).observe(this, Observer {
+            toast("#2.2: ${it!!.data}")
+            L.d("#2.2: " + it.data)
+        })
+        // 监听：List<String>+Flag#0x0001
+        vm.getListObservable(String::class.java, FLAG_1).observe(this, Observer {
+            toast("L#1: ${it!!.data}")
+        })
+        // 监听：List<String>+Flag#0x0002
+        vm.getListObservable(String::class.java, FLAG_2).observe(this, Observer {
+            toast("L#2: ${it!!.data}")
         })
     }
 
@@ -77,26 +95,26 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
                 ?.commit()
         }
         binding.btnObservable.setOnClickListener {
+            // 测试发送 String+Flag 类型的消息，正确收发则测试通过
             if (it.tag == null) {
                 it.tag = "SSS"
-                vm.sendObservableFlag(0x0001)
+                vm.testObservableFlag(FLAG_1)
             } else {
                 it.tag = null
-                vm.sendObservableFlag(0x0002)
+                vm.testObservableFlag(FLAG_2)
             }
         }
         binding.btnObservableList.setOnClickListener {
+            // 测试发送 List+Flag 类型的消息，正确收发则测试通过
             if (it.tag == null) {
                 it.tag = "SSS"
-                vm.sendObservableListFlag(0x0001)
+                vm.testObservableListFlag(FLAG_1)
             } else {
                 it.tag = null
-                vm.sendObservableListFlag(0x0002)
+                vm.testObservableListFlag(FLAG_2)
             }
         }
-        binding.btnRequestUser.setOnClickListener {
-            vm.requestUserData()
-        }
+        binding.btnRequestUser.setOnClickListener { vm.requestUserData() }
         binding.btnToComponentB.setOnClickListener {
             ARouter.getInstance().build("/eyepetizer/main").navigation()
             ActivityUtils.overridePendingTransition(activity!!, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
@@ -109,7 +127,8 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
         binding.btnDownload.setOnClickListener {
             Downloader.getInstance()
                 .setOnlyWifi(true)
-                .download(downloadUrl, PathUtils.getExternalStoragePath(), object : DownloadListener {
+                .download(downloadUrl, PathUtils.getExternalStoragePath(), object :
+                    DownloadListener {
                     override fun onError(errorCode: Int) {
                         toast("Download : error $errorCode")
                     }
@@ -133,12 +152,8 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
         binding.btnPref.setOnClickListener {
             ContainerActivity.openFragment(SamplePreference::class.java).launch(context!!)
         }
-        binding.btnCrash.setOnClickListener {
-            1/0
-        }
-        binding.btnVmPost.setOnClickListener {
-            vm.postMessage()
-        }
+        binding.btnCrash.setOnClickListener { 1/0 }
+        binding.btnVmPost.setOnClickListener { vm.postMessage() }
     }
 
     @Subscribe
@@ -146,4 +161,8 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
         toast(StringUtils.format(R.string.sample_main_activity_received_msg, javaClass.simpleName, simpleEvent.msg))
     }
 
+    companion object {
+        const val FLAG_1:Int = 0x0001
+        const val FLAG_2:Int = 0x0002
+    }
 }

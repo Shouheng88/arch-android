@@ -40,7 +40,7 @@
                     android:name="android.support.FILE_PROVIDER_PATHS"
                     android:resource="@xml/provider_paths" />
         </provider>
-        <activity android:name="me.shouheng.mvvm.comn.ContainerActivity"
+        <activity android:name="me.shouheng.vmlib.comn.ContainerActivity"
                 android:theme="@style/AppTheme"
                 tools:replace="android:theme"/>
         <meta-data android:name="META_DATA" android:value="test-value"/>

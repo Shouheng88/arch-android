@@ -28,6 +28,9 @@ ext {
             "support-library": "28.0.0",
     ]
 
+    // PUBLISH VERSION
+    publishVersion = "1.4.0"
+
     // support libraries
     support = [
             "annotations"             : "com.android.support:support-annotations:${versions["support-library"]}",
@@ -84,7 +87,7 @@ ext {
             "AndroidEventBus"           : "org.simple:androideventbus:1.0.5.1",
 
             "utils"                     : "me.shouheng.utils:utils-core:1.2.1",
-            "uix-core"                  : "me.shouheng.ui:uix-core:1.1.0",
+            "uix-core"                  : "me.shouheng.ui:uix-core:1.3.5",
 
             "arouter"                   : "com.alibaba:arouter-api:1.5.0",
             "arouter-compiler"          : "com.alibaba:arouter-compiler:1.2.2", // annotationProcessor

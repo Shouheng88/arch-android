@@ -2,15 +2,15 @@ package me.shouheng.sample.view
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import me.shouheng.mvvm.base.CommonActivity
-import me.shouheng.mvvm.base.anno.ActivityConfiguration
-import me.shouheng.mvvm.bean.Status
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.ActivityMainBinding
 import me.shouheng.sample.event.SimpleEvent
 import me.shouheng.sample.vm.MainViewModel
 import me.shouheng.utils.data.StringUtils
 import me.shouheng.utils.ui.ToastUtils
+import me.shouheng.vmlib.anno.ActivityConfiguration
+import me.shouheng.vmlib.base.CommonActivity
+import me.shouheng.vmlib.bean.Status
 import org.greenrobot.eventbus.Subscribe
 
 /**

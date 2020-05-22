@@ -6,9 +6,9 @@ import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.api.bean.User
 import me.shouheng.api.sample.OnUserChangeListener
 import me.shouheng.api.sample.UserService
-import me.shouheng.mvvm.base.BaseViewModel
-import me.shouheng.mvvm.bean.Resources
 import me.shouheng.sample.event.SimpleEvent
+import me.shouheng.vmlib.base.BaseViewModel
+import me.shouheng.vmlib.bean.Resources
 
 /**
  * 在 Fragment 之间共享的 ViewModel
@@ -41,12 +41,12 @@ class SharedViewModel(application: Application) : BaseViewModel(application), On
         post(SimpleEvent("Message from SharedViewModel!"))
     }
 
-    fun sendObservableFlag(flag: Int) {
-        getObservable(String::class.java, flag).value = Resources.success("Hello from Observable with flag!")
+    fun testObservableFlag(flag: Int) {
+        getObservable(String::class.java, flag).value = Resources.success("测试 Observable + Flag#$flag !")
     }
 
-    fun sendObservableListFlag(flag: Int) {
-        getListObservable(String::class.java, flag).value = Resources.success("Hello from list Observable with flag!")
+    fun testObservableListFlag(flag: Int) {
+        getListObservable(String::class.java, flag).value = Resources.success(listOf("测试 List Observable + Flag#$flag !"))
     }
 
     override fun onUserChanged(user: User) {

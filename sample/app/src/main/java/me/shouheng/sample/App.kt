@@ -3,8 +3,6 @@ package me.shouheng.sample
 import android.content.Context
 import android.support.multidex.MultiDexApplication
 import com.alibaba.android.arouter.launcher.ARouter
-import me.shouheng.mvvm.BuildConfig
-import me.shouheng.mvvm.MVVMs
 import me.shouheng.sample.view.MainActivity
 import me.shouheng.uix.pages.CrashReportActivity
 import me.shouheng.uix.widget.button.NormalButton
@@ -12,6 +10,8 @@ import me.shouheng.utils.app.ResUtils
 import me.shouheng.utils.stability.CrashHelper
 import me.shouheng.utils.stability.L
 import me.shouheng.utils.store.PathUtils
+import me.shouheng.vmlib.BuildConfig
+import me.shouheng.vmlib.VMLib
 import java.io.File
 
 /**
@@ -31,7 +31,7 @@ class App : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         // initialize mvvms
-        MVVMs.onCreate(this)
+        VMLib.onCreate(this)
         // custom L, must be called after MVVMs.onCreate()
         customLog()
         // custom ARouter

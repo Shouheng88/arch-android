@@ -4,8 +4,8 @@ import android.app.Application
 import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.api.sample.MainDataService
 import me.shouheng.api.sample.OnGetMainDataListener
-import me.shouheng.mvvm.base.BaseViewModel
-import me.shouheng.mvvm.bean.Resources
+import me.shouheng.vmlib.base.BaseViewModel
+import me.shouheng.vmlib.bean.Resources
 
 /**
  * 主界面对应的 ViewModel
