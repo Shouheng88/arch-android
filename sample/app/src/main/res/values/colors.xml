@@ -2,7 +2,7 @@
 <resources>
     <color name="cold_theme_accent">#05cc65</color>
     <color name="cold_theme_primary">#05cc65</color>
-    <color name="cold_theme_primary_dark">#f4f4f4</color>
+    <color name="cold_theme_primary_dark">#05AD56</color>
     <color name="cold_theme_divider">#f4f4f4</color>
     <color name="cold_theme_background">#fbfbfb</color>
     <color name="cold_theme_foreground">#FFFFFF</color>

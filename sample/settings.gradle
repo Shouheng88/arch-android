@@ -1,5 +1,6 @@
-include ':app', ':mvvm', ':api', ':service', ':eye'
-project(':mvvm').projectDir = new File('../mvvm')
-project(':api').projectDir = new File('../api')
-project(':service').projectDir = new File('../service')
-project(':eye').projectDir = new File('../eye')
+include ':app', ':vmlib', ':vmlib-network', ':module-api', ':module-service', ':module-eyepetizer'
+project(':vmlib').projectDir = new File('../vmlib')
+project(':vmlib-network').projectDir = new File('../vmlib-network')
+project(':module-api').projectDir = new File('../module-api')
+project(':module-service').projectDir = new File('../module-service')
+project(':module-eyepetizer').projectDir = new File('../module-eyepetizer')
