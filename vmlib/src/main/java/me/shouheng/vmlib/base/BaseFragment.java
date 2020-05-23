@@ -2,7 +2,6 @@ package me.shouheng.vmlib.base;
 
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -18,10 +17,6 @@ import com.umeng.analytics.MobclickAgent;
 
 import java.lang.reflect.ParameterizedType;
 
-import me.shouheng.vmlib.anno.FragmentConfiguration;
-import me.shouheng.vmlib.anno.UmengConfiguration;
-import me.shouheng.vmlib.bus.Bus;
-import me.shouheng.vmlib.Platform;
 import me.shouheng.utils.app.ActivityUtils;
 import me.shouheng.utils.constant.ActivityDirection;
 import me.shouheng.utils.permission.Permission;
@@ -29,6 +24,10 @@ import me.shouheng.utils.permission.PermissionUtils;
 import me.shouheng.utils.permission.callback.OnGetPermissionCallback;
 import me.shouheng.utils.stability.L;
 import me.shouheng.utils.ui.ToastUtils;
+import me.shouheng.vmlib.Platform;
+import me.shouheng.vmlib.anno.FragmentConfiguration;
+import me.shouheng.vmlib.anno.UmengConfiguration;
+import me.shouheng.vmlib.bus.Bus;
 
 /**
  * The base common fragment implementation for MVVMs. Example:
@@ -223,14 +222,7 @@ public abstract class BaseFragment<U extends BaseViewModel> extends Fragment {
             Bus.get().register(this);
         }
         vm = createViewModel();
-        vm.onCreate(getArguments(), savedInstanceState);
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        vm.onSaveInstanceState(outState);
     }
 
     @Override
@@ -239,11 +231,6 @@ public abstract class BaseFragment<U extends BaseViewModel> extends Fragment {
         if (useUmengManual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
             MobclickAgent.onPageStart(pageName);
         }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        vm.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -259,7 +246,6 @@ public abstract class BaseFragment<U extends BaseViewModel> extends Fragment {
         if (useEventBus) {
             Bus.get().unregister(this);
         }
-        vm.onDestroy();
         super.onDestroy();
     }
 }

@@ -1,7 +1,6 @@
 package me.shouheng.sample.vm
 
 import android.app.Application
-import android.os.Bundle
 import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.api.bean.User
 import me.shouheng.api.sample.OnUserChangeListener
@@ -21,15 +20,14 @@ class SharedViewModel(application: Application) : BaseViewModel(application), On
      * ViewModel 直接与 Service 进行交互而不是 View，
      * ViewModel 与 View 之间通过 LiveData 进行交互
      */
-    private lateinit var userService: UserService
+    private var userService: UserService = ARouter.getInstance().navigation(UserService::class.java)
 
     /**
      * Fragment 之间共享的值
      */
     var shareValue: String? = null
 
-    override fun onCreate(extras: Bundle?, savedInstanceState: Bundle?) {
-        userService = ARouter.getInstance().navigation(UserService::class.java)
+    init {
         userService.registerUserChangeListener(this)
     }
 
@@ -53,7 +51,8 @@ class SharedViewModel(application: Application) : BaseViewModel(application), On
         getObservable(User::class.java).value = Resources.success(user)
     }
 
-    override fun onDestroy() {
+    override fun onCleared() {
+        super.onCleared()
         userService.unRegisterUserChangeListener(this)
     }
 }

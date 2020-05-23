@@ -1,7 +1,6 @@
 package me.shouheng.eyepetizer.vm
 
 import android.app.Application
-import android.os.Bundle
 import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.api.bean.HomeBean
 import me.shouheng.api.eyepetizer.EyepetizerService
@@ -16,17 +15,11 @@ import me.shouheng.vmlib.bean.Resources
  */
 class EyepetizerViewModel(application: Application) : BaseViewModel(application) {
 
-    private lateinit var userService: UserService
+    private var userService: UserService = ARouter.getInstance().navigation(UserService::class.java)
 
-    private lateinit var eyepetizerService: EyepetizerService
+    private var eyepetizerService: EyepetizerService = ARouter.getInstance().navigation(EyepetizerService::class.java)
 
     private var nextPageUrl: String? = null
-
-    override fun onCreate(extras: Bundle?, savedInstanceState: Bundle?) {
-        super.onCreate(extras, savedInstanceState)
-        userService = ARouter.getInstance().navigation(UserService::class.java)
-        eyepetizerService = ARouter.getInstance().navigation(EyepetizerService::class.java)
-    }
 
     fun requestUser() {
         userService.requestUser()

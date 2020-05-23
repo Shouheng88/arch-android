@@ -3,7 +3,6 @@ package me.shouheng.vmlib.base;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
@@ -19,10 +18,6 @@ import com.umeng.analytics.MobclickAgent;
 
 import java.lang.reflect.ParameterizedType;
 
-import me.shouheng.vmlib.anno.ActivityConfiguration;
-import me.shouheng.vmlib.anno.UmengConfiguration;
-import me.shouheng.vmlib.bus.Bus;
-import me.shouheng.vmlib.Platform;
 import me.shouheng.utils.app.ActivityUtils;
 import me.shouheng.utils.constant.ActivityDirection;
 import me.shouheng.utils.permission.Permission;
@@ -33,6 +28,10 @@ import me.shouheng.utils.permission.callback.OnGetPermissionCallback;
 import me.shouheng.utils.permission.callback.PermissionResultCallback;
 import me.shouheng.utils.permission.callback.PermissionResultCallbackImpl;
 import me.shouheng.utils.ui.ToastUtils;
+import me.shouheng.vmlib.Platform;
+import me.shouheng.vmlib.anno.ActivityConfiguration;
+import me.shouheng.vmlib.anno.UmengConfiguration;
+import me.shouheng.vmlib.bus.Bus;
 
 /**
  * Base activity
@@ -121,7 +120,6 @@ public abstract class BaseActivity<U extends BaseViewModel>
             throw new IllegalArgumentException("The subclass must provider a valid layout resources id.");
         }
         vm = createViewModel();
-        vm.onCreate(getIntent().getExtras(), savedInstanceState);
         setupContentView(savedInstanceState);
         doCreateView(savedInstanceState);
     }
@@ -271,12 +269,6 @@ public abstract class BaseActivity<U extends BaseViewModel>
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        vm.onSaveInstanceState(outState);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         if (useUmengManual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
@@ -285,12 +277,6 @@ public abstract class BaseActivity<U extends BaseViewModel>
             }
             MobclickAgent.onResume(this);
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        vm.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -309,7 +295,6 @@ public abstract class BaseActivity<U extends BaseViewModel>
         if (useEventBus) {
             Bus.get().unregister(this);
         }
-        vm.onDestroy();
         super.onDestroy();
     }
 
