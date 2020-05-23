@@ -1,14 +1,9 @@
 package me.shouheng.vmlib.base;
 
-import android.app.Activity;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 
 import java.util.List;
 
@@ -149,47 +144,6 @@ public class BaseViewModel extends AndroidViewModel {
      */
     public <T> MutableLiveData<Resources<List<T>>> getListObservable(Class<T> dataType, int flag, boolean single) {
         return listHolder.getLiveData(dataType, flag, single);
-    }
-
-    /**
-     * Called when the {@link android.support.v4.app.Fragment#onCreate(Bundle)}
-     * or the {@link android.app.Activity#onCreate(Bundle)} was called.
-     *
-     * @param extras             extras from {@link Intent#getExtras()} of Activity, or {@link Fragment#getArguments()}.
-     * @param savedInstanceState saved instance state
-     */
-    public void onCreate(Bundle extras, Bundle savedInstanceState) {
-        // default no implementation
-    }
-
-    /**
-     * Called when the {@link android.support.v4.app.Fragment#onSaveInstanceState(Bundle)}
-     * or the {@link android.app.Activity#onSaveInstanceState(Bundle)} was called.
-     *
-     * @param outState saved instance state
-     */
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        // default no implementation
-    }
-
-    /**
-     * Called when the {@link Activity#onActivityResult(int, int, Intent)}
-     * or {@link Fragment#onActivityResult(int, int, Intent)} as called.
-     *
-     * @param requestCode the request code
-     * @param resultCode  the result code
-     * @param data        the intent data
-     */
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        // default no implementation
-    }
-
-    /**
-     * Called when the {@link android.support.v4.app.Fragment#onDestroy()}
-     * or the {@link Activity#onDestroy()} was called.
-     */
-    public void onDestroy() {
-        // default no implementation
     }
 
     /**

@@ -2,7 +2,6 @@ package me.shouheng.vmlib.base;
 
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -17,10 +16,6 @@ import com.umeng.analytics.MobclickAgent;
 
 import java.lang.reflect.ParameterizedType;
 
-import me.shouheng.vmlib.anno.FragmentConfiguration;
-import me.shouheng.vmlib.anno.UmengConfiguration;
-import me.shouheng.vmlib.bus.Bus;
-import me.shouheng.vmlib.Platform;
 import me.shouheng.utils.app.ActivityUtils;
 import me.shouheng.utils.app.ResUtils;
 import me.shouheng.utils.permission.Permission;
@@ -28,6 +23,10 @@ import me.shouheng.utils.permission.PermissionUtils;
 import me.shouheng.utils.permission.callback.OnGetPermissionCallback;
 import me.shouheng.utils.stability.L;
 import me.shouheng.utils.ui.ToastUtils;
+import me.shouheng.vmlib.Platform;
+import me.shouheng.vmlib.anno.FragmentConfiguration;
+import me.shouheng.vmlib.anno.UmengConfiguration;
+import me.shouheng.vmlib.bus.Bus;
 
 /**
  * base preference fragment for mvvm
@@ -73,7 +72,6 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
             Bus.get().register(this);
         }
         vm = createViewModel();
-        vm.onCreate(getArguments(), savedInstanceState);
         super.onCreate(savedInstanceState);
         int preferencesResId = getPreferencesResId();
         if (preferencesResId <= 0) {
@@ -192,23 +190,11 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        vm.onSaveInstanceState(outState);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         if (useUmengManual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
             MobclickAgent.onPageStart(pageName);
         }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        vm.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -224,7 +210,6 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
         if (useEventBus) {
             Bus.get().unregister(this);
         }
-        vm.onDestroy();
         super.onDestroy();
     }
 }
