@@ -434,7 +434,7 @@ Android-VMLib 会读取你的 Fragment 的注解并获取 shareViewModel 字段�
 
 以我在该项目中的示例代码为例，MainFragment 和 SecondFragment 之间共享了 SharedViewModel，在 MainFragment 当中，我们往 LiveData 中塞了一个值。然后我们跳转到 SecondFragment，从 SecondFragment 中回来的时候再次收到了这个值的通知。
 
-![反复通知问题](res/QQ20200523-084604@2x.png)
+![反复通知问题](images/QQ20200523-084604@2x.png)
 
 很多时候我们只希望在调用 `LiveData#setValue()` 的时候通知一次数据变化。此时，我们可以通过 [SingleLiveEvent](https://github.com/android/architecture-samples/blob/dev-todo-mvvm-live/todoapp/app/src/main/java/com/example/android/architecture/blueprints/todoapp/SingleLiveEvent.java) 解决这个问题。这个类的原理并不难，只是通过 AtomicBoolean 来管理通知，当前仅当调用 `setValue()` 的时候进行通知。这解决了许多从后台回来之后页面的通知问题。
 
