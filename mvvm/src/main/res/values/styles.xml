@@ -1,7 +1,0 @@
-<resources>
-    <style name="MVVMSAppTheme" parent="Theme.AppCompat.Light"/>
-    <style name="MVVMSAppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-</resources>

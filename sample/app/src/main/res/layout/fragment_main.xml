@@ -12,13 +12,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <android.support.v7.widget.AppCompatTextView
-                    android:text="@string/sample_main_tips"
-                    android:padding="20dp"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
             <me.shouheng.uix.widget.button.NormalButton
                     android:id="@+id/btn_observable"
                     app:btn_corner_radius="5dp"
