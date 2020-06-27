@@ -31,7 +31,7 @@ public @interface UmengConfiguration {
     boolean hasFragment() default false;
 
     /**
-     * Whether the umeng analytics will be used.
+     * Whether the umeng analytics will be used manually.
      *
      * @return true if use umeng analytics
      */

@@ -271,8 +271,8 @@ public abstract class BaseActivity<U extends BaseViewModel>
     @Override
     protected void onResume() {
         super.onResume();
-        if (useUmengManual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
-            if (!hasFragment) {
+        if (Platform.DEPENDENCY_UMENG_ANALYTICS && !useUmengManual) {
+            if (hasFragment) {
                 MobclickAgent.onPageStart(pageName);
             }
             MobclickAgent.onResume(this);
@@ -282,8 +282,8 @@ public abstract class BaseActivity<U extends BaseViewModel>
     @Override
     protected void onPause() {
         super.onPause();
-        if (useUmengManual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
-            if (!hasFragment) {
+        if (Platform.DEPENDENCY_UMENG_ANALYTICS && !useUmengManual) {
+            if (hasFragment) {
                 MobclickAgent.onPageEnd(pageName);
             }
             MobclickAgent.onPause(this);
