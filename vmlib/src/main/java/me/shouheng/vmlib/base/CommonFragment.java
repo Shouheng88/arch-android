@@ -48,7 +48,7 @@ public abstract class CommonFragment<U extends BaseViewModel, T extends ViewData
             throw new IllegalArgumentException("The subclass must provider a valid layout resources id.");
         }
         binding = DataBindingUtil.inflate(getLayoutInflater(), layoutResId, null, false);
-        doCreateView(savedInstanceState);
+        // fix 2020-06-27 remove #doCreateView() callback since it will be called after #onViewCreated()
         return binding.getRoot();
     }
 

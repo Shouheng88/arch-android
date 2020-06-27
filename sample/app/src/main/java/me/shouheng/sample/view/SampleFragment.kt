@@ -15,6 +15,11 @@ import me.shouheng.vmlib.comn.EmptyViewModel
 @FragmentConfiguration
 class SampleFragment : CommonFragment<EmptyViewModel, FragmentSampleBinding>() {
 
+    /**
+     * used to test doOnCreateView method callback count
+     */
+    private var count = 0
+
     companion object {
         const val ARGS_KEY_TEXT = "__args_key_text"
     }
@@ -23,7 +28,7 @@ class SampleFragment : CommonFragment<EmptyViewModel, FragmentSampleBinding>() {
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         val text = arguments?.getString(ARGS_KEY_TEXT)
-        binding.tv.text = text
+        binding.tv.text =  "$text ${++count}"
     }
 
 }
