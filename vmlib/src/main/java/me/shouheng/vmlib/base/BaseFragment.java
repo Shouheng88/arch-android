@@ -228,7 +228,7 @@ public abstract class BaseFragment<U extends BaseViewModel> extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (useUmengManual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
+        if (Platform.DEPENDENCY_UMENG_ANALYTICS && !useUmengManual) {
             MobclickAgent.onPageStart(pageName);
         }
     }
@@ -236,7 +236,7 @@ public abstract class BaseFragment<U extends BaseViewModel> extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (useUmengManual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
+        if (Platform.DEPENDENCY_UMENG_ANALYTICS && !useUmengManual) {
             MobclickAgent.onPageEnd(pageName);
         }
     }
