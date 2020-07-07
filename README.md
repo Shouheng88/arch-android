@@ -1,5 +1,4 @@
-![banner](/images/banner.jpg)
-![Offical](/images/offical.png)
+![Banner](https://github.com/CostCost/Resources/blob/master/github/xbanner.jpg?raw=true)
 
 <h1 align="center">MVVMs：Android MVVM 快速开发框架</h1>
 
