@@ -12,8 +12,8 @@
   <a href="https://www.codacy.com/manual/Shouheng88/Android-MVVMs?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Shouheng88/Android-MVVMs&amp;utm_campaign=Badge_Grade">
     <img src="https://api.codacy.com/project/badge/Grade/412a91540f254721ac63757eeded9ba5" alt="Code Grade"/>
   </a>
-  <a href="https://travis-ci.org/Shouheng88/Android-MVVMs">
-    <img src="https://travis-ci.org/Shouheng88/Android-MVVMs.svg?branch=master" alt="Build"/>
+  <a href="https://travis-ci.org/Shouheng88/Android-VMLib">
+    <img src="https://travis-ci.org/Shouheng88/Android-VMLib.svg?branch=master" alt="Build"/>
   </a>
     <a href="https://developer.android.com/about/versions/android-4.2.html">
     <img src="https://img.shields.io/badge/API-17%2B-blue.svg?style=flat-square" alt="Min Sdk Version" />
