@@ -67,6 +67,18 @@ class App : Application() {
     }
 ```
 
+### 1.4 混淆规则
+
+```
+# 使用了以下两个 EventBus 之一的话，加入对应规则
+-keep class org.greenrobot.eventbus.EventBus {*;}
+-keep class org.simple.eventbus.EventBus {*;}
+# 使用了友盟统计的话，加入以下规则
+-keep class com.umeng.analytics.MobclickAgent {*;}
+# 使用了 uix 的时候加入以下规则
+-keep class me.shouheng.uix.common.UIX {*;}
+```
+
 ## 2、VMLib 项目实践
 
 ### 2.1 拒绝强绑定，一个 Clean 的 MVVM 框架
