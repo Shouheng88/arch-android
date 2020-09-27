@@ -17,6 +17,10 @@
                 android:persistent="false"
                 android:key="key_setting_open_source"/>
 
+        <Preference android:title="exit"
+            android:persistent="false"
+            android:key="key_exit"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

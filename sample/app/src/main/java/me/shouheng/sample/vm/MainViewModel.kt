@@ -19,7 +19,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
         ARouter.getInstance().navigation(MainDataService::class.java)
             ?.loadData(object : OnGetMainDataListener{
                 override fun onGetData() {
-                    getObservable(String::class.java).value = Resources.loading()
+                    setLoading(String::class.java)
                 }
             })
     }
