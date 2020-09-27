@@ -47,9 +47,7 @@ class SharedViewModel(application: Application) : BaseViewModel(application), On
         getListObservable(String::class.java, flag).value = Resources.success(listOf("测试 List Observable + Flag#$flag !"))
     }
 
-    override fun onUserChanged(user: User) {
-        getObservable(User::class.java).value = Resources.success(user)
-    }
+    override fun onUserChanged(user: User) { setSuccess(User::class.java, user) }
 
     override fun onCleared() {
         super.onCleared()

@@ -147,6 +147,48 @@ public class BaseViewModel extends AndroidViewModel {
     }
 
     /**
+     * Notify the observer the success state.
+     *
+     * @param dataType data type
+     * @param data     data
+     * @param <T>      data type
+     */
+    public <T> void setSuccess(Class<T> dataType, T data) {
+        getObservable(dataType).setValue(Resources.success(data));
+    }
+
+    /** @see #setSuccess(Class, Object) */
+    public <T> void setLoading(Class<T> dataType) {
+        getObservable(dataType).setValue(Resources.<T>loading());
+    }
+
+    /** @see #setSuccess(Class, Object) */
+    public <T> void setFailed(Class<T> dataType, String code, String message) {
+        getObservable(dataType).setValue(Resources.<T>failed(code, message));
+    }
+
+    /**
+     * Notify the observer the success state.
+     *
+     * @param dataType data type
+     * @param data     data
+     * @param <T>      data type
+     */
+    public <T> void setListSuccess(Class<T> dataType, List<T> data) {
+        getListObservable(dataType).setValue(Resources.success(data));
+    }
+
+    /** @see #setListSuccess(Class, List) */
+    public <T> void setListLoading(Class<T> dataType) {
+        getListObservable(dataType).setValue(Resources.<List<T>>loading());
+    }
+
+    /** @see #setListSuccess(Class, List) */
+    public <T> void setListFailed(Class<T> dataType, String code, String message) {
+        getListObservable(dataType).setValue(Resources.<List<T>>failed(code, message));
+    }
+
+    /**
      * Post one event by EventBus
      *
      * @param event the event to post

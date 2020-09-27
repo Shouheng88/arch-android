@@ -29,12 +29,12 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
         getObservable(HomeBean::class.java).value = Resources.loading()
         eyepetizerService.getFirstHomePage(null, object : OnGetHomeBeansListener {
             override fun onError(errorCode: String, errorMsg: String) {
-                getObservable(HomeBean::class.java).value = Resources.failed(errorCode, errorMsg)
+                setFailed(HomeBean::class.java, errorCode, errorMsg)
             }
 
             override fun onGetHomeBean(homeBean: HomeBean) {
                 nextPageUrl = homeBean.nextPageUrl
-                getObservable(HomeBean::class.java).value = Resources.success(homeBean)
+                setSuccess(HomeBean::class.java, homeBean)
                 // 再请求一页
                 requestNextPage()
             }
@@ -44,12 +44,12 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
     fun requestNextPage() {
         eyepetizerService.getMoreHomePage(nextPageUrl, object : OnGetHomeBeansListener {
             override fun onError(errorCode: String, errorMsg: String) {
-                getObservable(HomeBean::class.java).value = Resources.failed(errorCode, errorMsg)
+                setFailed(HomeBean::class.java, errorCode, errorMsg)
             }
 
             override fun onGetHomeBean(homeBean: HomeBean) {
                 nextPageUrl = homeBean.nextPageUrl
-                getObservable(HomeBean::class.java).value = Resources.success(homeBean)
+                setSuccess(HomeBean::class.java, homeBean)
             }
         })
     }
