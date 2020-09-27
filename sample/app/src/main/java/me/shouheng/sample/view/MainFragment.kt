@@ -121,6 +121,8 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
         binding.btnToSample.setOnClickListener {
             ContainerActivity.open(SampleFragment::class.java)
                 .put(SampleFragment.ARGS_KEY_TEXT, ResUtils.getString(R.string.sample_main_argument_to_fragment))
+                .put(ContainerActivity.KEY_EXTRA_ACTIVITY_DIRECTION, ActivityDirection.ANIMATE_BACK)
+                .withDirection(ActivityDirection.ANIMATE_FORWARD)
                 .launch(context!!)
         }
         binding.btnDownload.setOnClickListener {
@@ -149,7 +151,13 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
             ActivityUtils.start(context!!, MainActivity::class.java)
         }
         binding.btnPref.setOnClickListener {
-            ContainerActivity.openFragment(SamplePreference::class.java).launch(context!!)
+            ContainerActivity.openFragment(SamplePreference::class.java)
+                // Specify the container activity theme.
+                .put(ContainerActivity.KEY_EXTRA_THEME_ID, R.style.TestAppTheme)
+                // Specify the activity enter and exit direction.
+                .put(ContainerActivity.KEY_EXTRA_ACTIVITY_DIRECTION, ActivityDirection.ANIMATE_SLIDE_BOTTOM_FROM_TOP)
+                .withDirection(ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
+                .launch(context!!)
         }
         binding.btnCrash.setOnClickListener { 1/0 }
         binding.btnVmPost.setOnClickListener { vm.postMessage() }

@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import me.shouheng.utils.constant.ActivityDirection;
 import me.shouheng.vmlib.R;
 import me.shouheng.vmlib.base.BaseActivity;
 import me.shouheng.vmlib.Platform;
@@ -42,10 +43,16 @@ public class ContainerActivity extends BaseActivity<EmptyViewModel> {
     private static List<CommandHandler> commandHandlers = new CopyOnWriteArrayList<>();
 
     /** Key for the {@link Fragment} class used to create the fragment instance. */
-    public static final String KEY_EXTRA_FRAGMENT_CLASS = "__extra_key_fragment_class";
-
+    public static final String KEY_EXTRA_FRAGMENT_CLASS         = "__extra_key_fragment_class";
     /** Key for the command. */
-    public static final String KEY_EXTRA_COMMAND        = "__extra_key_command";
+    public static final String KEY_EXTRA_COMMAND                = "__extra_key_command";
+    /** Key for theme of current activity. */
+    public static final String KEY_EXTRA_THEME_ID               = "__extra_key_theme_id";
+    /** Key for the activity finish direction. */
+    public static final String KEY_EXTRA_ACTIVITY_DIRECTION     = "__extra_key_activity_direction";
+
+    /** The activity finish direction. */
+    @ActivityDirection private int activityFinishDirection = ActivityDirection.ANIMATE_NONE;
 
     /**
      * Get a {@link ActivityUtils.Builder} object to build a request for container activity.
@@ -107,6 +114,20 @@ public class ContainerActivity extends BaseActivity<EmptyViewModel> {
     }
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        // If you want to use a custom theme for current fragment container, use
+        // #KEY_EXTRA_THEME_ID to specify the theme id. Sometimes, for example,
+        // if we used "?attr/xxxx" as custom attribute to customize themes, we have
+        // to change the theme of activity as well. So, be able to custom theme of
+        // container was a necessary.
+        int themeId = getIntent().getIntExtra(KEY_EXTRA_THEME_ID, -1);
+        if (themeId != -1) setTheme(themeId);
+        activityFinishDirection = getIntent().getIntExtra(
+                KEY_EXTRA_ACTIVITY_DIRECTION, ActivityDirection.ANIMATE_NONE);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     protected int getLayoutResId() {
         return R.layout.vmlib_activity_container;
     }
@@ -159,6 +180,22 @@ public class ContainerActivity extends BaseActivity<EmptyViewModel> {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (activityFinishDirection != ActivityDirection.ANIMATE_NONE) {
+            ActivityUtils.overridePendingTransition(this, activityFinishDirection);
+        }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (activityFinishDirection != ActivityDirection.ANIMATE_NONE) {
+            ActivityUtils.overridePendingTransition(this, activityFinishDirection);
+        }
     }
 
     /**

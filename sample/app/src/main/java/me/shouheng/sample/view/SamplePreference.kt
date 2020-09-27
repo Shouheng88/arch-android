@@ -23,5 +23,9 @@ class SamplePreference : BasePreferenceFragment<EmptyViewModel>() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view?.setBackgroundColor(ResUtils.getColor(R.color.cold_theme_background))
+        findPreference("key_exit").setOnPreferenceClickListener {
+            activity.finish()
+            true
+        }
     }
 }

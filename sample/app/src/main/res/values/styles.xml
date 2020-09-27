@@ -6,6 +6,12 @@
         <item name="colorAccent">@color/cold_theme_accent</item>
     </style>
 
+    <style name="TestAppTheme" parent="AppTheme">
+        <item name="colorPrimary">@android:color/holo_red_light</item>
+        <item name="colorPrimaryDark">@android:color/holo_red_light</item>
+        <item name="colorAccent">@android:color/holo_red_light</item>
+    </style>
+
     <style name="MenuButton">
         <item name="android:layout_marginEnd">16dp</item>
         <item name="android:layout_marginStart">16dp</item>
