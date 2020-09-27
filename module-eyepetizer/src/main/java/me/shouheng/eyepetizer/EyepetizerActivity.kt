@@ -1,6 +1,5 @@
 package me.shouheng.eyepetizer
 
-import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -16,7 +15,7 @@ import me.shouheng.utils.app.ActivityUtils
 import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.stability.L
 import me.shouheng.vmlib.base.CommonActivity
-import me.shouheng.vmlib.bean.Status
+import me.shouheng.vmlib.tools.StateObserver
 
 /**
  * 开眼视频相关的演示页
@@ -62,26 +61,19 @@ class EyepetizerActivity : CommonActivity<EyepetizerViewModel, ActivityEyepetize
     }
 
     private fun addSubscriptions() {
-        vm.getObservable(HomeBean::class.java).observe(this, Observer { resources ->
+        observe(HomeBean::class.java, StateObserver {
             loading = false
-            when (resources!!.status) {
-                Status.SUCCESS -> {
-                    L.d(resources.data)
-                    val list = mutableListOf<Item>()
-                    resources.data.issueList.forEach {
-                        it.itemList.forEach { item ->
-                            if (item.data.cover != null
-                                && item.data.author != null
-                            ) list.add(item)
-                        }
-                    }
-                    adapter.addData(list)
+            L.d(it.data)
+            val list = mutableListOf<Item>()
+            it.data.issueList.forEach { issue ->
+                issue.itemList.forEach { item ->
+                    if (item.data.cover != null
+                        && item.data.author != null
+                    ) list.add(item)
                 }
-                Status.FAILED -> {/* temp do nothing */ }
-                Status.LOADING -> {/* temp do nothing */ }
-                else -> {/* temp do nothing */ }
             }
-        })
+            adapter.addData(list)
+        }, StateObserver { loading = false }, null)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

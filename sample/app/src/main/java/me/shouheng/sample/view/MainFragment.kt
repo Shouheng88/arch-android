@@ -21,6 +21,7 @@ import me.shouheng.vmlib.bean.Status
 import me.shouheng.vmlib.comn.ContainerActivity
 import me.shouheng.vmlib.network.download.DownloadListener
 import me.shouheng.vmlib.network.download.Downloader
+import me.shouheng.vmlib.tools.StateObserver
 import org.greenrobot.eventbus.Subscribe
 import java.io.File
 
@@ -46,42 +47,40 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
 
     private fun addSubscriptions() {
         // 监听用户消息
-        vm.getObservable(User::class.java).observe(this, Observer {
-            when (it!!.status) {
-                Status.SUCCESS -> { toast(StringUtils.format(R.string.sample_main_got_user, it.data)) }
-                Status.FAILED -> { toast(it.message) }
-                Status.LOADING -> {/* do nothing */ }
-                else -> {/* do nothing */ }
-            }
-        })
+        observe(User::class.java, StateObserver {
+            toast(StringUtils.format(R.string.sample_main_got_user, it.data))
+        }, StateObserver { toast(it.message) }, null)
 
         // ============================ 测试 VM 的 getObservable 系列方法 ============================
         // 监听：String+Flag#0x0001，指定了 single=true，两个注册只有一个能收到
-        vm.getObservable(String::class.java, FLAG_1, true).observe(this, Observer {
+        observe(String::class.java, FLAG_1, true, StateObserver {
             toast("#1.1: " + it!!.data)
             L.d("#1.1: " + it.data)
-        })
-        vm.getObservable(String::class.java, FLAG_1, true).observe(this, Observer {
+        }, null, null)
+        observe(String::class.java, FLAG_1, true, StateObserver {
             toast("#1.2: " + it!!.data)
             L.d("#1.2: " + it.data)
-        })
+        }, null, null)
+
         // 监听：String+Flag#0x0002，默认 single=true，两个注册都能收到消息
-        vm.getObservable(String::class.java, FLAG_2).observe(this, Observer {
+        observe(String::class.java, FLAG_2, StateObserver {
             toast("#2.1: ${it!!.data}")
             L.d("#2.1: " + it.data)
-        })
-        vm.getObservable(String::class.java, FLAG_2).observe(this, Observer {
+        }, null, null)
+        observe(String::class.java, FLAG_2, StateObserver {
             toast("#2.2: ${it!!.data}")
             L.d("#2.2: " + it.data)
-        })
+        }, null, null)
+
         // 监听：List<String>+Flag#0x0001
-        vm.getListObservable(String::class.java, FLAG_1).observe(this, Observer {
+        observeList(String::class.java, FLAG_1, StateObserver {
             toast("L#1: ${it!!.data}")
-        })
+        }, null, null)
+
         // 监听：List<String>+Flag#0x0002
-        vm.getListObservable(String::class.java, FLAG_2).observe(this, Observer {
+        observeList(String::class.java, FLAG_2, StateObserver {
             toast("L#2: ${it!!.data}")
-        })
+        }, null, null)
     }
 
     @SuppressLint("MissingPermission")

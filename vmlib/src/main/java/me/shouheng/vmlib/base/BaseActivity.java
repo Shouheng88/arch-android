@@ -1,6 +1,7 @@
 package me.shouheng.vmlib.base;
 
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.View;
 import com.umeng.analytics.MobclickAgent;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
 import me.shouheng.utils.app.ActivityUtils;
 import me.shouheng.utils.constant.ActivityDirection;
@@ -31,7 +33,9 @@ import me.shouheng.utils.ui.ToastUtils;
 import me.shouheng.vmlib.Platform;
 import me.shouheng.vmlib.anno.ActivityConfiguration;
 import me.shouheng.vmlib.anno.UmengConfiguration;
+import me.shouheng.vmlib.bean.Resources;
 import me.shouheng.vmlib.bus.Bus;
+import me.shouheng.vmlib.tools.StateObserver;
 
 /**
  * Base activity
@@ -126,6 +130,134 @@ public abstract class BaseActivity<U extends BaseViewModel>
 
     protected U getVM() {
         return vm;
+    }
+
+    /**
+     * Observe the value of given type. You may handle the state change events
+     * separately by success, loading and fail.
+     *
+     * @param dataType data type
+     * @param success  the success event observer
+     * @param loading  the loading event observer
+     * @param fail     the fail event observer
+     * @param <T>      the data type
+     */
+    protected <T>  void observe(Class<T> dataType,
+                                final StateObserver<T> success,
+                                final StateObserver<T> fail,
+                                final StateObserver<T> loading) {
+        vm.getObservable(dataType).observe(this, new Observer<Resources<T>>() {
+            @Override
+            public void onChanged(@Nullable Resources<T> res) {
+                if (res != null) {
+                    switch (res.status) {
+                        case SUCCESS: if (success != null) success.onChanged(res); break;
+                        case LOADING: if (loading != null) loading.onChanged(res); break;
+                        case FAILED: if (fail != null) fail.onChanged(res); break;
+                    }
+                }
+            }
+        });
+    }
+
+    /** @see #observe(Class, StateObserver, StateObserver, StateObserver) */
+    protected <T>  void observe(Class<T> dataType,
+                                int flag,
+                                final StateObserver<T> success,
+                                final StateObserver<T> fail,
+                                final StateObserver<T> loading) {
+        observe(dataType, flag, false, success, loading, fail);
+    }
+
+    /** @see #observe(Class, StateObserver, StateObserver, StateObserver) */
+    protected <T>  void observe(Class<T> dataType,
+                                boolean single,
+                                final StateObserver<T> success,
+                                final StateObserver<T> fail,
+                                final StateObserver<T> loading) {
+        vm.getObservable(dataType, single).observe(this, new Observer<Resources<T>>() {
+            @Override
+            public void onChanged(@Nullable Resources<T> res) {
+                if (res != null) {
+                    switch (res.status) {
+                        case SUCCESS: if (success != null) success.onChanged(res); break;
+                        case LOADING: if (loading != null) loading.onChanged(res); break;
+                        case FAILED: if (fail != null) fail.onChanged(res); break;
+                    }
+                }
+            }
+        });
+    }
+
+    /** @see #observe(Class, StateObserver, StateObserver, StateObserver) */
+    protected <T> void observe(Class<T> dataType,
+                               int flag,
+                               boolean single,
+                               final StateObserver<T> success,
+                               final StateObserver<T> fail,
+                               final StateObserver<T> loading) {
+        vm.getObservable(dataType, flag, single).observe(this, new Observer<Resources<T>>() {
+            @Override
+            public void onChanged(@Nullable Resources<T> res) {
+                if (res != null) {
+                    switch (res.status) {
+                        case SUCCESS: if (success != null) success.onChanged(res); break;
+                        case LOADING: if (loading != null) loading.onChanged(res); break;
+                        case FAILED: if (fail != null) fail.onChanged(res); break;
+                    }
+                }
+            }
+        });
+    }
+
+    /** @see #observe(Class, StateObserver, StateObserver, StateObserver) */
+    protected <T> void observeList(Class<T> dataType,
+                                   int flag,
+                                   final StateObserver<List<T>> success,
+                                   final StateObserver<List<T>> fail,
+                                   final StateObserver<List<T>> loading) {
+        observeList(dataType, flag, false, success, loading, fail);
+    }
+
+    /** @see #observe(Class, StateObserver, StateObserver, StateObserver) */
+    protected <T> void observeList(Class<T> dataType,
+                                   boolean single,
+                                   final StateObserver<List<T>> success,
+                                   final StateObserver<List<T>> fail,
+                                   final StateObserver<List<T>> loading) {
+        vm.getListObservable(dataType, single).observe(this, new Observer<Resources<List<T>>>() {
+            @Override
+            public void onChanged(@Nullable Resources<List<T>> res) {
+                if (res != null) {
+                    switch (res.status) {
+                        case SUCCESS: if (success != null) success.onChanged(res); break;
+                        case LOADING: if (loading != null) loading.onChanged(res); break;
+                        case FAILED: if (fail != null) fail.onChanged(res); break;
+                    }
+                }
+            }
+        });
+    }
+
+    /** @see #observe(Class, StateObserver, StateObserver, StateObserver) */
+    protected <T> void observeList(Class<T> dataType,
+                                   int flag,
+                                   boolean single,
+                                   final StateObserver<List<T>> success,
+                                   final StateObserver<List<T>> fail,
+                                   final StateObserver<List<T>> loading) {
+        vm.getListObservable(dataType, flag, single).observe(this, new Observer<Resources<List<T>>>() {
+            @Override
+            public void onChanged(@Nullable Resources<List<T>> res) {
+                if (res != null) {
+                    switch (res.status) {
+                        case SUCCESS: if (success != null) success.onChanged(res); break;
+                        case LOADING: if (loading != null) loading.onChanged(res); break;
+                        case FAILED: if (fail != null) fail.onChanged(res); break;
+                    }
+                }
+            }
+        });
     }
 
     /**

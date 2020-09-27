@@ -38,19 +38,13 @@ import me.shouheng.utils.stability.L;
  */
 public class ContainerActivity extends BaseActivity<EmptyViewModel> {
 
-    /**
-     * Global command handler.
-     */
+    /** Global command handler. */
     private static List<CommandHandler> commandHandlers = new CopyOnWriteArrayList<>();
 
-    /**
-     * Key for the {@link Fragment} class used to create the fragment instance.
-     */
+    /** Key for the {@link Fragment} class used to create the fragment instance. */
     public static final String KEY_EXTRA_FRAGMENT_CLASS = "__extra_key_fragment_class";
 
-    /**
-     * Key for the command.
-     */
+    /** Key for the command. */
     public static final String KEY_EXTRA_COMMAND        = "__extra_key_command";
 
     /**

@@ -4,6 +4,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.lang.reflect.Method;
 
+import me.shouheng.utils.stability.L;
 import me.shouheng.vmlib.anno.ActivityConfiguration;
 import me.shouheng.vmlib.anno.FragmentConfiguration;
 import me.shouheng.vmlib.anno.ServiceConfiguration;
@@ -44,6 +45,9 @@ public final class Bus {
         }
         if (DEPENDENCY_EVENTBUS && haveAnnotation(subscriber)) {
             org.greenrobot.eventbus.EventBus.getDefault().register(subscriber);
+        }
+        if (!DEPENDENCY_ANDROID_EVENTBUS && !DEPENDENCY_EVENTBUS) {
+            L.e("FAILED TO REGISTER BUS EVENT, SINCE NO EVENT BUS ENVIRONMENT FOUND!");
         }
     }
 

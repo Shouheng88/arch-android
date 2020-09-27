@@ -34,5 +34,5 @@ public @interface FragmentConfiguration {
      *
      * @return umeng configuration
      */
-    UmengConfiguration umengConfiguration() default @UmengConfiguration;
+    UmengConfiguration umeng() default @UmengConfiguration;
 }

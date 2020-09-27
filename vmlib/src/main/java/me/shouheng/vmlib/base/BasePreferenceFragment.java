@@ -40,9 +40,7 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
 
     private boolean useEventBus;
 
-    /**
-     * Grouped values with {@link FragmentConfiguration#umengConfiguration()}.
-     */
+    /** Grouped values with {@link FragmentConfiguration#umeng()}. */
     private String pageName;
 
     private boolean useUmengManual = false;
@@ -59,7 +57,7 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
         FragmentConfiguration configuration = this.getClass().getAnnotation(FragmentConfiguration.class);
         if (configuration != null) {
             useEventBus = configuration.useEventBus();
-            UmengConfiguration umengConfiguration = configuration.umengConfiguration();
+            UmengConfiguration umengConfiguration = configuration.umeng();
             pageName = TextUtils.isEmpty(umengConfiguration.pageName()) ?
                     getClass().getSimpleName() : umengConfiguration.pageName();
             useUmengManual = umengConfiguration.useUmengManual();
