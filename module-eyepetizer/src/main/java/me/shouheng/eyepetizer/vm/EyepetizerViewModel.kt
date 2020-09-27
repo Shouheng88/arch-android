@@ -21,9 +21,7 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
 
     private var nextPageUrl: String? = null
 
-    fun requestUser() {
-        userService.requestUser()
-    }
+    fun requestUser() { userService.requestUser() }
 
     fun requestFirstPage() {
         getObservable(HomeBean::class.java).value = Resources.loading()

@@ -82,11 +82,7 @@ class EyepetizerActivity : CommonActivity<EyepetizerViewModel, ActivityEyepetize
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
-            R.id.eye_item_request_user -> {
-                vm.requestUser()
-            }
-        }
+        when(item?.itemId) {R.id.eye_item_request_user -> { vm.requestUser() } }
         return super.onOptionsItemSelected(item)
     }
 
