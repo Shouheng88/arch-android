@@ -15,7 +15,6 @@ import me.shouheng.utils.app.ActivityUtils
 import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.stability.L
 import me.shouheng.vmlib.base.CommonActivity
-import me.shouheng.vmlib.tools.StateObserver
 
 /**
  * 开眼视频相关的演示页
@@ -61,7 +60,7 @@ class EyepetizerActivity : CommonActivity<EyepetizerViewModel, ActivityEyepetize
     }
 
     private fun addSubscriptions() {
-        observe(HomeBean::class.java, StateObserver {
+        observe(HomeBean::class.java, {
             loading = false
             L.d(it.data)
             val list = mutableListOf<Item>()
@@ -73,7 +72,7 @@ class EyepetizerActivity : CommonActivity<EyepetizerViewModel, ActivityEyepetize
                 }
             }
             adapter.addData(list)
-        }, StateObserver { loading = false }, null)
+        }, { loading = false })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

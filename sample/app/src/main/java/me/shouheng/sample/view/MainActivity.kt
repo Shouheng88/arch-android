@@ -8,7 +8,6 @@ import me.shouheng.sample.vm.MainViewModel
 import me.shouheng.utils.data.StringUtils
 import me.shouheng.vmlib.anno.ActivityConfiguration
 import me.shouheng.vmlib.base.CommonActivity
-import me.shouheng.vmlib.tools.StateObserver
 import org.greenrobot.eventbus.Subscribe
 
 /**
@@ -28,9 +27,7 @@ class MainActivity : CommonActivity<MainViewModel, ActivityMainBinding>() {
     }
 
     private fun addSubscriptions() {
-        observe(String::class.java, StateObserver {
-            toast(it.data)
-        }, StateObserver { toast(it.message) }, null)
+        observe(String::class.java, { toast(it.data) }, { toast(it.message) })
     }
 
     private fun initViews() {

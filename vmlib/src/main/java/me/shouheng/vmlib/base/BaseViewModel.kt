@@ -1,0 +1,152 @@
+package me.shouheng.vmlib.base
+
+import android.app.Application
+import android.arch.lifecycle.AndroidViewModel
+import android.arch.lifecycle.MutableLiveData
+import me.shouheng.vmlib.anno.ViewModelConfiguration
+import me.shouheng.vmlib.bean.Resources
+import me.shouheng.vmlib.bus.Bus
+import me.shouheng.vmlib.holder.LiveDataHolder
+
+/**
+ * Basic implementation of common ViewModel.
+ *
+ * The view model has no pre-defined model associated, for MVVMs don't want to take care of the
+ * model logic. You can get the data source anywhere, which is perhaps useful for small project.
+ *
+ * @author [WngShhng](mailto:shouheng2015@gmail.com)
+ * @version 2019-6-29
+ */
+open class BaseViewModel(application: Application) : AndroidViewModel(application) {
+    private val holder = LiveDataHolder<Any>()
+    private val listHolder: LiveDataHolder<*> = LiveDataHolder<List<*>>()
+
+    /** If the view model use event bus */
+    private var useEventBus = false
+
+    /**
+     * Get the LiveData of given type and flag
+     *
+     * @param dataType the data type
+     * @param flag     the flag
+     * @param single   is single event
+     * @param <T>      the generic data type.
+     * @return         the live data.
+     * @see SingleLiveEvent
+     */
+    fun <T> getObservable(dataType: Class<T>, flag: Int? = null, single: Boolean = false): MutableLiveData<Resources<T>> {
+        return holder.getLiveData(dataType, flag, single) as MutableLiveData<Resources<T>>
+    }
+
+    /**
+     * Get the LiveData of given list type and flag
+     *
+     * @param dataType the data type
+     * @param flag     the flag
+     * @param single   is single event
+     * @param <T>      the generic data type.
+     * @return         the live data.
+     * @see SingleLiveEvent
+     */
+    fun <T> getListObservable(dataType: Class<T>, flag: Int? = null, single: Boolean = false): MutableLiveData<Resources<List<T>>> {
+        return listHolder.getLiveData(dataType, flag, single) as MutableLiveData<Resources<List<T>>>
+    }
+
+    fun <T> setSuccess(dataType: Class<T>, data: T) {
+        setSuccess(dataType, null, false, data)
+    }
+
+    fun <T> setSuccess(dataType: Class<T>, single: Boolean = false, data: T) {
+        setSuccess(dataType, null, single, data)
+    }
+
+    fun <T> setSuccess(dataType: Class<T>, flag: Int? = null, data: T) {
+        setSuccess(dataType, flag, false, data)
+    }
+
+    fun <T> setSuccess(dataType: Class<T>, flag: Int? = null, single: Boolean = false, data: T) {
+        getObservable(dataType, flag, single).value = Resources.success(data)
+    }
+
+    fun <T> setLoading(dataType: Class<T>, flag: Int? = null, single: Boolean = false) {
+        getObservable(dataType, flag, single).value = Resources.loading()
+    }
+
+    fun <T> setFailed(dataType: Class<T>, code: String?, message: String?) {
+        setFailed(dataType, null, false, code, message)
+    }
+
+    fun <T> setFailed(dataType: Class<T>, single: Boolean = false, code: String?, message: String?) {
+        setFailed(dataType, null, single, code, message)
+    }
+
+    fun <T> setFailed(dataType: Class<T>, flag: Int? = null, code: String?, message: String?) {
+        setFailed(dataType, flag, false, code, message)
+    }
+
+    fun <T> setFailed(dataType: Class<T>, flag: Int? = null, single: Boolean = false, code: String?, message: String?) {
+        getObservable(dataType, flag, single).value = Resources.failed(code, message)
+    }
+
+    fun <T> setListSuccess(dataType: Class<T>, data: List<T>?) {
+        setListSuccess(dataType, null, false, data)
+    }
+
+    fun <T> setListSuccess(dataType: Class<T>, single: Boolean = false, data: List<T>?) {
+        setListSuccess(dataType, null, single, data)
+    }
+
+    fun <T> setListSuccess(dataType: Class<T>, flag: Int? = null, data: List<T>?) {
+        setListSuccess(dataType, flag, false, data)
+    }
+
+    fun <T> setListSuccess(dataType: Class<T>, flag: Int? = null, single: Boolean = false, data: List<T>?) {
+        getListObservable(dataType, flag, single).value = Resources.success(data)
+    }
+
+    fun <T> setListLoading(dataType: Class<T>, flag: Int? = null, single: Boolean = false) {
+        getListObservable(dataType, flag, single).value = Resources.loading()
+    }
+
+    fun <T> setListFailed(dataType: Class<T>, code: String?, message: String?) {
+        setListFailed(dataType, null, false, code, message)
+    }
+
+    fun <T> setListFailed(dataType: Class<T>, single: Boolean = false, code: String?, message: String?) {
+        setListFailed(dataType, null, single, code, message)
+    }
+
+    fun <T> setListFailed(dataType: Class<T>, flag: Int? = null, code: String?, message: String?) {
+        setListFailed(dataType, flag, false, code, message)
+    }
+
+    fun <T> setListFailed(dataType: Class<T>, flag: Int? = null, single: Boolean = false, code: String?, message: String?) {
+        getListObservable(dataType, flag, single).value = Resources.failed(code, message)
+    }
+
+    /** Post one event by EventBus */
+    protected fun post(event: Any) {
+        Bus.get().post(event)
+    }
+
+    /** Post one sticky event by EventBus*/
+    protected fun postSticky(event: Any) {
+        Bus.get().postSticky(event)
+    }
+
+    override fun onCleared() {
+        if (useEventBus) {
+            Bus.get().unregister(this)
+        }
+    }
+
+    init {
+        val configuration = this.javaClass.getAnnotation(ViewModelConfiguration::class.java)
+        if (configuration != null) {
+            useEventBus = configuration.useEventBus
+            if (useEventBus) {
+                Bus.get().register(this)
+            }
+        }
+    }
+}

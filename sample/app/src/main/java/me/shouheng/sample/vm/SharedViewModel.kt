@@ -40,11 +40,11 @@ class SharedViewModel(application: Application) : BaseViewModel(application), On
     }
 
     fun testObservableFlag(flag: Int) {
-        getObservable(String::class.java, flag).value = Resources.success("测试 Observable + Flag#$flag !")
+        setSuccess(String::class.java, flag, "测试 Observable + Flag#$flag !")
     }
 
     fun testObservableListFlag(flag: Int) {
-        getListObservable(String::class.java, flag).value = Resources.success(listOf("测试 List Observable + Flag#$flag !"))
+        setListSuccess(String::class.java, flag, listOf("测试 List Observable + Flag#$flag !"))
     }
 
     override fun onUserChanged(user: User) { setSuccess(User::class.java, user) }

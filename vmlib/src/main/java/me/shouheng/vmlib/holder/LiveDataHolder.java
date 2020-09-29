@@ -21,7 +21,12 @@ public class LiveDataHolder<T> {
 
     private Map<Class, SparseArray<SingleLiveEvent>> flagMap = new HashMap<>();
 
-    public MutableLiveData<Resources<T>> getLiveData(Class<T> dataType, boolean single) {
+    public MutableLiveData<Resources<T>> getLiveData(Class dataType, Integer flag, boolean single) {
+        if (flag == null) return getLiveDataInner(dataType, single);
+        return getLiveDataInner(dataType, flag, single);
+    }
+
+    private MutableLiveData<Resources<T>> getLiveDataInner(Class dataType, boolean single) {
         SingleLiveEvent<Resources<T>> liveData = map.get(dataType);
         if (liveData == null) {
             liveData = new SingleLiveEvent<>(single);
@@ -30,7 +35,7 @@ public class LiveDataHolder<T> {
         return liveData;
     }
 
-    public MutableLiveData<Resources<T>> getLiveData(Class<T> dataType, int flag, boolean single) {
+    private MutableLiveData<Resources<T>> getLiveDataInner(Class dataType, int flag, boolean single) {
         SparseArray<SingleLiveEvent> array = flagMap.get(dataType);
         if (array == null) {
             array = new SparseArray<>();
