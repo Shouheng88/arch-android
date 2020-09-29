@@ -90,6 +90,7 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
         doCreateView(savedInstanceState)
     }
 
+    /** Observe data */
     protected fun <T> observe(dataType: Class<T>,
                               success: (res: Resources<T>) -> Unit = {},
                               fail: (res: Resources<T>) -> Unit = {},
@@ -97,6 +98,7 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
         observe(dataType, null, false, success, fail, loading)
     }
 
+    /** Observe data */
     protected fun <T> observe(dataType: Class<T>,
                               single: Boolean = false,
                               success: (res: Resources<T>) -> Unit = {},
@@ -105,6 +107,7 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
         observe(dataType, null, single, success, fail, loading)
     }
 
+    /** Observe data */
     protected fun <T> observe(dataType: Class<T>,
                               flag: Int? = null,
                               success: (res: Resources<T>) -> Unit = {},
@@ -113,6 +116,7 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
         observe(dataType, flag, false, success, fail, loading)
     }
 
+    /** Observe data */
     protected fun <T> observe(dataType: Class<T>,
                               flag: Int? = null,
                               single: Boolean = false,
@@ -128,6 +132,7 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
         })
     }
 
+    /** Observe list data */
     protected fun <T> observeList(dataType: Class<T>,
                                   success: (res: Resources<List<T>>) -> Unit = {},
                                   fail: (res: Resources<List<T>>) -> Unit = {},
@@ -135,6 +140,7 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
         observeList(dataType, null, false, success, fail, loading)
     }
 
+    /** Observe list data */
     protected fun <T> observeList(dataType: Class<T>,
                                   single: Boolean = false,
                                   success: (res: Resources<List<T>>) -> Unit = {},
@@ -143,6 +149,7 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
         observeList(dataType, null, single, success, fail, loading)
     }
 
+    /** Observe list data */
     protected fun <T> observeList(dataType: Class<T>,
                                   flag: Int? = null,
                                   success: (res: Resources<List<T>>) -> Unit = {},
@@ -151,6 +158,7 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
         observeList(dataType, flag, false, success, fail, loading)
     }
 
+    /** Observe list data */
     protected fun <T> observeList(dataType: Class<T>,
                                   flag: Int? = null,
                                   single: Boolean = false,
@@ -166,50 +174,37 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
         })
     }
 
-    /**
-     * Make a simple toast.
-     *
-     * @param text the content to display
-     */
+    /** Make a simple toast.*/
     protected fun toast(text: CharSequence?) {
         ToastUtils.showShort(text)
     }
 
+    /** Make a simple toast.*/
     protected fun toast(@StringRes resId: Int) {
         ToastUtils.showShort(resId)
     }
 
-    /**
-     * Post one event by Bus
-     *
-     * @param event the event to post
-     */
+    /** Post one event by Bus*/
     protected fun post(event: Any?) {
         Bus.get().post(event)
     }
 
-    /**
-     * Post one sticky event by Bus
-     *
-     * @param event the sticky event
-     */
+    /** Post one sticky event by Bus*/
     protected fun postSticky(event: Any?) {
         Bus.get().postSticky(event)
     }
 
-    /**
-     * Start given activity.
-     *
-     * @param clz the activity
-     */
+    /** Start given activity.*/
     protected fun startActivity(clz: Class<out Activity?>) {
         ActivityUtils.start(context!!, clz)
     }
 
+    /** Start given activity.*/
     protected fun startActivity(activityClass: Class<out Activity?>, requestCode: Int) {
         ActivityUtils.start(this, activityClass, requestCode)
     }
 
+    /** Start given activity.*/
     protected fun startActivity(activityClass: Class<out Activity?>, requestCode: Int, @ActivityDirection direction: Int) {
         ActivityUtils.start(this, activityClass, requestCode, direction)
     }

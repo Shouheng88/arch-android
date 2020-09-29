@@ -2,10 +2,7 @@ package me.shouheng.api.bean
 
 import java.io.Serializable
 
-/**
- * @author WngShhng (shouheng2015@gmail.com)
- * @version 2019/7/6 17:53
- */
+/** Eye data */
 data class HomeBean(
     val dialog: Any,
     val issueList: List<Issue>,
@@ -14,6 +11,7 @@ data class HomeBean(
     val nextPublishTime: Long
 ) : Serializable
 
+/** Eye data */
 data class Issue(
     val count: Int,
     val date: Long,
@@ -23,6 +21,7 @@ data class Issue(
     val type: String
 ) : Serializable
 
+/** Eye data */
 data class Item(
     val `data`: Data,
     val adIndex: Int,
@@ -31,6 +30,7 @@ data class Item(
     val type: String
 ) : Serializable
 
+/** Eye data */
 data class Data(
     val ad: Boolean,
     val adTrack: Any,
@@ -78,6 +78,7 @@ data class Data(
     val webUrl: WebUrl
 ) : Serializable
 
+/** Eye data */
 data class PlayInfo(
     val height: Int,
     val name: String,
@@ -87,23 +88,27 @@ data class PlayInfo(
     val width: Int
 ) : Serializable
 
+/** Eye data */
 data class Url(
     val name: String,
     val size: Int,
     val url: String
 ) : Serializable
 
+/** Eye data */
 data class Provider(
     val alias: String,
     val icon: String,
     val name: String
 ) : Serializable
 
+/** Eye data */
 data class WebUrl(
     val forWeibo: String,
     val raw: String
 ) : Serializable
 
+/** Eye data */
 data class Tag(
     val actionUrl: String,
     val adTrack: Any,
@@ -118,12 +123,14 @@ data class Tag(
     val tagRecType: String
 ) : Serializable
 
+/** Eye data */
 data class Consumption(
     val collectionCount: Int,
     val replyCount: Int,
     val shareCount: Int
 ) : Serializable
 
+/** Eye data */
 data class Cover(
     val blurred: String,
     val detail: String,
@@ -132,6 +139,7 @@ data class Cover(
     val sharing: Any
 ) : Serializable
 
+/** Eye data */
 data class Author(
     val adTrack: Any,
     val approvedNotReadyVideoCount: Int,
@@ -149,12 +157,14 @@ data class Author(
     val videoNum: Int
 ) : Serializable
 
+/** Eye data */
 data class Shield(
     val itemId: Int,
     val itemType: String,
     val shielded: Boolean
 ) : Serializable
 
+/** Eye data */
 data class Follow(
     val followed: Boolean,
     val itemId: Int,

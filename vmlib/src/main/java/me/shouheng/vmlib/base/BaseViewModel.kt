@@ -52,74 +52,92 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
         return listHolder.getLiveData(dataType, flag, single) as MutableLiveData<Resources<List<T>>>
     }
 
+    /** Set success state of data type */
     fun <T> setSuccess(dataType: Class<T>, data: T) {
         setSuccess(dataType, null, false, data)
     }
 
+    /** Set success state of data type */
     fun <T> setSuccess(dataType: Class<T>, single: Boolean = false, data: T) {
         setSuccess(dataType, null, single, data)
     }
 
+    /** Set success state of data type */
     fun <T> setSuccess(dataType: Class<T>, flag: Int? = null, data: T) {
         setSuccess(dataType, flag, false, data)
     }
 
+    /** Set success state of data type */
     fun <T> setSuccess(dataType: Class<T>, flag: Int? = null, single: Boolean = false, data: T) {
         getObservable(dataType, flag, single).value = Resources.success(data)
     }
 
+    /** Set loading state of data type */
     fun <T> setLoading(dataType: Class<T>, flag: Int? = null, single: Boolean = false) {
         getObservable(dataType, flag, single).value = Resources.loading()
     }
 
+    /** Set fail state of data type */
     fun <T> setFailed(dataType: Class<T>, code: String?, message: String?) {
         setFailed(dataType, null, false, code, message)
     }
 
+    /** Set fail state of data type */
     fun <T> setFailed(dataType: Class<T>, single: Boolean = false, code: String?, message: String?) {
         setFailed(dataType, null, single, code, message)
     }
 
+    /** Set fail state of data type */
     fun <T> setFailed(dataType: Class<T>, flag: Int? = null, code: String?, message: String?) {
         setFailed(dataType, flag, false, code, message)
     }
 
+    /** Set fail state of data type */
     fun <T> setFailed(dataType: Class<T>, flag: Int? = null, single: Boolean = false, code: String?, message: String?) {
         getObservable(dataType, flag, single).value = Resources.failed(code, message)
     }
 
+    /** Set success state of list data type */
     fun <T> setListSuccess(dataType: Class<T>, data: List<T>?) {
         setListSuccess(dataType, null, false, data)
     }
 
+    /** Set success state of list data type */
     fun <T> setListSuccess(dataType: Class<T>, single: Boolean = false, data: List<T>?) {
         setListSuccess(dataType, null, single, data)
     }
 
+    /** Set success state of list data type */
     fun <T> setListSuccess(dataType: Class<T>, flag: Int? = null, data: List<T>?) {
         setListSuccess(dataType, flag, false, data)
     }
 
+    /** Set success state of list data type */
     fun <T> setListSuccess(dataType: Class<T>, flag: Int? = null, single: Boolean = false, data: List<T>?) {
         getListObservable(dataType, flag, single).value = Resources.success(data)
     }
 
+    /** Set loading state of list data type */
     fun <T> setListLoading(dataType: Class<T>, flag: Int? = null, single: Boolean = false) {
         getListObservable(dataType, flag, single).value = Resources.loading()
     }
 
+    /** Set fail state of list data type */
     fun <T> setListFailed(dataType: Class<T>, code: String?, message: String?) {
         setListFailed(dataType, null, false, code, message)
     }
 
+    /** Set fail state of list data type */
     fun <T> setListFailed(dataType: Class<T>, single: Boolean = false, code: String?, message: String?) {
         setListFailed(dataType, null, single, code, message)
     }
 
+    /** Set fail state of list data type */
     fun <T> setListFailed(dataType: Class<T>, flag: Int? = null, code: String?, message: String?) {
         setListFailed(dataType, flag, false, code, message)
     }
 
+    /** Set fail state of list data type */
     fun <T> setListFailed(dataType: Class<T>, flag: Int? = null, single: Boolean = false, code: String?, message: String?) {
         getListObservable(dataType, flag, single).value = Resources.failed(code, message)
     }
