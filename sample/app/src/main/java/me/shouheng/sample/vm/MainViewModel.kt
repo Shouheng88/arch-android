@@ -15,7 +15,7 @@ import me.shouheng.vmlib.bean.Resources
 class MainViewModel(application: Application) : BaseViewModel(application) {
 
     fun startLoad() {
-        getObservable(String::class.java).value = Resources.loading()
+        setLoading(String::class.java)
         ARouter.getInstance().navigation(MainDataService::class.java)
             ?.loadData(object : OnGetMainDataListener{
                 override fun onGetData() {

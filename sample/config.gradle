@@ -29,7 +29,7 @@ ext {
     ]
 
     // PUBLISH VERSION
-    publishVersion = "1.4.7"
+    publishVersion = "1.4.9"
 
     // support libraries
     support = [
