@@ -1,3 +1,6 @@
+- Version 1.5.0:
+  - Added observe and set status methods
+  - Move partical to kotlin to use its features
 - 版本 1.2.11
     - 修改底层库的依赖关系
     - ContainerActivity 增加 WebViewFragment 返回事件处理

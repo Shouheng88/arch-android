@@ -24,7 +24,7 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
     fun requestUser() { userService.requestUser() }
 
     fun requestFirstPage() {
-        getObservable(HomeBean::class.java).value = Resources.loading()
+        setLoading(HomeBean::class.java)
         eyepetizerService.getFirstHomePage(null, object : OnGetHomeBeansListener {
             override fun onError(errorCode: String, errorMsg: String) {
                 setFailed(HomeBean::class.java, errorCode, errorMsg)
