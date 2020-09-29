@@ -89,18 +89,18 @@ class App : Application() {
 // me.shouheng.eyepetizer.vm.EyepetizerViewModel#requestFirstPage
 fun requestFirstPage() {
     // 通知 ui 数据加载
-	setLoading(HomeBean::class.java)
-	eyepetizerService.getFirstHomePage(null, object : OnGetHomeBeansListener {
-		override fun onError(code: String, msg: String) {
+    setLoading(HomeBean::class.java)
+    eyepetizerService.getFirstHomePage(null, object : OnGetHomeBeansListener {
+        override fun onError(code: String, msg: String) {
             // 通知 ui 加载失败
-			setFailed(HomeBean::class.java, code, msg)
-		}
+            setFailed(HomeBean::class.java, code, msg)
+        }
 
-		override fun onGetHomeBean(homeBean: HomeBean) {
+        override fun onGetHomeBean(homeBean: HomeBean) {
             // 通知 ui 加载成功
-			setSuccess(HomeBean::class.java, homeBean)
-		}
-	})
+            setSuccess(HomeBean::class.java, homeBean)
+        }
+    })
 }
 ```
 
@@ -109,15 +109,15 @@ fun requestFirstPage() {
 ```kotlin
 observe(HomeBean::class.java, {
     // 成功的回调
-	val list = mutableListOf<Item>()
-	it.data.issueList.forEach { issue ->
-		issue.itemList.forEach { item ->
-			if (item.data.cover != null
-				&& item.data.author != null
-			) list.add(item)
-		}
-	}
-	adapter.addData(list)
+    val list = mutableListOf<Item>()
+    it.data.issueList.forEach { issue ->
+        issue.itemList.forEach { item ->
+            if (item.data.cover != null
+                && item.data.author != null
+            ) list.add(item)
+        }
+    }
+    adapter.addData(list)
 }, { /*失败 */ loading = false }, { /* 加载中 */ })
 ```
 

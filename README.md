@@ -83,18 +83,18 @@ In this library, we tried to hide the LivaData, so if you want to request one pa
 // me.shouheng.eyepetizer.vm.EyepetizerViewModel#requestFirstPage
 fun requestFirstPage() {
     // notify data loading
-	setLoading(HomeBean::class.java)
-	eyepetizerService.getFirstHomePage(null, object : OnGetHomeBeansListener {
-		override fun onError(code: String, msg: String) {
+    setLoading(HomeBean::class.java)
+    eyepetizerService.getFirstHomePage(null, object : OnGetHomeBeansListener {
+        override fun onError(code: String, msg: String) {
             // notify load failed
-			setFailed(HomeBean::class.java, code, msg)
-		}
+            setFailed(HomeBean::class.java, code, msg)
+        }
 
-		override fun onGetHomeBean(homeBean: HomeBean) {
+        override fun onGetHomeBean(homeBean: HomeBean) {
             // notify load succeed
-			setSuccess(HomeBean::class.java, homeBean)
-		}
-	})
+            setSuccess(HomeBean::class.java, homeBean)
+        }
+    })
 }
 ```
 
@@ -103,15 +103,15 @@ Then, in the activity, observe the data like below,
 ```kotlin
 observe(HomeBean::class.java, {
     // on succeed
-	val list = mutableListOf<Item>()
-	it.data.issueList.forEach { issue ->
-		issue.itemList.forEach { item ->
-			if (item.data.cover != null
-				&& item.data.author != null
-			) list.add(item)
-		}
-	}
-	adapter.addData(list)
+    val list = mutableListOf<Item>()
+    it.data.issueList.forEach { issue ->
+        issue.itemList.forEach { item ->
+            if (item.data.cover != null
+                && item.data.author != null
+            ) list.add(item)
+        }
+    }
+    adapter.addData(list)
 }, { /* on failed */ loading = false }, { /* on loading */ })
 ```
 
