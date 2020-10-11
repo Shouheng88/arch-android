@@ -9,22 +9,13 @@ package me.shouheng.vmlib.anno
 @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.ANNOTATION_CLASS, AnnotationTarget.CLASS)
 annotation class FragmentConfiguration(
-    /**
-     * Should the view model be shared between fragments.
-     *
-     * @return true to share
-     */
+
+    /** Should the view model be shared between fragments. */
     val shareViewModel: Boolean = false,
-    /**
-     * Will the event bus will be used in this view.
-     *
-     * @return true if you want to use event bus.
-     */
+
+    /** Will the event bus will be used in this view. */
     val useEventBus: Boolean = false,
-    /**
-     * Umeng configuration
-     *
-     * @return umeng configuration
-     */
+
+    /** Umeng configuration. */
     val umeng: UmengConfiguration = UmengConfiguration()
 )

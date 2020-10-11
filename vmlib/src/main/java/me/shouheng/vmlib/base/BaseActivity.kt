@@ -42,12 +42,11 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
     private var useEventBus = false
     private var needLogin = true
 
-    /**
-     * Grouped values with [ActivityConfiguration.umeng].
-     */
+    /** Grouped values with [ActivityConfiguration].*/
     private var pageName: String? = null
     private var hasFragment = false
     private var useUmengManual = false
+    private var exitDirection = ActivityDirection.ANIMATE_NONE
     private var layoutResId = 0
     private var onGetPermissionCallback: OnGetPermissionCallback? = null
 
@@ -330,6 +329,13 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
         super.onDestroy()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (exitDirection != ActivityDirection.ANIMATE_NONE) {
+            ActivityUtils.overridePendingTransition(this, exitDirection)
+        }
+    }
+
     /**
      * This method is used to call the super [.onBackPressed] instead of the
      * implementation of current activity. Since the current [.onBackPressed] may be override.
@@ -343,6 +349,7 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
         if (configuration != null) {
             useEventBus = configuration.useEventBus
             needLogin = configuration.needLogin
+            exitDirection = configuration.exitDirection
             val umengConfiguration = configuration.umeng
             pageName = if (TextUtils.isEmpty(umengConfiguration.pageName))
                 javaClass.simpleName else umengConfiguration.pageName

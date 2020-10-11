@@ -14,6 +14,7 @@ import me.shouheng.eyepetizer.vm.EyepetizerViewModel
 import me.shouheng.utils.app.ActivityUtils
 import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.stability.L
+import me.shouheng.vmlib.anno.ActivityConfiguration
 import me.shouheng.vmlib.base.CommonActivity
 
 /**
@@ -22,6 +23,7 @@ import me.shouheng.vmlib.base.CommonActivity
  * @author WngShhng 2019-07-06
  */
 @Route(path = "/eyepetizer/main")
+@ActivityConfiguration(exitDirection = ActivityDirection.ANIMATE_SLIDE_BOTTOM_FROM_TOP)
 class EyepetizerActivity : CommonActivity<EyepetizerViewModel, ActivityEyepetizerBinding>() {
 
     private lateinit var adapter: HomeAdapter
@@ -42,6 +44,7 @@ class EyepetizerActivity : CommonActivity<EyepetizerViewModel, ActivityEyepetize
             ARouter.getInstance().build("/eyepetizer/details")
                 .withSerializable(VideoDetailActivity.EXTRA_ITEM, itemList)
                 .navigation()
+            ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SCALE_IN)
         }
         binding.rv.adapter = adapter
         val layoutManager = binding.rv.layoutManager as LinearLayoutManager
@@ -83,9 +86,5 @@ class EyepetizerActivity : CommonActivity<EyepetizerViewModel, ActivityEyepetize
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {R.id.eye_item_request_user -> { vm.requestUser() } }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onBackPressed() {
-        ActivityUtils.finishActivity(this, ActivityDirection.ANIMATE_SLIDE_BOTTOM_FROM_TOP)
     }
 }
