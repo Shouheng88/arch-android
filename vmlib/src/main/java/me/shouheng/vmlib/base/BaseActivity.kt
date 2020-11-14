@@ -4,6 +4,7 @@ import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IdRes
 import android.support.annotation.LayoutRes
@@ -42,14 +43,15 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
     private var useEventBus = false
     private var needLogin = true
 
-    /**
-     * Grouped values with [ActivityConfiguration.umeng].
-     */
+    /** Grouped values with [ActivityConfiguration].*/
     private var pageName: String? = null
     private var hasFragment = false
     private var useUmengManual = false
+    private var exitDirection = ActivityDirection.ANIMATE_NONE
     private var layoutResId = 0
     private var onGetPermissionCallback: OnGetPermissionCallback? = null
+
+    private val pairs: MutableList<Triple<Int, Boolean, (code: Int, data: Intent?)->Unit>> = mutableListOf()
 
     /**
      * Do create view business.
@@ -114,21 +116,21 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
 
     /** Observe data */
     protected fun <T> observe(dataType: Class<T>,
-                              flag: Int? = null,
+                              sid: Int? = null,
                               success: (res: Resources<T>) -> Unit = {},
                               fail: (res: Resources<T>) -> Unit = {},
                               loading: (res: Resources<T>) -> Unit = {}) {
-        observe(dataType, flag, false, success, fail, loading)
+        observe(dataType, sid, false, success, fail, loading)
     }
 
     /** Observe data */
     protected fun <T> observe(dataType: Class<T>,
-                              flag: Int? = null,
+                              sid: Int? = null,
                               single: Boolean = false,
                               success: (res: Resources<T>) -> Unit = {},
                               fail: (res: Resources<T>) -> Unit = {},
                               loading: (res: Resources<T>) -> Unit = {}) {
-        vm.getObservable(dataType, flag, single).observe(this, Observer { res ->
+        vm.getObservable(dataType, sid, single).observe(this, Observer { res ->
             when (res?.status) {
                 Status.SUCCESS -> success(res)
                 Status.LOADING -> loading(res)
@@ -156,21 +158,21 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
 
     /** Observe list data */
     protected fun <T> observeList(dataType: Class<T>,
-                                  flag: Int? = null,
+                                  sid: Int? = null,
                                   success: (res: Resources<List<T>>) -> Unit = {},
                                   fail: (res: Resources<List<T>>) -> Unit = {},
                                   loading: (res: Resources<List<T>>) -> Unit = {}) {
-        observeList(dataType, flag, false, success, fail, loading)
+        observeList(dataType, sid, false, success, fail, loading)
     }
 
     /** Observe list data */
     protected fun <T> observeList(dataType: Class<T>,
-                                  flag: Int? = null,
+                                  sid: Int? = null,
                                   single: Boolean = false,
                                   success: (res: Resources<List<T>>) -> Unit = {},
                                   fail: (res: Resources<List<T>>) -> Unit = {},
                                   loading: (res: Resources<List<T>>) -> Unit = {}) {
-        vm.getListObservable(dataType, flag, single).observe(this, Observer { res ->
+        vm.getListObservable(dataType, sid, single).observe(this, Observer { res ->
             when (res?.status) {
                 Status.SUCCESS -> success(res)
                 Status.LOADING -> loading(res)
@@ -219,19 +221,47 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
         Bus.get().postSticky(event)
     }
 
-    /** Start given activity.*/
-    protected fun startActivity(clz: Class<out Activity?>) {
-        ActivityUtils.start(this, clz)
+    /**
+     * Start activity and add the result callback for [request].
+     *
+     * [request]:  the request code of [startActivityForResult]
+     * [callback]: the activity result event callback
+     */
+    protected fun start(intent: Intent?, request: Int, callback: (code: Int, data: Intent?)->Unit={ _, _ ->}) {
+        pairs.add(Triple(request, true, callback))
+        super.startActivityForResult(intent, request)
     }
 
-    /** Start given activity.*/
-    protected fun startActivity(activityClass: Class<out Activity?>, requestCode: Int) {
-        ActivityUtils.start(this, activityClass, requestCode)
+    /**
+     * Start activity and add the result callback for [request].
+     *
+     * [request]:  the request code of [startActivityForResult]
+     * [callback]: the activity result event callback
+     */
+    protected fun start(intent: Intent?, request: Int, options: Bundle?, callback: (code: Int, data: Intent?)->Unit={ _, _ ->}) {
+        pairs.add(Triple(request, true, callback))
+        super.startActivityForResult(intent, request, options)
     }
 
-    /** Start given activity.*/
-    protected fun startActivity(activityClass: Class<out Activity?>, requestCode: Int, @ActivityDirection direction: Int) {
-        ActivityUtils.start(this, activityClass, requestCode, direction)
+    /**
+     * When get result of request code base on [onActivityResult]
+     *
+     * [request]:  the request code of [start]
+     * [callback]: the activity result event callback
+     */
+    protected fun onResult(request: Int, callback: (code: Int, data: Intent?)->Unit) {
+        pairs.add(Triple(request, false, callback))
+    }
+
+    /**
+     * When get result of request code base on [onActivityResult]
+     *
+     * [request]:  the request code of [start]
+     * [single]:   Should the callback be removed once the callback was invoked
+     * [callback]: the activity result event callback
+     */
+    protected fun onResult(request: Int, single: Boolean, callback: (code: Int, data: Intent?)->Unit) {
+        pairs.add(Triple(request, single, callback))
     }
 
     /**
@@ -268,7 +298,7 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
      * @param permission the permission to check
      * @param onGetPermissionCallback the callback when got the required permission
      */
-    protected fun checkPermission(@Permission permission: Int, onGetPermissionCallback: OnGetPermissionCallback?) {
+    protected fun check(@Permission permission: Int, onGetPermissionCallback: OnGetPermissionCallback?) {
         PermissionUtils.checkPermissions(this, onGetPermissionCallback, permission)
     }
 
@@ -278,7 +308,7 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
      * @param onGetPermissionCallback the callback when got all permissions required.
      * @param permissions the permissions to request.
      */
-    protected fun checkPermissions(onGetPermissionCallback: OnGetPermissionCallback?, @Permission vararg permissions: Int) {
+    protected fun check(onGetPermissionCallback: OnGetPermissionCallback?, @Permission vararg permissions: Int) {
         PermissionUtils.checkPermissions(this, onGetPermissionCallback, *permissions)
     }
 
@@ -290,6 +320,20 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
      */
     protected val permissionResultCallback: PermissionResultCallback
         get() = PermissionResultCallbackImpl(this, onGetPermissionCallback)
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val it = pairs.iterator()
+        while (it.hasNext()) {
+            val pair = it.next()
+            // callback for all
+            if (pair.first == requestCode) {
+                pair.third(resultCode, data)
+                // oneshot request
+                if (pair.second) it.remove()
+            }
+        }
+    }
 
     override fun setOnGetPermissionCallback(onGetPermissionCallback: OnGetPermissionCallback) {
         this.onGetPermissionCallback = onGetPermissionCallback
@@ -330,6 +374,13 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
         super.onDestroy()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (exitDirection != ActivityDirection.ANIMATE_NONE) {
+            ActivityUtils.overridePendingTransition(this, exitDirection)
+        }
+    }
+
     /**
      * This method is used to call the super [.onBackPressed] instead of the
      * implementation of current activity. Since the current [.onBackPressed] may be override.
@@ -343,6 +394,7 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
         if (configuration != null) {
             useEventBus = configuration.useEventBus
             needLogin = configuration.needLogin
+            exitDirection = configuration.exitDirection
             val umengConfiguration = configuration.umeng
             pageName = if (TextUtils.isEmpty(umengConfiguration.pageName))
                 javaClass.simpleName else umengConfiguration.pageName

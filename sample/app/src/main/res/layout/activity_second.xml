@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <me.shouheng.uix.widget.text.ClearEditText
+            android:id="@+id/et"
+            android:hint="Input result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <me.shouheng.uix.widget.button.NormalButton
+            android:id="@+id/btn"
+            android:text="Set Result"
+            android:layout_marginTop="20dp"
+            android:textAllCaps="false"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            app:btn_normal_color="?colorAccent"
+            app:btn_corner_radius="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</layout>

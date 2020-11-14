@@ -19,11 +19,11 @@ public class LiveDataHolder<T> {
 
     private Map<Class, SingleLiveEvent> map = new HashMap<>();
 
-    private Map<Class, SparseArray<SingleLiveEvent>> flagMap = new HashMap<>();
+    private Map<Class, SparseArray<SingleLiveEvent>> sidMap = new HashMap<>();
 
-    public MutableLiveData<Resources<T>> getLiveData(Class dataType, Integer flag, boolean single) {
-        if (flag == null) return getLiveDataInner(dataType, single);
-        return getLiveDataInner(dataType, flag, single);
+    public MutableLiveData<Resources<T>> getLiveData(Class dataType, Integer sid, boolean single) {
+        if (sid == null) return getLiveDataInner(dataType, single);
+        return getLiveDataInner(dataType, sid, single);
     }
 
     private MutableLiveData<Resources<T>> getLiveDataInner(Class dataType, boolean single) {
@@ -35,16 +35,16 @@ public class LiveDataHolder<T> {
         return liveData;
     }
 
-    private MutableLiveData<Resources<T>> getLiveDataInner(Class dataType, int flag, boolean single) {
-        SparseArray<SingleLiveEvent> array = flagMap.get(dataType);
+    private MutableLiveData<Resources<T>> getLiveDataInner(Class dataType, int sid, boolean single) {
+        SparseArray<SingleLiveEvent> array = sidMap.get(dataType);
         if (array == null) {
             array = new SparseArray<>();
-            flagMap.put(dataType, array);
+            sidMap.put(dataType, array);
         }
-        SingleLiveEvent<Resources<T>> liveData = array.get(flag);
+        SingleLiveEvent<Resources<T>> liveData = array.get(sid);
         if (liveData == null) {
             liveData = new SingleLiveEvent<>(single);
-            array.put(flag, liveData);
+            array.put(sid, liveData);
         }
         return liveData;
     }

@@ -17,6 +17,7 @@ import io.reactivex.schedulers.Schedulers
 import me.shouheng.api.bean.Item
 import me.shouheng.eyepetizer.databinding.EyepetizerActivityVideoDetailsBinding
 import me.shouheng.eyepetizer.vm.VideoDetailsViewModel
+import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.stability.L
 import me.shouheng.utils.ui.ImageUtils
 import me.shouheng.vmlib.anno.ActivityConfiguration
@@ -29,7 +30,7 @@ import me.shouheng.vmlib.base.CommonActivity
  * @version 2019/7/7 14:16
  */
 @Route(path = "/eyepetizer/details")
-@ActivityConfiguration
+@ActivityConfiguration(exitDirection = ActivityDirection.ANIMATE_SCALE_OUT)
 class VideoDetailActivity : CommonActivity<VideoDetailsViewModel, EyepetizerActivityVideoDetailsBinding>() {
 
     companion object {

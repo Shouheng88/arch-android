@@ -1,6 +1,5 @@
 package me.shouheng.vmlib.base
 
-import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -12,8 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.umeng.analytics.MobclickAgent
-import me.shouheng.utils.app.ActivityUtils
-import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.permission.Permission
 import me.shouheng.utils.permission.PermissionUtils
 import me.shouheng.utils.permission.callback.OnGetPermissionCallback
@@ -109,21 +106,21 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
 
     /** Observe data */
     protected fun <T> observe(dataType: Class<T>,
-                              flag: Int? = null,
+                              sid: Int? = null,
                               success: (res: Resources<T>) -> Unit = {},
                               fail: (res: Resources<T>) -> Unit = {},
                               loading: (res: Resources<T>) -> Unit = {}) {
-        observe(dataType, flag, false, success, fail, loading)
+        observe(dataType, sid, false, success, fail, loading)
     }
 
     /** Observe data */
     protected fun <T> observe(dataType: Class<T>,
-                              flag: Int? = null,
+                              sid: Int? = null,
                               single: Boolean = false,
                               success: (res: Resources<T>) -> Unit = {},
                               fail: (res: Resources<T>) -> Unit = {},
                               loading: (res: Resources<T>) -> Unit = {}) {
-        vm.getObservable(dataType, flag, single).observe(this, Observer { res ->
+        vm.getObservable(dataType, sid, single).observe(this, Observer { res ->
             when (res?.status) {
                 Status.SUCCESS -> success(res)
                 Status.LOADING -> loading(res)
@@ -151,21 +148,21 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
 
     /** Observe list data */
     protected fun <T> observeList(dataType: Class<T>,
-                                  flag: Int? = null,
+                                  sid: Int? = null,
                                   success: (res: Resources<List<T>>) -> Unit = {},
                                   fail: (res: Resources<List<T>>) -> Unit = {},
                                   loading: (res: Resources<List<T>>) -> Unit = {}) {
-        observeList(dataType, flag, false, success, fail, loading)
+        observeList(dataType, sid, false, success, fail, loading)
     }
 
     /** Observe list data */
     protected fun <T> observeList(dataType: Class<T>,
-                                  flag: Int? = null,
+                                  sid: Int? = null,
                                   single: Boolean = false,
                                   success: (res: Resources<List<T>>) -> Unit = {},
                                   fail: (res: Resources<List<T>>) -> Unit = {},
                                   loading: (res: Resources<List<T>>) -> Unit = {}) {
-        vm.getListObservable(dataType, flag, single).observe(this, Observer { res ->
+        vm.getListObservable(dataType, sid, single).observe(this, Observer { res ->
             when (res?.status) {
                 Status.SUCCESS -> success(res)
                 Status.LOADING -> loading(res)
@@ -194,21 +191,6 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
         Bus.get().postSticky(event)
     }
 
-    /** Start given activity.*/
-    protected fun startActivity(clz: Class<out Activity?>) {
-        ActivityUtils.start(context!!, clz)
-    }
-
-    /** Start given activity.*/
-    protected fun startActivity(activityClass: Class<out Activity?>, requestCode: Int) {
-        ActivityUtils.start(this, activityClass, requestCode)
-    }
-
-    /** Start given activity.*/
-    protected fun startActivity(activityClass: Class<out Activity?>, requestCode: Int, @ActivityDirection direction: Int) {
-        ActivityUtils.start(this, activityClass, requestCode, direction)
-    }
-
     /**
      * Check single permission. For multiple permissions at the same time, call
      * [.checkPermissions].
@@ -216,7 +198,7 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
      * @param permission the permission to check
      * @param onGetPermissionCallback the callback when got the required permission
      */
-    protected fun checkPermission(@Permission permission: Int, onGetPermissionCallback: OnGetPermissionCallback?) {
+    protected fun check(@Permission permission: Int, onGetPermissionCallback: OnGetPermissionCallback?) {
         if (activity is CommonActivity<*, *>) {
             PermissionUtils.checkPermissions<CommonActivity<*, *>?>((
                     activity as CommonActivity<*, *>?)!!, onGetPermissionCallback, permission)
@@ -231,7 +213,7 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
      * @param onGetPermissionCallback the callback when got all permissions required.
      * @param permissions the permissions to request.
      */
-    protected fun checkPermissions(onGetPermissionCallback: OnGetPermissionCallback?, @Permission vararg permissions: Int) {
+    protected fun check(onGetPermissionCallback: OnGetPermissionCallback?, @Permission vararg permissions: Int) {
         if (activity is CommonActivity<*, *>) {
             PermissionUtils.checkPermissions<CommonActivity<*, *>?>(
                 (activity as CommonActivity<*, *>?)!!, onGetPermissionCallback, *permissions)

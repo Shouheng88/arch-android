@@ -29,27 +29,27 @@ public final class Resources<T> {
     public final String message;
 
     /**
-     * Appendix filed
+     * Appendix field
      */
     public final Long udf1;
 
     /**
-     * Appendix filed
+     * Appendix field
      */
     public final Double udf2;
 
     /**
-     * Appendix filed
+     * Appendix field
      */
     public final Boolean udf3;
 
     /**
-     * Appendix filed
+     * Appendix field
      */
     public final String udf4;
 
     /**
-     * Appendix filed
+     * Appendix field
      */
     public final Object udf5;
 
@@ -153,7 +153,7 @@ public final class Resources<T> {
         return new Resources<>(Status.LOADING, null, null, null, null, null, null, null, udf5);
     }
 
-    public static <U> Resources<U> loading(long udf1, double udf2, boolean udf3, String udf4, Object udf5) {
+    public static <U> Resources<U> loading(Long udf1, Double udf2, Boolean udf3, String udf4, Object udf5) {
         return new Resources<>(Status.LOADING, null, null, null, udf1, udf2, udf3, udf4, udf5);
     }
 

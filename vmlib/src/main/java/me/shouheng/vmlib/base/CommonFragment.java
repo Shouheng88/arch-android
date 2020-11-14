@@ -26,7 +26,6 @@ import android.view.ViewGroup;
  *         val text = arguments?.getString(ARGS_KEY_TEXT)
  *         binding.tv.text = text
  *     }
- *
  * }
  * </pre>
  * </blockquote>

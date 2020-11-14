@@ -7,7 +7,6 @@ import me.shouheng.api.sample.OnUserChangeListener
 import me.shouheng.api.sample.UserService
 import me.shouheng.sample.event.SimpleEvent
 import me.shouheng.vmlib.base.BaseViewModel
-import me.shouheng.vmlib.bean.Resources
 
 /**
  * 在 Fragment 之间共享的 ViewModel
@@ -39,12 +38,12 @@ class SharedViewModel(application: Application) : BaseViewModel(application), On
         post(SimpleEvent("Message from SharedViewModel!"))
     }
 
-    fun testObservableFlag(flag: Int) {
-        setSuccess(String::class.java, flag, "测试 Observable + Flag#$flag !")
+    fun testObservableFlag(sid: Int) {
+        setSuccess(String::class.java, "测试 Observable + Sid #$sid !", sid)
     }
 
-    fun testObservableListFlag(flag: Int) {
-        setListSuccess(String::class.java, flag, listOf("测试 List Observable + Flag#$flag !"))
+    fun testObservableListFlag(sid: Int) {
+        setListSuccess(String::class.java, listOf("测试 List Observable + Sid #$sid !"), sid)
     }
 
     override fun onUserChanged(user: User) { setSuccess(User::class.java, user) }
