@@ -7,7 +7,9 @@ import me.shouheng.api.bean.User
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.FragmentMainBinding
 import me.shouheng.sample.event.SimpleEvent
+import me.shouheng.sample.event.StartForResult
 import me.shouheng.sample.vm.SharedViewModel
+import me.shouheng.uix.common.listener.onDebouncedClick
 import me.shouheng.utils.app.ActivityUtils
 import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.data.StringUtils
@@ -79,7 +81,7 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
 
     @SuppressLint("MissingPermission")
     private fun initViews() {
-        binding.btnToSecond.setOnClickListener {
+        binding.btnToSecond.onDebouncedClick {
             val fragment = SecondFragment()
             activity?.supportFragmentManager
                 ?.beginTransaction()
@@ -87,7 +89,7 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
                 ?.replace(R.id.fragment_container, fragment)
                 ?.commit()
         }
-        binding.btnObservable.setOnClickListener {
+        binding.btnObservable.onDebouncedClick {
             // 测试发送 String+Flag 类型的消息，正确收发则测试通过
             if (it.tag == null) {
                 it.tag = "SSS"
@@ -97,7 +99,7 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
                 vm.testObservableFlag(SID_2)
             }
         }
-        binding.btnObservableList.setOnClickListener {
+        binding.btnObservableList.onDebouncedClick {
             // 测试发送 List+Flag 类型的消息，正确收发则测试通过
             if (it.tag == null) {
                 it.tag = "SSS"
@@ -107,19 +109,19 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
                 vm.testObservableListFlag(SID_2)
             }
         }
-        binding.btnRequestUser.setOnClickListener { vm.requestUserData() }
-        binding.btnToComponentB.setOnClickListener {
+        binding.btnRequestUser.onDebouncedClick { vm.requestUserData() }
+        binding.btnToComponentB.onDebouncedClick {
             ARouter.getInstance().build("/eyepetizer/main").navigation()
             ActivityUtils.overridePendingTransition(activity!!, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
         }
-        binding.btnToSample.setOnClickListener {
+        binding.btnToSample.onDebouncedClick {
             ContainerActivity.open(SampleFragment::class.java)
                 .put(SampleFragment.ARGS_KEY_TEXT, stringOf(R.string.sample_main_argument_to_fragment))
                 .put(ContainerActivity.KEY_EXTRA_ACTIVITY_DIRECTION, ActivityDirection.ANIMATE_BACK)
                 .withDirection(ActivityDirection.ANIMATE_FORWARD)
                 .launch(context!!)
         }
-        binding.btnDownload.setOnClickListener {
+        binding.btnDownload.onDebouncedClick {
             Downloader.getInstance()
                 .setOnlyWifi(true)
                 .download(downloadUrl, PathUtils.getExternalStoragePath(), object :
@@ -141,10 +143,10 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
                     }
                 })
         }
-        binding.btnUtils.setOnClickListener {
+        binding.btnUtils.onDebouncedClick {
             ActivityUtils.start(context!!, MainActivity::class.java)
         }
-        binding.btnPref.setOnClickListener {
+        binding.btnPref.onDebouncedClick {
             ContainerActivity.openFragment(SamplePreference::class.java)
                 // Specify the container activity theme.
                 .put(ContainerActivity.KEY_EXTRA_THEME_ID, R.style.TestAppTheme)
@@ -153,8 +155,9 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
                 .withDirection(ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
                 .launch(context!!)
         }
-        binding.btnCrash.setOnClickListener { 1/0 }
-        binding.btnVmPost.setOnClickListener { vm.postMessage() }
+        binding.btnCrash.onDebouncedClick { 1/0 }
+        binding.btnVmPost.onDebouncedClick { vm.postMessage() }
+        binding.btnStartResult.onDebouncedClick { post(StartForResult(0)) }
     }
 
     @Subscribe

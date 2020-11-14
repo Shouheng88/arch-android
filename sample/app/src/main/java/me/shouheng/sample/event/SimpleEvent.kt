@@ -6,3 +6,5 @@ package me.shouheng.sample.event
  * @author WngShhng 2019-07-05
  */
 data class SimpleEvent(val msg: String)
+
+data class StartForResult(val sid: Int)

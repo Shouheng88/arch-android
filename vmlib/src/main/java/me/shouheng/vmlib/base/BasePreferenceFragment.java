@@ -1,11 +1,9 @@
 package me.shouheng.vmlib.base;
 
-import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.XmlRes;
@@ -16,7 +14,6 @@ import com.umeng.analytics.MobclickAgent;
 
 import java.lang.reflect.ParameterizedType;
 
-import me.shouheng.utils.app.ActivityUtils;
 import me.shouheng.utils.app.ResUtils;
 import me.shouheng.utils.permission.Permission;
 import me.shouheng.utils.permission.PermissionUtils;
@@ -136,22 +133,13 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
     }
 
     /**
-     * Start given activity.
-     *
-     * @param clz the activity
-     */
-    protected void startActivity(@NonNull Class<? extends Activity> clz) {
-        ActivityUtils.start(getActivity(), clz);
-    }
-
-    /**
      * Check single permission. For multiple permissions at the same time, call
-     * {@link #checkPermissions(OnGetPermissionCallback, int...)}.
+     * {@link #check(OnGetPermissionCallback, int...)}.
      *
      * @param permission the permission to check
      * @param onGetPermissionCallback the callback when got the required permission
      */
-    protected void checkPermission(@Permission int permission, OnGetPermissionCallback onGetPermissionCallback) {
+    protected void check(@Permission int permission, OnGetPermissionCallback onGetPermissionCallback) {
         if (getActivity() instanceof CommonActivity) {
             PermissionUtils.checkPermissions((CommonActivity) getActivity(), onGetPermissionCallback, permission);
         } else {
@@ -165,7 +153,7 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
      * @param onGetPermissionCallback the callback when got all permissions required.
      * @param permissions the permissions to request.
      */
-    protected void checkPermissions(OnGetPermissionCallback onGetPermissionCallback, @Permission int...permissions) {
+    protected void check(OnGetPermissionCallback onGetPermissionCallback, @Permission int...permissions) {
         if (getActivity() instanceof CommonActivity) {
             PermissionUtils.checkPermissions((CommonActivity) getActivity(), onGetPermissionCallback, permissions);
         } else {
