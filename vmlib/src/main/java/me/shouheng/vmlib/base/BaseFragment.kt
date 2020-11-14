@@ -109,21 +109,21 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
 
     /** Observe data */
     protected fun <T> observe(dataType: Class<T>,
-                              flag: Int? = null,
+                              sid: Int? = null,
                               success: (res: Resources<T>) -> Unit = {},
                               fail: (res: Resources<T>) -> Unit = {},
                               loading: (res: Resources<T>) -> Unit = {}) {
-        observe(dataType, flag, false, success, fail, loading)
+        observe(dataType, sid, false, success, fail, loading)
     }
 
     /** Observe data */
     protected fun <T> observe(dataType: Class<T>,
-                              flag: Int? = null,
+                              sid: Int? = null,
                               single: Boolean = false,
                               success: (res: Resources<T>) -> Unit = {},
                               fail: (res: Resources<T>) -> Unit = {},
                               loading: (res: Resources<T>) -> Unit = {}) {
-        vm.getObservable(dataType, flag, single).observe(this, Observer { res ->
+        vm.getObservable(dataType, sid, single).observe(this, Observer { res ->
             when (res?.status) {
                 Status.SUCCESS -> success(res)
                 Status.LOADING -> loading(res)
@@ -151,21 +151,21 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
 
     /** Observe list data */
     protected fun <T> observeList(dataType: Class<T>,
-                                  flag: Int? = null,
+                                  sid: Int? = null,
                                   success: (res: Resources<List<T>>) -> Unit = {},
                                   fail: (res: Resources<List<T>>) -> Unit = {},
                                   loading: (res: Resources<List<T>>) -> Unit = {}) {
-        observeList(dataType, flag, false, success, fail, loading)
+        observeList(dataType, sid, false, success, fail, loading)
     }
 
     /** Observe list data */
     protected fun <T> observeList(dataType: Class<T>,
-                                  flag: Int? = null,
+                                  sid: Int? = null,
                                   single: Boolean = false,
                                   success: (res: Resources<List<T>>) -> Unit = {},
                                   fail: (res: Resources<List<T>>) -> Unit = {},
                                   loading: (res: Resources<List<T>>) -> Unit = {}) {
-        vm.getListObservable(dataType, flag, single).observe(this, Observer { res ->
+        vm.getListObservable(dataType, sid, single).observe(this, Observer { res ->
             when (res?.status) {
                 Status.SUCCESS -> success(res)
                 Status.LOADING -> loading(res)

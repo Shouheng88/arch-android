@@ -9,10 +9,10 @@ import me.shouheng.sample.databinding.FragmentMainBinding
 import me.shouheng.sample.event.SimpleEvent
 import me.shouheng.sample.vm.SharedViewModel
 import me.shouheng.utils.app.ActivityUtils
-import me.shouheng.utils.app.ResUtils
 import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.data.StringUtils
 import me.shouheng.utils.ktx.logd
+import me.shouheng.utils.ktx.stringOf
 import me.shouheng.utils.stability.L
 import me.shouheng.utils.store.PathUtils
 import me.shouheng.vmlib.anno.FragmentConfiguration
@@ -39,7 +39,7 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
     override fun doCreateView(savedInstanceState: Bundle?) {
         addSubscriptions()
         initViews()
-        vm.shareValue = ResUtils.getString(R.string.sample_main_shared_value_between_fragments)
+        vm.shareValue = stringOf(R.string.sample_main_shared_value_between_fragments)
         L.d(vm)
     }
 
@@ -51,30 +51,30 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
 
         // ============================ 测试 VM 的 getObservable 系列方法 ============================
         // 监听：String+Flag#0x0001，指定了 single=true，两个注册只有一个能收到
-        observe(String::class.java, FLAG_1, true, {
+        observe(String::class.java, SID_1, true, {
             toast("#1.1: " + it.data)
             logd("#1.1: " + it.data)
         })
-        observe(String::class.java, FLAG_1, true, {
+        observe(String::class.java, SID_1, true, {
             toast("#1.2: " + it.data)
             logd("#1.2: " + it.data)
         })
 
         // 监听：String+Flag#0x0002，默认 single=true，两个注册都能收到消息
-        observe(String::class.java, FLAG_2, {
+        observe(String::class.java, SID_2, {
             toast("#2.1: ${it.data}")
             logd("#2.1: " + it.data)
         })
-        observe(String::class.java, FLAG_2, {
+        observe(String::class.java, SID_2, {
             toast("#2.2: ${it.data}")
             logd("#2.2: " + it.data)
         })
 
         // 监听：List<String>+Flag#0x0001
-        observeList(String::class.java, FLAG_1, { toast("L#1: ${it.data}") })
+        observeList(String::class.java, SID_1, { toast("L#1: ${it.data}") })
 
         // 监听：List<String>+Flag#0x0002
-        observeList(String::class.java, FLAG_2, { toast("L#2: ${it.data}") })
+        observeList(String::class.java, SID_2, { toast("L#2: ${it.data}") })
     }
 
     @SuppressLint("MissingPermission")
@@ -91,20 +91,20 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
             // 测试发送 String+Flag 类型的消息，正确收发则测试通过
             if (it.tag == null) {
                 it.tag = "SSS"
-                vm.testObservableFlag(FLAG_1)
+                vm.testObservableFlag(SID_1)
             } else {
                 it.tag = null
-                vm.testObservableFlag(FLAG_2)
+                vm.testObservableFlag(SID_2)
             }
         }
         binding.btnObservableList.setOnClickListener {
             // 测试发送 List+Flag 类型的消息，正确收发则测试通过
             if (it.tag == null) {
                 it.tag = "SSS"
-                vm.testObservableListFlag(FLAG_1)
+                vm.testObservableListFlag(SID_1)
             } else {
                 it.tag = null
-                vm.testObservableListFlag(FLAG_2)
+                vm.testObservableListFlag(SID_2)
             }
         }
         binding.btnRequestUser.setOnClickListener { vm.requestUserData() }
@@ -114,7 +114,7 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
         }
         binding.btnToSample.setOnClickListener {
             ContainerActivity.open(SampleFragment::class.java)
-                .put(SampleFragment.ARGS_KEY_TEXT, ResUtils.getString(R.string.sample_main_argument_to_fragment))
+                .put(SampleFragment.ARGS_KEY_TEXT, stringOf(R.string.sample_main_argument_to_fragment))
                 .put(ContainerActivity.KEY_EXTRA_ACTIVITY_DIRECTION, ActivityDirection.ANIMATE_BACK)
                 .withDirection(ActivityDirection.ANIMATE_FORWARD)
                 .launch(context!!)
@@ -163,7 +163,7 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
     }
 
     companion object {
-        const val FLAG_1:Int = 0x0001
-        const val FLAG_2:Int = 0x0002
+        const val SID_1:Int = 0x0001
+        const val SID_2:Int = 0x0002
     }
 }
