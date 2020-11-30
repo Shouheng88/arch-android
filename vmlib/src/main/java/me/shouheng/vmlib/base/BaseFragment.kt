@@ -37,7 +37,7 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
 
     /** Grouped values with [FragmentConfiguration.umeng].  */
     private var useUmengManual = false
-    private var pageName: String? = null
+    private var pageName: String = javaClass.simpleName
 
     /**
      * Get the layout resource id from subclass.

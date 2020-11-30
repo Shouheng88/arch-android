@@ -44,7 +44,7 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
     private var needLogin = true
 
     /** Grouped values with [ActivityConfiguration].*/
-    private var pageName: String? = null
+    private var pageName: String = javaClass.simpleName
     private var hasFragment = false
     private var useUmengManual = false
     private var exitDirection = ActivityDirection.ANIMATE_NONE

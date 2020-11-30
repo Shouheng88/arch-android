@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.XmlRes;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
 import com.umeng.analytics.MobclickAgent;
@@ -173,6 +175,14 @@ public abstract class BasePreferenceFragment<U extends BaseViewModel> extends Pr
 
     protected <T extends Preference> T f(CharSequence key) {
         return (T) findPreference(key);
+    }
+
+    /** Get support fragment manager */
+    protected FragmentManager sfm() {
+        if (getActivity() instanceof AppCompatActivity) {
+            return ((AppCompatActivity) getActivity()).getSupportFragmentManager();
+        }
+        return null;
     }
 
     @Override
