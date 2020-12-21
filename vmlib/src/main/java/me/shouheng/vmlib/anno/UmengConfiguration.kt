@@ -15,7 +15,7 @@ annotation class UmengConfiguration(
     val pageName: String = "",
 
     /** Whether current activity contains fragment */
-    val hasFragment: Boolean = false,
+    val fragmentActivity: Boolean = false,
 
     /** Whether the umeng analytics will be used manually. */
     val useUmengManual: Boolean = false
