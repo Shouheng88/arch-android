@@ -9,7 +9,7 @@ import me.shouheng.sample.event.SimpleEvent
 import me.shouheng.sample.event.StartForResult
 import me.shouheng.sample.vm.MainViewModel
 import me.shouheng.utils.data.StringUtils
-import me.shouheng.utils.ktx.logd
+import me.shouheng.utils.stability.L
 import me.shouheng.vmlib.anno.ActivityConfiguration
 import me.shouheng.vmlib.base.CommonActivity
 import org.greenrobot.eventbus.Subscribe
@@ -41,7 +41,7 @@ class MainActivity : CommonActivity<MainViewModel, ActivityMainBinding>() {
         onResult(0) { code, data ->
             if (code == Activity.RESULT_OK) {
                 val ret = data?.getStringExtra("__result")
-                logd("Got result: $ret")
+                L.d("Got result: $ret")
             }
         }
     }

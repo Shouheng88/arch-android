@@ -47,8 +47,8 @@ dependencies {
     implementation rootProject.ext.libraries['EventBus']
     implementation rootProject.ext.libraries['arouter']
     kapt rootProject.ext.libraries['arouter-compiler']
-    implementation "me.shouheng.ui:uix-core:1.4.5"
-    implementation "me.shouheng.utils:utils-ktx:2.1.0"
+    implementation "me.shouheng.ui:uix-core:1.5.1"
+    implementation "me.shouheng.utils:utils-ktx:2.1.5"
 
     // 主项目中需要打入所有的组件
     implementation project(path: ':vmlib')

@@ -398,7 +398,7 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
             val umengConfiguration = configuration.umeng
             pageName = if (TextUtils.isEmpty(umengConfiguration.pageName))
                 javaClass.simpleName else umengConfiguration.pageName
-            hasFragment = umengConfiguration.hasFragment
+            hasFragment = umengConfiguration.fragmentActivity
             useUmengManual = umengConfiguration.useUmengManual
         }
     }

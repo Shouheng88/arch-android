@@ -13,7 +13,6 @@ import me.shouheng.uix.common.listener.onDebouncedClick
 import me.shouheng.utils.app.ActivityUtils
 import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.data.StringUtils
-import me.shouheng.utils.ktx.logd
 import me.shouheng.utils.ktx.stringOf
 import me.shouheng.utils.stability.L
 import me.shouheng.utils.store.PathUtils
@@ -55,21 +54,21 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
         // 监听：String+Flag#0x0001，指定了 single=true，两个注册只有一个能收到
         observe(String::class.java, SID_1, true, {
             toast("#1.1: " + it.data)
-            logd("#1.1: " + it.data)
+            L.d("#1.1: " + it.data)
         })
         observe(String::class.java, SID_1, true, {
             toast("#1.2: " + it.data)
-            logd("#1.2: " + it.data)
+            L.d("#1.2: " + it.data)
         })
 
         // 监听：String+Flag#0x0002，默认 single=true，两个注册都能收到消息
         observe(String::class.java, SID_2, {
             toast("#2.1: ${it.data}")
-            logd("#2.1: " + it.data)
+            L.d("#2.1: " + it.data)
         })
         observe(String::class.java, SID_2, {
             toast("#2.2: ${it.data}")
-            logd("#2.2: " + it.data)
+            L.d("#2.2: " + it.data)
         })
 
         // 监听：List<String>+Flag#0x0001
