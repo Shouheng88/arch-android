@@ -2,7 +2,6 @@ package me.shouheng.sample.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.api.bean.User
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.FragmentDebugBinding
@@ -109,10 +108,6 @@ class DebugFragment : CommonFragment<SharedViewModel, FragmentDebugBinding>() {
             }
         }
         binding.btnRequestUser.onDebouncedClick { vm.requestUserData() }
-        binding.btnToComponentB.onDebouncedClick {
-            ARouter.getInstance().build("/eyepetizer/main").navigation()
-            ActivityUtils.overridePendingTransition(activity!!, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
-        }
         binding.btnToSample.onDebouncedClick {
             ContainerActivity.open(SampleFragment::class.java)
                 .put(SampleFragment.ARGS_KEY_TEXT, stringOf(R.string.sample_main_argument_to_fragment))

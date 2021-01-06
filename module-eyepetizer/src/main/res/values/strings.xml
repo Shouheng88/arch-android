@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">开眼视频</string>
-
-    <string name="eye_menu_item_request_user">请求用户信息</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="eye_debug_page">Debug Page</string>
+    <string name="comn_load_loading">Loading&#8230;</string>
 </resources>

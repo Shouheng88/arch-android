@@ -2,8 +2,9 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/cold_theme_primary</item>
-        <item name="colorPrimaryDark">@color/cold_theme_primary_dark</item>
+        <item name="colorPrimaryDark">@android:color/white</item>
         <item name="colorAccent">@color/cold_theme_accent</item>
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 
     <style name="TestAppTheme" parent="AppTheme">

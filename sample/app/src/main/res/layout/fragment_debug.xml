@@ -37,12 +37,6 @@
                     style="@style/MenuButton"/>
 
             <me.shouheng.uix.widget.button.NormalButton
-                    android:id="@+id/btn_to_component_b"
-                    app:btn_corner_radius="5dp"
-                    android:text="@string/sample_main_navigate_to_eyeptizer"
-                    style="@style/MenuButton"/>
-
-            <me.shouheng.uix.widget.button.NormalButton
                     android:id="@+id/btn_to_sample"
                     app:btn_corner_radius="5dp"
                     android:text="@string/sample_main_navigate_to_sample"

@@ -3,4 +3,6 @@
     <style name="VideoTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
     </style>
+
+    <color name="text_color_secondary">#0F0F0F</color>
 </resources>
