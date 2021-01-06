@@ -140,8 +140,16 @@ class EyepetizerActivity : CommonActivity<EyepetizerViewModel, ActivityEyepetize
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {
-            R.id.action_debug -> {
+            R.id.action_vmlib_debug -> {
                 ARouter.getInstance().build("/app/debug").navigation()
+                ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
+            }
+            R.id.action_dialog_debug -> {
+                ARouter.getInstance().build("/app/dialog").navigation()
+                ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
+            }
+            R.id.action_tip_debug -> {
+                ARouter.getInstance().build("/app/tip").navigation()
                 ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
             }
         }

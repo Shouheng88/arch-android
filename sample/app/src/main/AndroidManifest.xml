@@ -34,6 +34,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+        <activity android:name=".dialog.DialogActivity"/>
+        <activity android:name=".dialog.TipsActivity"/>
         <activity android:name="me.shouheng.vmlib.comn.ContainerActivity"
             android:theme="@style/AppTheme"
             tools:replace="android:theme"/>

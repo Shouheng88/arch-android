@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <me.shouheng.uix.widget.image.CircleImageView
+        android:id="@+id/iv"
+        tools:src="#111111"
+        android:padding="4dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_gravity="center"
+        android:layout_width="40dp"
+        android:layout_height="40dp"/>
+
+</FrameLayout>
