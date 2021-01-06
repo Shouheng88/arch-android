@@ -1,6 +1,6 @@
-package me.shouheng.api.eyeptizer
+package me.shouheng.service.api
 
-import io.reactivex.Observable
+import kotlinx.coroutines.Deferred
 import me.shouheng.api.bean.HomeBean
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -10,11 +10,11 @@ import retrofit2.http.Url
  * @author WngShhng (shouheng2015@gmail.com)
  * @version 2019/7/6 18:02
  */
-interface APIService {
+interface EyeService {
 
     @GET("v2/feed?&num=1")
-    fun getFirstHomeData(@Query("date") date: Long?): Observable<HomeBean>
+    fun getFirstHomeDataAsync(@Query("date") date: Long?): Deferred<HomeBean>
 
     @GET
-    fun getMoreHomeData(@Url url: String?): Observable<HomeBean>
+    fun getMoreHomeDataAsync(@Url url: String?): Deferred<HomeBean>
 }

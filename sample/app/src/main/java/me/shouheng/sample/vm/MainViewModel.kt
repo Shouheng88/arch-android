@@ -18,7 +18,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
         setLoading(String::class.java)
         ARouter.getInstance().navigation(MainDataService::class.java)
             ?.loadData(object : OnGetMainDataListener{
-                override fun onGetData() {
+                override fun onGetData(data: String) {
                     setLoading(String::class.java)
                 }
             })

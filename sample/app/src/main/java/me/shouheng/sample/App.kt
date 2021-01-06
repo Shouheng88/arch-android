@@ -3,6 +3,7 @@ package me.shouheng.sample
 import android.content.Context
 import android.support.multidex.MultiDexApplication
 import com.alibaba.android.arouter.launcher.ARouter
+import me.shouheng.service.net.Server
 import me.shouheng.sample.view.MainActivity
 import me.shouheng.uix.pages.CrashReportActivity
 import me.shouheng.uix.widget.button.NormalButton
@@ -40,6 +41,8 @@ class App : MultiDexApplication() {
         customCrash()
         // custom UIX
         customUIX()
+        // init kaiyan app server host
+        Server.initServer("http://baobab.kaiyanapp.com/api/")
     }
 
     private fun customLog() {

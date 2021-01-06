@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.ActivitySecondBinding
-import me.shouheng.uix.common.listener.onDebouncedClick
+import me.shouheng.utils.ktx.onDebouncedClick
 import me.shouheng.vmlib.base.CommonActivity
 import me.shouheng.vmlib.comn.EmptyViewModel
 

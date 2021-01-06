@@ -7,17 +7,17 @@ import me.shouheng.api.bean.HomeBean
 interface EyepetizerService : IProvider {
 
     /** Request home page first page data */
-    fun getFirstHomePage(date: Long?, onGetHomeBeansListener: OnGetHomeBeansListener)
+    fun getFirstHomePage(date: Long?, listener: OnGetHomeBeansListener)
 
     /** Request more data from left pages */
-    fun getMoreHomePage(url: String?, onGetHomeBeansListener: OnGetHomeBeansListener)
+    fun getMoreHomePage(url: String?, listener: OnGetHomeBeansListener)
 }
 
 interface OnGetHomeBeansListener {
 
     /** Called when got first page home bean data */
-    fun onGetHomeBean(homeBean: HomeBean)
+    fun onGetHomeBean(data: HomeBean)
 
     /** The error callback */
-    fun onError(errorCode: String, errorMsg: String)
+    fun onError(code: String, msg: String)
 }

@@ -11,14 +11,15 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.shuyu.gsyvideoplayer.GSYVideoPlayer
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.shouheng.api.bean.Item
 import me.shouheng.eyepetizer.databinding.EyepetizerActivityVideoDetailsBinding
 import me.shouheng.eyepetizer.vm.VideoDetailsViewModel
 import me.shouheng.utils.constant.ActivityDirection
-import me.shouheng.utils.stability.L
+import me.shouheng.utils.ktx.onDebouncedClick
 import me.shouheng.utils.ui.ImageUtils
 import me.shouheng.vmlib.anno.ActivityConfiguration
 import me.shouheng.vmlib.base.CommonActivity
@@ -33,10 +34,6 @@ import me.shouheng.vmlib.base.CommonActivity
 @ActivityConfiguration(exitDirection = ActivityDirection.ANIMATE_SCALE_OUT)
 class VideoDetailActivity : CommonActivity<VideoDetailsViewModel, EyepetizerActivityVideoDetailsBinding>() {
 
-    companion object {
-        const val EXTRA_ITEM = "video_details_item"
-    }
-
     override fun getLayoutResId() = R.layout.eyepetizer_activity_video_details
 
     override fun doCreateView(savedInstanceState: Bundle?) {
@@ -50,16 +47,16 @@ class VideoDetailActivity : CommonActivity<VideoDetailsViewModel, EyepetizerActi
     }
 
     private fun initView() {
-        binding.gsyPlayer.setUp(vm.item.data.playUrl, false, null, null)
+        binding.gsyPlayer.setUp(vm.item!!.data.playUrl, false, null, null)
         binding.gsyPlayer.setIsTouchWiget(true)
         binding.gsyPlayer.isRotateViewAuto = false
         binding.gsyPlayer.isShowFullAnimation = false
         binding.gsyPlayer.isLockLand = false
         binding.gsyPlayer.isNeedLockFull = true
-        binding.gsyPlayer.fullscreenButton.setOnClickListener {
+        binding.gsyPlayer.fullscreenButton.onDebouncedClick {
             binding.gsyPlayer.startWindowFullscreen(this, true, true);
         }
-        binding.gsyPlayer.backButton.setOnClickListener {
+        binding.gsyPlayer.backButton.onDebouncedClick {
             onBackPressed()
         }
 
@@ -69,7 +66,7 @@ class VideoDetailActivity : CommonActivity<VideoDetailsViewModel, EyepetizerActi
 
         Glide.with(this)
             .asBitmap()
-            .load(vm.item.data.cover?.homepage)
+            .load(vm.item!!.data.cover?.homepage)
             .thumbnail(Glide.with(this).asBitmap().load(R.drawable.recommend_summary_card_bg_unlike))
             .addListener(object : RequestListener<Bitmap> {
                 override fun onLoadFailed(
@@ -89,13 +86,12 @@ class VideoDetailActivity : CommonActivity<VideoDetailsViewModel, EyepetizerActi
                     isFirstResource: Boolean
                 ): Boolean {
                     imageView.setImageBitmap(resource)
-                    val d = Observable.create<Bitmap> {
-                        it.onNext(ImageUtils.fastBlur(resource, 1f, 25f))
-                    }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
-                        binding.ivBg.setImageBitmap(it!!)
-                    }, {
-                        L.e(it)
-                    })
+                    GlobalScope.launch(Dispatchers.Main) {
+                        val res = withContext(Dispatchers.IO) {
+                            ImageUtils.fastBlur(resource, 1f, 25f)
+                        }
+                        binding.ivBg.setImageBitmap(res)
+                    }
                     return true
                 }
             }).into(imageView)
@@ -111,5 +107,9 @@ class VideoDetailActivity : CommonActivity<VideoDetailsViewModel, EyepetizerActi
     override fun onDestroy() {
         super.onDestroy()
         GSYVideoPlayer.releaseAllVideos()
+    }
+
+    companion object {
+        const val EXTRA_ITEM = "video_details_item"
     }
 }

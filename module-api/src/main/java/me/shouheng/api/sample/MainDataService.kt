@@ -12,5 +12,5 @@ interface MainDataService : IProvider {
 interface OnGetMainDataListener {
 
     /** On get main page data */
-    fun onGetData()
+    fun onGetData(data: String)
 }

@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'AndResGuard'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
@@ -29,11 +30,60 @@ android {
     dataBinding {
         enabled true
     }
-    android {
-        lintOptions {
-            abortOnError false
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
         }
     }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+    flavorDimensions "default"
+    productFlavors {
+        dev {
+            dimension "default"
+            buildConfigField "Boolean", "OVERSEA", "false"
+            buildConfigField "String", "HOST", "\"https://meiyan.tech/\""
+            buildConfigField "String", "BILLING_HOST", "\"http://oversea.meiyan.tech/\""
+        }
+    }
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+    }
+    andResGuard {
+        mappingFile = null
+        // Do NOT enable 7zip compression(use7zip) when you distribute your APP on Google Play: https://github.com/shwenzhang/AndResGuard/issues/233
+        use7zip = true
+        useSign = true
+        keepRoot = false
+        whiteList = [
+                // for fabric
+                "R.string.com.crashlytics.*",
+                // for google-services
+                "R.string.google_app_id",
+                "R.string.gcm_defaultSenderId",
+                "R.string.default_web_client_id",
+                "R.string.ga_trackingId",
+                "R.string.firebase_database_url",
+                "R.string.google_api_key",
+                "R.string.google_crash_reporting_api_key"
+        ]
+        compressFilePattern = [
+                "*.png",
+                "*.jpg",
+                "*.jpeg",
+                "*.gif",
+        ]
+        sevenzip {
+            artifact = 'com.tencent.mm:SevenZip:1.2.13'
+        }
+    }
+//    externalNativeBuild {
+//        cmake {
+//            path "CMakeLists.txt"
+//        }
+//    }
 }
 
 dependencies {
@@ -42,15 +92,17 @@ dependencies {
     androidTestImplementation rootProject.ext.libraries['android-test'].values()
     implementation "com.android.support:multidex:1.0.3"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation rootProject.ext.libraries["kotlin"].values()
+
     implementation rootProject.ext.support['appcompat-v7']
     implementation rootProject.ext.libraries['EventBus']
     implementation rootProject.ext.libraries['arouter']
     kapt rootProject.ext.libraries['arouter-compiler']
-    implementation "me.shouheng.ui:uix-core:1.5.1"
-    implementation "me.shouheng.utils:utils-ktx:2.1.5"
+    implementation rootProject.ext.libraries['uix-core']
+    implementation rootProject.ext.libraries['utils']
+    implementation rootProject.ext.libraries['utils-ktx']
 
-    // 主项目中需要打入所有的组件
+    // include dependent modules
     implementation project(path: ':vmlib')
     implementation project(path: ':vmlib-network')
     implementation project(path: ':module-api')

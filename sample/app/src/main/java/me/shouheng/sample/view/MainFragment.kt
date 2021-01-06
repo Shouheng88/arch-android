@@ -9,10 +9,10 @@ import me.shouheng.sample.databinding.FragmentMainBinding
 import me.shouheng.sample.event.SimpleEvent
 import me.shouheng.sample.event.StartForResult
 import me.shouheng.sample.vm.SharedViewModel
-import me.shouheng.uix.common.listener.onDebouncedClick
 import me.shouheng.utils.app.ActivityUtils
 import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.data.StringUtils
+import me.shouheng.utils.ktx.onDebouncedClick
 import me.shouheng.utils.ktx.stringOf
 import me.shouheng.utils.stability.L
 import me.shouheng.utils.store.PathUtils

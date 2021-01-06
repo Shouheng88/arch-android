@@ -1,4 +1,4 @@
-package me.shouheng.api.impl
+package me.shouheng.service.impl
 
 import android.content.Context
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -9,35 +9,33 @@ import me.shouheng.utils.stability.L
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
- * 用户信息服务实现
+ * User info service implementation
  *
  * @author WngShhng 2019-07-05
  */
 @Route(path = "/api/user")
 class UserServiceImpl : UserService {
 
-    private val userChangeListeners = CopyOnWriteArrayList<OnUserChangeListener>()
+    private val listeners = CopyOnWriteArrayList<OnUserChangeListener>()
 
     override fun requestUser() {
-        for (listener in userChangeListeners) {
-            listener.onUserChanged(User("WngShhng", 18))
+        for (listener in listeners) {
+            listener.onUserChanged(User("Jeff", 18))
         }
     }
 
     override fun registerUserChangeListener(userChangeListener: OnUserChangeListener) {
-        if (!userChangeListeners.contains(userChangeListener)) {
-            userChangeListeners.add(userChangeListener)
+        if (!listeners.contains(userChangeListener)) {
+            listeners.add(userChangeListener)
         }
     }
 
     override fun unRegisterUserChangeListener(userChangeListener: OnUserChangeListener) {
-        if (userChangeListeners.contains(userChangeListener)) {
-            userChangeListeners.remove(userChangeListener)
-        }
+        listeners.remove(userChangeListener)
     }
 
     override fun init(context: Context?) {
-        L.i(UserServiceImpl::class.java.name + " has init.")
+        L.i(UserServiceImpl::class.java.name + " initialized.")
     }
 
 }

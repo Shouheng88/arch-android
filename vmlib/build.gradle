@@ -42,10 +42,10 @@ dependencies {
     compileOnly rootProject.ext.libraries['AndroidEventBus']
     compileOnly rootProject.ext.libraries['umeng-common']
     compileOnly rootProject.ext.libraries['umeng-analytics']
-    compileOnly "me.shouheng.ui:uix-core:1.5.1"
+    implementation rootProject.ext.libraries['uix-core']
 
-    api "me.shouheng.utils:utils-core:2.1.5"
-    api "me.shouheng.compressor:compressor:1.3.5"
+    api rootProject.ext.libraries['utils']
+    api rootProject.ext.libraries['compressor']
 }
 
 publish {

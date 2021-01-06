@@ -10,5 +10,6 @@ import me.shouheng.vmlib.base.BaseViewModel
  */
 class VideoDetailsViewModel(application: Application) : BaseViewModel(application) {
 
-    lateinit var item: Item
+    var item: Item? = null
+
 }
