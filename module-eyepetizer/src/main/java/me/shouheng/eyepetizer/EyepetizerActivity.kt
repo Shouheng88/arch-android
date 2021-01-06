@@ -38,6 +38,7 @@ import me.shouheng.vmlib.base.CommonActivity
 class EyepetizerActivity : CommonActivity<EyepetizerViewModel, ActivityEyepetizerBinding>() {
 
     private lateinit var adapter: Adapter<Item>
+    private var scrollListener: DataLoadScrollListener? = null
 
     override fun getLayoutResId() = R.layout.activity_eyepetizer
 
@@ -86,11 +87,12 @@ class EyepetizerActivity : CommonActivity<EyepetizerViewModel, ActivityEyepetize
         binding.rv.setEmptyView(binding.ev)
         binding.rv.adapter = adapter
         // SAMPLE: custom recycler scroll listener
-        binding.rv.addOnScrollListener(object : DataLoadScrollListener(binding.rv.layoutManager as LinearLayoutManager) {
+        scrollListener = object : DataLoadScrollListener(binding.rv.layoutManager as LinearLayoutManager) {
             override fun loadMore() {
                 vm.nextPage()
             }
-        })
+        }
+        binding.rv.addOnScrollListener(scrollListener!!)
         binding.rv.addOnScrollListener(object : CustomRecyclerScrollViewListener() {
             override fun hide() {
                 val lp = binding.fab.layoutParams as FrameLayout.LayoutParams
@@ -125,10 +127,12 @@ class EyepetizerActivity : CommonActivity<EyepetizerViewModel, ActivityEyepetize
             }
             adapter.addData(list)
             binding.ev.showEmpty()
+            scrollListener?.loading = false
         }, {
             L.d("on failed")
             toast(it.message)
             binding.ev.showEmpty()
+            scrollListener?.loading = false
         }, {
             L.d("on loading")
             // The udf3 is the flag for loading more.
