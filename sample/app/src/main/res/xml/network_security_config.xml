@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">valipl.cp31.ott.cibntv.net</domain>
-        <domain includeSubdomains="true">baobab.kaiyanapp.com</domain>
-        <domain includeSubdomains="true">img.kaiyanapp.com</domain>
-        <domain includeSubdomains="true">*</domain>
-    </domain-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" overridePins="true" />
+            <certificates src="user" overridePins="true" />
+        </trust-anchors>
+    </base-config>
 </network-security-config>
