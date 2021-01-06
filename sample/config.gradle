@@ -95,6 +95,7 @@ ext {
             "utils"                     : "me.shouheng.utils:utils-core:2.1.7",
             "utils-ktx"                 : "me.shouheng.utils:utils-ktx:2.1.7",
             "uix-core"                  : "me.shouheng.ui:uix-core:1.6.20",
+            "uix-image"                 : "me.shouheng.ui:uix-image:1.4.7",
             "compressor"                : "me.shouheng.compressor:compressor:1.3.9",
             "icamera"                   : 'me.shouheng.icamera:icamera:0.1.1-beta',
 

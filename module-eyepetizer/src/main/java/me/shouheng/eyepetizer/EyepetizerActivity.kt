@@ -152,6 +152,10 @@ class EyepetizerActivity : CommonActivity<EyepetizerViewModel, ActivityEyepetize
                 ARouter.getInstance().build("/app/tip").navigation()
                 ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
             }
+            R.id.action_image_debug -> {
+                ARouter.getInstance().build("/app/image").navigation()
+                ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
+            }
         }
         return super.onOptionsItemSelected(item)
     }

@@ -9,4 +9,7 @@
     <item android:id="@+id/action_tip_debug"
         android:icon="@drawable/ic_baseline_bug_report_24"
         android:title="@string/eye_debug_tip_page"/>
+    <item android:id="@+id/action_image_debug"
+        android:icon="@drawable/ic_baseline_bug_report_24"
+        android:title="@string/eye_debug_image_page"/>
 </menu>
