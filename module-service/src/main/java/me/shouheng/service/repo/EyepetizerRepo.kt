@@ -1,5 +1,7 @@
 package me.shouheng.service.repo
 
+import android.text.TextUtils
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -9,6 +11,8 @@ import me.shouheng.service.api.EyeService
 import me.shouheng.service.config.isSucceed
 import me.shouheng.service.net.Net
 import me.shouheng.service.net.Server
+import me.shouheng.utils.stability.L
+import me.shouheng.utils.store.SPUtils
 
 class EyepetizerRepo private constructor() {
 
@@ -21,10 +25,21 @@ class EyepetizerRepo private constructor() {
             success(bean!!)
             return
         }
+        val json = SPUtils.get().getString("__data__")
+        if (!TextUtils.isEmpty(json)) {
+            val bean = Gson().fromJson<HomeBean>(json, HomeBean::class.java)
+            L.d("using cache")
+            success(bean)
+            return
+        }
         GlobalScope.launch(Dispatchers.Main) {
             val res = withContext(Dispatchers.IO) {
-                Net.connectResources(Server.get(EyeService::class.java)
+                val res = Net.connectResources(Server.get(EyeService::class.java)
                     .getFirstHomeDataAsync(date))
+                if (res.isSucceed()) {
+                    SPUtils.get().put("__data__", Gson().toJson(res.data))
+                }
+                res
             }
             if (res.isSucceed()) {
                 success(res.data)

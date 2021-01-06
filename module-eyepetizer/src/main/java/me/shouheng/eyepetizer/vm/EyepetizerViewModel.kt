@@ -6,6 +6,7 @@ import me.shouheng.api.bean.HomeBean
 import me.shouheng.api.eyepetizer.EyepetizerService
 import me.shouheng.api.eyepetizer.OnGetHomeBeansListener
 import me.shouheng.api.sample.UserService
+import me.shouheng.utils.stability.L
 import me.shouheng.vmlib.base.BaseViewModel
 
 /**
@@ -13,6 +14,8 @@ import me.shouheng.vmlib.base.BaseViewModel
  * @version 2019/7/6 18:19
  */
 class EyepetizerViewModel(application: Application) : BaseViewModel(application) {
+
+    private var firstPageRequested: Boolean = false
 
     private val userService: UserService = ARouter.getInstance().navigation(UserService::class.java)
 
@@ -23,9 +26,12 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
     fun requestUser() { userService.requestUser() }
 
     fun firstPage() {
+        if (firstPageRequested) return
+        firstPageRequested = true
         setLoading(HomeBean::class.java)
         eyeService.getFirstHomePage(null, object : OnGetHomeBeansListener {
             override fun onGetHomeBean(data: HomeBean) {
+                L.d("Got home bean")
                 nextPageUrl = data.nextPageUrl
                 setSuccess(HomeBean::class.java, data)
                 // request next page
@@ -33,6 +39,7 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
             }
 
             override fun onError(code: String, msg: String) {
+                L.d("Got home bean error")
                 setFailed(HomeBean::class.java, code, msg)
             }
         })
@@ -42,17 +49,16 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
         setLoading(HomeBean::class.java, udf3 = true)
         eyeService.getMoreHomePage(nextPageUrl, object : OnGetHomeBeansListener {
             override fun onGetHomeBean(data: HomeBean) {
+                L.d("Got next page home bean")
                 nextPageUrl = data.nextPageUrl
                 setSuccess(HomeBean::class.java, data, udf3 = true)
             }
 
             override fun onError(code: String, msg: String) {
+                L.d("Got next page home bean error")
                 setFailed(HomeBean::class.java, code, msg, udf3 = true)
             }
         })
     }
 
-    companion object {
-        const val SID_LOAD_MORE      = 0x0001
-    }
 }

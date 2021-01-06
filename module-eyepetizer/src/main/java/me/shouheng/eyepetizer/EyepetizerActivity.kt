@@ -46,6 +46,10 @@ class EyepetizerActivity : CommonActivity<EyepetizerViewModel, ActivityEyepetize
         configList()
         configView()
         observes()
+    }
+
+    override fun onResume() {
+        super.onResume()
         vm.firstPage()
     }
 
@@ -110,7 +114,7 @@ class EyepetizerActivity : CommonActivity<EyepetizerViewModel, ActivityEyepetize
 
     private fun observes() {
         observe(HomeBean::class.java, {
-            L.d(it.data)
+            L.d("on success")
             val list = mutableListOf<Item>()
             it.data.issueList.forEach { issue ->
                 issue.itemList.forEach { item ->
@@ -122,9 +126,11 @@ class EyepetizerActivity : CommonActivity<EyepetizerViewModel, ActivityEyepetize
             adapter.addData(list)
             binding.ev.showEmpty()
         }, {
+            L.d("on failed")
             toast(it.message)
             binding.ev.showEmpty()
         }, {
+            L.d("on loading")
             // The udf3 is the flag for loading more.
             // We only need to show loading progress bar for first page.
             if (it.udf3 == false) {
