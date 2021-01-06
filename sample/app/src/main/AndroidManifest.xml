@@ -23,7 +23,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         tools:replace="android:allowBackup"
         tools:overrideLibrary="me.shouheng.uix">
-        <activity android:name=".view.MainActivity"/>
+        <activity android:name=".view.DebugActivity"/>
         <activity android:name=".view.SecondActivity"/>
         <provider
             android:name="android.support.v4.content.FileProvider"

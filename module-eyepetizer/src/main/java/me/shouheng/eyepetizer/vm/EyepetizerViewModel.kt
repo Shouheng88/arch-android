@@ -39,15 +39,20 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
     }
 
     fun nextPage() {
+        setLoading(HomeBean::class.java, udf3 = true)
         eyeService.getMoreHomePage(nextPageUrl, object : OnGetHomeBeansListener {
             override fun onGetHomeBean(data: HomeBean) {
                 nextPageUrl = data.nextPageUrl
-                setSuccess(HomeBean::class.java, data)
+                setSuccess(HomeBean::class.java, data, udf3 = true)
             }
 
             override fun onError(code: String, msg: String) {
-                setFailed(HomeBean::class.java, code, msg)
+                setFailed(HomeBean::class.java, code, msg, udf3 = true)
             }
         })
+    }
+
+    companion object {
+        const val SID_LOAD_MORE      = 0x0001
     }
 }

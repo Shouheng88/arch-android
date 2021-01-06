@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import me.shouheng.sample.R
-import me.shouheng.sample.databinding.ActivityMainBinding
+import me.shouheng.sample.databinding.ActivityDebugBinding
 import me.shouheng.sample.event.SimpleEvent
 import me.shouheng.sample.event.StartForResult
 import me.shouheng.sample.vm.MainViewModel
@@ -15,14 +15,14 @@ import me.shouheng.vmlib.base.CommonActivity
 import org.greenrobot.eventbus.Subscribe
 
 /**
- * MVVM 框架演示工程
+ * MVVM Debug activity
  *
  * @author Wngshhng 2019-6-29
  */
 @ActivityConfiguration(useEventBus = true)
-class MainActivity : CommonActivity<MainViewModel, ActivityMainBinding>() {
+class DebugActivity : CommonActivity<MainViewModel, ActivityDebugBinding>() {
 
-    override fun getLayoutResId(): Int = R.layout.activity_main
+    override fun getLayoutResId(): Int = R.layout.activity_debug
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         initViews()
@@ -31,7 +31,7 @@ class MainActivity : CommonActivity<MainViewModel, ActivityMainBinding>() {
     }
 
     private fun initViews() {
-        val fragment = MainFragment()
+        val fragment = DebugFragment()
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit()
         setSupportActionBar(binding.toolbar)
     }

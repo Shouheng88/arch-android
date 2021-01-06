@@ -81,7 +81,13 @@ class EyepetizerActivity : CommonActivity<EyepetizerViewModel, ActivityEyepetize
         }, {
             toast(it.message)
             binding.ev.showEmpty()
-        }, { binding.ev.showLoading() })
+        }, {
+            // The udf3 is the flag for loading more.
+            // We only need to show loading progress bar for first page.
+            if (!it.udf3) {
+                binding.ev.showLoading()
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

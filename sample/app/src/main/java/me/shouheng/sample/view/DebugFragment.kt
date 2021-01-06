@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.api.bean.User
 import me.shouheng.sample.R
-import me.shouheng.sample.databinding.FragmentMainBinding
+import me.shouheng.sample.databinding.FragmentDebugBinding
 import me.shouheng.sample.event.SimpleEvent
 import me.shouheng.sample.event.StartForResult
 import me.shouheng.sample.vm.SharedViewModel
@@ -25,17 +25,17 @@ import org.greenrobot.eventbus.Subscribe
 import java.io.File
 
 /**
- * 主界面显示的碎片
+ * Debug fragment
  *
  * @author WngShhng 2019-6-29
  */
 @FragmentConfiguration(shareViewModel = true, useEventBus = true)
-class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
+class DebugFragment : CommonFragment<SharedViewModel, FragmentDebugBinding>() {
 
     private val downloadUrl = "https://images.unsplash.com/photo-1501879779179-4576bae71d8" +
             "d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&dl=vladimir-riabinin-diMBLU4FzDQ-unsplash.jpg"
 
-    override fun getLayoutResId(): Int = R.layout.fragment_main
+    override fun getLayoutResId(): Int = R.layout.fragment_debug
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         addSubscriptions()
@@ -143,7 +143,7 @@ class MainFragment : CommonFragment<SharedViewModel, FragmentMainBinding>() {
                 })
         }
         binding.btnUtils.onDebouncedClick {
-            ActivityUtils.start(context!!, MainActivity::class.java)
+            ActivityUtils.start(context!!, DebugActivity::class.java)
         }
         binding.btnPref.onDebouncedClick {
             ContainerActivity.openFragment(SamplePreference::class.java)

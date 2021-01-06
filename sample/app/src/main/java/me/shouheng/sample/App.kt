@@ -4,7 +4,7 @@ import android.content.Context
 import android.support.multidex.MultiDexApplication
 import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.service.net.Server
-import me.shouheng.sample.view.MainActivity
+import me.shouheng.sample.view.DebugActivity
 import me.shouheng.uix.pages.CrashReportActivity
 import me.shouheng.uix.widget.button.NormalButton
 import me.shouheng.utils.app.ResUtils
@@ -70,7 +70,7 @@ class App : MultiDexApplication() {
                 .setContent("Please the manger to report this issue.")
                 .setImage(R.drawable.uix_crash_error_image)
                 .setMessage(crashInfo)
-                .setRestartActivity(MainActivity::class.java)
+                .setRestartActivity(DebugActivity::class.java)
                 .launch()
         }
     }
