@@ -1,6 +1,8 @@
 package me.shouheng.sample.view
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import me.shouheng.api.bean.User
 import me.shouheng.sample.R
@@ -152,6 +154,15 @@ class DebugFragment : CommonFragment<SharedViewModel, FragmentDebugBinding>() {
         binding.btnCrash.onDebouncedClick { 1/0 }
         binding.btnVmPost.onDebouncedClick { vm.postMessage() }
         binding.btnStartResult.onDebouncedClick { post(StartForResult(0)) }
+        binding.btnFStartResult.onDebouncedClick {
+            val intent = Intent(context, SecondActivity::class.java)
+            start(intent, 0) { resultCode, data ->
+                if (resultCode == Activity.RESULT_OK) {
+                    val ret = data?.getStringExtra("__result")
+                    toast("Got result: $ret")
+                }
+            }
+        }
     }
 
     @Subscribe

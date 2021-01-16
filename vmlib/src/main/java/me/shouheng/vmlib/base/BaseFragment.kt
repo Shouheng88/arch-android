@@ -2,6 +2,7 @@ package me.shouheng.vmlib.base
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.annotation.StringRes
@@ -38,6 +39,8 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
     /** Grouped values with [FragmentConfiguration.umeng].  */
     private var useUmengManual = false
     private var pageName: String = javaClass.simpleName
+
+    private val pairs: MutableList<Triple<Int, Boolean, (code: Int, data: Intent?)->Unit>> = mutableListOf()
 
     /**
      * Get the layout resource id from subclass.
@@ -222,6 +225,28 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
         }
     }
 
+    /** @see BaseActivity.start */
+    protected fun start(intent: Intent?, request: Int, callback: (code: Int, data: Intent?)->Unit={ _, _ ->}) {
+        pairs.add(Triple(request, true, callback))
+        super.startActivityForResult(intent, request)
+    }
+
+    /** @see BaseActivity.start */
+    protected fun start(intent: Intent?, request: Int, options: Bundle?, callback: (code: Int, data: Intent?)->Unit={ _, _ ->}) {
+        pairs.add(Triple(request, true, callback))
+        super.startActivityForResult(intent, request, options)
+    }
+
+    /** @see BaseActivity.start */
+    protected fun onResult(request: Int, callback: (code: Int, data: Intent?)->Unit) {
+        pairs.add(Triple(request, false, callback))
+    }
+
+    /** @see BaseActivity.onResult */
+    protected fun onResult(request: Int, single: Boolean, callback: (code: Int, data: Intent?)->Unit) {
+        pairs.add(Triple(request, single, callback))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         if (useEventBus) Bus.get().register(this)
         vm = createViewModel()
@@ -247,6 +272,20 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
             Bus.get().unregister(this)
         }
         super.onDestroy()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val it = pairs.iterator()
+        while (it.hasNext()) {
+            val pair = it.next()
+            // callback for all
+            if (pair.first == requestCode) {
+                pair.third(resultCode, data)
+                // oneshot request
+                if (pair.second) it.remove()
+            }
+        }
     }
 
     init {

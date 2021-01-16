@@ -76,7 +76,13 @@
             <me.shouheng.uix.widget.button.NormalButton
                 android:id="@+id/btn_start_result"
                 app:btn_corner_radius="5dp"
-                android:text="Start Activity For Result"
+                android:text="Activity: start for result"
+                style="@style/MenuButton"/>
+
+            <me.shouheng.uix.widget.button.NormalButton
+                android:id="@+id/btn_f_start_result"
+                app:btn_corner_radius="5dp"
+                android:text="Fragment: start for result"
                 style="@style/MenuButton"/>
 
         </LinearLayout>
