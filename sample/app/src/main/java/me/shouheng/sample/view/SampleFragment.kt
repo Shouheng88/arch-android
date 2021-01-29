@@ -1,10 +1,9 @@
 package me.shouheng.sample.view
 
 import android.os.Bundle
-import me.shouheng.sample.R
 import me.shouheng.sample.databinding.FragmentSampleBinding
 import me.shouheng.vmlib.anno.FragmentConfiguration
-import me.shouheng.vmlib.base.CommonFragment
+import me.shouheng.vmlib.base.ViewBindingFragment
 import me.shouheng.vmlib.comn.EmptyViewModel
 
 /**
@@ -13,18 +12,14 @@ import me.shouheng.vmlib.comn.EmptyViewModel
  * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
  */
 @FragmentConfiguration
-class SampleFragment : CommonFragment<EmptyViewModel, FragmentSampleBinding>() {
+class SampleFragment : ViewBindingFragment<EmptyViewModel, FragmentSampleBinding>() {
 
-    /**
-     * used to test doOnCreateView method callback count
-     */
+    /** Used to test doOnCreateView method callback count */
     private var count = 0
 
     companion object {
         const val ARGS_KEY_TEXT = "__args_key_text"
     }
-
-    override fun getLayoutResId(): Int = R.layout.fragment_sample
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         val text = arguments?.getString(ARGS_KEY_TEXT)
