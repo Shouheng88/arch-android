@@ -91,7 +91,6 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
         if (useEventBus) Bus.get().register(this)
         super.onCreate(savedInstanceState)
         layoutResId = getLayoutResId()
-        require(layoutResId > 0) { "The subclass must provider a valid layout resources id." }
         vm = createViewModel()
         setupContentView(savedInstanceState)
         doCreateView(savedInstanceState)

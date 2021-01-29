@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'com.github.panpf.bintray-publish'
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -16,9 +16,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    dataBinding {
-        enabled true
-    }
     android {
         lintOptions {
             abortOnError false
@@ -31,8 +28,9 @@ dependencies {
     testImplementation rootProject.ext.libraries['test'].values()
     androidTestImplementation rootProject.ext.libraries['android-test'].values()
     implementation rootProject.ext.libraries['okhttp']
+    implementation rootProject.ext.support['annotations']
 
-    api "me.shouheng.utils:utils-core:2.1.1"
+    api "me.shouheng.utils:utils-core:2.1.7"
 }
 
 publish {

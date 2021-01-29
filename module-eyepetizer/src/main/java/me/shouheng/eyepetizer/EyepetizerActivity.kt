@@ -31,16 +31,14 @@ import me.shouheng.utils.ktx.onDebouncedClick
 import me.shouheng.utils.stability.L
 import me.shouheng.utils.ui.BarUtils
 import me.shouheng.vmlib.anno.ActivityConfiguration
-import me.shouheng.vmlib.base.CommonActivity
+import me.shouheng.vmlib.base.ViewBindingActivity
 
 @Route(path = "/eyepetizer/main")
 @ActivityConfiguration(exitDirection = ActivityDirection.ANIMATE_SLIDE_BOTTOM_FROM_TOP)
-class EyepetizerActivity : CommonActivity<EyepetizerViewModel, ActivityEyepetizerBinding>() {
+class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, ActivityEyepetizerBinding>() {
 
     private lateinit var adapter: Adapter<Item>
     private var scrollListener: DataLoadScrollListener? = null
-
-    override fun getLayoutResId() = R.layout.activity_eyepetizer
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         configToolbar()
