@@ -6,17 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 
-import me.shouheng.utils.permission.PermissionResultResolver;
-
 /**
  * The basic common implementation for MMVMs activity.
  *
  * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
  * @version 2019-6-29
  */
-public abstract class CommonActivity<U extends BaseViewModel, T extends ViewDataBinding>
-        extends BaseActivity<U>
-        implements PermissionResultResolver {
+public abstract class CommonActivity<U extends BaseViewModel, T extends ViewDataBinding> extends BaseActivity<U> {
 
     private T binding;
 

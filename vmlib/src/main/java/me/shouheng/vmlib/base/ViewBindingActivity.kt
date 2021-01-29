@@ -3,12 +3,10 @@ package me.shouheng.vmlib.base
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.viewbinding.ViewBinding
-import me.shouheng.utils.permission.PermissionResultResolver
 import me.shouheng.utils.stability.L
 import java.lang.reflect.ParameterizedType
 
-abstract class ViewBindingActivity<U : BaseViewModel, T : ViewBinding> :
-    BaseActivity<U>(), PermissionResultResolver {
+abstract class ViewBindingActivity<U : BaseViewModel, T : ViewBinding> : BaseActivity<U>() {
 
     protected lateinit var binding: T
         private set
