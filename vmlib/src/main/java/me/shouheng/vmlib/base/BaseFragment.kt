@@ -1,6 +1,7 @@
 package me.shouheng.vmlib.base
 
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
@@ -22,6 +23,7 @@ import me.shouheng.vmlib.anno.FragmentConfiguration
 import me.shouheng.vmlib.bean.Resources
 import me.shouheng.vmlib.bean.Status
 import me.shouheng.vmlib.bus.Bus
+import java.lang.IllegalStateException
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -42,24 +44,16 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
 
     private val pairs: MutableList<Triple<Int, Boolean, (code: Int, data: Intent?)->Unit>> = mutableListOf()
 
-    /**
-     * Get the layout resource id from subclass.
-     *
-     * @return layout resource id.
-     */
+    /** Get the layout resource id from subclass. */
     @LayoutRes
     protected abstract fun getLayoutResId(): Int
 
-    /**
-     * Do create view business.
-     *
-     * @param savedInstanceState the saved instance state.
-     */
+    /** Do create view business. */
     protected abstract fun doCreateView(savedInstanceState: Bundle?)
 
     /**
-     * Initialize view model according to the generic class type. Override this method to
-     * add your owen implementation.
+     * Initialize view model according to the generic class type.
+     * Override this method to add your owen implementation.
      *
      * Add [FragmentConfiguration] to the subclass and set
      * [FragmentConfiguration.shareViewModel] true
@@ -68,8 +62,9 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
      * @return the view model instance.
      */
     protected fun createViewModel(): U {
-        val vmClass: Class<U> = (this.javaClass.genericSuperclass as ParameterizedType)
-            .actualTypeArguments[0] as Class<U>
+        val vmClass = (this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments
+            .firstOrNull { ViewModel::class.java.isAssignableFrom(it as Class<*>) } as? Class<U>
+            ?: throw IllegalStateException("You must specify a view model class.")
         return if (shareViewModel) {
             ViewModelProviders.of(activity!!)[vmClass]
         } else {
@@ -195,16 +190,18 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
     }
 
     /**
-     * Check single permission. For multiple permissions at the same time, call
-     * [.checkPermissions].
+     * Check single permission. For multiple permissions at the same time, call [check].
      *
-     * @param permission the permission to check
-     * @param onGetPermissionCallback the callback when got the required permission
+     * @param onGetPermission the callback when got all permissions required.
+     * @param permission the permissions to request.
      */
-    protected fun check(@Permission permission: Int, onGetPermissionCallback: OnGetPermissionCallback?) {
+    protected fun check(@Permission permission: Int, onGetPermission: () -> Unit) {
         if (activity is CommonActivity<*, *>) {
-            PermissionUtils.checkPermissions<CommonActivity<*, *>?>((
-                    activity as CommonActivity<*, *>?)!!, onGetPermissionCallback, permission)
+            PermissionUtils.checkPermissions<CommonActivity<*, *>?>(
+                (activity as CommonActivity<*, *>?)!!,
+                OnGetPermissionCallback {
+                    onGetPermission()
+                }, permission)
         } else {
             L.w("Request permission failed due to the associated activity was not instance of CommonActivity")
         }
@@ -213,32 +210,35 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
     /**
      * Check multiple permissions at the same time.
      *
-     * @param onGetPermissionCallback the callback when got all permissions required.
+     * @param onGetPermission the callback when got all permissions required.
      * @param permissions the permissions to request.
      */
-    protected fun check(onGetPermissionCallback: OnGetPermissionCallback?, @Permission vararg permissions: Int) {
+    protected fun check(onGetPermission: () -> Unit, @Permission vararg permissions: Int) {
         if (activity is CommonActivity<*, *>) {
             PermissionUtils.checkPermissions<CommonActivity<*, *>?>(
-                (activity as CommonActivity<*, *>?)!!, onGetPermissionCallback, *permissions)
+                (activity as CommonActivity<*, *>?)!!,
+                OnGetPermissionCallback {
+                   onGetPermission()
+                }, *permissions)
         } else {
             L.w("Request permissions failed due to the associated activity was not instance of CommonActivity")
         }
     }
 
     /** @see BaseActivity.start */
-    protected fun start(intent: Intent?, request: Int, callback: (code: Int, data: Intent?)->Unit={ _, _ ->}) {
+    protected fun start(intent: Intent, request: Int, callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }) {
         pairs.add(Triple(request, true, callback))
         super.startActivityForResult(intent, request)
     }
 
     /** @see BaseActivity.start */
-    protected fun start(intent: Intent?, request: Int, options: Bundle?, callback: (code: Int, data: Intent?)->Unit={ _, _ ->}) {
+    protected fun start(intent: Intent, request: Int, options: Bundle?, callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }) {
         pairs.add(Triple(request, true, callback))
         super.startActivityForResult(intent, request, options)
     }
 
     /** @see BaseActivity.start */
-    protected fun onResult(request: Int, callback: (code: Int, data: Intent?)->Unit) {
+    protected fun onResult(request: Int, callback: (code: Int, data: Intent?) -> Unit) {
         pairs.add(Triple(request, false, callback))
     }
 
