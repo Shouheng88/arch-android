@@ -6,12 +6,11 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.LayoutRes
+import android.support.annotation.MenuRes
 import android.support.annotation.StringRes
 import android.support.v4.app.Fragment
 import android.text.TextUtils
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import com.umeng.analytics.MobclickAgent
 import me.shouheng.utils.permission.Permission
 import me.shouheng.utils.permission.PermissionUtils
@@ -42,8 +41,14 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
     private var useUmengManual = false
     private var pageName: String = javaClass.simpleName
 
+    @MenuRes
+    private var menuResId: Int = -1
+
     /** See document of [BaseFragment.results]. */
     private val results: MutableList<Triple<Int, Boolean, (code: Int, data: Intent?)->Unit>> = mutableListOf()
+
+    /** Menu options item selected callback */
+    private var onOptionsItemSelectedCallback: ((item: MenuItem) -> Unit)? = null
 
     /** Get the layout resource id from subclass. */
     @LayoutRes
@@ -248,10 +253,31 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
         results.add(Triple(request, single, callback))
     }
 
+    /** Set menu resources id if you want to use menu. */
+    protected fun setMenu(@MenuRes menuResId: Int, callback: (item: MenuItem) -> Unit) {
+        this.menuResId = menuResId
+        this.onOptionsItemSelectedCallback = callback
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         if (useEventBus) Bus.get().register(this)
         vm = createViewModel()
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        if (menuResId != -1) setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        if (menuResId != -1) inflater?.inflate(menuResId, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        item?.let { onOptionsItemSelectedCallback?.invoke(it) }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {

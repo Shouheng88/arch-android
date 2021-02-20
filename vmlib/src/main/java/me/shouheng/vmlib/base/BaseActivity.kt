@@ -9,10 +9,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IdRes
 import android.support.annotation.LayoutRes
+import android.support.annotation.MenuRes
 import android.support.annotation.StringRes
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import com.umeng.analytics.MobclickAgent
 import me.shouheng.utils.app.ActivityUtils
@@ -30,7 +33,6 @@ import me.shouheng.vmlib.anno.ActivityConfiguration
 import me.shouheng.vmlib.bean.Resources
 import me.shouheng.vmlib.bean.Status
 import me.shouheng.vmlib.bus.Bus
-import java.lang.IllegalStateException
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -53,6 +55,9 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
     private var layoutResId = 0
     private var onGetPermissionCallback: OnGetPermissionCallback? = null
 
+    @MenuRes
+    private var menuResId: Int = -1
+
     /**
      * The [results] is a mutable list with element of [Triple]. The three elements of [Triple] means:
      * 1. The request code when start activity
@@ -61,6 +66,12 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
      * 3. The result callback with first element the result code and second element the data intent.
      */
     private val results: MutableList<Triple<Int, Boolean, (code: Int, data: Intent?)->Unit>> = mutableListOf()
+
+    /** Menu options item selected callback */
+    private var onOptionsItemSelectedCallback: ((item: MenuItem) -> Unit)? = null
+
+    /** On activity pressed callback */
+    private var onBackCallback: ((back: () -> Unit) -> Unit)? = null
 
     /** Do create view business. */
     protected abstract fun doCreateView(savedInstanceState: Bundle?)
@@ -259,6 +270,17 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
         results.add(Triple(request, single, callback))
     }
 
+    /** Set menu resources id if you want to use menu. */
+    protected fun setMenu(@MenuRes menuResId: Int, callback: (item: MenuItem) -> Unit) {
+        this.menuResId = menuResId
+        this.onOptionsItemSelectedCallback = callback
+    }
+
+    /** Activity back event callback. If you want to continue back event call back method of [callback]. */
+    protected fun onBack(callback: (back: () -> Unit) -> Unit) {
+        this.onBackCallback = callback
+    }
+
     /**
      * To find view by id
      *
@@ -320,6 +342,16 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
     protected val permissionResultCallback: PermissionResultCallback
         get() = PermissionResultCallbackImpl(this, onGetPermissionCallback)
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        if (menuResId != -1) menuInflater.inflate(menuResId, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        item?.let { onOptionsItemSelectedCallback?.invoke(it) }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val it = results.iterator()
@@ -374,9 +406,16 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        if (exitDirection != ActivityDirection.ANIMATE_NONE) {
-            ActivityUtils.overridePendingTransition(this, exitDirection)
+        val doBack = {
+            super.onBackPressed()
+            if (exitDirection != ActivityDirection.ANIMATE_NONE) {
+                ActivityUtils.overridePendingTransition(this, exitDirection)
+            }
+        }
+        if (onBackCallback != null) {
+            onBackCallback?.invoke { doBack() }
+        } else {
+            doBack()
         }
     }
 

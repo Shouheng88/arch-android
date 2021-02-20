@@ -77,6 +77,12 @@ class DebugFragment : CommonFragment<SharedViewModel, FragmentDebugBinding>() {
 
         // 监听：List<String>+Flag#0x0002
         observeList(String::class.java, SID_2, { toast("L#2: ${it.data}") })
+
+        setMenu(R.menu.sample) {
+            if (it.itemId == R.id.action_sample) {
+                toast("Sample menu item clicked!")
+            }
+        }
     }
 
     @SuppressLint("MissingPermission")

@@ -2,8 +2,6 @@ package me.shouheng.eyepetizer
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -39,6 +37,7 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, ActivityEyep
 
     private lateinit var adapter: Adapter<Item>
     private var scrollListener: DataLoadScrollListener? = null
+    private var onBackPressed: Long = -1
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         configToolbar()
@@ -139,32 +138,33 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, ActivityEyep
                 binding.ev.showLoading()
             }
         })
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.eyepetizer_main, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
-            R.id.action_vmlib_debug -> {
-                ARouter.getInstance().build("/app/debug").navigation()
-                ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
-            }
-            R.id.action_dialog_debug -> {
-                ARouter.getInstance().build("/app/dialog").navigation()
-                ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
-            }
-            R.id.action_tip_debug -> {
-                ARouter.getInstance().build("/app/tip").navigation()
-                ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
-            }
-            R.id.action_image_debug -> {
-                ARouter.getInstance().build("/app/image").navigation()
-                ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
+        setMenu(R.menu.eyepetizer_main) { item ->
+            when(item.itemId) {
+                R.id.action_vmlib_debug -> {
+                    ARouter.getInstance().build("/app/debug").navigation()
+                    ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
+                }
+                R.id.action_dialog_debug -> {
+                    ARouter.getInstance().build("/app/dialog").navigation()
+                    ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
+                }
+                R.id.action_tip_debug -> {
+                    ARouter.getInstance().build("/app/tip").navigation()
+                    ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
+                }
+                R.id.action_image_debug -> {
+                    ARouter.getInstance().build("/app/image").navigation()
+                    ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
+                }
             }
         }
-        return super.onOptionsItemSelected(item)
+        onBack{ back ->
+            if (onBackPressed + 2000L > System.currentTimeMillis()) {
+                back()
+            } else {
+                toast("Again to exit")
+            }
+            onBackPressed = System.currentTimeMillis()
+        }
     }
 }
