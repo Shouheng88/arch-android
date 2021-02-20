@@ -42,7 +42,8 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
     private var useUmengManual = false
     private var pageName: String = javaClass.simpleName
 
-    private val pairs: MutableList<Triple<Int, Boolean, (code: Int, data: Intent?)->Unit>> = mutableListOf()
+    /** See document of [BaseFragment.results]. */
+    private val results: MutableList<Triple<Int, Boolean, (code: Int, data: Intent?)->Unit>> = mutableListOf()
 
     /** Get the layout resource id from subclass. */
     @LayoutRes
@@ -227,24 +228,24 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
 
     /** @see BaseActivity.start */
     protected fun start(intent: Intent, request: Int, callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }) {
-        pairs.add(Triple(request, true, callback))
+        results.add(Triple(request, true, callback))
         super.startActivityForResult(intent, request)
     }
 
     /** @see BaseActivity.start */
     protected fun start(intent: Intent, request: Int, options: Bundle?, callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }) {
-        pairs.add(Triple(request, true, callback))
+        results.add(Triple(request, true, callback))
         super.startActivityForResult(intent, request, options)
     }
 
     /** @see BaseActivity.start */
     protected fun onResult(request: Int, callback: (code: Int, data: Intent?) -> Unit) {
-        pairs.add(Triple(request, false, callback))
+        results.add(Triple(request, false, callback))
     }
 
     /** @see BaseActivity.onResult */
     protected fun onResult(request: Int, single: Boolean, callback: (code: Int, data: Intent?)->Unit) {
-        pairs.add(Triple(request, single, callback))
+        results.add(Triple(request, single, callback))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -276,7 +277,7 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val it = pairs.iterator()
+        val it = results.iterator()
         while (it.hasNext()) {
             val pair = it.next()
             // callback for all

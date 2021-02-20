@@ -53,7 +53,14 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
     private var layoutResId = 0
     private var onGetPermissionCallback: OnGetPermissionCallback? = null
 
-    private val pairs: MutableList<Triple<Int, Boolean, (code: Int, data: Intent?)->Unit>> = mutableListOf()
+    /**
+     * The [results] is a mutable list with element of [Triple]. The three elements of [Triple] means:
+     * 1. The request code when start activity
+     * 2. Is the result callback single shot or listener. Single shot one will be discarded after used.
+     * For example, it's used in [start] method. While the listener will be used in [onResult] method.
+     * 3. The result callback with first element the result code and second element the data intent.
+     */
+    private val results: MutableList<Triple<Int, Boolean, (code: Int, data: Intent?)->Unit>> = mutableListOf()
 
     /** Do create view business. */
     protected abstract fun doCreateView(savedInstanceState: Bundle?)
@@ -216,7 +223,7 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
      * [callback]: the activity result event callback
      */
     protected fun start(intent: Intent, request: Int, callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }) {
-        pairs.add(Triple(request, true, callback))
+        results.add(Triple(request, true, callback))
         super.startActivityForResult(intent, request)
     }
 
@@ -227,7 +234,7 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
      * [callback]: the activity result event callback
      */
     protected fun start(intent: Intent, request: Int, options: Bundle?, callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }) {
-        pairs.add(Triple(request, true, callback))
+        results.add(Triple(request, true, callback))
         super.startActivityForResult(intent, request, options)
     }
 
@@ -238,7 +245,7 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
      * [callback]: the activity result event callback
      */
     protected fun onResult(request: Int, callback: (code: Int, data: Intent?)->Unit) {
-        pairs.add(Triple(request, false, callback))
+        results.add(Triple(request, false, callback))
     }
 
     /**
@@ -249,7 +256,7 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
      * [callback]: the activity result event callback
      */
     protected fun onResult(request: Int, single: Boolean, callback: (code: Int, data: Intent?)->Unit) {
-        pairs.add(Triple(request, single, callback))
+        results.add(Triple(request, single, callback))
     }
 
     /**
@@ -315,7 +322,7 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val it = pairs.iterator()
+        val it = results.iterator()
         while (it.hasNext()) {
             val pair = it.next()
             // callback for all
