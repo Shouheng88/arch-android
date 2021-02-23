@@ -270,13 +270,13 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
         if (menuResId != -1) setHasOptionsMenu(true)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        if (menuResId != -1) inflater?.inflate(menuResId, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        if (menuResId != -1) inflater.inflate(menuResId, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        item?.let { onOptionsItemSelectedCallback?.invoke(it) }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        item.let { onOptionsItemSelectedCallback?.invoke(it) }
         return super.onOptionsItemSelected(item)
     }
 

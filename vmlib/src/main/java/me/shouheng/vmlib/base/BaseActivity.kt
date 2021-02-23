@@ -342,13 +342,13 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
     protected val permissionResultCallback: PermissionResultCallback
         get() = PermissionResultCallbackImpl(this, onGetPermissionCallback)
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         if (menuResId != -1) menuInflater.inflate(menuResId, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        item?.let { onOptionsItemSelectedCallback?.invoke(it) }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        item.let { onOptionsItemSelectedCallback?.invoke(it) }
         return super.onOptionsItemSelected(item)
     }
 
