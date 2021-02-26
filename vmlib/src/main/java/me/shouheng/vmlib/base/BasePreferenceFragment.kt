@@ -12,9 +12,8 @@ import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
-import android.view.View
 import com.umeng.analytics.MobclickAgent
-import me.shouheng.utils.app.ResUtils
+import me.shouheng.utils.ktx.stringOf
 import me.shouheng.utils.permission.Permission
 import me.shouheng.utils.permission.PermissionUtils
 import me.shouheng.utils.permission.callback.OnGetPermissionCallback
@@ -198,45 +197,38 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment() 
     }
 
     /**
-     * Check single permission. For multiple permissions at the same time, call
-     * [.check].
+     * Check single permission. For multiple permissions at the same time, call [check].
      *
-     * @param permission the permission to check
-     * @param onGetPermissionCallback the callback when got the required permission
+     * @param onGetPermission the callback when got all permissions required.
+     * @param permission the permissions to request.
      */
-    protected fun check(
-        @Permission permission: Int,
-        onGetPermissionCallback: OnGetPermissionCallback?
-    ) {
-        if (activity is CommonActivity<*, *>) {
-            PermissionUtils.checkPermissions(
-                activity as CommonActivity<*, *>,
-                onGetPermissionCallback,
-                permission
-            )
+    protected fun check(@Permission permission: Int, onGetPermission: () -> Unit) {
+        if (activity is BaseActivity<*>) {
+            PermissionUtils.checkPermissions<BaseActivity<*>?>(
+                (activity as BaseActivity<*>?)!!,
+                OnGetPermissionCallback {
+                    onGetPermission()
+                }, permission)
         } else {
-            L.i("Request permission failed due to the associated activity was not instance of CommonActivity")
+            L.w("Request permission failed due to the associated activity was not instance of CommonActivity")
         }
     }
 
     /**
      * Check multiple permissions at the same time.
      *
-     * @param onGetPermissionCallback the callback when got all permissions required.
+     * @param onGetPermission the callback when got all permissions required.
      * @param permissions the permissions to request.
      */
-    protected fun check(
-        onGetPermissionCallback: OnGetPermissionCallback?,
-        @Permission vararg permissions: Int
-    ) {
-        if (activity is CommonActivity<*, *>) {
-            PermissionUtils.checkPermissions(
-                activity as CommonActivity<*, *>,
-                onGetPermissionCallback,
-                *permissions
-            )
+    protected fun check(onGetPermission: () -> Unit, @Permission vararg permissions: Int) {
+        if (activity is BaseActivity<*>) {
+            PermissionUtils.checkPermissions<BaseActivity<*>?>(
+                (activity as BaseActivity<*>?)!!,
+                OnGetPermissionCallback {
+                    onGetPermission()
+                }, *permissions)
         } else {
-            L.i("Request permissions failed due to the associated activity was not instance of CommonActivity")
+            L.w("Request permissions failed due to the associated activity was not instance of CommonActivity")
         }
     }
 
@@ -268,12 +260,12 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment() 
      * @param keyRes preference key resources
      * @return       preference
      */
-    protected fun <T : Preference> f(@StringRes keyRes: Int): T? {
-        return findPreference(ResUtils.getString(keyRes)) as? T
+    protected fun <T : Preference> f(@StringRes keyRes: Int): T {
+        return findPreference(stringOf(keyRes)) as T
     }
 
-    protected fun <T : Preference> f(key: CharSequence?): T? {
-        return findPreference(key) as? T
+    protected fun <T : Preference> f(key: CharSequence): T {
+        return findPreference(key) as T
     }
 
     /** Get support fragment manager  */

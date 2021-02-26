@@ -202,9 +202,9 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
      * @param permission the permissions to request.
      */
     protected fun check(@Permission permission: Int, onGetPermission: () -> Unit) {
-        if (activity is CommonActivity<*, *>) {
-            PermissionUtils.checkPermissions<CommonActivity<*, *>?>(
-                (activity as CommonActivity<*, *>?)!!,
+        if (activity is BaseActivity<*>) {
+            PermissionUtils.checkPermissions<BaseActivity<*>?>(
+                (activity as BaseActivity<*>?)!!,
                 OnGetPermissionCallback {
                     onGetPermission()
                 }, permission)
@@ -220,11 +220,11 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
      * @param permissions the permissions to request.
      */
     protected fun check(onGetPermission: () -> Unit, @Permission vararg permissions: Int) {
-        if (activity is CommonActivity<*, *>) {
-            PermissionUtils.checkPermissions<CommonActivity<*, *>?>(
-                (activity as CommonActivity<*, *>?)!!,
+        if (activity is BaseActivity<*>) {
+            PermissionUtils.checkPermissions<BaseActivity<*>?>(
+                (activity as BaseActivity<*>?)!!,
                 OnGetPermissionCallback {
-                   onGetPermission()
+                    onGetPermission()
                 }, *permissions)
         } else {
             L.w("Request permissions failed due to the associated activity was not instance of CommonActivity")
