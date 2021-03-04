@@ -5,13 +5,15 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.LayoutRes
-import android.support.annotation.MenuRes
+import android.preference.Preference
+import android.preference.PreferenceFragment
 import android.support.annotation.StringRes
-import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
+import android.support.v4.app.FragmentManager
+import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
-import android.view.*
 import com.umeng.analytics.MobclickAgent
+import me.shouheng.utils.ktx.stringOf
 import me.shouheng.utils.permission.Permission
 import me.shouheng.utils.permission.PermissionUtils
 import me.shouheng.utils.permission.callback.OnGetPermissionCallback
@@ -22,47 +24,52 @@ import me.shouheng.vmlib.anno.FragmentConfiguration
 import me.shouheng.vmlib.bean.Resources
 import me.shouheng.vmlib.bean.Status
 import me.shouheng.vmlib.bus.Bus
-import java.lang.IllegalStateException
 import java.lang.reflect.ParameterizedType
 
 /**
- * The base common fragment implementation for MVVMs. Example:
+ * base preference fragment for mvvm
  *
  * @author [WngShhng](mailto:shouheng2015@gmail.com)
- * @version 2019-6-29
+ * @version 2019-10-02 13:15
  */
-abstract class BaseFragment<U : BaseViewModel> : Fragment() {
+abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment() {
     protected lateinit var vm: U
         private set
-    private var shareViewModel = false
     private var useEventBus = false
 
     /** Grouped values with [FragmentConfiguration.umeng].  */
+    private var pageName: String? = null
     private var useUmengManual = false
-    private var pageName: String = javaClass.simpleName
-
-    @MenuRes
-    private var menuResId: Int = -1
 
     /** See document of [BaseFragment.results]. */
     private val results: MutableList<Triple<Int, Boolean, (code: Int, data: Intent?)->Unit>> = mutableListOf()
 
-    /** Menu options item selected callback */
-    private var onOptionsItemSelectedCallback: ((item: MenuItem) -> Unit)? = null
-
-    /** Get the layout resource id from subclass. */
-    @LayoutRes
-    protected abstract fun getLayoutResId(): Int
-
-    /** Do create view business. */
-    protected abstract fun doCreateView(savedInstanceState: Bundle?)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        if (useEventBus) {
+            Bus.get().register(this)
+        }
+        vm = createViewModel()
+        super.onCreate(savedInstanceState)
+        val preferencesResId = getPreferencesResId()
+        require(preferencesResId > 0) { "The subclass must provider a valid preference resources id." }
+        addPreferencesFromResource(preferencesResId)
+        doCreateView(savedInstanceState)
+    }
 
     /**
-     * Initialize view model according to the generic class type.
-     * Override this method to add your owen implementation.
+     * Do create view business.
      *
-     * Add [FragmentConfiguration] to the subclass and set
-     * [FragmentConfiguration.shareViewModel] true
+     * @param savedInstanceState the saved instance state.
+     */
+    protected abstract fun doCreateView(savedInstanceState: Bundle?)
+
+    protected abstract fun getPreferencesResId(): Int
+
+    /**
+     * Initialize view model according to the generic class type. Override this method to
+     * add your owen implementation.
+     *
+     * Add [FragmentConfiguration] to the subclass and set [FragmentConfiguration.shareViewModel] true
      * if you want to share view model between several fragments.
      *
      * @return the view model instance.
@@ -71,24 +78,7 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
         val vmClass = (this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments
             .firstOrNull { ViewModel::class.java.isAssignableFrom(it as Class<*>) } as? Class<U>
             ?: throw IllegalStateException("You must specify a view model class.")
-        return if (shareViewModel) {
-            ViewModelProviders.of(activity!!)[vmClass]
-        } else {
-            ViewModelProviders.of(this)[vmClass]
-        }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val layoutResId = getLayoutResId()
-        require(layoutResId > 0) { "The subclass must provider a valid layout resources id." }
-        return inflater.inflate(layoutResId, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        // fixed 2020-05-21: The callback must be called here
-        // to use kotlin android extensions to avoid findViewById()
-        doCreateView(savedInstanceState)
+        return ViewModelProviders.of((activity as FragmentActivity))[vmClass]
     }
 
     /** Observe data */
@@ -124,7 +114,7 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
                               success: (res: Resources<T>) -> Unit = {},
                               fail: (res: Resources<T>) -> Unit = {},
                               loading: (res: Resources<T>) -> Unit = {}) {
-        vm.getObservable(dataType, sid, single).observe(this, Observer { res ->
+        vm.getObservable(dataType, sid, single).observe(activity as AppCompatActivity, Observer { res ->
             when (res?.status) {
                 Status.SUCCESS -> success(res)
                 Status.LOADING -> loading(res)
@@ -166,7 +156,7 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
                                   success: (res: Resources<List<T>>) -> Unit = {},
                                   fail: (res: Resources<List<T>>) -> Unit = {},
                                   loading: (res: Resources<List<T>>) -> Unit = {}) {
-        vm.getListObservable(dataType, sid, single).observe(this, Observer { res ->
+        vm.getListObservable(dataType, sid, single).observe(activity as AppCompatActivity, Observer { res ->
             when (res?.status) {
                 Status.SUCCESS -> success(res)
                 Status.LOADING -> loading(res)
@@ -175,22 +165,33 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
         })
     }
 
-    /** Make a simple toast.*/
+    /**
+     * Make a simple toast.
+     *
+     * @param text the content to display
+     */
     protected fun toast(text: CharSequence?) {
         ToastUtils.showShort(text)
     }
 
-    /** Make a simple toast.*/
     protected fun toast(@StringRes resId: Int) {
         ToastUtils.showShort(resId)
     }
 
-    /** Post one event by Bus*/
+    /**
+     * Post one event by Bus
+     *
+     * @param event the event to post
+     */
     protected fun post(event: Any?) {
         Bus.get().post(event)
     }
 
-    /** Post one sticky event by Bus*/
+    /**
+     * Post one sticky event by Bus
+     *
+     * @param event the sticky event
+     */
     protected fun postSticky(event: Any?) {
         Bus.get().postSticky(event)
     }
@@ -249,56 +250,43 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
     }
 
     /** @see BaseActivity.onResult */
-    protected fun onResult(request: Int, single: Boolean, callback: (code: Int, data: Intent?)->Unit) {
+    protected fun onResult(request: Int, single: Boolean, callback: (code: Int, data: Intent?) -> Unit) {
         results.add(Triple(request, single, callback))
     }
 
-    /** Set menu resources id if you want to use menu. */
-    protected fun setMenu(@MenuRes menuResId: Int, callback: (item: MenuItem) -> Unit) {
-        this.menuResId = menuResId
-        this.onOptionsItemSelectedCallback = callback
+    /**
+     * Find preference from string resource key.
+     *
+     * @param keyRes preference key resources
+     * @return       preference
+     */
+    protected fun <T : Preference> f(@StringRes keyRes: Int): T {
+        return findPreference(stringOf(keyRes)) as T
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        if (useEventBus) Bus.get().register(this)
-        vm = createViewModel()
-        super.onCreate(savedInstanceState)
+    protected fun <T : Preference> f(key: CharSequence): T {
+        return findPreference(key) as T
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        if (menuResId != -1) setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (menuResId != -1) inflater.inflate(menuResId, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        item.let { onOptionsItemSelectedCallback?.invoke(it) }
-        return super.onOptionsItemSelected(item)
+    /** Get support fragment manager  */
+    protected fun sfm(): FragmentManager? {
+        return if (activity is AppCompatActivity) {
+            (activity as AppCompatActivity).supportFragmentManager
+        } else null
     }
 
     override fun onResume() {
         super.onResume()
-        if (Platform.DEPENDENCY_UMENG_ANALYTICS && !useUmengManual) {
+        if (useUmengManual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
             MobclickAgent.onPageStart(pageName)
         }
     }
 
     override fun onPause() {
         super.onPause()
-        if (Platform.DEPENDENCY_UMENG_ANALYTICS && !useUmengManual) {
+        if (useUmengManual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
             MobclickAgent.onPageEnd(pageName)
         }
-    }
-
-    override fun onDestroy() {
-        if (useEventBus) {
-            Bus.get().unregister(this)
-        }
-        super.onDestroy()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -315,10 +303,16 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        if (useEventBus) {
+            Bus.get().unregister(this)
+        }
+        super.onDestroy()
+    }
+
     init {
         val configuration = this.javaClass.getAnnotation(FragmentConfiguration::class.java)
         if (configuration != null) {
-            shareViewModel = configuration.shareViewModel
             useEventBus = configuration.useEventBus
             val umengConfiguration = configuration.umeng
             pageName = if (TextUtils.isEmpty(umengConfiguration.pageName))

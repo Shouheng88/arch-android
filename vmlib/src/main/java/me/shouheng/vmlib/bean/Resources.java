@@ -8,69 +8,46 @@ package me.shouheng.vmlib.bean;
  */
 public final class Resources<T> {
 
-    /**
-     * The status of current resources, read only.
-     */
+    /** The status of current resources, read only. */
     public final Status status;
 
-    /**
-     * The data of current resources, read only.
-     */
+    /** The data of current resources, read only. */
     public final T data;
 
-    /**
-     * The code, read only.
-     */
+    /** The code, read only. */
     public final String code;
 
-    /**
-     * The message of current resources, read only.
-     */
+    /** The message of current resources, read only. */
     public final String message;
 
-    /**
-     * Appendix field
-     */
+    /** Appendix field */
     public final Long udf1;
 
-    /**
-     * Appendix field
-     */
+    /** Appendix field */
     public final Double udf2;
 
-    /**
-     * Appendix field
-     */
+    /** Appendix field */
     public final Boolean udf3;
 
-    /**
-     * Appendix field
-     */
+    /** Appendix field */
     public final String udf4;
 
-    /**
-     * Appendix field
-     */
+    /** Appendix field */
     public final Object udf5;
 
-    private Resources(Status status,
-                      T data,
-                      String code,
-                      String message,
-                      Long udf1,
-                      Double udf2,
-                      Boolean udf3,
-                      String udf4,
-                      Object udf5) {
-        this.status = status;
-        this.data = data;
-        this.code = code;
-        this.message = message;
-        this.udf1 = udf1;
-        this.udf2 = udf2;
-        this.udf3 = udf3;
-        this.udf4 = udf4;
-        this.udf5 = udf5;
+    /** Is currently success state */
+    public boolean isSucceed() {
+        return status == Status.SUCCESS;
+    }
+
+    /** Is currently failed state */
+    public boolean isFailed() {
+        return status == Status.FAILED;
+    }
+
+    /** Is currently loading state */
+    public boolean isLoading() {
+        return status == Status.LOADING;
     }
 
     public static <U> Resources<U> success(U data) {
@@ -155,6 +132,26 @@ public final class Resources<T> {
 
     public static <U> Resources<U> loading(Long udf1, Double udf2, Boolean udf3, String udf4, Object udf5) {
         return new Resources<>(Status.LOADING, null, null, null, udf1, udf2, udf3, udf4, udf5);
+    }
+
+    private Resources(Status status,
+                      T data,
+                      String code,
+                      String message,
+                      Long udf1,
+                      Double udf2,
+                      Boolean udf3,
+                      String udf4,
+                      Object udf5) {
+        this.status = status;
+        this.data = data;
+        this.code = code;
+        this.message = message;
+        this.udf1 = udf1;
+        this.udf2 = udf2;
+        this.udf3 = udf3;
+        this.udf4 = udf4;
+        this.udf5 = udf5;
     }
 
     @Override

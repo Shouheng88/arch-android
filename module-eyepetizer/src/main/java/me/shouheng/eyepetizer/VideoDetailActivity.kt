@@ -22,7 +22,7 @@ import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.ktx.onDebouncedClick
 import me.shouheng.utils.ui.ImageUtils
 import me.shouheng.vmlib.anno.ActivityConfiguration
-import me.shouheng.vmlib.base.CommonActivity
+import me.shouheng.vmlib.base.ViewBindingActivity
 
 /**
  * Video play and message activity.
@@ -32,9 +32,7 @@ import me.shouheng.vmlib.base.CommonActivity
  */
 @Route(path = "/eyepetizer/details")
 @ActivityConfiguration(exitDirection = ActivityDirection.ANIMATE_SCALE_OUT)
-class VideoDetailActivity : CommonActivity<VideoDetailsViewModel, EyepetizerActivityVideoDetailsBinding>() {
-
-    override fun getLayoutResId() = R.layout.eyepetizer_activity_video_details
+class VideoDetailActivity : ViewBindingActivity<VideoDetailsViewModel, EyepetizerActivityVideoDetailsBinding>() {
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         initData()

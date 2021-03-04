@@ -67,12 +67,13 @@ class ImageSampleActivity : CommonActivity<EmptyViewModel, ActivityMatisseSample
     }
 
     fun onMatisseLight(v: View) {
-        Matisse.from(this@ImageSampleActivity)
+        check(Permission.STORAGE) {
+            Matisse.from(this@ImageSampleActivity)
                 .choose(MimeType.ofAll(), false)
                 .countable(true)
                 .capture(true)
                 .captureStrategy(
-                        CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider", "test"))
+                    CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider", "test"))
                 .maxSelectable(9)
                 .addFilter(GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
                 // 如果指定了 gridExpectedSize，将优先使用 gridExpectedSize 而不是 spanCount
@@ -93,10 +94,12 @@ class ImageSampleActivity : CommonActivity<EmptyViewModel, ActivityMatisseSample
                     L.e("isChecked", "onCheck: isChecked=$isChecked")
                 }
                 .forResult(0x0001)
+        }
     }
 
     fun onMatisseDark(v: View) {
-        Matisse.from(this@ImageSampleActivity)
+        check(Permission.STORAGE) {
+            Matisse.from(this@ImageSampleActivity)
                 .choose(MimeType.ofAll())
                 .countable(true)
                 .theme(R.style.Matisse_Dracula)
@@ -107,6 +110,7 @@ class ImageSampleActivity : CommonActivity<EmptyViewModel, ActivityMatisseSample
                 .maxOriginalSize(10)
                 .imageEngine(Glide4Engine())
                 .forResult(0x0001)
+        }
     }
 
     fun onGallery(v: View) {

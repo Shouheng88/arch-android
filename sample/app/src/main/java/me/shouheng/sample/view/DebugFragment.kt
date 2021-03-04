@@ -15,6 +15,7 @@ import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.data.StringUtils
 import me.shouheng.utils.ktx.onDebouncedClick
 import me.shouheng.utils.ktx.stringOf
+import me.shouheng.utils.permission.Permission
 import me.shouheng.utils.stability.L
 import me.shouheng.utils.store.PathUtils
 import me.shouheng.vmlib.anno.FragmentConfiguration
@@ -43,6 +44,10 @@ class DebugFragment : CommonFragment<SharedViewModel, FragmentDebugBinding>() {
         initViews()
         vm.shareValue = stringOf(R.string.sample_main_shared_value_between_fragments)
         L.d(vm)
+
+        check(Permission.CAMERA) {
+            toast("Got permission!")
+        }
     }
 
     private fun addSubscriptions() {
@@ -77,6 +82,12 @@ class DebugFragment : CommonFragment<SharedViewModel, FragmentDebugBinding>() {
 
         // 监听：List<String>+Flag#0x0002
         observeList(String::class.java, SID_2, { toast("L#2: ${it.data}") })
+
+        setMenu(R.menu.sample) {
+            if (it.itemId == R.id.action_sample) {
+                toast("Sample menu item clicked!")
+            }
+        }
     }
 
     @SuppressLint("MissingPermission")

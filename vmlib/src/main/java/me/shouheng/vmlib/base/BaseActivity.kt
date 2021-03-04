@@ -2,16 +2,20 @@ package me.shouheng.vmlib.base
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IdRes
 import android.support.annotation.LayoutRes
+import android.support.annotation.MenuRes
 import android.support.annotation.StringRes
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import com.umeng.analytics.MobclickAgent
 import me.shouheng.utils.app.ActivityUtils
@@ -51,39 +55,47 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
     private var layoutResId = 0
     private var onGetPermissionCallback: OnGetPermissionCallback? = null
 
-    private val pairs: MutableList<Triple<Int, Boolean, (code: Int, data: Intent?)->Unit>> = mutableListOf()
+    @MenuRes
+    private var menuResId: Int = -1
 
     /**
-     * Do create view business.
-     *
-     * @param savedInstanceState the saved instance state.
+     * The [results] is a mutable list with element of [Triple]. The three elements of [Triple] means:
+     * 1. The request code when start activity
+     * 2. Is the result callback single shot or listener. Single shot one will be discarded after used.
+     * For example, it's used in [start] method. While the listener will be used in [onResult] method.
+     * 3. The result callback with first element the result code and second element the data intent.
      */
+    private val results: MutableList<Triple<Int, Boolean, (code: Int, data: Intent?)->Unit>> = mutableListOf()
+
+    /** Menu options item selected callback */
+    private var onOptionsItemSelectedCallback: ((item: MenuItem) -> Unit)? = null
+
+    /** On activity pressed callback */
+    private var onBackCallback: ((back: () -> Unit) -> Unit)? = null
+
+    /** Do create view business. */
     protected abstract fun doCreateView(savedInstanceState: Bundle?)
 
-    /**
-     * Get the layout resource id from subclass.
-     *
-     * @return layout resource id.
-     */
+    /** Get the layout resource id from subclass. */
     @LayoutRes
     protected abstract fun getLayoutResId(): Int
 
-    /**
-     * This method will be called before the [.setContentView] was called.
-     *
-     * @param savedInstanceState the saved instance state.
-     */
+    /** This method will be called before the [.setContentView] was called. */
     protected open fun setupContentView(savedInstanceState: Bundle?) {
         setContentView(layoutResId)
     }
 
     /**
-     * Initialize view model. Override this method to add your own implementation.
+     * Initialize view model from generic type of current activity.
+     * This method will visit all generic types of current activity and choose the FIRST ONE
+     * that assigned from [ViewModel].
      *
-     * @return the view model will be used.
+     * Override this method to add your own implementation.
      */
     protected fun createViewModel(): U {
-        val vmClass: Class<U> = (this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<U>
+        val vmClass = (this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments
+            .firstOrNull { ViewModel::class.java.isAssignableFrom(it as Class<*>) } as? Class<U>
+            ?: throw IllegalStateException("You must specify a view model class.")
         return ViewModelProviders.of(this)[vmClass]
     }
 
@@ -91,7 +103,6 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
         if (useEventBus) Bus.get().register(this)
         super.onCreate(savedInstanceState)
         layoutResId = getLayoutResId()
-        require(layoutResId > 0) { "The subclass must provider a valid layout resources id." }
         vm = createViewModel()
         setupContentView(savedInstanceState)
         doCreateView(savedInstanceState)
@@ -181,12 +192,7 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
         })
     }
 
-    /**
-     * Get fragment of given resources id.
-     *
-     * @param resId the resources id.
-     * @return the fragment.
-     */
+    /** Get fragment of given resources id. */
     protected fun getFragment(@IdRes resId: Int): Fragment? {
         return supportFragmentManager.findFragmentById(resId)
     }
@@ -227,8 +233,8 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
      * [request]:  the request code of [startActivityForResult]
      * [callback]: the activity result event callback
      */
-    protected fun start(intent: Intent?, request: Int, callback: (code: Int, data: Intent?)->Unit={ _, _ ->}) {
-        pairs.add(Triple(request, true, callback))
+    protected fun start(intent: Intent, request: Int, callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }) {
+        results.add(Triple(request, true, callback))
         super.startActivityForResult(intent, request)
     }
 
@@ -238,8 +244,8 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
      * [request]:  the request code of [startActivityForResult]
      * [callback]: the activity result event callback
      */
-    protected fun start(intent: Intent?, request: Int, options: Bundle?, callback: (code: Int, data: Intent?)->Unit={ _, _ ->}) {
-        pairs.add(Triple(request, true, callback))
+    protected fun start(intent: Intent, request: Int, options: Bundle?, callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }) {
+        results.add(Triple(request, true, callback))
         super.startActivityForResult(intent, request, options)
     }
 
@@ -250,7 +256,7 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
      * [callback]: the activity result event callback
      */
     protected fun onResult(request: Int, callback: (code: Int, data: Intent?)->Unit) {
-        pairs.add(Triple(request, false, callback))
+        results.add(Triple(request, false, callback))
     }
 
     /**
@@ -261,7 +267,18 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
      * [callback]: the activity result event callback
      */
     protected fun onResult(request: Int, single: Boolean, callback: (code: Int, data: Intent?)->Unit) {
-        pairs.add(Triple(request, single, callback))
+        results.add(Triple(request, single, callback))
+    }
+
+    /** Set menu resources id if you want to use menu. */
+    protected fun setMenu(@MenuRes menuResId: Int, callback: (item: MenuItem) -> Unit) {
+        this.menuResId = menuResId
+        this.onOptionsItemSelectedCallback = callback
+    }
+
+    /** Activity back event callback. If you want to continue back event call back method of [callback]. */
+    protected fun onBack(callback: (back: () -> Unit) -> Unit) {
+        this.onBackCallback = callback
     }
 
     /**
@@ -298,18 +315,22 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
      * @param permission the permission to check
      * @param onGetPermissionCallback the callback when got the required permission
      */
-    protected fun check(@Permission permission: Int, onGetPermissionCallback: OnGetPermissionCallback?) {
-        PermissionUtils.checkPermissions(this, onGetPermissionCallback, permission)
+    protected fun check(@Permission permission: Int, onGetPermission: () -> Unit) {
+        PermissionUtils.checkPermissions(this, OnGetPermissionCallback {
+            onGetPermission()
+        }, permission)
     }
 
     /**
      * Check multiple permissions at the same time.
      *
-     * @param onGetPermissionCallback the callback when got all permissions required.
-     * @param permissions the permissions to request.
+     * @param onGetPermission the callback when got all permissions required.
+     * @param permissions     the permissions to request.
      */
-    protected fun check(onGetPermissionCallback: OnGetPermissionCallback?, @Permission vararg permissions: Int) {
-        PermissionUtils.checkPermissions(this, onGetPermissionCallback, *permissions)
+    protected fun check(onGetPermission: () -> Unit, @Permission vararg permissions: Int) {
+        PermissionUtils.checkPermissions(this, OnGetPermissionCallback {
+            onGetPermission()
+        }, *permissions)
     }
 
     /**
@@ -321,9 +342,19 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
     protected val permissionResultCallback: PermissionResultCallback
         get() = PermissionResultCallbackImpl(this, onGetPermissionCallback)
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        if (menuResId != -1) menuInflater.inflate(menuResId, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        item.let { onOptionsItemSelectedCallback?.invoke(it) }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val it = pairs.iterator()
+        val it = results.iterator()
         while (it.hasNext()) {
             val pair = it.next()
             // callback for all
@@ -375,9 +406,16 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        if (exitDirection != ActivityDirection.ANIMATE_NONE) {
-            ActivityUtils.overridePendingTransition(this, exitDirection)
+        val doBack = {
+            super.onBackPressed()
+            if (exitDirection != ActivityDirection.ANIMATE_NONE) {
+                ActivityUtils.overridePendingTransition(this, exitDirection)
+            }
+        }
+        if (onBackCallback != null) {
+            onBackCallback?.invoke { doBack() }
+        } else {
+            doBack()
         }
     }
 
