@@ -109,6 +109,7 @@ dependencies {
 
     // include dependent modules
     implementation project(path: ':vmlib')
+//    implementation "com.github.Shouheng88:vmlib:1.6.1"
     implementation project(path: ':vmlib-network')
     implementation project(path: ':module-api')
     implementation project(path: ':module-service')

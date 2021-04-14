@@ -11,13 +11,13 @@ import android.view.KeyEvent;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import me.shouheng.utils.constant.ActivityDirection;
-import me.shouheng.vmlib.R;
-import me.shouheng.vmlib.base.BaseActivity;
-import me.shouheng.vmlib.Platform;
 import me.shouheng.uix.pages.web.FragmentKeyDown;
 import me.shouheng.utils.app.ActivityUtils;
+import me.shouheng.utils.constant.ActivityDirection;
 import me.shouheng.utils.stability.L;
+import me.shouheng.vmlib.Platform;
+import me.shouheng.vmlib.R;
+import me.shouheng.vmlib.base.BaseActivity;
 
 /**
  * The common container activity for ONE SHOT fragment:

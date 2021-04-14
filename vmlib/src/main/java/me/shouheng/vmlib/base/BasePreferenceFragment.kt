@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import com.umeng.analytics.MobclickAgent
-import me.shouheng.utils.ktx.stringOf
 import me.shouheng.utils.permission.Permission
 import me.shouheng.utils.permission.PermissionUtils
 import me.shouheng.utils.permission.callback.OnGetPermissionCallback
@@ -261,7 +260,7 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment() 
      * @return       preference
      */
     protected fun <T : Preference> f(@StringRes keyRes: Int): T {
-        return findPreference(stringOf(keyRes)) as T
+        return findPreference(getString(keyRes)) as T
     }
 
     protected fun <T : Preference> f(key: CharSequence): T {

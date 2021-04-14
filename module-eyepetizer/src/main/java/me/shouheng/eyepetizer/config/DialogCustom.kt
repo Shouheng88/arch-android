@@ -15,7 +15,6 @@ import me.shouheng.uix.widget.dialog.BeautyDialog
 import me.shouheng.uix.widget.dialog.MessageDialog
 import me.shouheng.uix.widget.dialog.content.*
 import me.shouheng.uix.widget.dialog.footer.SimpleFooter
-import me.shouheng.uix.widget.dialog.listener.OnDismissListener
 import me.shouheng.uix.widget.dialog.title.IDialogTitle
 import me.shouheng.uix.widget.dialog.title.SimpleTitle
 import me.shouheng.uix.widget.rv.EmptyView
@@ -113,11 +112,9 @@ fun BeautyDialog.Builder.list(
         SimpleList.Builder()
             .setList(list)
             .setShowIcon(showIcon)
-            .setOnItemClickListener(object : SimpleList.OnItemClickListener {
-                override fun onItemClick(dialog: BeautyDialog, item: SimpleList.Item) {
-                    callback(dialog, item)
-                }
-            })
+            .setOnItemClickListener { dialog, item ->
+                callback(dialog, item)
+            }
             .build())
     return this
 }
@@ -191,11 +188,7 @@ fun message(
     if (message != null) builder.content(message, gravity)
     return builder.confirmOrCancel(context, confirm, cancel,
         {dlg, _, _ -> onConfirm(dlg)},
-        {dlg, _, _ -> onCancel(dlg)}).setOnDismissListener(object : OnDismissListener {
-        override fun onOnDismiss(dialog: BeautyDialog) {
-            onDismiss(dialog)
-        }
-    }).build()
+        {dlg, _, _ -> onCancel(dlg)}).onDismiss { onDismiss(it) }.build()
 }
 
 /** Show loading dialog */
