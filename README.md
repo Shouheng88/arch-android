@@ -35,7 +35,7 @@ This project is designed for fast development. The library is mainly based on Je
 The library is published to jcenter. So, you can use jcenter to introduce this library in your project:
 
 ```gradle
-repositories { jcenter() }
+repositories { mavenCentral() }
 ```
 
 ### 1.2 Add dependecy
