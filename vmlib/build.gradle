@@ -47,7 +47,7 @@ dependencies {
     compileOnly rootProject.ext.libraries['AndroidEventBus']
     compileOnly rootProject.ext.libraries['umeng-common']
     compileOnly rootProject.ext.libraries['umeng-analytics']
-    implementation rootProject.ext.libraries['uix-core']
+    compileOnly rootProject.ext.libraries['uix-core']
 
     api rootProject.ext.libraries['utils']
     api rootProject.ext.libraries['compressor']
