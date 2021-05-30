@@ -7,7 +7,7 @@
     <img src="https://img.shields.io/hexpm/l/plug.svg" alt="License" />
   </a>
   <a href="https://bintray.com/beta/#/easymark/Android/vmlib-core?tab=overview">
-    <img src="https://img.shields.io/maven-metadata/v/https/dl.bintray.com/easymark/Android/me/shouheng/vmlib/vmlib-core/maven-metadata.xml.svg" alt="Version" />
+    <img src="https://img.shields.io/maven-metadata/v/https/s01.oss.sonatype.org/service/local/repo_groups/public/content/com/github/Shouheng88/vmlib/maven-metadata.xml.svg" alt="Version" />
   </a>
   <a href="https://www.codacy.com/manual/Shouheng88/Android-MVVMs?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Shouheng88/Android-MVVMs&amp;utm_campaign=Badge_Grade">
     <img src="https://api.codacy.com/project/badge/Grade/412a91540f254721ac63757eeded9ba5" alt="Code Grade"/>
@@ -35,19 +35,19 @@ This project is designed for fast development. The library is mainly based on Je
 The library is published to jcenter. So, you can use jcenter to introduce this library in your project:
 
 ```gradle
-repositories { jcenter() }
+repositories { mavenCentral() }
 ```
 
 ### 1.2 Add dependecy
 
 ```gradle
-implementation "me.shouheng.vmlib:vmlib-core:$latest-version"
+implementation "com.github.Shouheng88:vmlib:$latest-version"
 ```
 
 If you need the downloader library based on OkHttp, try add the dependency below:
 
 ```gradle
-implementation "me.shouheng.vmlib:vmlib-network:$latest-version"
+implementation "com.github.Shouheng88:vmlib-network:$latest-version"
 ```
 
 ### 1.3 Initialize the library
