@@ -1,8 +1,6 @@
 package me.shouheng.vmlib.base
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProviders
+import android.arch.lifecycle.*
 import android.content.Intent
 import android.os.Bundle
 import android.preference.Preference
@@ -31,7 +29,7 @@ import java.lang.reflect.ParameterizedType
  * @author [WngShhng](mailto:shouheng2015@gmail.com)
  * @version 2019-10-02 13:15
  */
-abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment() {
+abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(), LifecycleOwner {
     protected lateinit var vm: U
         private set
     private var useEventBus = false
@@ -42,6 +40,12 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment() 
 
     /** See document of [BaseFragment.results]. */
     private val results: MutableList<Triple<Int, Boolean, (code: Int, data: Intent?)->Unit>> = mutableListOf()
+
+    /**
+     * The lifecycle of preference is associated with the activity.
+     * So, here, we force the activity bind with this fragment is subclass of [AppCompatActivity].
+     */
+    override fun getLifecycle(): Lifecycle = (activity as AppCompatActivity).lifecycle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (useEventBus) {
@@ -121,13 +125,13 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment() 
         fail: (res: Resources<T>) -> Unit = {},
         loading: (res: Resources<T>) -> Unit = {}
     ) {
-        vm.getObservable(dataType, sid, single).observe(activity as AppCompatActivity, Observer { res ->
-            when (res?.status) {
-                Status.SUCCESS -> success(res)
-                Status.LOADING -> loading(res)
-                Status.FAILED -> fail(res)
+        observe(vm.getObservable(dataType, sid, single)) {
+            when (it?.status) {
+                Status.SUCCESS -> success(it)
+                Status.LOADING -> loading(it)
+                Status.FAILED -> fail(it)
             }
-        })
+        }
     }
 
     /** Observe list data */
@@ -171,13 +175,13 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment() 
         fail: (res: Resources<List<T>>) -> Unit = {},
         loading: (res: Resources<List<T>>) -> Unit = {}
     ) {
-        vm.getListObservable(dataType, sid, single).observe(activity as AppCompatActivity, Observer { res ->
-            when (res?.status) {
-                Status.SUCCESS -> success(res)
-                Status.LOADING -> loading(res)
-                Status.FAILED -> fail(res)
+        observe(vm.getListObservable(dataType, sid, single)) {
+            when (it?.status) {
+                Status.SUCCESS -> success(it)
+                Status.LOADING -> loading(it)
+                Status.FAILED -> fail(it)
             }
-        })
+        }
     }
 
     /**
@@ -248,24 +252,39 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment() 
     }
 
     /** @see BaseActivity.start */
-    protected fun start(intent: Intent, request: Int, callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }) {
+    protected fun start(
+        intent: Intent,
+        request: Int,
+        callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }
+    ) {
         results.add(Triple(request, true, callback))
         super.startActivityForResult(intent, request)
     }
 
     /** @see BaseActivity.start */
-    protected fun start(intent: Intent, request: Int, options: Bundle?, callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }) {
+    protected fun start(
+        intent: Intent,
+        request: Int, options: Bundle?,
+        callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }
+    ) {
         results.add(Triple(request, true, callback))
         super.startActivityForResult(intent, request, options)
     }
 
     /** @see BaseActivity.start */
-    protected fun onResult(request: Int, callback: (code: Int, data: Intent?) -> Unit) {
+    protected fun onResult(
+        request: Int,
+        callback: (code: Int, data: Intent?) -> Unit
+    ) {
         results.add(Triple(request, false, callback))
     }
 
     /** @see BaseActivity.onResult */
-    protected fun onResult(request: Int, single: Boolean, callback: (code: Int, data: Intent?) -> Unit) {
+    protected fun onResult(
+        request: Int,
+        single: Boolean,
+        callback: (code: Int, data: Intent?) -> Unit
+    ) {
         results.add(Triple(request, single, callback))
     }
 

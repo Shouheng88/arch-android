@@ -149,13 +149,13 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
         fail: (res: Resources<T>) -> Unit = {},
         loading: (res: Resources<T>) -> Unit = {}
     ) {
-        vm.getObservable(dataType, sid, single).observe(this, Observer { res ->
-            when (res?.status) {
-                Status.SUCCESS -> success(res)
-                Status.LOADING -> loading(res)
-                Status.FAILED -> fail(res)
+        observe(vm.getObservable(dataType, sid, single)) {
+            when (it?.status) {
+                Status.SUCCESS -> success(it)
+                Status.LOADING -> loading(it)
+                Status.FAILED -> fail(it)
             }
-        })
+        }
     }
 
     /** Observe list data */
@@ -199,13 +199,13 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
         fail: (res: Resources<List<T>>) -> Unit = {},
         loading: (res: Resources<List<T>>) -> Unit = {}
     ) {
-        vm.getListObservable(dataType, sid, single).observe(this, Observer { res ->
-            when (res?.status) {
-                Status.SUCCESS -> success(res)
-                Status.LOADING -> loading(res)
-                Status.FAILED -> fail(res)
+        observe(vm.getListObservable(dataType, sid, single)) {
+            when (it?.status) {
+                Status.SUCCESS -> success(it)
+                Status.LOADING -> loading(it)
+                Status.FAILED -> fail(it)
             }
-        })
+        }
     }
 
     /** Get fragment of given resources id. */
