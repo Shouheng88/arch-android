@@ -24,7 +24,7 @@ abstract class ViewBindingActivity<U : BaseViewModel, T : ViewBinding> : BaseAct
             binding = method.invoke(null, LayoutInflater.from(context)) as T
             setContentView(binding.root)
         } catch (e: Exception) {
-            L.e("Failed to inflate view binding.")
+            L.e("Failed to inflate view binding,", e)
         }
     }
 

@@ -81,38 +81,46 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment() 
     }
 
     /** Observe data */
-    protected fun <T> observe(dataType: Class<T>,
-                              success: (res: Resources<T>) -> Unit = {},
-                              fail: (res: Resources<T>) -> Unit = {},
-                              loading: (res: Resources<T>) -> Unit = {}) {
+    protected fun <T> observe(
+        dataType: Class<T>,
+        success: (res: Resources<T>) -> Unit = {},
+        fail: (res: Resources<T>) -> Unit = {},
+        loading: (res: Resources<T>) -> Unit = {}
+    ) {
         observe(dataType, null, false, success, fail, loading)
     }
 
     /** Observe data */
-    protected fun <T> observe(dataType: Class<T>,
-                              single: Boolean = false,
-                              success: (res: Resources<T>) -> Unit = {},
-                              fail: (res: Resources<T>) -> Unit = {},
-                              loading: (res: Resources<T>) -> Unit = {}) {
+    protected fun <T> observe(
+        dataType: Class<T>,
+        single: Boolean = false,
+        success: (res: Resources<T>) -> Unit = {},
+        fail: (res: Resources<T>) -> Unit = {},
+        loading: (res: Resources<T>) -> Unit = {}
+    ) {
         observe(dataType, null, single, success, fail, loading)
     }
 
     /** Observe data */
-    protected fun <T> observe(dataType: Class<T>,
-                              sid: Int? = null,
-                              success: (res: Resources<T>) -> Unit = {},
-                              fail: (res: Resources<T>) -> Unit = {},
-                              loading: (res: Resources<T>) -> Unit = {}) {
+    protected fun <T> observe(
+        dataType: Class<T>,
+        sid: Int? = null,
+        success: (res: Resources<T>) -> Unit = {},
+        fail: (res: Resources<T>) -> Unit = {},
+        loading: (res: Resources<T>) -> Unit = {}
+    ) {
         observe(dataType, sid, false, success, fail, loading)
     }
 
     /** Observe data */
-    protected fun <T> observe(dataType: Class<T>,
-                              sid: Int? = null,
-                              single: Boolean = false,
-                              success: (res: Resources<T>) -> Unit = {},
-                              fail: (res: Resources<T>) -> Unit = {},
-                              loading: (res: Resources<T>) -> Unit = {}) {
+    protected fun <T> observe(
+        dataType: Class<T>,
+        sid: Int? = null,
+        single: Boolean = false,
+        success: (res: Resources<T>) -> Unit = {},
+        fail: (res: Resources<T>) -> Unit = {},
+        loading: (res: Resources<T>) -> Unit = {}
+    ) {
         vm.getObservable(dataType, sid, single).observe(activity as AppCompatActivity, Observer { res ->
             when (res?.status) {
                 Status.SUCCESS -> success(res)
@@ -123,38 +131,46 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment() 
     }
 
     /** Observe list data */
-    protected fun <T> observeList(dataType: Class<T>,
-                                  success: (res: Resources<List<T>>) -> Unit = {},
-                                  fail: (res: Resources<List<T>>) -> Unit = {},
-                                  loading: (res: Resources<List<T>>) -> Unit = {}) {
+    protected fun <T> observeList(
+        dataType: Class<T>,
+        success: (res: Resources<List<T>>) -> Unit = {},
+        fail: (res: Resources<List<T>>) -> Unit = {},
+        loading: (res: Resources<List<T>>) -> Unit = {}
+    ) {
         observeList(dataType, null, false, success, fail, loading)
     }
 
     /** Observe list data */
-    protected fun <T> observeList(dataType: Class<T>,
-                                  single: Boolean = false,
-                                  success: (res: Resources<List<T>>) -> Unit = {},
-                                  fail: (res: Resources<List<T>>) -> Unit = {},
-                                  loading: (res: Resources<List<T>>) -> Unit = {}) {
+    protected fun <T> observeList(
+        dataType: Class<T>,
+        single: Boolean = false,
+        success: (res: Resources<List<T>>) -> Unit = {},
+        fail: (res: Resources<List<T>>) -> Unit = {},
+        loading: (res: Resources<List<T>>) -> Unit = {}
+    ) {
         observeList(dataType, null, single, success, fail, loading)
     }
 
     /** Observe list data */
-    protected fun <T> observeList(dataType: Class<T>,
-                                  sid: Int? = null,
-                                  success: (res: Resources<List<T>>) -> Unit = {},
-                                  fail: (res: Resources<List<T>>) -> Unit = {},
-                                  loading: (res: Resources<List<T>>) -> Unit = {}) {
+    protected fun <T> observeList(
+        dataType: Class<T>,
+        sid: Int? = null,
+        success: (res: Resources<List<T>>) -> Unit = {},
+        fail: (res: Resources<List<T>>) -> Unit = {},
+        loading: (res: Resources<List<T>>) -> Unit = {}
+    ) {
         observeList(dataType, sid, false, success, fail, loading)
     }
 
     /** Observe list data */
-    protected fun <T> observeList(dataType: Class<T>,
-                                  sid: Int? = null,
-                                  single: Boolean = false,
-                                  success: (res: Resources<List<T>>) -> Unit = {},
-                                  fail: (res: Resources<List<T>>) -> Unit = {},
-                                  loading: (res: Resources<List<T>>) -> Unit = {}) {
+    protected fun <T> observeList(
+        dataType: Class<T>,
+        sid: Int? = null,
+        single: Boolean = false,
+        success: (res: Resources<List<T>>) -> Unit = {},
+        fail: (res: Resources<List<T>>) -> Unit = {},
+        loading: (res: Resources<List<T>>) -> Unit = {}
+    ) {
         vm.getListObservable(dataType, sid, single).observe(activity as AppCompatActivity, Observer { res ->
             when (res?.status) {
                 Status.SUCCESS -> success(res)

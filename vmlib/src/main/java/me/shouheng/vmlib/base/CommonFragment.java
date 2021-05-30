@@ -39,9 +39,11 @@ public abstract class CommonFragment<U extends BaseViewModel, T extends ViewData
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState
+    ) {
         int layoutResId = getLayoutResId();
         if (layoutResId <= 0) {
             throw new IllegalArgumentException("The subclass must provider a valid layout resources id.");

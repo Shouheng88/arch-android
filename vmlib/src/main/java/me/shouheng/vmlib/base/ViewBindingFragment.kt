@@ -29,7 +29,7 @@ abstract class ViewBindingFragment<U : BaseViewModel, T : ViewBinding> : BaseFra
         try {
             binding = method.invoke(null, LayoutInflater.from(context)) as T
         } catch (e: Exception) {
-            L.e("Failed to inflate view binding.")
+            L.e("Failed to inflate view binding: ", e)
         }
         // fix 2020-06-27 remove #doCreateView() callback since it will be called after #onViewCreated()
         return binding.root

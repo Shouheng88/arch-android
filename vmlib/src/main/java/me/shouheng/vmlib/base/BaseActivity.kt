@@ -109,38 +109,46 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
     }
 
     /** Observe data */
-    protected fun <T> observe(dataType: Class<T>,
-                              success: (res: Resources<T>) -> Unit = {},
-                              fail: (res: Resources<T>) -> Unit = {},
-                              loading: (res: Resources<T>) -> Unit = {}) {
+    protected fun <T> observe(
+        dataType: Class<T>,
+        success: (res: Resources<T>) -> Unit = {},
+        fail: (res: Resources<T>) -> Unit = {},
+        loading: (res: Resources<T>) -> Unit = {}
+    ) {
         observe(dataType, null, false, success, fail, loading)
     }
 
     /** Observe data */
-    protected fun <T> observe(dataType: Class<T>,
-                              single: Boolean = false,
-                              success: (res: Resources<T>) -> Unit = {},
-                              fail: (res: Resources<T>) -> Unit = {},
-                              loading: (res: Resources<T>) -> Unit = {}) {
+    protected fun <T> observe(
+        dataType: Class<T>,
+        single: Boolean = false,
+        success: (res: Resources<T>) -> Unit = {},
+        fail: (res: Resources<T>) -> Unit = {},
+        loading: (res: Resources<T>) -> Unit = {}
+    ) {
         observe(dataType, null, single, success, fail, loading)
     }
 
     /** Observe data */
-    protected fun <T> observe(dataType: Class<T>,
-                              sid: Int? = null,
-                              success: (res: Resources<T>) -> Unit = {},
-                              fail: (res: Resources<T>) -> Unit = {},
-                              loading: (res: Resources<T>) -> Unit = {}) {
+    protected fun <T> observe(
+        dataType: Class<T>,
+        sid: Int? = null,
+        success: (res: Resources<T>) -> Unit = {},
+        fail: (res: Resources<T>) -> Unit = {},
+        loading: (res: Resources<T>) -> Unit = {}
+    ) {
         observe(dataType, sid, false, success, fail, loading)
     }
 
     /** Observe data */
-    protected fun <T> observe(dataType: Class<T>,
-                              sid: Int? = null,
-                              single: Boolean = false,
-                              success: (res: Resources<T>) -> Unit = {},
-                              fail: (res: Resources<T>) -> Unit = {},
-                              loading: (res: Resources<T>) -> Unit = {}) {
+    protected fun <T> observe(
+        dataType: Class<T>,
+        sid: Int? = null,
+        single: Boolean = false,
+        success: (res: Resources<T>) -> Unit = {},
+        fail: (res: Resources<T>) -> Unit = {},
+        loading: (res: Resources<T>) -> Unit = {}
+    ) {
         vm.getObservable(dataType, sid, single).observe(this, Observer { res ->
             when (res?.status) {
                 Status.SUCCESS -> success(res)
@@ -151,38 +159,46 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
     }
 
     /** Observe list data */
-    protected fun <T> observeList(dataType: Class<T>,
-                                  success: (res: Resources<List<T>>) -> Unit = {},
-                                  fail: (res: Resources<List<T>>) -> Unit = {},
-                                  loading: (res: Resources<List<T>>) -> Unit = {}) {
+    protected fun <T> observeList(
+        dataType: Class<T>,
+        success: (res: Resources<List<T>>) -> Unit = {},
+        fail: (res: Resources<List<T>>) -> Unit = {},
+        loading: (res: Resources<List<T>>) -> Unit = {}
+    ) {
         observeList(dataType, null, false, success, fail, loading)
     }
 
     /** Observe list data */
-    protected fun <T> observeList(dataType: Class<T>,
-                                  single: Boolean = false,
-                                  success: (res: Resources<List<T>>) -> Unit = {},
-                                  fail: (res: Resources<List<T>>) -> Unit = {},
-                                  loading: (res: Resources<List<T>>) -> Unit = {}) {
+    protected fun <T> observeList(
+        dataType: Class<T>,
+        single: Boolean = false,
+        success: (res: Resources<List<T>>) -> Unit = {},
+        fail: (res: Resources<List<T>>) -> Unit = {},
+        loading: (res: Resources<List<T>>) -> Unit = {}
+    ) {
         observeList(dataType, null, single, success, fail, loading)
     }
 
     /** Observe list data */
-    protected fun <T> observeList(dataType: Class<T>,
-                                  sid: Int? = null,
-                                  success: (res: Resources<List<T>>) -> Unit = {},
-                                  fail: (res: Resources<List<T>>) -> Unit = {},
-                                  loading: (res: Resources<List<T>>) -> Unit = {}) {
+    protected fun <T> observeList(
+        dataType: Class<T>,
+        sid: Int? = null,
+        success: (res: Resources<List<T>>) -> Unit = {},
+        fail: (res: Resources<List<T>>) -> Unit = {},
+        loading: (res: Resources<List<T>>) -> Unit = {}
+    ) {
         observeList(dataType, sid, false, success, fail, loading)
     }
 
     /** Observe list data */
-    protected fun <T> observeList(dataType: Class<T>,
-                                  sid: Int? = null,
-                                  single: Boolean = false,
-                                  success: (res: Resources<List<T>>) -> Unit = {},
-                                  fail: (res: Resources<List<T>>) -> Unit = {},
-                                  loading: (res: Resources<List<T>>) -> Unit = {}) {
+    protected fun <T> observeList(
+        dataType: Class<T>,
+        sid: Int? = null,
+        single: Boolean = false,
+        success: (res: Resources<List<T>>) -> Unit = {},
+        fail: (res: Resources<List<T>>) -> Unit = {},
+        loading: (res: Resources<List<T>>) -> Unit = {}
+    ) {
         vm.getListObservable(dataType, sid, single).observe(this, Observer { res ->
             when (res?.status) {
                 Status.SUCCESS -> success(res)
@@ -233,7 +249,11 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
      * [request]:  the request code of [startActivityForResult]
      * [callback]: the activity result event callback
      */
-    protected fun start(intent: Intent, request: Int, callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }) {
+    protected fun start(
+        intent: Intent,
+        request: Int,
+        callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }
+    ) {
         results.add(Triple(request, true, callback))
         super.startActivityForResult(intent, request)
     }
@@ -244,7 +264,12 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
      * [request]:  the request code of [startActivityForResult]
      * [callback]: the activity result event callback
      */
-    protected fun start(intent: Intent, request: Int, options: Bundle?, callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }) {
+    protected fun start(
+        intent: Intent,
+        request: Int,
+        options: Bundle?,
+        callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }
+    ) {
         results.add(Triple(request, true, callback))
         super.startActivityForResult(intent, request, options)
     }
@@ -255,7 +280,10 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
      * [request]:  the request code of [start]
      * [callback]: the activity result event callback
      */
-    protected fun onResult(request: Int, callback: (code: Int, data: Intent?)->Unit) {
+    protected fun onResult(
+        request: Int,
+        callback: (code: Int, data: Intent?)->Unit
+    ) {
         results.add(Triple(request, false, callback))
     }
 
@@ -266,7 +294,11 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
      * [single]:   Should the callback be removed once the callback was invoked
      * [callback]: the activity result event callback
      */
-    protected fun onResult(request: Int, single: Boolean, callback: (code: Int, data: Intent?)->Unit) {
+    protected fun onResult(
+        request: Int,
+        single: Boolean,
+        callback: (code: Int, data: Intent?)->Unit
+    ) {
         results.add(Triple(request, single, callback))
     }
 
@@ -370,9 +402,11 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
         this.onGetPermissionCallback = onGetPermissionCallback
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>,
-                                            grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         PermissionResultHandler.handlePermissionsResult(this, requestCode,
             permissions, grantResults, permissionResultCallback)
