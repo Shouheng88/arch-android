@@ -1,7 +1,6 @@
 package me.shouheng.vmlib.base
 
 import android.app.Activity
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -31,7 +30,6 @@ import me.shouheng.utils.ui.ToastUtils
 import me.shouheng.vmlib.Platform
 import me.shouheng.vmlib.anno.ActivityConfiguration
 import me.shouheng.vmlib.bean.Resources
-import me.shouheng.vmlib.bean.Status
 import me.shouheng.vmlib.bus.Bus
 import java.lang.reflect.ParameterizedType
 
@@ -149,13 +147,7 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
         fail: (res: Resources<T>) -> Unit = {},
         loading: (res: Resources<T>) -> Unit = {}
     ) {
-        observe(vm.getObservable(dataType, sid, single)) {
-            when (it?.status) {
-                Status.SUCCESS -> success(it)
-                Status.LOADING -> loading(it)
-                Status.FAILED -> fail(it)
-            }
-        }
+        observe(vm.getObservable(dataType, sid, single), success, fail, loading)
     }
 
     /** Observe list data */
@@ -199,13 +191,7 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
         fail: (res: Resources<List<T>>) -> Unit = {},
         loading: (res: Resources<List<T>>) -> Unit = {}
     ) {
-        observe(vm.getListObservable(dataType, sid, single)) {
-            when (it?.status) {
-                Status.SUCCESS -> success(it)
-                Status.LOADING -> loading(it)
-                Status.FAILED -> fail(it)
-            }
-        }
+        observe(vm.getListObservable(dataType, sid, single), success, fail, loading)
     }
 
     /** Get fragment of given resources id. */
