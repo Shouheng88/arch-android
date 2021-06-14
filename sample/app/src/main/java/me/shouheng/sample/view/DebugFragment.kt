@@ -21,8 +21,8 @@ import me.shouheng.utils.store.PathUtils
 import me.shouheng.vmlib.anno.FragmentConfiguration
 import me.shouheng.vmlib.base.CommonFragment
 import me.shouheng.vmlib.comn.ContainerActivity
-import me.shouheng.vmlib.network.download.DownloadListener
-import me.shouheng.vmlib.network.download.Downloader
+import me.shouheng.vmlib.network.DownloadListener
+import me.shouheng.vmlib.network.Downloader
 import org.greenrobot.eventbus.Subscribe
 import java.io.File
 
