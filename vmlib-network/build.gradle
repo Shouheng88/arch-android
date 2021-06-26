@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 //apply plugin: 'com.github.panpf.bintray-publish'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
@@ -32,6 +33,8 @@ dependencies {
     androidTestImplementation rootProject.ext.libraries['android-test'].values()
     implementation rootProject.ext.libraries['okhttp']
     implementation rootProject.ext.support['annotations']
+
+    compileOnly rootProject.ext.libraries["kotlin"].values()
 
     api rootProject.ext.libraries['utils']
 }
