@@ -1,4 +1,3 @@
-![Banner](https://github.com/CostCost/Resources/blob/master/github/xbanner.jpg?raw=true)
 
 <h1 align="center">Android VMLib: 基于 Jetpack 的 MVVM 框架</h1>
 
@@ -7,7 +6,7 @@
     <img src="https://img.shields.io/hexpm/l/plug.svg" alt="License" />
   </a>
   <a href="https://bintray.com/beta/#/easymark/Android/vmlib-core?tab=overview">
-    <img src="https://img.shields.io/maven-metadata/v/https/dl.bintray.com/easymark/Android/me/shouheng/vmlib/vmlib-core/maven-metadata.xml.svg" alt="Version" />
+    <img src="https://img.shields.io/maven-metadata/v/https/s01.oss.sonatype.org/service/local/repo_groups/public/content/com/github/Shouheng88/vmlib/maven-metadata.xml.svg" alt="Version" />
   </a>
   <a href="https://www.codacy.com/manual/Shouheng88/Android-MVVMs?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Shouheng88/Android-MVVMs&amp;utm_campaign=Badge_Grade">
     <img src="https://api.codacy.com/project/badge/Grade/412a91540f254721ac63757eeded9ba5" alt="Code Grade"/>
@@ -19,7 +18,7 @@
     <img src="https://img.shields.io/badge/API-17%2B-blue.svg?style=flat-square" alt="Min Sdk Version" />
   </a>
    <a href="https://github.com/Shouheng88">
-    <img src="https://img.shields.io/badge/Author-Shouheng-orange.svg?style=flat-square" alt="Author" />
+    <img src="https://img.shields.io/badge/Author-CodeBrick-orange.svg?style=flat-square" alt="Author" />
   </a>
   <a target="_blank" href="https://shang.qq.com/wpa/qunwpa?idkey=2711a5fa2e3ecfbaae34bd2cf2c98a5b25dd7d5cc56a3928abee84ae7a984253">
     <img src="https://img.shields.io/badge/QQ%E7%BE%A4-1018235573-orange.svg?style=flat-square" alt="QQ Group" />
@@ -274,28 +273,8 @@ ContainerActivity 非常适用于简单的 Fragment，你无需为其单独定�
 
 ## 3、关于
 
-### 3.1 关于作者
-
-你可以通过访问下面的链接来获取作者的信息：
-
-1. Github: https://github.com/Shouheng88
-2. 掘金：https://juejin.im/user/585555e11b69e6006c907a2a
-3. CSDN：https://blog.csdn.net/github_35186068
-4. 简书：https://www.jianshu.com/u/e1ad842673e2
-
-### 3.2 关于项目
-
 - [更新日志](CHANGELOG.md)
 - [项目背景](BACKGROUND.md)
-
-## 4、捐赠项目
-
-您可以通过下面的渠道来支持我们的项目，
-
-<div style="display:flex;" id="target">
-<img src="images/ali.jpg" width="25%" />
-<img src="images/mm.png" style="margin-left:10px;" width="25%"/>
-</div>
 
 ## License
 
