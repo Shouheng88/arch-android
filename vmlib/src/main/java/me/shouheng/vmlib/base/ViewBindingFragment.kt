@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.viewbinding.ViewBinding
-import me.shouheng.utils.stability.L
 import java.lang.IllegalStateException
 import java.lang.reflect.ParameterizedType
 
@@ -13,6 +12,8 @@ abstract class ViewBindingFragment<U : BaseViewModel, T : ViewBinding> : BaseFra
 
     protected lateinit var binding: T
         private set
+
+    protected var isBindingInitialized: Boolean = false
 
     /* useless */
     override fun getLayoutResId(): Int = -1
@@ -26,11 +27,10 @@ abstract class ViewBindingFragment<U : BaseViewModel, T : ViewBinding> : BaseFra
             .firstOrNull { ViewBinding::class.java.isAssignableFrom(it as Class<*>) } as? Class<T>
             ?: throw IllegalStateException("You must specify a view binding class.")
         val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
-        try {
-            binding = method.invoke(null, LayoutInflater.from(context)) as T
-        } catch (e: Exception) {
-            L.e("Failed to inflate view binding: ", e)
-        }
+        // fix 2021-06-26 there is no need to try exception, since even if you caught the exception,
+        // it will throw another exception when trying to get root from binding.
+        binding = method.invoke(null, inflater) as T
+        isBindingInitialized = true
         // fix 2020-06-27 remove #doCreateView() callback since it will be called after #onViewCreated()
         return binding.root
     }

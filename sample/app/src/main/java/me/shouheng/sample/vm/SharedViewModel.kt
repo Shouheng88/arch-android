@@ -1,12 +1,14 @@
 package me.shouheng.sample.vm
 
 import android.app.Application
+import android.arch.lifecycle.MutableLiveData
 import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.api.bean.User
 import me.shouheng.api.sample.OnUserChangeListener
 import me.shouheng.api.sample.UserService
 import me.shouheng.sample.event.SimpleEvent
 import me.shouheng.vmlib.base.BaseViewModel
+import me.shouheng.vmlib.bean.Resources
 
 /**
  * 在 Fragment 之间共享的 ViewModel
@@ -14,6 +16,8 @@ import me.shouheng.vmlib.base.BaseViewModel
  * @author Wngshhng 2019-6-29
  */
 class SharedViewModel(application: Application) : BaseViewModel(application), OnUserChangeListener {
+
+    val resLiveData = MutableLiveData<Resources<String>>()
 
     /**
      * ViewModel 直接与 Service 进行交互而不是 View，

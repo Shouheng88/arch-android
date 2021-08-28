@@ -1,6 +1,7 @@
 package me.shouheng.sample.vm
 
 import android.app.Application
+import android.arch.lifecycle.MutableLiveData
 import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.api.sample.MainDataService
 import me.shouheng.api.sample.OnGetMainDataListener
@@ -13,6 +14,10 @@ import me.shouheng.vmlib.bean.Resources
  * @author WngShhng 2019-07-05
  */
 class MainViewModel(application: Application) : BaseViewModel(application) {
+
+    val liveData = MutableLiveData<String>()
+
+    val resLiveData = MutableLiveData<Resources<String>>()
 
     fun startLoad() {
         setLoading(String::class.java)

@@ -3,6 +3,7 @@ package me.shouheng.sample.view
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.MenuItem
 import com.alibaba.android.arouter.facade.annotation.Route
 import me.shouheng.sample.R
@@ -15,7 +16,8 @@ import me.shouheng.utils.data.StringUtils
 import me.shouheng.utils.stability.L
 import me.shouheng.utils.ui.BarUtils
 import me.shouheng.vmlib.anno.ActivityConfiguration
-import me.shouheng.vmlib.base.CommonActivity
+import me.shouheng.vmlib.base.*
+import me.shouheng.vmlib.bean.Resources
 import org.greenrobot.eventbus.Subscribe
 
 /**
@@ -53,6 +55,21 @@ class DebugActivity : CommonActivity<MainViewModel, ActivityDebugBinding>() {
                 L.d("Got result: $ret")
             }
         }
+        observe(vm.resLiveData, success = {
+            toast("RES DSL: ${it.data}")
+            Handler().postDelayed({
+                vm.resLiveData.value = Resources.loading()
+            }, 2_000)
+        }, fail = {
+            toast("RES DSL: FAIL")
+        }, loading = {
+            toast("RES DSL: LOADING")
+            Handler().postDelayed({
+                vm.resLiveData.value = Resources.failed("code", "message")
+            }, 2_000)
+        })
+//        vm.liveData.setSuccess // no such method
+        vm.resLiveData.value = Resources.success("HAH")
     }
 
     @Subscribe

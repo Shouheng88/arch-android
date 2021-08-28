@@ -1,4 +1,4 @@
-package me.shouheng.vmlib.network.download;
+package me.shouheng.vmlib.network;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
@@ -15,8 +15,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
-import me.shouheng.vmlib.network.download.interceptor.ProgressInterceptor;
-import me.shouheng.vmlib.network.download.interceptor.ProgressResponseCallback;
+import me.shouheng.vmlib.network.interceptor.ProgressInterceptor;
+import me.shouheng.vmlib.network.interceptor.ProgressResponseCallback;
 import me.shouheng.utils.device.NetworkUtils;
 import me.shouheng.utils.stability.L;
 import me.shouheng.utils.store.IOUtils;
@@ -61,50 +61,28 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
  */
 public final class Downloader {
 
-    /**
-     * Error code: the network is unavailable.
-     */
+    /** Error code: the network is unavailable.*/
     public static final int ERROR_CODE_NETWORK_UNAVAILABLE  = 100001;
-
-    /**
-     * Error code: only wifi and the wifi is unavailable.
-     */
+    /** Error code: only wifi and the wifi is unavailable.*/
     public static final int ERROR_CODE_WIFI_UNAVAILABLE     = 100002;
-
-    /**
-     * Error code: no response body for request.
-     */
+    /** Error code: no response body for request.*/
     public static final int ERROR_CODE_NO_RESPONSE_BODY     = 100003;
-
-    /**
-     * Error code: failed to write file to file system.
-     */
+    /** Error code: failed to write file to file system. */
     public static final int ERROR_CODE_IO                   = 100004;
-
-    /**
-     * error code: other network error
-     */
+    /** Error code: other network error*/
     public static final int ERROR_CODE_NETWORK              = 100005;
 
-    /**
-     * Seconds to timeout when download
-     */
+    /** Seconds to timeout when download*/
     private static final int TIME_OUT_SECONDS = 20;
 
     private DownloadListener downloadListener;
 
     private OkHttpClient okHttpClient;
-
     private Call requestCall;
-
     private boolean onlyWifi;
-
     private String url;
-
     private String filePath;
-
     private String fileName;
-
     private Handler mainThreadHandler;
 
     public static Downloader getInstance() {
