@@ -1,7 +1,7 @@
 package me.shouheng.vmlib.comn;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import me.shouheng.vmlib.base.BaseViewModel;
 
 /**
@@ -10,7 +10,7 @@ import me.shouheng.vmlib.base.BaseViewModel;
  * If you have just want to use the data binding but the view model, use this
  * view model as a generic type for your activity.
  *
- * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
  */
 public class EmptyViewModel extends BaseViewModel {
 

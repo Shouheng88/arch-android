@@ -27,7 +27,7 @@ import me.shouheng.vmlib.base.ViewBindingActivity
 /**
  * Video play and message activity.
  * 
- * @author WngShhng (shouheng2015@gmail.com)
+ * @author WngShhng (shouheng2020@gmail.com)
  * @version 2019/7/7 14:16
  */
 @Route(path = "/eyepetizer/details")

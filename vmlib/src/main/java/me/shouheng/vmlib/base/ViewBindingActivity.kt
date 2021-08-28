@@ -2,7 +2,7 @@ package me.shouheng.vmlib.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.viewbinding.ViewBinding
+import androidx.viewbinding.ViewBinding
 import me.shouheng.utils.stability.L
 import java.lang.IllegalStateException
 import java.lang.reflect.ParameterizedType

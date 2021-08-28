@@ -9,7 +9,7 @@ import me.shouheng.vmlib.comn.EmptyViewModel
 /**
  * Sample fragment for ContainerActivity
  *
- * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
  */
 @FragmentConfiguration
 class SampleFragment : ViewBindingFragment<EmptyViewModel, FragmentSampleBinding>() {

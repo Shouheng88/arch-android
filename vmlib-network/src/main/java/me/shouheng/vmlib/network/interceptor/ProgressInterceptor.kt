@@ -10,7 +10,7 @@ import java.io.IOException
 /**
  * The http progress interceptor.
  *
- * @author [WngShhng](mailto:shouheng2015@gmail.com)
+ * @author [WngShhng](mailto:shouheng2020@gmail.com)
  * @version 2019/7/18 22:43
  */
 class ProgressInterceptor(private val callback: ProgressResponseCallback) : Interceptor {

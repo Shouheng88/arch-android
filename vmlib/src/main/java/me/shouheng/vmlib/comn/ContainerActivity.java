@@ -3,9 +3,9 @@ package me.shouheng.vmlib.comn;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import android.view.KeyEvent;
 
 import java.util.List;
@@ -35,7 +35,7 @@ import me.shouheng.vmlib.base.BaseActivity;
  * </pre>
  * </blockquote>
  *
- * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
  */
 public class ContainerActivity extends BaseActivity<EmptyViewModel> {
 

@@ -13,7 +13,7 @@ android {
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         release {
@@ -99,7 +99,7 @@ publishing {
                 developers {
                     developer {
                         name = 'ShouHeng'
-                        email = 'shouheng2015@gmail.com'
+                        email = 'shouheng2020@gmail.com'
                     }
                 }
                 // 版本控制仓库地址

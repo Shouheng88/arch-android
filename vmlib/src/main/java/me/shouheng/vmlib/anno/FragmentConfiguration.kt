@@ -3,7 +3,7 @@ package me.shouheng.vmlib.anno
 /**
  * The fragment configuration annotation.
  *
- * @author [WngShhng](mailto:shouheng2015@gmail.com)
+ * @author [WngShhng](mailto:shouheng2020@gmail.com)
  * @version 2019-6-29
  */
 @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)

@@ -8,7 +8,7 @@ import me.shouheng.api.sample.OnGetMainDataListener
 import me.shouheng.utils.stability.L
 
 /**
- * @author WngShhng (shouheng2015@gmail.com)
+ * @author WngShhng (shouheng2020@gmail.com)
  * @version 2019/7/5 23:42
  */
 @Route(path = "/api/data")

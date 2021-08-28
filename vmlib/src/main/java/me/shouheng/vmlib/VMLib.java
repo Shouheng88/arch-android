@@ -66,7 +66,7 @@ import me.shouheng.utils.UtilsApp;
  * }
  * </code>
  *
- * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
  * @version Date: 2019-6-29
  */
 public final class VMLib {

@@ -3,7 +3,7 @@ package me.shouheng.vmlib;
 /**
  * The class used to detect the dependencies.
  *
- * @author <a herf="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @author <a herf="mailto:shouheng2020@gmail.com">WngShhng</a>
  */
 public class Platform {
     public static final boolean DEPENDENCY_ANDROID_EVENTBUS;

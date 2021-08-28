@@ -1,8 +1,8 @@
 package me.shouheng.vmlib.base
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import me.shouheng.vmlib.anno.ViewModelConfiguration
 import me.shouheng.vmlib.bean.Resources
 import me.shouheng.vmlib.bus.Bus
@@ -14,7 +14,7 @@ import me.shouheng.vmlib.holder.LiveDataHolder
  * The view model has no pre-defined model associated, for MVVMs don't want to take care of the
  * model logic. You can get the data source anywhere, which is perhaps useful for small project.
  *
- * @author [WngShhng](mailto:shouheng2015@gmail.com)
+ * @author [WngShhng](mailto:shouheng2020@gmail.com)
  * @version 2019-6-29
  */
 open class BaseViewModel(application: Application) : AndroidViewModel(application) {

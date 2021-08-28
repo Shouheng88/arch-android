@@ -1,14 +1,14 @@
 package me.shouheng.vmlib.base
 
-import android.arch.lifecycle.*
+import androidx.lifecycle.*
 import android.content.Intent
 import android.os.Bundle
 import android.preference.Preference
 import android.preference.PreferenceFragment
-import android.support.annotation.StringRes
-import android.support.v4.app.FragmentActivity
-import android.support.v4.app.FragmentManager
-import android.support.v7.app.AppCompatActivity
+import androidx.annotation.StringRes
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.appcompat.app.AppCompatActivity
 import android.text.TextUtils
 import com.umeng.analytics.MobclickAgent
 import me.shouheng.utils.permission.Permission
@@ -26,7 +26,7 @@ import java.lang.reflect.ParameterizedType
 /**
  * base preference fragment for mvvm
  *
- * @author [WngShhng](mailto:shouheng2015@gmail.com)
+ * @author [WngShhng](mailto:shouheng2020@gmail.com)
  * @version 2019-10-02 13:15
  */
 abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(), LifecycleOwner {
@@ -81,7 +81,7 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
         val vmClass = (this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments
             .firstOrNull { ViewModel::class.java.isAssignableFrom(it as Class<*>) } as? Class<U>
             ?: throw IllegalStateException("You must specify a view model class.")
-        return ViewModelProviders.of((activity as FragmentActivity))[vmClass]
+        return ViewModelProviders.of((activity as androidx.fragment.app.FragmentActivity))[vmClass]
     }
 
     /** Observe data */
@@ -303,7 +303,7 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
     }
 
     /** Get support fragment manager  */
-    protected fun sfm(): FragmentManager? {
+    protected fun sfm(): androidx.fragment.app.FragmentManager? {
         return if (activity is AppCompatActivity) {
             (activity as AppCompatActivity).supportFragmentManager
         } else null
