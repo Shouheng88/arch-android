@@ -9,7 +9,7 @@ import retrofit2.Call
 /**
  * Error handler
  *
- * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
  * @version 2019-10-04 10:51
  */
 class Net {

@@ -3,7 +3,7 @@ package me.shouheng.vmlib.anno
 /**
  * Configuration annotation for Android Service.
  *
- * @author [WngShhng](mailto:shouheng2015@gmail.com)
+ * @author [WngShhng](mailto:shouheng2020@gmail.com)
  * @version 2019-7-1
  */
 @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)

@@ -1,10 +1,10 @@
 package me.shouheng.vmlib.base;
 
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +30,7 @@ import android.view.ViewGroup;
  * </pre>
  * </blockquote>
  *
- * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
  * @version 2019-6-29
  */
 public abstract class CommonFragment<U extends BaseViewModel, T extends ViewDataBinding> extends BaseFragment<U> {

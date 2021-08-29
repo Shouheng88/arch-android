@@ -1,8 +1,8 @@
 package me.shouheng.vmlib.base
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import me.shouheng.vmlib.bean.Resources
 import me.shouheng.vmlib.bean.Status
 

@@ -5,8 +5,8 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.support.annotation.ColorInt
-import android.support.annotation.StringRes
+import androidx.annotation.ColorInt
+import androidx.annotation.StringRes
 import android.view.Gravity
 import me.shouheng.eyepetizer.R
 import me.shouheng.uix.common.anno.*

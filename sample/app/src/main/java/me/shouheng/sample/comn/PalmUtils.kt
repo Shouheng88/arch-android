@@ -3,7 +3,7 @@ package me.shouheng.sample.comn
 import android.content.Context
 import android.net.Uri
 import android.os.Build
-import android.support.v4.content.FileProvider
+import androidx.core.content.FileProvider
 import android.text.Html
 import android.text.Spanned
 import me.shouheng.sample.BuildConfig
@@ -11,7 +11,7 @@ import java.io.File
 
 
 /**
- * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
  * @version 2019/12/4 22:17
  */
 object PalmUtils {

@@ -1,13 +1,13 @@
 package me.shouheng.vmlib.base
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.LayoutRes
-import android.support.annotation.MenuRes
-import android.support.annotation.StringRes
-import android.support.v4.app.Fragment
+import androidx.annotation.LayoutRes
+import androidx.annotation.MenuRes
+import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
 import android.text.TextUtils
 import android.view.*
 import com.umeng.analytics.MobclickAgent
@@ -25,10 +25,10 @@ import java.lang.reflect.ParameterizedType
 /**
  * The base common fragment implementation for MVVMs. Example:
  *
- * @author [WngShhng](mailto:shouheng2015@gmail.com)
+ * @author [WngShhng](mailto:shouheng2020@gmail.com)
  * @version 2019-6-29
  */
-abstract class BaseFragment<U : BaseViewModel> : Fragment() {
+abstract class BaseFragment<U : BaseViewModel> : androidx.fragment.app.Fragment() {
     protected lateinit var vm: U
         private set
     private var shareViewModel = false

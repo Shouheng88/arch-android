@@ -1,6 +1,6 @@
 package me.shouheng.vmlib.holder;
 
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,9 +9,9 @@ import me.shouheng.vmlib.base.SingleLiveEvent;
 import me.shouheng.vmlib.bean.Resources;
 
 /**
- * One holder for {@link android.arch.lifecycle.LiveData}
+ * One holder for {@link androidx.lifecycle.LiveData}
  *
- * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
  * @version 2020-05-17 20:34
  */
 public class LiveDataHolder<T> {

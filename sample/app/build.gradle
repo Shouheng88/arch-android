@@ -19,7 +19,7 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
         multiDexEnabled true
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         release {
@@ -93,7 +93,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation rootProject.ext.libraries['test'].values()
     androidTestImplementation rootProject.ext.libraries['android-test'].values()
-    implementation "com.android.support:multidex:1.0.3"
+    implementation 'androidx.multidex:multidex:2.0.0'
 
     implementation rootProject.ext.libraries["kotlin"].values()
 

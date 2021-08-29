@@ -1,15 +1,15 @@
 package me.shouheng.vmlib.base;
 
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 
 /**
  * The basic common implementation for MMVMs activity.
  *
- * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
  * @version 2019-6-29
  */
 public abstract class CommonActivity<U extends BaseViewModel, T extends ViewDataBinding> extends BaseActivity<U> {

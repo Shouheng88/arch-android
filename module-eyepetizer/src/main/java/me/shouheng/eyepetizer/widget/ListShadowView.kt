@@ -1,7 +1,7 @@
 package me.shouheng.eyepetizer.widget
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import android.widget.AbsListView
@@ -19,9 +19,9 @@ class ListShadowView(context: Context?, attrs: AttributeSet?) : View(context, at
 
     fun reset() { offset=0 }
 
-    fun bind(rv: RecyclerView) {
-        rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+    fun bind(rv: androidx.recyclerview.widget.RecyclerView) {
+        rv.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                 offset += dy
                 // fix 2020-11-20 the offset might be smaller than 0 if the layout changed after
                 // a layout calculation, so we add this option to solve this problem

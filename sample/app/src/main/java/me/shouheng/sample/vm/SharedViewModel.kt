@@ -1,7 +1,7 @@
 package me.shouheng.sample.vm
 
 import android.app.Application
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.api.bean.User
 import me.shouheng.api.sample.OnUserChangeListener

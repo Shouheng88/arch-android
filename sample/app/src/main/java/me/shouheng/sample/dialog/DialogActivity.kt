@@ -17,6 +17,7 @@ import me.shouheng.uix.common.anno.BottomButtonStyle.Companion.BUTTON_STYLE_SING
 import me.shouheng.uix.common.anno.BottomButtonStyle.Companion.BUTTON_STYLE_TRIPLE
 import me.shouheng.uix.common.anno.DialogPosition.Companion.POS_BOTTOM
 import me.shouheng.uix.common.anno.DialogPosition.Companion.POS_TOP
+import me.shouheng.uix.common.anno.DialogStyle
 import me.shouheng.uix.common.anno.DialogStyle.Companion.STYLE_WRAP
 import me.shouheng.uix.common.anno.EmptyViewState
 import me.shouheng.uix.common.anno.LoadingStyle
@@ -43,7 +44,7 @@ import me.shouheng.vmlib.comn.EmptyViewModel
 /**
  * 对话框示例
  *
- * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
  * @version 2019-10-13 15:21
  */
 @Route(path = "/app/dialog")
@@ -300,7 +301,11 @@ class DialogActivity : CommonActivity<EmptyViewModel, ActivityDialogBinding>() {
         }
         binding.btnRateIntro.onDebouncedClick {
             RatingManager.marketTitle = "测试修改标题"
-            RatingManager.rateApp({ toast("跳转到反馈页") }, { toast("跳转到应用市场评分") }, supportFragmentManager)
+            RatingManager.rateApp(DialogStyle.STYLE_MATCH, {
+                toast("跳转到反馈页")
+            }, {
+                toast("跳转到应用市场评分")
+            }, supportFragmentManager)
         }
         binding.btnSimpleGrid.onDebouncedClick {
             BeautyDialog.Builder()

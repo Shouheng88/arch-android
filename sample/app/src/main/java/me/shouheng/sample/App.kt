@@ -1,7 +1,7 @@
 package me.shouheng.sample
 
 import android.content.Context
-import android.support.multidex.MultiDexApplication
+import androidx.multidex.MultiDexApplication
 import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.service.net.Server
 import me.shouheng.sample.view.DebugActivity

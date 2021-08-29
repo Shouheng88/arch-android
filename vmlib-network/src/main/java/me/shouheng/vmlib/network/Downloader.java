@@ -4,9 +4,9 @@ import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresPermission;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresPermission;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,7 +57,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
  *     })
  * </code>
  *
- * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
  */
 public final class Downloader {
 

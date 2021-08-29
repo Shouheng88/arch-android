@@ -6,7 +6,7 @@ import me.shouheng.sample.R
 import me.shouheng.uix.widget.dialog.content.IDialogContent
 
 /**
- * @author <a href="mailto:shouheng2015@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
  * @version 2019-10-13 17:51
  */
 class UpgradeContent : IDialogContent {

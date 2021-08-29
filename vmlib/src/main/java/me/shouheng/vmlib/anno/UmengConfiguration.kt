@@ -3,7 +3,7 @@ package me.shouheng.vmlib.anno
 /**
  * UMeng configuration
  *
- * @author [WngShhng](mailto:shouheng2015@gmail.com)
+ * @author [WngShhng](mailto:shouheng2020@gmail.com)
  * @version 2020-01-05 11:53
  */
 @kotlin.annotation.Retention(AnnotationRetention.SOURCE)

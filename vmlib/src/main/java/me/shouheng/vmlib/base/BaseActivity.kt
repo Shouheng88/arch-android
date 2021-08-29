@@ -1,17 +1,17 @@
 package me.shouheng.vmlib.base
 
 import android.app.Activity
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.IdRes
-import android.support.annotation.LayoutRes
-import android.support.annotation.MenuRes
-import android.support.annotation.StringRes
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
+import androidx.annotation.IdRes
+import androidx.annotation.LayoutRes
+import androidx.annotation.MenuRes
+import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
@@ -36,7 +36,7 @@ import java.lang.reflect.ParameterizedType
 /**
  * Base activity
  *
- * @author [WngShhng](mailto:shouheng2015@gmail.com)
+ * @author [WngShhng](mailto:shouheng2020@gmail.com)
  * @version 2020-05-06 21:51
  */
 abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), PermissionResultResolver {
@@ -195,7 +195,7 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
     }
 
     /** Get fragment of given resources id. */
-    protected fun getFragment(@IdRes resId: Int): Fragment? {
+    protected fun getFragment(@IdRes resId: Int): androidx.fragment.app.Fragment? {
         return supportFragmentManager.findFragmentById(resId)
     }
 
