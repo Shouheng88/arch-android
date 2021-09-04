@@ -1,15 +1,14 @@
 package me.shouheng.vmlib.base
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
+import android.view.*
 import androidx.annotation.LayoutRes
 import androidx.annotation.MenuRes
 import androidx.annotation.StringRes
-import androidx.fragment.app.Fragment
-import android.text.TextUtils
-import android.view.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProviders
 import com.umeng.analytics.MobclickAgent
 import me.shouheng.utils.permission.Permission
 import me.shouheng.utils.permission.PermissionUtils

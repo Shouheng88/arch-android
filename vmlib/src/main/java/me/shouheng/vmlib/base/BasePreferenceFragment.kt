@@ -1,15 +1,13 @@
 package me.shouheng.vmlib.base
 
-import androidx.lifecycle.*
 import android.content.Intent
 import android.os.Bundle
 import android.preference.Preference
 import android.preference.PreferenceFragment
-import androidx.annotation.StringRes
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
-import androidx.appcompat.app.AppCompatActivity
 import android.text.TextUtils
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.*
 import com.umeng.analytics.MobclickAgent
 import me.shouheng.utils.permission.Permission
 import me.shouheng.utils.permission.PermissionUtils
@@ -44,6 +42,10 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
     /**
      * The lifecycle of preference is associated with the activity.
      * So, here, we force the activity bind with this fragment is subclass of [AppCompatActivity].
+     *
+     * @WARN: THE ACTIVITY MIGHT BE ATTACHED WHEN THIS METHOD IS CALLED, SO YOU SHOULD AT
+     * LEAST CALL THIS METHOD AFTER [onActivityCreated]. FOR EXAMPLE, CALLING [LiveData.observe]
+     * METHOD, WHICH CALL THIS METHOD INDIRECTLY.
      */
     override fun getLifecycle(): Lifecycle = (activity as AppCompatActivity).lifecycle
 
