@@ -36,20 +36,22 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation rootProject.ext.libraries['test'].values()
-    androidTestImplementation rootProject.ext.libraries['android-test'].values()
 
-    implementation rootProject.ext.support['appcompat-v7']
-    implementation rootProject.ext.support['design']
-    implementation rootProject.ext.libraries['arouter']
-    kapt rootProject.ext.libraries['arouter-compiler']
-    implementation rootProject.ext.support['recyclerview-v7']
-    implementation rootProject.ext.support['cardview-v7']
-    implementation rootProject.ext.libraries['glide']['glide']
-    implementation rootProject.ext.libraries['brvah']
+    implementation "androidx.appcompat:appcompat:${appcompatVersion}"
+    implementation "androidx.recyclerview:recyclerview:${recyclerviewVersion}"
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoreVersion}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlinAndroidVersion}"
+
+    implementation 'com.alibaba:arouter-api:1.5.0'
+    kapt 'com.alibaba:arouter-compiler:1.2.2'
+    implementation "com.github.bumptech.glide:glide:4.12.0"
     implementation 'com.shuyu:GSYVideoPlayer:1.6.8'
-    implementation rootProject.ext.libraries['uix-core']
-    implementation rootProject.ext.libraries['kotlin'].values()
+
+    implementation "com.github.Shouheng88:uix-core:${uixCoreVersion}"
+    implementation "com.github.Shouheng88:utils-core:${utilsCoreVersion}"
+    implementation "com.github.Shouheng88:utils-ktx:${utilsCoreVersion}"
 
     implementation project(path: ':vmlib')
     implementation project(path: ':module-api')

@@ -27,11 +27,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation rootProject.ext.libraries['test'].values()
-    androidTestImplementation rootProject.ext.libraries['android-test'].values()
-
-    implementation rootProject.ext.support['appcompat-v7']
-    implementation rootProject.ext.libraries['arouter']
-    kapt rootProject.ext.libraries['arouter-compiler']
+    implementation "androidx.appcompat:appcompat:${appcompatVersion}"
+    implementation 'com.alibaba:arouter-api:1.5.0'
+    kapt 'com.alibaba:arouter-compiler:1.2.2'
 }

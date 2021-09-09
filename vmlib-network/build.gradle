@@ -29,14 +29,10 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation rootProject.ext.libraries['test'].values()
-    androidTestImplementation rootProject.ext.libraries['android-test'].values()
-    implementation rootProject.ext.libraries['okhttp']
-    implementation rootProject.ext.support['annotations']
-
-    compileOnly rootProject.ext.libraries["kotlin"].values()
-
-    api rootProject.ext.libraries['utils']
+    implementation "androidx.annotation:annotation:1.1.0"
+    implementation "com.squareup.okhttp3:okhttp:${okHttpVersion}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "com.github.Shouheng88:utils-core:${utilsCoreVersion}"
 }
 
 //publish {
