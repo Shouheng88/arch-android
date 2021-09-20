@@ -1,11 +1,9 @@
 package me.shouheng.vmlib.base
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.*
 import androidx.annotation.LayoutRes
-import androidx.annotation.MenuRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
@@ -19,6 +17,7 @@ import me.shouheng.vmlib.Platform
 import me.shouheng.vmlib.anno.FragmentConfiguration
 import me.shouheng.vmlib.bean.Resources
 import me.shouheng.vmlib.bus.Bus
+import me.shouheng.vmlib.component.*
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -28,23 +27,13 @@ import java.lang.reflect.ParameterizedType
  * @version 2019-6-29
  */
 abstract class BaseFragment<U : BaseViewModel> : androidx.fragment.app.Fragment() {
-    protected lateinit var vm: U
-        private set
+    protected val vm: U by lazy { createViewModel() }
     private var shareViewModel = false
     private var useEventBus = false
 
     /** Grouped values with [FragmentConfiguration.umeng].  */
     private var useUmengManual = false
     private var pageName: String = javaClass.simpleName
-
-    @MenuRes
-    private var menuResId: Int = -1
-
-    /** See document of [BaseFragment.results]. */
-    private val results: MutableList<Triple<Int, Boolean, (code: Int, data: Intent?)->Unit>> = mutableListOf()
-
-    /** Menu options item selected callback */
-    private var onOptionsItemSelectedCallback: ((item: MenuItem) -> Unit)? = null
 
     /** Get the layout resource id from subclass. */
     @LayoutRes
@@ -91,7 +80,7 @@ abstract class BaseFragment<U : BaseViewModel> : androidx.fragment.app.Fragment(
     protected fun <T> observe(
         dataType: Class<T>,
         success: (res: Resources<T>) -> Unit = {},
-        fail: (res: Resources<T>) -> Unit = {},
+        fail:    (res: Resources<T>) -> Unit = {},
         loading: (res: Resources<T>) -> Unit = {}
     ) {
         observe(dataType, null, false, success, fail, loading)
@@ -102,7 +91,7 @@ abstract class BaseFragment<U : BaseViewModel> : androidx.fragment.app.Fragment(
         dataType: Class<T>,
         single: Boolean = false,
         success: (res: Resources<T>) -> Unit = {},
-        fail: (res: Resources<T>) -> Unit = {},
+        fail:    (res: Resources<T>) -> Unit = {},
         loading: (res: Resources<T>) -> Unit = {}
     ) {
         observe(dataType, null, single, success, fail, loading)
@@ -113,7 +102,7 @@ abstract class BaseFragment<U : BaseViewModel> : androidx.fragment.app.Fragment(
         dataType: Class<T>,
         sid: Int? = null,
         success: (res: Resources<T>) -> Unit = {},
-        fail: (res: Resources<T>) -> Unit = {},
+        fail:    (res: Resources<T>) -> Unit = {},
         loading: (res: Resources<T>) -> Unit = {}
     ) {
         observe(dataType, sid, false, success, fail, loading)
@@ -125,7 +114,7 @@ abstract class BaseFragment<U : BaseViewModel> : androidx.fragment.app.Fragment(
         sid: Int? = null,
         single: Boolean = false,
         success: (res: Resources<T>) -> Unit = {},
-        fail: (res: Resources<T>) -> Unit = {},
+        fail:    (res: Resources<T>) -> Unit = {},
         loading: (res: Resources<T>) -> Unit = {}
     ) {
         observe(vm.getObservable(dataType, sid, single), success, fail, loading)
@@ -135,7 +124,7 @@ abstract class BaseFragment<U : BaseViewModel> : androidx.fragment.app.Fragment(
     protected fun <T> observeList(
         dataType: Class<T>,
         success: (res: Resources<List<T>>) -> Unit = {},
-        fail: (res: Resources<List<T>>) -> Unit = {},
+        fail:    (res: Resources<List<T>>) -> Unit = {},
         loading: (res: Resources<List<T>>) -> Unit = {}
     ) {
         observeList(dataType, null, false, success, fail, loading)
@@ -146,7 +135,7 @@ abstract class BaseFragment<U : BaseViewModel> : androidx.fragment.app.Fragment(
         dataType: Class<T>,
         single: Boolean = false,
         success: (res: Resources<List<T>>) -> Unit = {},
-        fail: (res: Resources<List<T>>) -> Unit = {},
+        fail:    (res: Resources<List<T>>) -> Unit = {},
         loading: (res: Resources<List<T>>) -> Unit = {}
     ) {
         observeList(dataType, null, single, success, fail, loading)
@@ -157,7 +146,7 @@ abstract class BaseFragment<U : BaseViewModel> : androidx.fragment.app.Fragment(
         dataType: Class<T>,
         sid: Int? = null,
         success: (res: Resources<List<T>>) -> Unit = {},
-        fail: (res: Resources<List<T>>) -> Unit = {},
+        fail:    (res: Resources<List<T>>) -> Unit = {},
         loading: (res: Resources<List<T>>) -> Unit = {}
     ) {
         observeList(dataType, sid, false, success, fail, loading)
@@ -169,7 +158,7 @@ abstract class BaseFragment<U : BaseViewModel> : androidx.fragment.app.Fragment(
         sid: Int? = null,
         single: Boolean = false,
         success: (res: Resources<List<T>>) -> Unit = {},
-        fail: (res: Resources<List<T>>) -> Unit = {},
+        fail:    (res: Resources<List<T>>) -> Unit = {},
         loading: (res: Resources<List<T>>) -> Unit = {}
     ) {
         observe(vm.getListObservable(dataType, sid, single), success, fail, loading)
@@ -231,69 +220,9 @@ abstract class BaseFragment<U : BaseViewModel> : androidx.fragment.app.Fragment(
         }
     }
 
-    /** @see BaseActivity.start */
-    protected fun start(
-        intent: Intent,
-        request: Int,
-        callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }
-    ) {
-        results.add(Triple(request, true, callback))
-        super.startActivityForResult(intent, request)
-    }
-
-    /** @see BaseActivity.start */
-    protected fun start(
-        intent: Intent,
-        request: Int,
-        options: Bundle?,
-        callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }
-    ) {
-        results.add(Triple(request, true, callback))
-        super.startActivityForResult(intent, request, options)
-    }
-
-    /** @see BaseActivity.start */
-    protected fun onResult(
-        request: Int,
-        callback: (code: Int, data: Intent?) -> Unit
-    ) {
-        results.add(Triple(request, false, callback))
-    }
-
-    /** @see BaseActivity.onResult */
-    protected fun onResult(
-        request: Int,
-        single: Boolean,
-        callback: (code: Int, data: Intent?)->Unit
-    ) {
-        results.add(Triple(request, single, callback))
-    }
-
-    /** Set menu resources id if you want to use menu. */
-    protected fun setMenu(@MenuRes menuResId: Int, callback: (item: MenuItem) -> Unit) {
-        this.menuResId = menuResId
-        this.onOptionsItemSelectedCallback = callback
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         if (useEventBus) Bus.get().register(this)
-        vm = createViewModel()
         super.onCreate(savedInstanceState)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        if (menuResId != -1) setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (menuResId != -1) inflater.inflate(menuResId, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        item.let { onOptionsItemSelectedCallback?.invoke(it) }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {
@@ -315,20 +244,6 @@ abstract class BaseFragment<U : BaseViewModel> : androidx.fragment.app.Fragment(
             Bus.get().unregister(this)
         }
         super.onDestroy()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        val it = results.iterator()
-        while (it.hasNext()) {
-            val pair = it.next()
-            // callback for all
-            if (pair.first == requestCode) {
-                pair.third(resultCode, data)
-                // oneshot request
-                if (pair.second) it.remove()
-            }
-        }
     }
 
     init {

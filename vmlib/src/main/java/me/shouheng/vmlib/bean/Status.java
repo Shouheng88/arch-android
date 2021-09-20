@@ -9,7 +9,7 @@ public enum Status {
     /** status success */
     SUCCESS(0),
     /** status failed */
-    FAILED(1),
+    FAILED( 1),
     /** status loading */
     LOADING(2);
 

@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'AndResGuard'
+apply plugin: 'org.sonarqube'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
@@ -87,6 +88,7 @@ android {
 //            path "CMakeLists.txt"
 //        }
 //    }
+    ndkVersion "22.1.7171670"
 }
 
 dependencies {

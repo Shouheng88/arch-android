@@ -12,13 +12,13 @@ import android.view.LayoutInflater;
  * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
  * @version 2019-6-29
  */
-public abstract class CommonActivity<U extends BaseViewModel, T extends ViewDataBinding> extends BaseActivity<U> {
+public abstract class CommonActivity<U extends BaseViewModel, T extends ViewDataBinding> extends AbsForwardActivity<U> {
 
     private T binding;
 
     @Override
     protected void setupContentView(@Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), getLayoutResId(), null, false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(this), getLayoutResId(), null, false);
         setContentView(binding.getRoot());
     }
 

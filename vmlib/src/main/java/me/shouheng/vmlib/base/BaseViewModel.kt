@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import me.shouheng.vmlib.anno.ViewModelConfiguration
 import me.shouheng.vmlib.bean.Resources
 import me.shouheng.vmlib.bus.Bus
-import me.shouheng.vmlib.holder.LiveDataHolder
+import me.shouheng.vmlib.component.LiveDataHolder
 
 /**
  * Basic implementation of common ViewModel.

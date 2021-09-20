@@ -7,7 +7,8 @@ import me.shouheng.utils.stability.L
 import java.lang.IllegalStateException
 import java.lang.reflect.ParameterizedType
 
-abstract class ViewBindingActivity<U : BaseViewModel, T : ViewBinding> : BaseActivity<U>() {
+/** Base activity support view binding. */
+abstract class ViewBindingActivity<U : BaseViewModel, T : ViewBinding> : AbsForwardActivity<U>() {
 
     protected lateinit var binding: T
         private set

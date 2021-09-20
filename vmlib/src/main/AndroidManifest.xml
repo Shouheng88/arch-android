@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="me.shouheng.vmlib">
+    package="me.shouheng.vmlib">
 
     <application>
         <activity android:name=".comn.ContainerActivity"
-                  android:label="@string/vmlib_title_activity_container"
-                  android:theme="@style/VMLibAPPTheme.NoActionBar">
+            android:label="@string/vmlib_title_activity_container"
+            android:theme="@style/VMLibAPPTheme.NoActionBar">
         </activity>
     </application>
 

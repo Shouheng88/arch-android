@@ -18,6 +18,7 @@ import me.shouheng.utils.ui.BarUtils
 import me.shouheng.vmlib.anno.ActivityConfiguration
 import me.shouheng.vmlib.base.*
 import me.shouheng.vmlib.bean.Resources
+import me.shouheng.vmlib.component.observe
 import org.greenrobot.eventbus.Subscribe
 
 /**

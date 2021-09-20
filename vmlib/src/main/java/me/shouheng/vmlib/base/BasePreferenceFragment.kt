@@ -1,6 +1,5 @@
 package me.shouheng.vmlib.base
 
-import android.content.Intent
 import android.os.Bundle
 import android.preference.Preference
 import android.preference.PreferenceFragment
@@ -17,7 +16,7 @@ import me.shouheng.utils.ui.ToastUtils
 import me.shouheng.vmlib.Platform
 import me.shouheng.vmlib.anno.FragmentConfiguration
 import me.shouheng.vmlib.bean.Resources
-import me.shouheng.vmlib.bean.Status
+import me.shouheng.vmlib.component.*
 import me.shouheng.vmlib.bus.Bus
 import java.lang.reflect.ParameterizedType
 
@@ -36,8 +35,7 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
     private var pageName: String? = null
     private var useUmengManual = false
 
-    /** See document of [BaseFragment.results]. */
-    private val results: MutableList<Triple<Int, Boolean, (code: Int, data: Intent?)->Unit>> = mutableListOf()
+    private val lifecycle = LifecycleRegistry(this)
 
     /**
      * The lifecycle of preference is associated with the activity.
@@ -47,7 +45,7 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
      * LEAST CALL THIS METHOD AFTER [onActivityCreated]. FOR EXAMPLE, CALLING [LiveData.observe]
      * METHOD, WHICH CALL THIS METHOD INDIRECTLY.
      */
-    override fun getLifecycle(): Lifecycle = (activity as AppCompatActivity).lifecycle
+    override fun getLifecycle(): Lifecycle = lifecycle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (useEventBus) {
@@ -90,7 +88,7 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
     protected fun <T> observe(
         dataType: Class<T>,
         success: (res: Resources<T>) -> Unit = {},
-        fail: (res: Resources<T>) -> Unit = {},
+        fail:    (res: Resources<T>) -> Unit = {},
         loading: (res: Resources<T>) -> Unit = {}
     ) {
         observe(dataType, null, false, success, fail, loading)
@@ -101,7 +99,7 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
         dataType: Class<T>,
         single: Boolean = false,
         success: (res: Resources<T>) -> Unit = {},
-        fail: (res: Resources<T>) -> Unit = {},
+        fail:    (res: Resources<T>) -> Unit = {},
         loading: (res: Resources<T>) -> Unit = {}
     ) {
         observe(dataType, null, single, success, fail, loading)
@@ -112,7 +110,7 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
         dataType: Class<T>,
         sid: Int? = null,
         success: (res: Resources<T>) -> Unit = {},
-        fail: (res: Resources<T>) -> Unit = {},
+        fail:    (res: Resources<T>) -> Unit = {},
         loading: (res: Resources<T>) -> Unit = {}
     ) {
         observe(dataType, sid, false, success, fail, loading)
@@ -124,23 +122,17 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
         sid: Int? = null,
         single: Boolean = false,
         success: (res: Resources<T>) -> Unit = {},
-        fail: (res: Resources<T>) -> Unit = {},
+        fail:    (res: Resources<T>) -> Unit = {},
         loading: (res: Resources<T>) -> Unit = {}
     ) {
-        observe(vm.getObservable(dataType, sid, single)) {
-            when (it?.status) {
-                Status.SUCCESS -> success(it)
-                Status.LOADING -> loading(it)
-                Status.FAILED -> fail(it)
-            }
-        }
+        observe(vm.getObservable(dataType, sid, single), success, fail, loading)
     }
 
     /** Observe list data */
     protected fun <T> observeList(
         dataType: Class<T>,
         success: (res: Resources<List<T>>) -> Unit = {},
-        fail: (res: Resources<List<T>>) -> Unit = {},
+        fail:    (res: Resources<List<T>>) -> Unit = {},
         loading: (res: Resources<List<T>>) -> Unit = {}
     ) {
         observeList(dataType, null, false, success, fail, loading)
@@ -151,7 +143,7 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
         dataType: Class<T>,
         single: Boolean = false,
         success: (res: Resources<List<T>>) -> Unit = {},
-        fail: (res: Resources<List<T>>) -> Unit = {},
+        fail:    (res: Resources<List<T>>) -> Unit = {},
         loading: (res: Resources<List<T>>) -> Unit = {}
     ) {
         observeList(dataType, null, single, success, fail, loading)
@@ -162,7 +154,7 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
         dataType: Class<T>,
         sid: Int? = null,
         success: (res: Resources<List<T>>) -> Unit = {},
-        fail: (res: Resources<List<T>>) -> Unit = {},
+        fail:    (res: Resources<List<T>>) -> Unit = {},
         loading: (res: Resources<List<T>>) -> Unit = {}
     ) {
         observeList(dataType, sid, false, success, fail, loading)
@@ -174,16 +166,10 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
         sid: Int? = null,
         single: Boolean = false,
         success: (res: Resources<List<T>>) -> Unit = {},
-        fail: (res: Resources<List<T>>) -> Unit = {},
+        fail:    (res: Resources<List<T>>) -> Unit = {},
         loading: (res: Resources<List<T>>) -> Unit = {}
     ) {
-        observe(vm.getListObservable(dataType, sid, single)) {
-            when (it?.status) {
-                Status.SUCCESS -> success(it)
-                Status.LOADING -> loading(it)
-                Status.FAILED -> fail(it)
-            }
-        }
+        observe(vm.getListObservable(dataType, sid, single), success, fail, loading)
     }
 
     /**
@@ -253,55 +239,18 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
         }
     }
 
-    /** @see BaseActivity.start */
-    protected fun start(
-        intent: Intent,
-        request: Int,
-        callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }
-    ) {
-        results.add(Triple(request, true, callback))
-        super.startActivityForResult(intent, request)
-    }
-
-    /** @see BaseActivity.start */
-    protected fun start(
-        intent: Intent,
-        request: Int, options: Bundle?,
-        callback: (code: Int, data: Intent?) -> Unit = { _, _ -> }
-    ) {
-        results.add(Triple(request, true, callback))
-        super.startActivityForResult(intent, request, options)
-    }
-
-    /** @see BaseActivity.start */
-    protected fun onResult(
-        request: Int,
-        callback: (code: Int, data: Intent?) -> Unit
-    ) {
-        results.add(Triple(request, false, callback))
-    }
-
-    /** @see BaseActivity.onResult */
-    protected fun onResult(
-        request: Int,
-        single: Boolean,
-        callback: (code: Int, data: Intent?) -> Unit
-    ) {
-        results.add(Triple(request, single, callback))
-    }
-
     /**
      * Find preference from string resource key.
      *
      * @param keyRes preference key resources
      * @return       preference
      */
-    protected fun <T : Preference> f(@StringRes keyRes: Int): T {
-        return findPreference(getString(keyRes)) as T
+    protected fun <T : Preference> f(@StringRes keyRes: Int): T? {
+        return findPreference(getString(keyRes)) as? T
     }
 
-    protected fun <T : Preference> f(key: CharSequence): T {
-        return findPreference(key) as T
+    protected fun <T : Preference> f(key: CharSequence): T? {
+        return findPreference(key) as? T
     }
 
     /** Get support fragment manager  */
@@ -322,20 +271,6 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
         super.onPause()
         if (useUmengManual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
             MobclickAgent.onPageEnd(pageName)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        val it = results.iterator()
-        while (it.hasNext()) {
-            val pair = it.next()
-            // callback for all
-            if (pair.first == requestCode) {
-                pair.third(resultCode, data)
-                // oneshot request
-                if (pair.second) it.remove()
-            }
         }
     }
 

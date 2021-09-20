@@ -140,6 +140,9 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, ActivityEyep
         })
         setMenu(R.menu.eyepetizer_main) { item ->
             when(item.itemId) {
+                R.id.action_input_sample -> {
+
+                }
                 R.id.action_vmlib_debug -> {
                     ARouter.getInstance().build("/app/debug").navigation()
                     ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)

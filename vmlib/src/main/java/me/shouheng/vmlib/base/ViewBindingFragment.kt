@@ -8,14 +8,19 @@ import androidx.viewbinding.ViewBinding
 import java.lang.IllegalStateException
 import java.lang.reflect.ParameterizedType
 
-abstract class ViewBindingFragment<U : BaseViewModel, T : ViewBinding> : BaseFragment<U>() {
+/** Base fragment for view binding. */
+abstract class ViewBindingFragment<U : BaseViewModel, T : ViewBinding> : AbsForwardFragment<U>() {
 
     protected lateinit var binding: T
         private set
 
     protected var isBindingInitialized: Boolean = false
 
-    /* useless */
+    /** useless */
+    @Deprecated(
+        message = "Deprecated method, the root view will be derived from view binding.",
+        replaceWith = ReplaceWith("-1")
+    )
     override fun getLayoutResId(): Int = -1
 
     override fun onCreateView(

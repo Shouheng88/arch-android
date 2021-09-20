@@ -35,20 +35,8 @@ public final class Resources<T> {
     /** Appendix field */
     public final Object udf5;
 
-    /** Is currently success state */
-    public boolean isSucceed() {
-        return status == Status.SUCCESS;
-    }
-
-    /** Is currently failed state */
-    public boolean isFailed() {
-        return status == Status.FAILED;
-    }
-
-    /** Is currently loading state */
-    public boolean isLoading() {
-        return status == Status.LOADING;
-    }
+    /** The throwable for resources. */
+    private Throwable throwable;
 
     public static <U> Resources<U> success(U data) {
         return new Resources<>(Status.SUCCESS, data, null, null, null, null, null, null, null);
@@ -134,15 +122,17 @@ public final class Resources<T> {
         return new Resources<>(Status.LOADING, null, null, null, udf1, udf2, udf3, udf4, udf5);
     }
 
-    private Resources(Status status,
-                      T data,
-                      String code,
-                      String message,
-                      Long udf1,
-                      Double udf2,
-                      Boolean udf3,
-                      String udf4,
-                      Object udf5) {
+    private Resources(
+            Status status,
+            T data,
+            String code,
+            String message,
+            Long udf1,
+            Double udf2,
+            Boolean udf3,
+            String udf4,
+            Object udf5
+    ) {
         this.status = status;
         this.data = data;
         this.code = code;
@@ -152,6 +142,29 @@ public final class Resources<T> {
         this.udf3 = udf3;
         this.udf4 = udf4;
         this.udf5 = udf5;
+    }
+
+    /** Is currently success state */
+    public boolean isSucceed() {
+        return status == Status.SUCCESS;
+    }
+
+    /** Is currently failed state */
+    public boolean isFailed() {
+        return status == Status.FAILED;
+    }
+
+    /** Is currently loading state */
+    public boolean isLoading() {
+        return status == Status.LOADING;
+    }
+
+    public Throwable getThrowable() {
+        return throwable;
+    }
+
+    public void setThrowable(Throwable throwable) {
+        this.throwable = throwable;
     }
 
     @Override

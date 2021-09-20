@@ -1,4 +1,4 @@
-package me.shouheng.vmlib.base;
+package me.shouheng.vmlib.component;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;

@@ -8,11 +8,7 @@ import me.shouheng.utils.UtilsApp;
 /**
  * ===================================================================
  *
- *              MM    MM VV     VV VV     VV MM    MM
- *              MMM  MMM VV     VV VV     VV MMM  MMM
- *              MM MM MM  VV   VV   VV   VV  MM MM MM
- *              MM    MM   VV VV     VV VV   MM    MM
- *              MM    MM    VVV       VVV    MM    MM
+ *                            The VMLib
  *
  *                         == WngShhng ==
  *
@@ -20,51 +16,7 @@ import me.shouheng.utils.UtilsApp;
  *
  * ==================================================================
  *
- * Sample code:
- *
- * <code>
- * class App : Application() {
- *
- *     override fun onCreate() {
- *         super.onCreate()
- *         // initialize mvvms
- *         VMLib.onCreate(this)
- *         // custom L, must be called after MVVMs.onCreate()
- *         customLog()
- *         // custom ARouter
- *         customARouter()
- *         // custom crash
- *         customCrash()
- *         // ... others
- *     }
- *
- *     private fun customLog() {
- *         L.getConfig()
- *             .setLogSwitch(true)
- *             .setLogHeadSwitch(true)
- *             .setBorderSwitch(true)
- *             .setConsoleSwitch(true)
- *     }
- *
- *     private fun customARouter() {
- *         if (BuildConfig.DEBUG) {
- *             ARouter.openLog()
- *             ARouter.openDebug()
- *         }
- *         ARouter.init(this)
- *     }
- *
- *     private fun customCrash() {
- *         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
- *             == PackageManager.PERMISSION_GRANTED) {
- *             CrashHelper.init(this, "") { crashInfo, e ->
- *                 L.e(crashInfo)
- *                 L.e(e)
- *             }
- *         }
- *     }
- * }
- * </code>
+ * Call {@link VMLib#onCreate(Application)} in your application to initialize the library.
  *
  * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
  * @version Date: 2019-6-29

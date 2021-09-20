@@ -9,6 +9,7 @@ package me.shouheng.vmlib.anno
 @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.ANNOTATION_CLASS, AnnotationTarget.CLASS)
 annotation class ServiceConfiguration(
+
     /** Will the event bus will be used in this view. */
     val useEventBus: Boolean = false
 )

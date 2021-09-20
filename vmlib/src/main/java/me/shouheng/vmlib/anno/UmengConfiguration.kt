@@ -11,7 +11,8 @@ package me.shouheng.vmlib.anno
 annotation class UmengConfiguration(
     /**
      * The page name used for umeng etc. The activity or fragment class simple name will
-     * be used if you didn't set this value. */
+     * be used if you didn't set this value.
+     */
     val pageName: String = "",
 
     /** Whether current activity contains fragment */

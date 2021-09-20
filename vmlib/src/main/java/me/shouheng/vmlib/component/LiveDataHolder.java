@@ -1,11 +1,10 @@
-package me.shouheng.vmlib.holder;
+package me.shouheng.vmlib.component;
 
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import me.shouheng.vmlib.base.SingleLiveEvent;
 import me.shouheng.vmlib.bean.Resources;
 
 /**

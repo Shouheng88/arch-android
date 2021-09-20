@@ -30,7 +30,7 @@
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        <me.shouheng.eyepetizer.widget.ListShadowView
+        <me.shouheng.uix.widget.rv.ListShadowView
             android:id="@+id/s"
             android:layout_width="match_parent"
             android:layout_height="3dp"/>
