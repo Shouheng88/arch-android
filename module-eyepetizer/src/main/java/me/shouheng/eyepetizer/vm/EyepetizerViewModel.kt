@@ -10,7 +10,7 @@ import me.shouheng.utils.stability.L
 import me.shouheng.vmlib.base.BaseViewModel
 
 /**
- * @author WngShhng (shouheng2020@gmail.com)
+ * @author ShouhengWang (shouheng2020@gmail.com)
  * @version 2019/7/6 18:19
  */
 class EyepetizerViewModel(application: Application) : BaseViewModel(application) {

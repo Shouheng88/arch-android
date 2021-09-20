@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 /**
  * User info service implementation
  *
- * @author WngShhng 2019-07-05
+ * @author ShouhengWang 2019-07-05
  */
 @Route(path = "/api/user")
 class UserServiceImpl : UserService {

@@ -25,7 +25,7 @@ import me.shouheng.vmlib.base.BaseActivity;
  * Call {@link #open(Class)} or {@link #openFragment(Class)} directly to get a builder for
  * container and then set arguments by builder for fragment.
  *
- * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">ShouhengWang</a>
  */
 public class ContainerActivity extends BaseActivity<EmptyViewModel> {
 

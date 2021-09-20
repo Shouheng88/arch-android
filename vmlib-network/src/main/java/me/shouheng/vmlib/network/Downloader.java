@@ -59,7 +59,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
  *     })
  * </code>
  *
- * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">ShouhengWang</a>
  */
 public final class Downloader {
 

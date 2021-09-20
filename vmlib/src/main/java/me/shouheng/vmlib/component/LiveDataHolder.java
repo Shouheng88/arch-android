@@ -10,7 +10,7 @@ import me.shouheng.vmlib.bean.Resources;
 /**
  * One holder for {@link androidx.lifecycle.LiveData}
  *
- * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">ShouhengWang</a>
  * @version 2020-05-17 20:34
  */
 public class LiveDataHolder<T> {

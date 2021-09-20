@@ -23,7 +23,7 @@ import java.lang.reflect.ParameterizedType
 /**
  * The base common fragment implementation for MVVMs. Example:
  *
- * @author [WngShhng](mailto:shouheng2020@gmail.com)
+ * @author [ShouhengWang](mailto:shouheng2020@gmail.com)
  * @version 2019-6-29
  */
 abstract class BaseFragment<U : BaseViewModel> : androidx.fragment.app.Fragment() {

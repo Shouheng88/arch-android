@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 /**
  * The basic common implementation for MMVMs activity.
  *
- * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">ShouhengWang</a>
  * @version 2019-6-29
  */
 public abstract class CommonActivity<U extends BaseViewModel, T extends ViewDataBinding> extends AbsForwardActivity<U> {

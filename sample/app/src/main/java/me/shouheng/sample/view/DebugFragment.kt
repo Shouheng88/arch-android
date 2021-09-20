@@ -30,7 +30,7 @@ import java.io.File
 /**
  * Debug fragment
  *
- * @author WngShhng 2019-6-29
+ * @author ShouhengWang 2019-6-29
  */
 @FragmentConfiguration(shareViewModel = true, useEventBus = true)
 class DebugFragment : CommonFragment<SharedViewModel, FragmentDebugBinding>() {

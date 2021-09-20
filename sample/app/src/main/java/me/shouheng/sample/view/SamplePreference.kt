@@ -9,7 +9,7 @@ import me.shouheng.vmlib.base.BasePreferenceFragment
 import me.shouheng.vmlib.comn.EmptyViewModel
 
 /**
- * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">ShouhengWang</a>
  * @version 2019-10-02 13:30
  */
 @FragmentConfiguration

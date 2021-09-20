@@ -20,7 +20,7 @@ import me.shouheng.vmlib.comn.EmptyViewModel
 /**
  * Tips 示例
  *
- * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">ShouhengWang</a>
  * @version 2020-04-18 22:45
  */
 @Route(path = "/app/tip")

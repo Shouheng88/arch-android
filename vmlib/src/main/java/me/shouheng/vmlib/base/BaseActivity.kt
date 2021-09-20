@@ -33,7 +33,7 @@ import java.lang.reflect.ParameterizedType
 /**
  * Base activity
  *
- * @author [WngShhng](mailto:shouheng2020@gmail.com)
+ * @author [ShouhengWang](mailto:shouheng2020@gmail.com)
  * @version 2020-05-06 21:51
  */
 abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), PermissionResultResolver {

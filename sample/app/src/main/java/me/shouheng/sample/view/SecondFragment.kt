@@ -14,7 +14,7 @@ import me.shouheng.vmlib.bus.Bus
 /**
  * Sample for shared ViewModel between fragments, also kotlin android extension to avoid findViewById.
  *
- * @author WngShhng 2019-6-29
+ * @author ShouhengWang 2019-6-29
  */
 @FragmentConfiguration(shareViewModel = true)
 class SecondFragment : BaseFragment<SharedViewModel>() {

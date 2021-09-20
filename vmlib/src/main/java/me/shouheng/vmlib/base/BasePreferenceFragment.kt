@@ -23,7 +23,7 @@ import java.lang.reflect.ParameterizedType
 /**
  * base preference fragment for mvvm
  *
- * @author [WngShhng](mailto:shouheng2020@gmail.com)
+ * @author [ShouhengWang](mailto:shouheng2020@gmail.com)
  * @version 2019-10-02 13:15
  */
 abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(), LifecycleOwner {

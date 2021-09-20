@@ -3,7 +3,7 @@ package me.shouheng.vmlib.bean;
 /**
  * The wrapped resource class to transfer data between view model, view and model.
  *
- * @author WngShhng 2019-6-29
+ * @author ShouhengWang 2019-6-29
  * @param <T> the type of data.
  */
 public final class Resources<T> {

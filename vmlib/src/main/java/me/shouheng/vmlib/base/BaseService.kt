@@ -9,7 +9,7 @@ import me.shouheng.vmlib.component.SimpleLifecycle
 /**
  * Base service to handle [ServiceConfiguration] annotation.
  *
- * @author [WngShhng](mailto:shouheng2020@gmail.com)
+ * @author [ShouhengWang](mailto:shouheng2020@gmail.com)
  * @version 2019-7-1
  */
 abstract class BaseService : Service(), LifecycleOwner {

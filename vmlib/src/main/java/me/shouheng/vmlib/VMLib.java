@@ -10,7 +10,7 @@ import me.shouheng.utils.UtilsApp;
  *
  *                            The VMLib
  *
- *                         == WngShhng ==
+ *                         == ShouhengWang ==
  *
  *        AN EASY AND CONVENIENT MVVM ARCHITECTURE FOR ANDROID.
  *
@@ -18,7 +18,7 @@ import me.shouheng.utils.UtilsApp;
  *
  * Call {@link VMLib#onCreate(Application)} in your application to initialize the library.
  *
- * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">ShouhengWang</a>
  * @version Date: 2019-6-29
  */
 public final class VMLib {

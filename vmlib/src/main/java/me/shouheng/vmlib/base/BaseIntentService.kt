@@ -9,7 +9,7 @@ import me.shouheng.vmlib.component.SimpleLifecycle
 /**
  * Base intent service implementation to handle [ServiceConfiguration] annotation.
  *
- * @author [WngShhng](mailto:shouheng2020@gmail.com)
+ * @author [ShouhengWang](mailto:shouheng2020@gmail.com)
  * @version 2019-7-01
  */
 abstract class BaseIntentService(name: String?) : IntentService(name), LifecycleOwner {

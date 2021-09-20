@@ -3,7 +3,7 @@ package me.shouheng.vmlib.anno
 /**
  * ViewModel configuration annotation.
  *
- * @author [WngShhng](mailto:shouheng2020@gmail.com)
+ * @author [ShouhengWang](mailto:shouheng2020@gmail.com)
  * @version 2020-01-10 21:38
  */
 @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)

@@ -11,7 +11,7 @@ import me.shouheng.vmlib.bean.Resources
 /**
  * 主界面对应的 ViewModel
  *
- * @author WngShhng 2019-07-05
+ * @author ShouhengWang 2019-07-05
  */
 class MainViewModel(application: Application) : BaseViewModel(application) {
 

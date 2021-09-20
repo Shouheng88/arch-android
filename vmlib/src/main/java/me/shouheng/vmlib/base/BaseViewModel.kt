@@ -14,7 +14,7 @@ import me.shouheng.vmlib.component.LiveDataHolder
  * The view model has no pre-defined model associated, for MVVMs don't want to take care of the
  * model logic. You can get the data source anywhere, which is perhaps useful for small project.
  *
- * @author [WngShhng](mailto:shouheng2020@gmail.com)
+ * @author [ShouhengWang](mailto:shouheng2020@gmail.com)
  * @version 2019-6-29
  */
 open class BaseViewModel(application: Application) : AndroidViewModel(application) {

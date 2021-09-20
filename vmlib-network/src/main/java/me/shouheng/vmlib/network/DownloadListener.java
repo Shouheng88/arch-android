@@ -5,7 +5,7 @@ import java.io.File;
 /**
  * The download state listener.
  *
- * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">ShouhengWang</a>
  * @version 2019/7/18 22:54
  */
 public interface DownloadListener {

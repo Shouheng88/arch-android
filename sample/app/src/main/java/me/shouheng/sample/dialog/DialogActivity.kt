@@ -44,7 +44,7 @@ import me.shouheng.vmlib.comn.EmptyViewModel
 /**
  * 对话框示例
  *
- * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">ShouhengWang</a>
  * @version 2019-10-13 15:21
  */
 @Route(path = "/app/dialog")

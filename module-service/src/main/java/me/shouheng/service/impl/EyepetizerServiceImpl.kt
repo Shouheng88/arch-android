@@ -8,7 +8,7 @@ import me.shouheng.service.repo.EyepetizerRepo
 import me.shouheng.utils.stability.L
 
 /**
- * @author WngShhng (shouheng2020@gmail.com)
+ * @author ShouhengWang (shouheng2020@gmail.com)
  * @version 2019/7/6 18:00
  */
 @Route(path = "/api/eye")
