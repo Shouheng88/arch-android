@@ -10,7 +10,7 @@ import me.shouheng.utils.UtilsApp;
  *
  *                            The VMLib
  *
- *                         == ShouhengWang ==
+ *                       == ShouhengWang ==
  *
  *        AN EASY AND CONVENIENT MVVM ARCHITECTURE FOR ANDROID.
  *

@@ -1,5 +1,6 @@
 package me.shouheng.sample
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.multidex.MultiDexApplication
 import com.alibaba.android.arouter.launcher.ARouter
@@ -16,7 +17,9 @@ import me.shouheng.vmlib.VMLib
 import java.io.File
 
 /**
- * @author WngShhng 2019-6-29
+ * todo dialog activity
+ *
+ * @author ShouhengWang 2019-6-29
  */
 class App : MultiDexApplication() {
 
@@ -61,6 +64,7 @@ class App : MultiDexApplication() {
         ARouter.init(this)
     }
 
+    @SuppressLint("MissingPermission")
     private fun customCrash() {
         CrashHelper.init(this,
             File(PathUtils.getExternalAppFilesPath(), "crash")

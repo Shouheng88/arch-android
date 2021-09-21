@@ -147,18 +147,6 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, ActivityEyep
                     ARouter.getInstance().build("/app/debug").navigation()
                     ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
                 }
-                R.id.action_dialog_debug -> {
-                    ARouter.getInstance().build("/app/dialog").navigation()
-                    ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
-                }
-                R.id.action_tip_debug -> {
-                    ARouter.getInstance().build("/app/tip").navigation()
-                    ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
-                }
-                R.id.action_image_debug -> {
-                    ARouter.getInstance().build("/app/image").navigation()
-                    ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
-                }
             }
         }
         onBack{ back ->

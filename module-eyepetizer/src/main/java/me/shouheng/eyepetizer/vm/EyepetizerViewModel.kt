@@ -5,11 +5,12 @@ import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.api.bean.HomeBean
 import me.shouheng.api.eyepetizer.EyepetizerService
 import me.shouheng.api.eyepetizer.OnGetHomeBeansListener
-import me.shouheng.api.sample.UserService
 import me.shouheng.utils.stability.L
 import me.shouheng.vmlib.base.BaseViewModel
 
 /**
+ * Eyepetizer viewmodel.
+ *
  * @author ShouhengWang (shouheng2020@gmail.com)
  * @version 2019/7/6 18:19
  */
@@ -17,13 +18,9 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
 
     private var firstPageRequested: Boolean = false
 
-    private val userService: UserService = ARouter.getInstance().navigation(UserService::class.java)
-
     private val eyeService: EyepetizerService = ARouter.getInstance().navigation(EyepetizerService::class.java)
 
     private var nextPageUrl: String? = null
-
-    fun requestUser() { userService.requestUser() }
 
     fun firstPage() {
         if (firstPageRequested) return
