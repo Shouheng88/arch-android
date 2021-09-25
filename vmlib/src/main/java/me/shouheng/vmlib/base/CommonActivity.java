@@ -1,10 +1,11 @@
 package me.shouheng.vmlib.base;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
+
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import android.os.Bundle;
-import androidx.annotation.Nullable;
-import android.view.LayoutInflater;
 
 /**
  * The basic common implementation for MMVMs activity.
@@ -12,7 +13,7 @@ import android.view.LayoutInflater;
  * @author <a href="mailto:shouheng2020@gmail.com">ShouhengWang</a>
  * @version 2019-6-29
  */
-public abstract class CommonActivity<U extends BaseViewModel, T extends ViewDataBinding> extends AbsForwardActivity<U> {
+public abstract class CommonActivity<U extends BaseViewModel, T extends ViewDataBinding> extends BaseActivity<U> {
 
     private T binding;
 

@@ -1,6 +1,9 @@
 package me.shouheng.vmlib.component
 
 import androidx.lifecycle.*
+import me.shouheng.vmlib.base.BaseActivity
+import me.shouheng.vmlib.base.BaseFragment
+import me.shouheng.vmlib.base.BaseViewModelOwner
 import me.shouheng.vmlib.bean.Resources
 import me.shouheng.vmlib.bean.Status
 
@@ -21,7 +24,7 @@ inline fun <T> LifecycleOwner.observe(
 inline fun <T> LifecycleOwner.observe(
     liveData: LiveData<Resources<T>>,
     crossinline success: (res: Resources<T>) -> Unit,
-    crossinline fail:    (res: Resources<T>) -> Unit,
+    crossinline fail   : (res: Resources<T>) -> Unit,
     crossinline loading: (res: Resources<T>) -> Unit
 ) {
     liveData.observe(this, Observer {
@@ -36,11 +39,83 @@ inline fun <T> LifecycleOwner.observe(
 /** Kotlin DSL styled observe method. */
 fun <T> LifecycleOwner.observeOn(
     liveData: LiveData<Resources<T>>,
-    init: LiveDataObserverBuilder<T>.() -> Unit
+    init    : LiveDataObserverBuilder<T>.() -> Unit
 ) {
     val builder = LiveDataObserverBuilder<T>()
     builder.apply(init)
     liveData.observe(this, builder.build())
+}
+
+/** Observe on data type. */
+fun <T> BaseViewModelOwner<*>.observeOn(
+    dataType: Class<T>,
+    init    : LiveDataObserverBuilder<T>.() -> Unit
+) {
+    observeOn(getViewModel().getObservable(dataType), init)
+}
+
+/** Observe data */
+fun <T> BaseViewModelOwner<*>.observeOn(
+    dataType: Class<T>,
+    single  : Boolean = false,
+    init    : LiveDataObserverBuilder<T>.() -> Unit
+) {
+    observeOn(dataType, null, single, init)
+}
+
+/** Observe data */
+fun <T> BaseViewModelOwner<*>.observeOn(
+    dataType: Class<T>,
+    sid     : Int? = null,
+    init    : LiveDataObserverBuilder<T>.() -> Unit
+) {
+    observeOn(dataType, sid, false, init)
+}
+
+/** Observe data */
+fun <T> BaseViewModelOwner<*>.observeOn(
+    dataType: Class<T>,
+    sid     : Int? = null,
+    single  : Boolean = false,
+    init    : LiveDataObserverBuilder<T>.() -> Unit
+) {
+    observeOn(getViewModel().getObservable(dataType, sid, single), init)
+}
+
+/** Observe list data */
+fun <T> BaseViewModelOwner<*>.observeOnList(
+    dataType: Class<T>,
+    init    : LiveDataObserverBuilder<List<T>>.() -> Unit
+) {
+    observeOnList(dataType, null, false, init)
+}
+
+/** Observe list data */
+fun <T> BaseViewModelOwner<*>.observeOnList(
+    dataType: Class<T>,
+    single  : Boolean = false,
+    init    : LiveDataObserverBuilder<List<T>>.() -> Unit
+) {
+    observeOnList(dataType, null, single, init)
+}
+
+/** Observe list data */
+fun <T> BaseViewModelOwner<*>.observeOnList(
+    dataType: Class<T>,
+    sid     : Int? = null,
+    init    : LiveDataObserverBuilder<List<T>>.() -> Unit
+) {
+    observeOnList(dataType, sid, false, init)
+}
+
+/** Observe list data */
+fun <T> BaseViewModelOwner<*>.observeOnList(
+    dataType: Class<T>,
+    sid     : Int? = null,
+    single  : Boolean = false,
+    init    : LiveDataObserverBuilder<List<T>>.() -> Unit
+) {
+    observeOn(getViewModel().getListObservable(dataType, sid, single), init)
 }
 
 /** Builder for livedata observer. */

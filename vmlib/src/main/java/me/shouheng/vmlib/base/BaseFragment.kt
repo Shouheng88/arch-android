@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.*
 import androidx.annotation.LayoutRes
-import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import com.umeng.analytics.MobclickAgent
@@ -12,10 +12,8 @@ import me.shouheng.utils.permission.Permission
 import me.shouheng.utils.permission.PermissionUtils
 import me.shouheng.utils.permission.callback.OnGetPermissionCallback
 import me.shouheng.utils.stability.L
-import me.shouheng.utils.ui.ToastUtils
 import me.shouheng.vmlib.Platform
 import me.shouheng.vmlib.anno.FragmentConfiguration
-import me.shouheng.vmlib.bean.Resources
 import me.shouheng.vmlib.bus.Bus
 import me.shouheng.vmlib.component.*
 import java.lang.reflect.ParameterizedType
@@ -26,21 +24,19 @@ import java.lang.reflect.ParameterizedType
  * @author [ShouhengWang](mailto:shouheng2020@gmail.com)
  * @version 2019-6-29
  */
-abstract class BaseFragment<U : BaseViewModel> : androidx.fragment.app.Fragment() {
+abstract class BaseFragment<U : BaseViewModel> : Fragment(), BaseViewModelOwner<U> {
     protected val vm: U by lazy { createViewModel() }
     private var shareViewModel = false
     private var useEventBus = false
-
-    /** Grouped values with [FragmentConfiguration.umeng].  */
-    private var useUmengManual = false
-    private var pageName: String = javaClass.simpleName
+    private var umengConfig: UMenuConfig? = null
 
     /** Get the layout resource id from subclass. */
-    @LayoutRes
-    protected abstract fun getLayoutResId(): Int
+    @LayoutRes protected abstract fun getLayoutResId(): Int
 
     /** Do create view business. */
     protected abstract fun doCreateView(savedInstanceState: Bundle?)
+
+    override fun getViewModel(): U = vm
 
     /**
      * Initialize view model according to the generic class type.
@@ -76,121 +72,13 @@ abstract class BaseFragment<U : BaseViewModel> : androidx.fragment.app.Fragment(
         doCreateView(savedInstanceState)
     }
 
-    /** Observe data */
-    protected fun <T> observe(
-        dataType: Class<T>,
-        success: (res: Resources<T>) -> Unit = {},
-        fail:    (res: Resources<T>) -> Unit = {},
-        loading: (res: Resources<T>) -> Unit = {}
-    ) {
-        observe(dataType, null, false, success, fail, loading)
-    }
-
-    /** Observe data */
-    protected fun <T> observe(
-        dataType: Class<T>,
-        single: Boolean = false,
-        success: (res: Resources<T>) -> Unit = {},
-        fail:    (res: Resources<T>) -> Unit = {},
-        loading: (res: Resources<T>) -> Unit = {}
-    ) {
-        observe(dataType, null, single, success, fail, loading)
-    }
-
-    /** Observe data */
-    protected fun <T> observe(
-        dataType: Class<T>,
-        sid: Int? = null,
-        success: (res: Resources<T>) -> Unit = {},
-        fail:    (res: Resources<T>) -> Unit = {},
-        loading: (res: Resources<T>) -> Unit = {}
-    ) {
-        observe(dataType, sid, false, success, fail, loading)
-    }
-
-    /** Observe data */
-    protected fun <T> observe(
-        dataType: Class<T>,
-        sid: Int? = null,
-        single: Boolean = false,
-        success: (res: Resources<T>) -> Unit = {},
-        fail:    (res: Resources<T>) -> Unit = {},
-        loading: (res: Resources<T>) -> Unit = {}
-    ) {
-        observe(vm.getObservable(dataType, sid, single), success, fail, loading)
-    }
-
-    /** Observe list data */
-    protected fun <T> observeList(
-        dataType: Class<T>,
-        success: (res: Resources<List<T>>) -> Unit = {},
-        fail:    (res: Resources<List<T>>) -> Unit = {},
-        loading: (res: Resources<List<T>>) -> Unit = {}
-    ) {
-        observeList(dataType, null, false, success, fail, loading)
-    }
-
-    /** Observe list data */
-    protected fun <T> observeList(
-        dataType: Class<T>,
-        single: Boolean = false,
-        success: (res: Resources<List<T>>) -> Unit = {},
-        fail:    (res: Resources<List<T>>) -> Unit = {},
-        loading: (res: Resources<List<T>>) -> Unit = {}
-    ) {
-        observeList(dataType, null, single, success, fail, loading)
-    }
-
-    /** Observe list data */
-    protected fun <T> observeList(
-        dataType: Class<T>,
-        sid: Int? = null,
-        success: (res: Resources<List<T>>) -> Unit = {},
-        fail:    (res: Resources<List<T>>) -> Unit = {},
-        loading: (res: Resources<List<T>>) -> Unit = {}
-    ) {
-        observeList(dataType, sid, false, success, fail, loading)
-    }
-
-    /** Observe list data */
-    protected fun <T> observeList(
-        dataType: Class<T>,
-        sid: Int? = null,
-        single: Boolean = false,
-        success: (res: Resources<List<T>>) -> Unit = {},
-        fail:    (res: Resources<List<T>>) -> Unit = {},
-        loading: (res: Resources<List<T>>) -> Unit = {}
-    ) {
-        observe(vm.getListObservable(dataType, sid, single), success, fail, loading)
-    }
-
-    /** Make a simple toast.*/
-    protected fun toast(text: CharSequence?) {
-        ToastUtils.showShort(text)
-    }
-
-    /** Make a simple toast.*/
-    protected fun toast(@StringRes resId: Int) {
-        ToastUtils.showShort(resId)
-    }
-
-    /** Post one event by Bus*/
-    protected fun post(event: Any?) {
-        Bus.get().post(event)
-    }
-
-    /** Post one sticky event by Bus*/
-    protected fun postSticky(event: Any?) {
-        Bus.get().postSticky(event)
-    }
-
     /**
-     * Check single permission. For multiple permissions at the same time, call [check].
+     * Check single permission. For multiple permissions at the same time, call [checkPermission].
      *
      * @param onGetPermission the callback when got all permissions required.
      * @param permission the permissions to request.
      */
-    protected fun check(@Permission permission: Int, onGetPermission: () -> Unit) {
+    protected fun checkPermission(@Permission permission: Int, onGetPermission: () -> Unit) {
         if (activity is BaseActivity<*>) {
             PermissionUtils.checkPermissions<BaseActivity<*>?>(
                 (activity as BaseActivity<*>?)!!,
@@ -208,7 +96,7 @@ abstract class BaseFragment<U : BaseViewModel> : androidx.fragment.app.Fragment(
      * @param onGetPermission the callback when got all permissions required.
      * @param permissions the permissions to request.
      */
-    protected fun check(onGetPermission: () -> Unit, @Permission vararg permissions: Int) {
+    protected fun checkPermissions(onGetPermission: () -> Unit, @Permission vararg permissions: Int) {
         if (activity is BaseActivity<*>) {
             PermissionUtils.checkPermissions<BaseActivity<*>?>(
                 (activity as BaseActivity<*>?)!!,
@@ -227,15 +115,19 @@ abstract class BaseFragment<U : BaseViewModel> : androidx.fragment.app.Fragment(
 
     override fun onResume() {
         super.onResume()
-        if (Platform.DEPENDENCY_UMENG_ANALYTICS && !useUmengManual) {
-            MobclickAgent.onPageStart(pageName)
+        if (Platform.DEPENDENCY_UMENG_ANALYTICS
+            && umengConfig != null
+            && umengConfig?.manual == false) {
+            MobclickAgent.onPageStart(umengConfig?.pageName?:"")
         }
     }
 
     override fun onPause() {
         super.onPause()
-        if (Platform.DEPENDENCY_UMENG_ANALYTICS && !useUmengManual) {
-            MobclickAgent.onPageEnd(pageName)
+        if (Platform.DEPENDENCY_UMENG_ANALYTICS
+            && umengConfig != null
+            && umengConfig?.manual == false) {
+            MobclickAgent.onPageEnd(umengConfig?.pageName?:"")
         }
     }
 
@@ -251,10 +143,12 @@ abstract class BaseFragment<U : BaseViewModel> : androidx.fragment.app.Fragment(
         if (configuration != null) {
             shareViewModel = configuration.shareViewModel
             useEventBus = configuration.useEventBus
-            val umengConfiguration = configuration.umeng
-            pageName = if (TextUtils.isEmpty(umengConfiguration.pageName))
-                javaClass.simpleName else umengConfiguration.pageName
-            useUmengManual = umengConfiguration.useUmengManual
+            umengConfig = UMenuConfig(
+                if (TextUtils.isEmpty(configuration.umeng.pageName))
+                    javaClass.simpleName else configuration.umeng.pageName,
+                false,
+                configuration.umeng.useUmengManual
+            )
         }
     }
 }

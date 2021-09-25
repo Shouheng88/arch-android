@@ -9,7 +9,7 @@ import java.lang.IllegalStateException
 import java.lang.reflect.ParameterizedType
 
 /** Base fragment for view binding. */
-abstract class ViewBindingFragment<U : BaseViewModel, T : ViewBinding> : AbsForwardFragment<U>() {
+abstract class ViewBindingFragment<U : BaseViewModel, T : ViewBinding> : BaseFragment<U>() {
 
     protected lateinit var binding: T
         private set

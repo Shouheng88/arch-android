@@ -1,13 +1,14 @@
 package me.shouheng.vmlib.base;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 
 /**
  * The base common fragment implementation for MVVMs. Example:
@@ -15,7 +16,7 @@ import android.view.ViewGroup;
  * @author <a href="mailto:shouheng2020@gmail.com">ShouhengWang</a>
  * @version 2019-6-29
  */
-public abstract class CommonFragment<U extends BaseViewModel, T extends ViewDataBinding> extends AbsForwardFragment<U> {
+public abstract class CommonFragment<U extends BaseViewModel, T extends ViewDataBinding> extends BaseFragment<U> {
 
     private T binding;
 

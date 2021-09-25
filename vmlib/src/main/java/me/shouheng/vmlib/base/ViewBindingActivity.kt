@@ -8,12 +8,16 @@ import java.lang.IllegalStateException
 import java.lang.reflect.ParameterizedType
 
 /** Base activity support view binding. */
-abstract class ViewBindingActivity<U : BaseViewModel, T : ViewBinding> : AbsForwardActivity<U>() {
+abstract class ViewBindingActivity<U : BaseViewModel, T : ViewBinding> : BaseActivity<U>() {
 
     protected lateinit var binding: T
         private set
 
     /** Don't need to use the layout resource id anymore. */
+    @Deprecated(
+        message = "Deprecated method, the root view will be derived from view binding.",
+        replaceWith = ReplaceWith("-1")
+    )
     override fun getLayoutResId(): Int = -1
 
     override fun setupContentView(savedInstanceState: Bundle?) {

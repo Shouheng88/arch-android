@@ -21,6 +21,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     viewBinding {
         enabled true
     }
@@ -45,10 +49,11 @@ dependencies {
     compileOnly "org.simple:androideventbus:1.0.5.1"
     compileOnly "com.umeng.umsdk:common:1.5.4"
     compileOnly "com.umeng.umsdk:analytics:7.5.4"
-    compileOnly "com.github.Shouheng88:uix-core:1.9.0"
+    compileOnly "com.github.Shouheng88:uix-core:${uixCoreVersion}"
     compileOnly "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1"
 
     api "com.github.Shouheng88:utils-core:${utilsCoreVersion}"
+    api "com.github.Shouheng88:utils-ktx:${utilsCoreVersion}"
     api "com.github.Shouheng88:compressor:1.5.0"
 }
 

@@ -15,6 +15,7 @@ import me.shouheng.vmlib.component.SimpleLifecycle
 abstract class BaseService : Service(), LifecycleOwner {
 
     private var useEventBus = false
+
     private val lifecycle = SimpleLifecycle(this)
 
     override fun onCreate() {

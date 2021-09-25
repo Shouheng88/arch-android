@@ -5,6 +5,7 @@ import android.preference.Preference
 import android.preference.PreferenceFragment
 import android.text.TextUtils
 import androidx.annotation.StringRes
+import androidx.annotation.XmlRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
 import com.umeng.analytics.MobclickAgent
@@ -12,12 +13,10 @@ import me.shouheng.utils.permission.Permission
 import me.shouheng.utils.permission.PermissionUtils
 import me.shouheng.utils.permission.callback.OnGetPermissionCallback
 import me.shouheng.utils.stability.L
-import me.shouheng.utils.ui.ToastUtils
 import me.shouheng.vmlib.Platform
 import me.shouheng.vmlib.anno.FragmentConfiguration
-import me.shouheng.vmlib.bean.Resources
-import me.shouheng.vmlib.component.*
 import me.shouheng.vmlib.bus.Bus
+import me.shouheng.vmlib.component.*
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -26,14 +25,10 @@ import java.lang.reflect.ParameterizedType
  * @author [ShouhengWang](mailto:shouheng2020@gmail.com)
  * @version 2019-10-02 13:15
  */
-abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(), LifecycleOwner {
-    protected lateinit var vm: U
-        private set
+abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(), BaseViewModelOwner<U> {
+    protected val vm: U by lazy { createViewModel() }
     private var useEventBus = false
-
-    /** Grouped values with [FragmentConfiguration.umeng].  */
-    private var pageName: String? = null
-    private var useUmengManual = false
+    private var umengConfig: UMenuConfig? = null
 
     private val lifecycle = LifecycleRegistry(this)
 
@@ -47,11 +42,10 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
      */
     override fun getLifecycle(): Lifecycle = lifecycle
 
+    override fun getViewModel(): U = vm
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (useEventBus) {
-            Bus.get().register(this)
-        }
-        vm = createViewModel()
+        if (useEventBus) Bus.get().register(this)
         super.onCreate(savedInstanceState)
         val preferencesResId = getPreferencesResId()
         require(preferencesResId > 0) { "The subclass must provider a valid preference resources id." }
@@ -66,7 +60,7 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
      */
     protected abstract fun doCreateView(savedInstanceState: Bundle?)
 
-    protected abstract fun getPreferencesResId(): Int
+    @XmlRes protected abstract fun getPreferencesResId(): Int
 
     /**
      * Initialize view model according to the generic class type. Override this method to
@@ -84,132 +78,13 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
         return ViewModelProviders.of((activity as androidx.fragment.app.FragmentActivity))[vmClass]
     }
 
-    /** Observe data */
-    protected fun <T> observe(
-        dataType: Class<T>,
-        success: (res: Resources<T>) -> Unit = {},
-        fail:    (res: Resources<T>) -> Unit = {},
-        loading: (res: Resources<T>) -> Unit = {}
-    ) {
-        observe(dataType, null, false, success, fail, loading)
-    }
-
-    /** Observe data */
-    protected fun <T> observe(
-        dataType: Class<T>,
-        single: Boolean = false,
-        success: (res: Resources<T>) -> Unit = {},
-        fail:    (res: Resources<T>) -> Unit = {},
-        loading: (res: Resources<T>) -> Unit = {}
-    ) {
-        observe(dataType, null, single, success, fail, loading)
-    }
-
-    /** Observe data */
-    protected fun <T> observe(
-        dataType: Class<T>,
-        sid: Int? = null,
-        success: (res: Resources<T>) -> Unit = {},
-        fail:    (res: Resources<T>) -> Unit = {},
-        loading: (res: Resources<T>) -> Unit = {}
-    ) {
-        observe(dataType, sid, false, success, fail, loading)
-    }
-
-    /** Observe data */
-    protected fun <T> observe(
-        dataType: Class<T>,
-        sid: Int? = null,
-        single: Boolean = false,
-        success: (res: Resources<T>) -> Unit = {},
-        fail:    (res: Resources<T>) -> Unit = {},
-        loading: (res: Resources<T>) -> Unit = {}
-    ) {
-        observe(vm.getObservable(dataType, sid, single), success, fail, loading)
-    }
-
-    /** Observe list data */
-    protected fun <T> observeList(
-        dataType: Class<T>,
-        success: (res: Resources<List<T>>) -> Unit = {},
-        fail:    (res: Resources<List<T>>) -> Unit = {},
-        loading: (res: Resources<List<T>>) -> Unit = {}
-    ) {
-        observeList(dataType, null, false, success, fail, loading)
-    }
-
-    /** Observe list data */
-    protected fun <T> observeList(
-        dataType: Class<T>,
-        single: Boolean = false,
-        success: (res: Resources<List<T>>) -> Unit = {},
-        fail:    (res: Resources<List<T>>) -> Unit = {},
-        loading: (res: Resources<List<T>>) -> Unit = {}
-    ) {
-        observeList(dataType, null, single, success, fail, loading)
-    }
-
-    /** Observe list data */
-    protected fun <T> observeList(
-        dataType: Class<T>,
-        sid: Int? = null,
-        success: (res: Resources<List<T>>) -> Unit = {},
-        fail:    (res: Resources<List<T>>) -> Unit = {},
-        loading: (res: Resources<List<T>>) -> Unit = {}
-    ) {
-        observeList(dataType, sid, false, success, fail, loading)
-    }
-
-    /** Observe list data */
-    protected fun <T> observeList(
-        dataType: Class<T>,
-        sid: Int? = null,
-        single: Boolean = false,
-        success: (res: Resources<List<T>>) -> Unit = {},
-        fail:    (res: Resources<List<T>>) -> Unit = {},
-        loading: (res: Resources<List<T>>) -> Unit = {}
-    ) {
-        observe(vm.getListObservable(dataType, sid, single), success, fail, loading)
-    }
-
     /**
-     * Make a simple toast.
-     *
-     * @param text the content to display
-     */
-    protected fun toast(text: CharSequence?) {
-        ToastUtils.showShort(text)
-    }
-
-    protected fun toast(@StringRes resId: Int) {
-        ToastUtils.showShort(resId)
-    }
-
-    /**
-     * Post one event by Bus
-     *
-     * @param event the event to post
-     */
-    protected fun post(event: Any?) {
-        Bus.get().post(event)
-    }
-
-    /**
-     * Post one sticky event by Bus
-     *
-     * @param event the sticky event
-     */
-    protected fun postSticky(event: Any?) {
-        Bus.get().postSticky(event)
-    }
-
-    /**
-     * Check single permission. For multiple permissions at the same time, call [check].
+     * Check single permission. For multiple permissions at the same time, call [checkPermissions].
      *
      * @param onGetPermission the callback when got all permissions required.
      * @param permission the permissions to request.
      */
-    protected fun check(@Permission permission: Int, onGetPermission: () -> Unit) {
+    protected fun checkPermission(@Permission permission: Int, onGetPermission: () -> Unit) {
         if (activity is BaseActivity<*>) {
             PermissionUtils.checkPermissions<BaseActivity<*>?>(
                 (activity as BaseActivity<*>?)!!,
@@ -227,7 +102,7 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
      * @param onGetPermission the callback when got all permissions required.
      * @param permissions the permissions to request.
      */
-    protected fun check(onGetPermission: () -> Unit, @Permission vararg permissions: Int) {
+    protected fun checkPermissions(onGetPermission: () -> Unit, @Permission vararg permissions: Int) {
         if (activity is BaseActivity<*>) {
             PermissionUtils.checkPermissions<BaseActivity<*>?>(
                 (activity as BaseActivity<*>?)!!,
@@ -262,15 +137,19 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
 
     override fun onResume() {
         super.onResume()
-        if (useUmengManual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
-            MobclickAgent.onPageStart(pageName)
+        if (Platform.DEPENDENCY_UMENG_ANALYTICS
+            && umengConfig != null
+            && umengConfig?.manual == false) {
+            MobclickAgent.onPageStart(umengConfig?.pageName?:"")
         }
     }
 
     override fun onPause() {
         super.onPause()
-        if (useUmengManual && Platform.DEPENDENCY_UMENG_ANALYTICS) {
-            MobclickAgent.onPageEnd(pageName)
+        if (Platform.DEPENDENCY_UMENG_ANALYTICS
+            && umengConfig != null
+            && umengConfig?.manual == false) {
+            MobclickAgent.onPageEnd(umengConfig?.pageName?:"")
         }
     }
 
@@ -285,10 +164,12 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
         val configuration = this.javaClass.getAnnotation(FragmentConfiguration::class.java)
         if (configuration != null) {
             useEventBus = configuration.useEventBus
-            val umengConfiguration = configuration.umeng
-            pageName = if (TextUtils.isEmpty(umengConfiguration.pageName))
-                javaClass.simpleName else umengConfiguration.pageName
-            useUmengManual = umengConfiguration.useUmengManual
+            umengConfig = UMenuConfig(
+                if (TextUtils.isEmpty(configuration.umeng.pageName))
+                    javaClass.simpleName else configuration.umeng.pageName,
+                false,
+                configuration.umeng.useUmengManual
+            )
         }
     }
 }

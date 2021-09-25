@@ -150,16 +150,6 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
         getListObservable(dataType, sid, single).value = Resources.failed(code, message, udf1, udf2, udf3, udf4, udf5)
     }
 
-    /** Post one event by EventBus */
-    protected fun post(event: Any) {
-        Bus.get().post(event)
-    }
-
-    /** Post one sticky event by EventBus*/
-    protected fun postSticky(event: Any) {
-        Bus.get().postSticky(event)
-    }
-
     override fun onCleared() {
         if (useEventBus) {
             Bus.get().unregister(this)
