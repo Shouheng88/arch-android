@@ -16,7 +16,7 @@
         <me.shouheng.uix.widget.rv.ListShadowView
             android:id="@+id/lsv"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/below_shadow_size"/>
+            android:layout_height="3dp"/>
 
         <LinearLayout android:id="@+id/ll_eye"
             style="@style/Home.Group"
