@@ -6,6 +6,8 @@ import me.shouheng.service.async.MainDataAsync
 import me.shouheng.api.sample.MainDataService
 import me.shouheng.api.sample.OnGetMainDataListener
 import me.shouheng.utils.stability.L
+import me.shouheng.vmlib.bean.Resources
+import me.shouheng.vmlib.task.execute
 
 /**
  * @author ShouhengWang (shouheng2020@gmail.com)
@@ -20,6 +22,15 @@ class MainDataServiceImpl : MainDataService {
                 onGetMainDataListener.onGetData(data)
             }
         }).execute()
+        execute<String> {
+            execute {
+                Thread.sleep(3_000)
+                Resources.success("")
+            }
+            onSucceed {
+                onGetMainDataListener.onGetData(it.data)
+            }
+        }
     }
 
     override fun init(context: Context?) {

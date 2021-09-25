@@ -73,11 +73,5 @@ class Server private constructor(baseUrl: String) {
             val server = Server(baseUrl)
             return server.retorfit.create(api)
         }
-
-        /** Get server with base url [baseUrl] and raw converter. */
-        fun <T> call(api: Class<T>, baseUrl: String): T {
-            val server = Server(baseUrl)
-            return server.rawRetorfit.create(api)
-        }
     }
 }

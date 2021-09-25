@@ -89,6 +89,13 @@ android {
 //        }
 //    }
     ndkVersion "22.1.7171670"
+    packagingOptions {
+        exclude 'META-INF/library_release.kotlin_module'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -113,7 +120,7 @@ dependencies {
     implementation "com.github.Shouheng88:utils-core:${utilsCoreVersion}"
     implementation "com.github.Shouheng88:utils-ktx:${utilsCoreVersion}"
     implementation "com.github.Shouheng88:uix-core:${uixCoreVersion}"
-    implementation "com.github.Shouheng88:uix-image:${uixCoreVersion}"
+    implementation "com.github.Shouheng88:uix-image:1.9.0"
 
     // include dependent modules
     implementation project(path: ':vmlib')

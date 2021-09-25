@@ -7,6 +7,8 @@ import retrofit2.http.Query
 import retrofit2.http.Url
 
 /**
+ * Retrofit service for eyepetizer.
+ *
  * @author ShouhengWang (shouheng2020@gmail.com)
  * @version 2019/7/6 18:02
  */

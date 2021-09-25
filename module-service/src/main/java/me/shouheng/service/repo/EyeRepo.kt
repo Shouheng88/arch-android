@@ -10,7 +10,7 @@ import me.shouheng.utils.stability.L
 import me.shouheng.utils.store.SPUtils
 import me.shouheng.vmlib.task.executeSuspend
 
-class EyepetizerRepo private constructor() {
+class EyeRepo private constructor() {
 
     /** Memory cache */
     private var bean: HomeBean? = null
@@ -60,6 +60,6 @@ class EyepetizerRepo private constructor() {
     }
 
     companion object {
-        val instance: EyepetizerRepo by lazy { EyepetizerRepo() }
+        val INSTANCE: EyeRepo by lazy { EyeRepo() }
     }
 }
