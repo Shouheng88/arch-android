@@ -32,7 +32,7 @@ class EyeRepo private constructor() {
             success(bean)
         }
         executeSuspend<HomeBean> {
-            execute {
+            doTask {
                 Net.connectResources(Server.get(EyeService::class.java)
                     .getFirstHomeDataAsync(date))
                     .apply {
@@ -51,7 +51,7 @@ class EyeRepo private constructor() {
         fail: (code: String, msg: String) -> Unit
     ) {
         executeSuspend<HomeBean> {
-            execute {
+            doTask {
                 Net.connectResources(Server.get(EyeService::class.java).getMoreHomeDataAsync(url))
             }
             onSucceed { success(it.data) }

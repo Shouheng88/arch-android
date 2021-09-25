@@ -18,7 +18,7 @@ class TaskBuilder<R> : AbsTaskBuilder<R>() {
      * in [executeContext]. You can use [launchOn] and [executeOn] to specify
      * launch context and execute context.
      */
-    fun execute(task: () -> Resources<R>) {
+    fun doTask(task: () -> Resources<R>) {
         realTask = task
     }
 

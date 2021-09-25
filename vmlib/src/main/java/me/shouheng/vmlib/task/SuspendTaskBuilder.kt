@@ -18,7 +18,7 @@ class SuspendTaskBuilder<R> : AbsTaskBuilder<R>() {
      * in [executeContext]. You can use [launchOn] and [executeOn] to specify
      * launch context and execute context.
      */
-    fun execute(task: suspend () -> Resources<R>) {
+    fun doTask(task: suspend () -> Resources<R>) {
         realTask = task
     }
 
