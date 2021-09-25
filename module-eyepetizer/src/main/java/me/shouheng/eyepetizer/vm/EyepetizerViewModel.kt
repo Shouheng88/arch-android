@@ -24,6 +24,13 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
 
     private var nextPageUrl: String? = null
 
+    /**
+     * We use the value in viewmodel to store the cached value. So when the activity's
+     * configuration is changed, we can use the cached value. Methods [setListSuccess]
+     * here just performs to transfer data between viewmodel and view layer. If we store
+     * everything in list, it may be confusion to customer. If we only save each request
+     * result in livedata, then we can only keep the last request when observe next time.
+     */
     val items = mutableListOf<Item>()
 
     /** Request the first page. */
