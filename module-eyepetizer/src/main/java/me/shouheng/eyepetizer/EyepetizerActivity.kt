@@ -12,7 +12,6 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
-import me.shouheng.api.bean.HomeBean
 import me.shouheng.api.bean.Item
 import me.shouheng.eyepetizer.databinding.EyepetizerActivityEyepetizerBinding
 import me.shouheng.eyepetizer.vm.EyepetizerViewModel
@@ -37,7 +36,7 @@ import me.shouheng.utils.stability.L
 import me.shouheng.utils.ui.BarUtils
 import me.shouheng.vmlib.anno.ActivityConfiguration
 import me.shouheng.vmlib.base.ViewBindingActivity
-import me.shouheng.vmlib.component.observeOn
+import me.shouheng.vmlib.component.observeOnList
 import me.shouheng.xadapter.createAdapter
 import me.shouheng.xadapter.viewholder.onItemClick
 
@@ -100,7 +99,11 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerAc
      * But, no matter the activity is recreated or not, the view model won't be recreated.
      *
      * SINCE THE VIEWMODEL IS BIND WITH FRAGMENT WHO IS SET [Fragment.setRetainInstance] IS TRUE.
-     * SO THE VIEWMODEL IS SHARED TO NEW ACTIVITY WHEN RECREATED.
+     * SO THE VIEWMODEL IS SHARED TO NEW ACTIVITY WHEN RECREATED. (OLD VERSION).
+     * NOW IT'S USING THE [getLastNonConfigurationInstance] TO TRANSFER THE STATE BETWEEN DIFFERENT
+     * VIEWMODEL WHEN CONFIGURATION CHANGED.
+     *
+     * IF THE ACTIVITY IS DESTROYED BACKGROUND, BOTH THE ACTIVITY AND VIEWMODEL WILL BE CREATED.
      */
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -151,6 +154,8 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerAc
         })
         binding.s.bind(binding.rv)
         binding.rv.setEmptyView(binding.ev)
+        // Use the cached value in viewmodel.
+        adapter.setNewData(vm.items)
     }
 
     private fun configView() {
@@ -174,22 +179,15 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerAc
 
     /** The kotlin DSL styled observe method. */
     private fun observes() {
-        observeOn(HomeBean::class.java) {
+        observeOnList(Item::class.java) {
+            withSticky(false)
             onSuccess {
                 L.d("On eyepetizer request succeed!")
-                val list = mutableListOf<Item>()
-                it.data.issueList.forEach { issue ->
-                    issue.itemList.forEach { item ->
-                        if (item.data.cover != null
-                            && item.data.author != null
-                        ) list.add(item)
-                    }
-                }
                 // Set new data if loading the first page, or append to list.
                 if (it.udf3 == false) {
-                    adapter.setNewData(list)
+                    adapter.setNewData(it.data)
                 } else {
-                    adapter.addData(list)
+                    adapter.addData(it.data)
                 }
                 binding.ev.showEmpty()
                 dataLoadListener?.loading = false

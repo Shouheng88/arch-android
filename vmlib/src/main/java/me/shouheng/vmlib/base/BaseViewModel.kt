@@ -2,11 +2,11 @@ package me.shouheng.vmlib.base
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
 import me.shouheng.vmlib.anno.ViewModelConfiguration
 import me.shouheng.vmlib.bean.Resources
 import me.shouheng.vmlib.bus.Bus
 import me.shouheng.vmlib.component.LiveDataHolder
+import me.shouheng.vmlib.component.SingleLiveEvent
 
 /**
  * Basic implementation of common ViewModel.
@@ -38,8 +38,8 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
         dataType: Class<T>,
         sid: Int? = null,
         single: Boolean = false
-    ): MutableLiveData<Resources<T>> {
-        return holder.getLiveData(dataType, sid, single) as MutableLiveData<Resources<T>>
+    ): SingleLiveEvent<Resources<T>> {
+        return holder.getLiveData(dataType, sid, single) as SingleLiveEvent<Resources<T>>
     }
 
     /**
@@ -56,8 +56,8 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
         dataType: Class<T>,
         sid: Int? = null,
         single: Boolean = false
-    ): MutableLiveData<Resources<List<T>>> {
-        return listHolder.getLiveData(dataType, sid, single) as MutableLiveData<Resources<List<T>>>
+    ): SingleLiveEvent<Resources<List<T>>> {
+        return listHolder.getLiveData(dataType, sid, single) as SingleLiveEvent<Resources<List<T>>>
     }
 
     /** Set success state of data type */

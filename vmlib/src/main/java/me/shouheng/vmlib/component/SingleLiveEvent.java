@@ -19,7 +19,7 @@ import me.shouheng.utils.stability.L;
  *
  * @param <T> the data type
  */
-public class SingleLiveEvent<T> extends MutableLiveData<T> {
+public class SingleLiveEvent<T> extends UnPeekLiveData<T> {
 
     private final AtomicBoolean mPending = new AtomicBoolean(false);
 

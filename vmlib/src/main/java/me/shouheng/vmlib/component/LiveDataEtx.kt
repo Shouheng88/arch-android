@@ -38,12 +38,16 @@ inline fun <T> LifecycleOwner.observe(
 
 /** Kotlin DSL styled observe method. */
 fun <T> LifecycleOwner.observeOn(
-    liveData: LiveData<Resources<T>>,
+    liveData: SingleLiveEvent<Resources<T>>,
     init    : LiveDataObserverBuilder<T>.() -> Unit
 ) {
     val builder = LiveDataObserverBuilder<T>()
     builder.apply(init)
-    liveData.observe(this, builder.build())
+    if (builder.stickyObserver) {
+        liveData.observe(this, builder.build())
+    } else {
+        liveData.observe(this, builder.stickyObserver, builder.build())
+    }
 }
 
 /** Observe on data type. */
@@ -123,6 +127,12 @@ class LiveDataObserverBuilder<T> {
     private var success: ((res: Resources<T>) -> Unit)? = null
     private var fail   : ((res: Resources<T>) -> Unit)? = null
     private var loading: ((res: Resources<T>) -> Unit)? = null
+    internal var stickyObserver: Boolean = false
+
+    /** To decide if observe the data as sticky. */
+    fun withSticky(sticky: Boolean) {
+        stickyObserver = sticky
+    }
 
     /** Called when livedata is success. */
     fun onSuccess(success: (res: Resources<T>) -> Unit) {
