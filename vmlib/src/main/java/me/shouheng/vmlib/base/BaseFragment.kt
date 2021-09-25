@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.umeng.analytics.MobclickAgent
 import me.shouheng.utils.permission.Permission
 import me.shouheng.utils.permission.PermissionUtils
-import me.shouheng.utils.permission.callback.OnGetPermissionCallback
 import me.shouheng.utils.stability.L
 import me.shouheng.vmlib.Platform
 import me.shouheng.vmlib.anno.FragmentConfiguration
@@ -80,11 +79,7 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment(), BaseViewModelOwner<
      */
     protected fun checkPermission(@Permission permission: Int, onGetPermission: () -> Unit) {
         if (activity is BaseActivity<*>) {
-            PermissionUtils.checkPermissions<BaseActivity<*>?>(
-                (activity as BaseActivity<*>?)!!,
-                OnGetPermissionCallback {
-                    onGetPermission()
-                }, permission)
+            PermissionUtils.checkPermissions<BaseActivity<*>?>((activity as BaseActivity<*>?)!!, { onGetPermission() }, permission)
         } else {
             L.w("Request permission failed due to the associated activity was not instance of CommonActivity")
         }
@@ -98,11 +93,7 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment(), BaseViewModelOwner<
      */
     protected fun checkPermissions(onGetPermission: () -> Unit, @Permission vararg permissions: Int) {
         if (activity is BaseActivity<*>) {
-            PermissionUtils.checkPermissions<BaseActivity<*>?>(
-                (activity as BaseActivity<*>?)!!,
-                OnGetPermissionCallback {
-                    onGetPermission()
-                }, *permissions)
+            PermissionUtils.checkPermissions<BaseActivity<*>?>((activity as BaseActivity<*>?)!!, { onGetPermission() }, *permissions)
         } else {
             L.w("Request permissions failed due to the associated activity was not instance of CommonActivity")
         }
