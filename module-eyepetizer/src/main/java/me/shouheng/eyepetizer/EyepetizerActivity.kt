@@ -1,9 +1,12 @@
 package me.shouheng.eyepetizer
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
@@ -46,6 +49,31 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerAc
     private lateinit var adapter: BaseQuickAdapter<Item, BaseViewHolder>
     private var dataLoadListener: AbsDataLoadListener? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        L.e("EyepetizerActivity#onCreate $this $vm")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        L.e("EyepetizerActivity#onStart $this $vm")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        L.e("EyepetizerActivity#onPause $this $vm")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        L.e("EyepetizerActivity#onStop $this $vm")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        L.e("EyepetizerActivity#onDestroy $this $vm")
+    }
+
     override fun doCreateView(savedInstanceState: Bundle?) {
         configToolbar()
         configList()
@@ -56,6 +84,7 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerAc
     override fun onResume() {
         super.onResume()
         vm.firstPage()
+        L.e("EyepetizerActivity#onResume $this $vm")
     }
 
     private fun configToolbar() {
@@ -64,8 +93,25 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerAc
         supportActionBar?.title = stringOf(R.string.eye_app_name)
     }
 
+    /**
+     * If we use the android:configChanges="orientation|keyboardHidden|screenSize" configuration
+     * in the manifest, then we will receive the [onConfigurationChanged] callback. In this way,
+     * the activity won't recreate. So, we can only change the layout in this method.
+     * But, no matter the activity is recreated or not, the view model won't be recreated.
+     *
+     * SINCE THE VIEWMODEL IS BIND WITH FRAGMENT WHO IS SET [Fragment.setRetainInstance] IS TRUE.
+     * SO THE VIEWMODEL IS SHARED TO NEW ACTIVITY WHEN RECREATED.
+     */
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        val landscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        val lm = if (landscape) GridLayoutManager(context, 2) else LinearLayoutManager(context)
+        binding.rv.layoutManager = lm
+    }
+
     private fun configList() {
-        val lm = LinearLayoutManager(context)
+        val landscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        val lm = if (landscape) GridLayoutManager(context, 2) else LinearLayoutManager(context)
         adapter = createAdapter {
             withType(Item::class.java, R.layout.eyepetizer_item_home) {
                 onBind { helper, item ->
@@ -139,7 +185,12 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerAc
                         ) list.add(item)
                     }
                 }
-                adapter.addData(list)
+                // Set new data if loading the first page, or append to list.
+                if (it.udf3 == false) {
+                    adapter.setNewData(list)
+                } else {
+                    adapter.addData(list)
+                }
                 binding.ev.showEmpty()
                 dataLoadListener?.loading = false
             }

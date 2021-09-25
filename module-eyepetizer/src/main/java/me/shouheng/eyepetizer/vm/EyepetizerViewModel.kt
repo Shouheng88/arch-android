@@ -32,7 +32,7 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
             override fun onGetHomeBean(data: HomeBean) {
                 L.d("Got home bean")
                 nextPageUrl = data.nextPageUrl
-                setSuccess(HomeBean::class.java, data)
+                setSuccess(HomeBean::class.java, data, udf3 = false)
                 // request next page
                 nextPage()
             }
