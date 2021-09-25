@@ -3,7 +3,7 @@ package me.shouheng.vmlib;
 /**
  * The class used to detect the dependencies.
  *
- * @author <a herf="mailto:shouheng2020@gmail.com">WngShhng</a>
+ * @author <a herf="mailto:shouheng2020@gmail.com">ShouhengWang</a>
  */
 public class Platform {
     public static final boolean DEPENDENCY_ANDROID_EVENTBUS;
@@ -13,9 +13,9 @@ public class Platform {
 
     static {
         DEPENDENCY_ANDROID_EVENTBUS = findClassByClassName("org.simple.eventbus.EventBus");
-        DEPENDENCY_EVENTBUS = findClassByClassName("org.greenrobot.eventbus.EventBus");
-        DEPENDENCY_UMENG_ANALYTICS = findClassByClassName("com.umeng.analytics.MobclickAgent");
-        DEPENDENCY_UIX_ANALYTICS = findClassByClassName("me.shouheng.uix.common.UIX");
+        DEPENDENCY_EVENTBUS         = findClassByClassName("org.greenrobot.eventbus.EventBus");
+        DEPENDENCY_UMENG_ANALYTICS  = findClassByClassName("com.umeng.analytics.MobclickAgent");
+        DEPENDENCY_UIX_ANALYTICS    = findClassByClassName("me.shouheng.uix.common.UIX");
     }
 
     private static boolean findClassByClassName(String className) {

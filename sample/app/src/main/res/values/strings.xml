@@ -1,42 +1,24 @@
 <resources>
-    <string name="app_name">安卓 VMLib</string>
+    <string name="app_name">Android VMLib</string>
 
-    <string name="sample_main_activity_received_msg">%s 接收到 EventBus 传递的信息：%s</string>
-    <string name="sample_main_page_data_loading">主页数据正在加载中……</string>
-    <string name="sample_main_page_data_load_succeed">主页数据加载成功！</string>
-    <string name="sample_main_navigate_to_second">测试 ViewModel 共享的情况</string>
-    <string name="sample_main_navigate_observable">测试 Observable+flag 共享的情况</string>
-    <string name="sample_main_navigate_observable_list">测试 Observable List+flag 共享的情况</string>
-    <string name="sample_main_request_user_data">请求用户信息</string>
-    <string name="sample_main_navigate_to_eyeptizer">跳转到开眼视频</string>
-    <string name="sample_main_navigate_to_sample">跳转到 Fragment 容器</string>
-    <string name="sample_main_download">测试下载文件</string>
-    <string name="sample_main_launch_utils">进入工具类测试页面</string>
-    <string name="sample_main_preferences">打开 Preference 页面</string>
-    <string name="sample_main_crash">崩一个</string>
-    <string name="sample_main_vm_post">通过 VM post 一条消息</string>
-    <string name="sample_main_shared_value_between_fragments">这是 MainFragment 与当前 Fragment 之间共享的值！</string>
-    <string name="sample_main_send_one_message_by_event_bus">通过 EventBus 发送一个消息</string>
-    <string name="sample_main_got_user">获取到用户信息：%s</string>
-    <string name="sample_main_argument_to_fragment">这是从 MainFragment 传入的参数</string>
-    <string name="sample_main_tips">使用夜间主题状态栏（白色图标和文字），状态栏背景颜色为黑色</string>
+    <string name="main_eye_demo_name">Eyepetizer Videos</string>
+    <string name="main_github_demo_name">Github Stars</string>
 
-    <string name="menu_activity_helper">ActivityHelper</string>
-    <string name="menu_permission_utils">PermissionUtils</string>
-    <string name="menu_crash_utils">CrashHelper</string>
-    <string name="menu_log_utils">L</string>
-    <string name="menu_shell_utils">ShellUtils</string>
+    <string name="main_input_sample">Input Sample</string>
+    <string name="main_input_title_hint">Input the title</string>
+    <string name="main_input_content_hint">Write something here …</string>
 
-    <string name="activity_helper_web_intent">启动 http://www.baidu.com</string>
-    <string name="activity_helper_activity_result">启动 Activity 并获取结果</string>
-    <string name="activity_helper_finish">销毁当前 Activity</string>
-    <string name="activity_helper_shared_activity">启动与当前 Activity 共享元素的 Activity （API 21）</string>
-    <string name="activity_helper_animation">使用动画效果启动 Activity</string>
+    <string name="main_more_widget">More options</string>
+    <string name="main_more_widget_check_permission">Check Camera Permission</string>
+    <string name="main_more_widget_check_permission_granted">Permission granted!</string>
+    <string name="main_more_widget_download">Download A File</string>
+    <string name="main_more_widget_preferences">Open Preference Sample.</string>
+    <string name="main_more_widget_make_a_crash">Cause A Crash</string>
+    <string name="main_more_widget_make_a_post">Post A Message by Bus</string>
+    <string name="main_more_widget_make_a_post_receiver">Received: %1$s\nBy: %2$s</string>
+    <string name="main_more_widget_make_a_post_message">VMLIB IS AWESOME!!</string>
 
-    <string name="crash_helper_list_logs">列出当前的崩溃日志</string>
-    <string name="crash_helper_force_crash">强制 Crash</string>
-
-    <string name="shell_utils_input_hint">Command ..</string>
+    <string name="main_again_to_exit">Again to exit</string>
 
     <string name="permission_check_storage_permission">请求存储权限</string>
     <string name="permission_check_camera_permission">请求相机权限</string>
@@ -47,11 +29,11 @@
     <string name="permission_get_location_permission">已得到位置权限</string>
     <string name="permission_get_permissions">已得到存储、位置、相机权限</string>
 
-    <string name="setting_category_personal">个性化</string>
-    <string name="setting_category_personal_theme">主题</string>
-    <string name="setting_category_personal_theme_sub">为你的应用添加一个主题</string>
-    <string name="setting_category_personal_beautify_date">日期美化</string>
-    <string name="setting_category_personal_beautify_date_sub">使用美化后的日期</string>
-    <string name="setting_category_others_about_open_source">开源协议</string>
+    <string name="setting_category_personal">Personal</string>
+    <string name="setting_category_personal_theme">Theme</string>
+    <string name="setting_category_personal_theme_sub">Add a theme</string>
+    <string name="setting_category_personal_beautify_date">Beautify the date</string>
+    <string name="setting_category_personal_beautify_date_sub">Use beautified date</string>
+    <string name="setting_category_others_about_open_source">Open source licenses</string>
 
 </resources>

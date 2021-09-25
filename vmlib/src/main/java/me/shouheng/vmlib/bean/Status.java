@@ -3,13 +3,13 @@ package me.shouheng.vmlib.bean;
 /**
  * The loading status used between view and view model.
  *
- * @author WngShhng 2019-6-29
+ * @author ShouhengWang 2019-6-29
  */
 public enum Status {
     /** status success */
     SUCCESS(0),
     /** status failed */
-    FAILED(1),
+    FAILED( 1),
     /** status loading */
     LOADING(2);
 

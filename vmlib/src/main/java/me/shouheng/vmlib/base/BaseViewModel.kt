@@ -2,11 +2,11 @@ package me.shouheng.vmlib.base
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
 import me.shouheng.vmlib.anno.ViewModelConfiguration
 import me.shouheng.vmlib.bean.Resources
 import me.shouheng.vmlib.bus.Bus
-import me.shouheng.vmlib.holder.LiveDataHolder
+import me.shouheng.vmlib.component.LiveDataHolder
+import me.shouheng.vmlib.component.SingleLiveEvent
 
 /**
  * Basic implementation of common ViewModel.
@@ -14,7 +14,7 @@ import me.shouheng.vmlib.holder.LiveDataHolder
  * The view model has no pre-defined model associated, for MVVMs don't want to take care of the
  * model logic. You can get the data source anywhere, which is perhaps useful for small project.
  *
- * @author [WngShhng](mailto:shouheng2020@gmail.com)
+ * @author [ShouhengWang](mailto:shouheng2020@gmail.com)
  * @version 2019-6-29
  */
 open class BaseViewModel(application: Application) : AndroidViewModel(application) {
@@ -38,8 +38,8 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
         dataType: Class<T>,
         sid: Int? = null,
         single: Boolean = false
-    ): MutableLiveData<Resources<T>> {
-        return holder.getLiveData(dataType, sid, single) as MutableLiveData<Resources<T>>
+    ): SingleLiveEvent<Resources<T>> {
+        return holder.getLiveData(dataType, sid, single) as SingleLiveEvent<Resources<T>>
     }
 
     /**
@@ -56,8 +56,8 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
         dataType: Class<T>,
         sid: Int? = null,
         single: Boolean = false
-    ): MutableLiveData<Resources<List<T>>> {
-        return listHolder.getLiveData(dataType, sid, single) as MutableLiveData<Resources<List<T>>>
+    ): SingleLiveEvent<Resources<List<T>>> {
+        return listHolder.getLiveData(dataType, sid, single) as SingleLiveEvent<Resources<List<T>>>
     }
 
     /** Set success state of data type */
@@ -148,16 +148,6 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
         udf5: Any? = null
     ) {
         getListObservable(dataType, sid, single).value = Resources.failed(code, message, udf1, udf2, udf3, udf4, udf5)
-    }
-
-    /** Post one event by EventBus */
-    protected fun post(event: Any) {
-        Bus.get().post(event)
-    }
-
-    /** Post one sticky event by EventBus*/
-    protected fun postSticky(event: Any) {
-        Bus.get().postSticky(event)
     }
 
     override fun onCleared() {

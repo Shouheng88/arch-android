@@ -1,11 +1,11 @@
 package me.shouheng.sample
 
-import android.content.Context
+import android.annotation.SuppressLint
 import androidx.multidex.MultiDexApplication
 import com.alibaba.android.arouter.launcher.ARouter
+import me.shouheng.sample.view.MainActivity
 import me.shouheng.service.net.Server
-import me.shouheng.sample.view.DebugActivity
-import me.shouheng.uix.pages.CrashReportActivity
+import me.shouheng.uix.pages.crash.CrashReportActivity
 import me.shouheng.uix.widget.button.NormalButton
 import me.shouheng.utils.app.ResUtils
 import me.shouheng.utils.stability.CrashHelper
@@ -15,33 +15,16 @@ import me.shouheng.vmlib.BuildConfig
 import me.shouheng.vmlib.VMLib
 import java.io.File
 
-/**
- * @author WngShhng 2019-6-29
- */
+/** App for VMLib sample.  @author ShouhengWang 2019-6-29 */
 class App : MultiDexApplication() {
-
-    override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(base)
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            Debug.startMethodTracingSampling("trace_log", /*byte*/8*1024*1024, /*ms*/200)
-//        } else {
-//            Debug.startMethodTracing("trace_log")
-//        }
-    }
 
     override fun onCreate() {
         super.onCreate()
-        // initialize mvvms
         VMLib.onCreate(this)
-        // custom L, must be called after MVVMs.onCreate()
         customLog()
-        // custom ARouter
         customARouter()
-        // custom crash
         customCrash()
-        // custom UIX
         customUIX()
-        // init kaiyan app server host
         Server.initServer("http://baobab.kaiyanapp.com/api/")
     }
 
@@ -61,16 +44,15 @@ class App : MultiDexApplication() {
         ARouter.init(this)
     }
 
+    @SuppressLint("MissingPermission")
     private fun customCrash() {
-        CrashHelper.init(this,
-            File(PathUtils.getExternalAppFilesPath(), "crash")
-        ) { crashInfo, _ ->
+        CrashHelper.init(this, File(PathUtils.getExternalAppFilesPath(), "crash")) { crashInfo, _ ->
             CrashReportActivity.Companion.Builder(this)
                 .setTitle("Oops, crashed!")
                 .setContent("Please the manger to report this issue.")
                 .setImage(R.drawable.uix_crash_error_image)
                 .setMessage(crashInfo)
-                .setRestartActivity(DebugActivity::class.java)
+                .setRestartActivity(MainActivity::class.java)
                 .launch()
         }
     }

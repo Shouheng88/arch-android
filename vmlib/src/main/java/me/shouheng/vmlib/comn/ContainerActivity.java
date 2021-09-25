@@ -20,22 +20,12 @@ import me.shouheng.vmlib.R;
 import me.shouheng.vmlib.base.BaseActivity;
 
 /**
- * The common container activity for ONE SHOT fragment:
- * Call {@link #open(Class)} or {@link #openFragment(Class)} method
- * directly to get a builder for container.
- * And then set arguments by builder for fragment.
+ * The common container activity for ONE SHOT fragment.
  *
- * Example:
- * <blockquote><pre>
- * ContainerActivity.open(SampleFragment::class.java)
- *     // set arguments for the fragment
- *     .put(SampleFragment.ARGS_KEY_TEXT, "Here is the text from the arguments.")
- *     // launch the container activity
- *     .launch(context!!)
- * </pre>
- * </blockquote>
+ * Call {@link #open(Class)} or {@link #openFragment(Class)} directly to get a builder for
+ * container and then set arguments by builder for fragment.
  *
- * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">ShouhengWang</a>
  */
 public class ContainerActivity extends BaseActivity<EmptyViewModel> {
 
@@ -44,10 +34,13 @@ public class ContainerActivity extends BaseActivity<EmptyViewModel> {
 
     /** Key for the {@link Fragment} class used to create the fragment instance. */
     public static final String KEY_EXTRA_FRAGMENT_CLASS         = "__extra_key_fragment_class";
+
     /** Key for the command. */
     public static final String KEY_EXTRA_COMMAND                = "__extra_key_command";
+
     /** Key for theme of current activity. */
     public static final String KEY_EXTRA_THEME_ID               = "__extra_key_theme_id";
+
     /** Key for the activity finish direction. */
     public static final String KEY_EXTRA_ACTIVITY_DIRECTION     = "__extra_key_activity_direction";
 
@@ -198,9 +191,7 @@ public class ContainerActivity extends BaseActivity<EmptyViewModel> {
         }
     }
 
-    /**
-     * Command handler callback
-     */
+    /** Command handler callback */
     public interface CommandHandler {
 
         /**

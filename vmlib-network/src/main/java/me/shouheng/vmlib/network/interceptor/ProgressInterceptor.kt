@@ -10,7 +10,7 @@ import java.io.IOException
 /**
  * The http progress interceptor.
  *
- * @author [WngShhng](mailto:shouheng2020@gmail.com)
+ * @author [ShouhengWang](mailto:shouheng2020@gmail.com)
  * @version 2019/7/18 22:43
  */
 class ProgressInterceptor(private val callback: ProgressResponseCallback) : Interceptor {
@@ -18,7 +18,7 @@ class ProgressInterceptor(private val callback: ProgressResponseCallback) : Inte
     override fun intercept(chain: Interceptor.Chain): Response {
         val response = chain.proceed(chain.request())
         return response.newBuilder()
-            .body(ProgressResponseBody(response.body()!!, callback))
+            .body(ProgressResponseBody(response.body!!, callback))
             .build()
     }
 }
@@ -46,7 +46,7 @@ class ProgressResponseBody internal constructor(
 
     override fun contentLength(): Long = body.contentLength()
 
-    override fun source(): BufferedSource = bufferedSource ?: Okio.buffer(source(body.source()))
+    override fun source(): BufferedSource = bufferedSource ?: source(body.source()).buffer()
 
     private fun source(source: Source): Source {
         return object : ForwardingSource(source) {

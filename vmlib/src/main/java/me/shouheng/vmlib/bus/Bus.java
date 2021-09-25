@@ -19,7 +19,7 @@ import static me.shouheng.vmlib.Platform.DEPENDENCY_EVENTBUS;
  * {@link ActivityConfiguration#useEventBus()} and {@link ServiceConfiguration#useEventBus()}
  * to use EventBus. You don't need to call methods of Bus to register and unregisterEventBus.
  *
- * @author WngShhng 2019-6-29
+ * @author ShouhengWang 2019-6-29
  */
 public final class Bus {
 

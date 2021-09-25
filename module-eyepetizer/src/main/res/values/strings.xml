@@ -1,9 +1,8 @@
 <resources>
-    <string name="cancel">Cancel</string>
-    <string name="confirm">Confirm</string>
-    <string name="eye_debug_vmlib_page">VMLib Debug Page</string>
-    <string name="eye_debug_dialog_page">Dialog Debug Page</string>
-    <string name="eye_debug_tip_page">Tip Debug Page</string>
-    <string name="eye_debug_image_page">Image Debug Page</string>
-    <string name="comn_load_loading">Loading&#8230;</string>
+    <string name="eye_app_name">Eyepetizer Sample</string>
+
+    <string name="eye_dialog_input_title">Sample for input dialog</string>
+    <string name="eye_dialog_input_confirm">Confirm</string>
+    <string name="eye_dialog_input_cancel">Cancel</string>
+    <string name="eye_dialog_input_hint">Input something here..</string>
 </resources>

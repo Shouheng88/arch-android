@@ -5,7 +5,7 @@ import me.shouheng.utils.constant.ActivityDirection
 /**
  * The activity configuration annotation.
  *
- * @author [WngShhng](mailto:shouheng2020@gmail.com)
+ * @author [ShouhengWang](mailto:shouheng2020@gmail.com)
  * @version 2019-7-01
  */
 @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)

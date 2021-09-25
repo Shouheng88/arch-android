@@ -21,6 +21,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     viewBinding {
         enabled true
     }
@@ -36,21 +40,21 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation rootProject.ext.libraries['test'].values()
-    androidTestImplementation rootProject.ext.libraries['android-test'].values()
 
-    implementation rootProject.ext.support['appcompat-v7']
-    implementation rootProject.ext.libraries['lifecycle-extensions']
-    annotationProcessor rootProject.ext.libraries['lifecycle-compiler']
+    implementation "androidx.appcompat:appcompat:${appcompatVersion}"
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
 
-    compileOnly rootProject.ext.libraries['EventBus']
-    compileOnly rootProject.ext.libraries['AndroidEventBus']
-    compileOnly rootProject.ext.libraries['umeng-common']
-    compileOnly rootProject.ext.libraries['umeng-analytics']
-    compileOnly rootProject.ext.libraries['uix-core']
+    compileOnly "org.greenrobot:eventbus:3.1.1"
+    compileOnly "org.simple:androideventbus:1.0.5.1"
+    compileOnly "com.umeng.umsdk:common:1.5.4"
+    compileOnly "com.umeng.umsdk:analytics:7.5.4"
+    compileOnly "com.github.Shouheng88:uix-core:${uixCoreVersion}"
+    compileOnly "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1"
 
-    api rootProject.ext.libraries['utils']
-    api rootProject.ext.libraries['compressor']
+    api "com.github.Shouheng88:utils-core:${utilsCoreVersion}"
+    api "com.github.Shouheng88:utils-ktx:${utilsCoreVersion}"
+    api "com.github.Shouheng88:compressor:1.5.0"
 }
 
 //publish {

@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Network access object.
  *
- * @author <a href="mailto:shouheng2020@gmail.com">WngShhng</a>
+ * @author <a href="mailto:shouheng2020@gmail.com">ShouhengWang</a>
  * @version 2019-10-03 11:50
  */
 class Server private constructor(baseUrl: String) {
@@ -72,12 +72,6 @@ class Server private constructor(baseUrl: String) {
         fun <T> get(api: Class<T>, baseUrl: String): T {
             val server = Server(baseUrl)
             return server.retorfit.create(api)
-        }
-
-        /** Get server with base url [baseUrl] and raw converter. */
-        fun <T> call(api: Class<T>, baseUrl: String): T {
-            val server = Server(baseUrl)
-            return server.rawRetorfit.create(api)
         }
     }
 }
