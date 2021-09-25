@@ -18,10 +18,12 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
 
     private var firstPageRequested: Boolean = false
 
+    /** Micro service styled method invocation of [ARouter]. */
     private val eyeService: EyepetizerService = ARouter.getInstance().navigation(EyepetizerService::class.java)
 
     private var nextPageUrl: String? = null
 
+    /** Request the first page. */
     fun firstPage() {
         if (firstPageRequested) return
         firstPageRequested = true
@@ -42,6 +44,7 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
         })
     }
 
+    /** Request the next page. */
     fun nextPage() {
         setLoading(HomeBean::class.java, udf3 = true)
         eyeService.getMoreHomePage(nextPageUrl, object : OnGetHomeBeansListener {

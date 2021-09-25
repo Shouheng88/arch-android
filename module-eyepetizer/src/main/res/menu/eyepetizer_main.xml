@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/action_input_sample"
-        android:title="@string/eye_input_sample"/>
-    <item android:id="@+id/action_vmlib_debug"
-        android:icon="@drawable/ic_baseline_bug_report_24"
-        android:title="@string/eye_debug_vmlib_page"/>
-</menu>

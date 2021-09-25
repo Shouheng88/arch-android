@@ -1,43 +1,50 @@
 package me.shouheng.eyepetizer
 
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
-import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
-import android.widget.ImageView
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.request.RequestOptions
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseViewHolder
 import me.shouheng.api.bean.HomeBean
 import me.shouheng.api.bean.Item
-import me.shouheng.eyepetizer.config.message
-import me.shouheng.eyepetizer.databinding.ActivityEyepetizerBinding
+import me.shouheng.eyepetizer.databinding.EyepetizerActivityEyepetizerBinding
 import me.shouheng.eyepetizer.vm.EyepetizerViewModel
-import me.shouheng.uix.common.glide.CornersTransformation
-import me.shouheng.uix.widget.rv.Adapter
-import me.shouheng.uix.widget.rv.getAdapter
-import me.shouheng.uix.widget.rv.listener.CustomRecyclerScrollViewListener
-import me.shouheng.uix.widget.rv.listener.DataLoadScrollListener
+import me.shouheng.eyepetizer.widget.confirmOrCancel
+import me.shouheng.eyepetizer.widget.loadCover
+import me.shouheng.eyepetizer.widget.loadRoundImage
+import me.shouheng.eyepetizer.widget.simpleDialogTitle
+import me.shouheng.uix.widget.dialog.content.SimpleEditor
+import me.shouheng.uix.widget.dialog.content.simpleEditor
+import me.shouheng.uix.widget.dialog.showDialog
+import me.shouheng.uix.widget.dialog.showMessage
+import me.shouheng.uix.widget.rv.listener.AbsDataLoadListener
+import me.shouheng.uix.widget.rv.listener.LinearDataLoadListener
+import me.shouheng.uix.widget.rv.listener.ScrollDisplayListener
 import me.shouheng.utils.app.ActivityUtils
 import me.shouheng.utils.constant.ActivityDirection
-import me.shouheng.utils.ktx.dp
+import me.shouheng.utils.ktx.dp2px
 import me.shouheng.utils.ktx.onDebouncedClick
+import me.shouheng.utils.ktx.stringOf
+import me.shouheng.utils.ktx.toast
 import me.shouheng.utils.stability.L
 import me.shouheng.utils.ui.BarUtils
 import me.shouheng.vmlib.anno.ActivityConfiguration
 import me.shouheng.vmlib.base.ViewBindingActivity
+import me.shouheng.vmlib.component.observeOn
+import me.shouheng.xadapter.createAdapter
+import me.shouheng.xadapter.viewholder.onItemClick
 
+/** EyepetizerActivity is the viewbinding styled activity. @author Shouheng Wang */
 @Route(path = "/eyepetizer/main")
-@ActivityConfiguration(exitDirection = ActivityDirection.ANIMATE_SLIDE_BOTTOM_FROM_TOP)
-class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, ActivityEyepetizerBinding>() {
+@ActivityConfiguration(exitDirection = ActivityDirection.ANIMATE_BACK)
+class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerActivityEyepetizerBinding>() {
 
-    private lateinit var adapter: Adapter<Item>
-    private var scrollListener: DataLoadScrollListener? = null
-    private var onBackPressed: Long = -1
+    private lateinit var adapter: BaseQuickAdapter<Item, BaseViewHolder>
+    private var dataLoadListener: AbsDataLoadListener? = null
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         configToolbar()
@@ -52,110 +59,104 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, ActivityEyep
     }
 
     private fun configToolbar() {
-        setSupportActionBar(binding.toolbar)
-        // SAMPLE: Bar utils
         BarUtils.setStatusBarLightMode(this, true)
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.title = stringOf(R.string.eye_app_name)
     }
 
     private fun configList() {
-        // SAMPLE: generator adapter
-        adapter = getAdapter(R.layout.eyepetizer_tem_home, { helper, item ->
-            helper.setText(R.id.tv_title, item.data.title)
-            helper.setText(R.id.tv_sub_title, item.data.author?.name + " | " + item.data.category)
-            Glide.with(context)
-                .load(item.data.cover?.homepage)
-                .thumbnail(Glide.with(context).load(R.drawable.recommend_summary_card_bg_unlike))
-                .into(helper.getView<View>(R.id.iv_cover) as ImageView)
-            // SAMPLE: Glide transformation
-            Glide.with(context)
-                .load(item.data.author?.icon)
-                .apply(RequestOptions().transforms(CenterCrop(),
-                    CornersTransformation(20f.dp(), 0, CornersTransformation.CornerType.ALL)))
-                .thumbnail(Glide.with(context).load(R.mipmap.eyepetizer))
-                .into(helper.getView<View>(R.id.iv_author) as ImageView)
-        }, mutableListOf())
-        adapter.setOnItemClickListener { _, _, position ->
-            val itemList = adapter.data[position]
-            ARouter.getInstance().build("/eyepetizer/details")
-                .withSerializable(VideoDetailActivity.EXTRA_ITEM, itemList)
-                .navigation()
-            ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SCALE_IN)
+        val lm = LinearLayoutManager(context)
+        adapter = createAdapter {
+            withType(Item::class.java, R.layout.eyepetizer_item_home) {
+                onBind { helper, item ->
+                    helper.setText(R.id.tv_title, item.data.title)
+                    helper.setText(R.id.tv_sub_title, item.data.author?.name + " | " + item.data.category)
+                    helper.loadCover(context, R.id.iv_cover, item.data.cover?.homepage, R.drawable.eyepetizer_card_bg_unlike)
+                    helper.loadRoundImage(context, R.id.iv_author, item.data.author?.icon, R.mipmap.eyepetizer, 20f.dp2px())
+                }
+                this.onItemClick { _, _, position ->
+                    val itemList = adapter.data[position]
+                    ARouter.getInstance().build("/eyepetizer/details")
+                        .withSerializable(VideoDetailActivity.EXTRA_ITEM, itemList)
+                        .navigation()
+                    ActivityUtils.overridePendingTransition(activity, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
+                }
+            }
         }
-        binding.rv.setEmptyView(binding.ev)
+        binding.rv.layoutManager = lm
         binding.rv.adapter = adapter
-        // SAMPLE: custom recycler scroll listener
-        scrollListener = object : DataLoadScrollListener(binding.rv.layoutManager as LinearLayoutManager) {
+        dataLoadListener = object : LinearDataLoadListener(lm) {
             override fun loadMore() {
                 vm.nextPage()
             }
         }
-        binding.rv.addOnScrollListener(scrollListener!!)
-        binding.rv.addOnScrollListener(object : CustomRecyclerScrollViewListener() {
-            override fun hide() {
-                val lp = binding.fab.layoutParams as FrameLayout.LayoutParams
-                binding.fab.animate().translationY((binding.fab.height+lp.bottomMargin).toFloat())
-                    .setInterpolator(AccelerateInterpolator(2f)).start()
-            }
-
-            override fun show() {
-                binding.fab.animate().translationY(0f)
-                    .setInterpolator(DecelerateInterpolator(2f)).start()
+        binding.rv.addOnScrollListener(dataLoadListener!!)
+        binding.rv.addOnScrollListener(object : ScrollDisplayListener() {
+            override fun display(show: Boolean) {
+                if (show) {
+                    binding.fab.animate().translationY(0f)
+                        .setInterpolator(DecelerateInterpolator(2f)).start()
+                } else {
+                    val lp = binding.fab.layoutParams as FrameLayout.LayoutParams
+                    binding.fab.animate().translationY((binding.fab.height+lp.bottomMargin).toFloat())
+                        .setInterpolator(AccelerateInterpolator(2f)).start()
+                }
             }
         })
         binding.s.bind(binding.rv)
+        binding.rv.setEmptyView(binding.ev)
     }
 
     private fun configView() {
         binding.fab.onDebouncedClick {
-            message(context, "Hello World!").show(supportFragmentManager, "hello-fab")
+            showDialog {
+                withTitle(simpleDialogTitle(context, stringOf(R.string.eye_dialog_input_title)))
+                withContent(simpleEditor {
+                    withSingleLine(true)
+                    withHint(stringOf(R.string.eye_dialog_input_hint))
+                })
+                withBottom(confirmOrCancel(context) {
+                    (it as? SimpleEditor)?.let {
+                        showMessage {
+                            withMessage(it.getContent().toString())
+                        }
+                    }
+                })
+            }
         }
     }
 
+    /** The kotlin DSL styled observe method. */
     private fun observes() {
-        observe(HomeBean::class.java, {
-            L.d("on success")
-            val list = mutableListOf<Item>()
-            it.data.issueList.forEach { issue ->
-                issue.itemList.forEach { item ->
-                    if (item.data.cover != null
-                        && item.data.author != null
-                    ) list.add(item)
+        observeOn(HomeBean::class.java) {
+            onSuccess {
+                L.d("On eyepetizer request succeed!")
+                val list = mutableListOf<Item>()
+                it.data.issueList.forEach { issue ->
+                    issue.itemList.forEach { item ->
+                        if (item.data.cover != null
+                            && item.data.author != null
+                        ) list.add(item)
+                    }
+                }
+                adapter.addData(list)
+                binding.ev.showEmpty()
+                dataLoadListener?.loading = false
+            }
+            onLoading {
+                L.d("On eyepetizer requesting!")
+                // The udf3 is the flag for loading more.
+                // We only need to show loading progress bar for first page.
+                if (it.udf3 == false) {
+                    binding.ev.showLoading()
                 }
             }
-            adapter.addData(list)
-            binding.ev.showEmpty()
-            scrollListener?.loading = false
-        }, {
-            L.d("on failed")
-            toast(it.message)
-            binding.ev.showEmpty()
-            scrollListener?.loading = false
-        }, {
-            L.d("on loading")
-            // The udf3 is the flag for loading more.
-            // We only need to show loading progress bar for first page.
-            if (it.udf3 == false) {
-                binding.ev.showLoading()
+            onFail {
+                L.d("On eyepetizer request failed!")
+                toast(it.message)
+                binding.ev.showEmpty()
+                dataLoadListener?.loading = false
             }
-        })
-        setMenu(R.menu.eyepetizer_main) { item ->
-            when(item.itemId) {
-                R.id.action_input_sample -> {
-
-                }
-                R.id.action_vmlib_debug -> {
-                    ARouter.getInstance().build("/app/debug").navigation()
-                    ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
-                }
-            }
-        }
-        onBack{ back ->
-            if (onBackPressed + 2000L > System.currentTimeMillis()) {
-                back()
-            } else {
-                toast("Again to exit")
-            }
-            onBackPressed = System.currentTimeMillis()
         }
     }
 }

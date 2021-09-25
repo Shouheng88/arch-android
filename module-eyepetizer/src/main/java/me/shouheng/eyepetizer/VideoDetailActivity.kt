@@ -24,14 +24,9 @@ import me.shouheng.utils.ui.ImageUtils
 import me.shouheng.vmlib.anno.ActivityConfiguration
 import me.shouheng.vmlib.base.ViewBindingActivity
 
-/**
- * Video play and message activity.
- * 
- * @author ShouhengWang (shouheng2020@gmail.com)
- * @version 2019/7/7 14:16
- */
+/** Video details activity for playing a video @author Shouheng Wang */
 @Route(path = "/eyepetizer/details")
-@ActivityConfiguration(exitDirection = ActivityDirection.ANIMATE_SCALE_OUT)
+@ActivityConfiguration(exitDirection = ActivityDirection.ANIMATE_SLIDE_BOTTOM_FROM_TOP)
 class VideoDetailActivity : ViewBindingActivity<VideoDetailsViewModel, EyepetizerActivityVideoDetailsBinding>() {
 
     override fun doCreateView(savedInstanceState: Bundle?) {
@@ -65,16 +60,14 @@ class VideoDetailActivity : ViewBindingActivity<VideoDetailsViewModel, Eyepetize
         Glide.with(this)
             .asBitmap()
             .load(vm.item!!.data.cover?.homepage)
-            .thumbnail(Glide.with(this).asBitmap().load(R.drawable.recommend_summary_card_bg_unlike))
+            .thumbnail(Glide.with(this).asBitmap().load(R.drawable.eyepetizer_card_bg_unlike))
             .addListener(object : RequestListener<Bitmap> {
                 override fun onLoadFailed(
                     e: GlideException?,
                     model: Any?,
                     target: Target<Bitmap>?,
                     isFirstResource: Boolean
-                ): Boolean {
-                    return true
-                }
+                ): Boolean = true
 
                 override fun onResourceReady(
                     resource: Bitmap?,

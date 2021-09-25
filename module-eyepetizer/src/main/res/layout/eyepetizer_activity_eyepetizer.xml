@@ -25,7 +25,7 @@
 
         <me.shouheng.uix.widget.rv.EmptySupportRecyclerView
             android:id="@+id/rv"
-            tools:listitem="@layout/eyepetizer_tem_home"
+            tools:listitem="@layout/eyepetizer_item_home"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
@@ -39,7 +39,7 @@
             android:id="@+id/fab"
             android:layout_margin="16dp"
             android:layout_gravity="end|bottom"
-            android:src="@drawable/uix_settings_24"
+            android:src="@drawable/eyepetizer_baseline_mail_24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
