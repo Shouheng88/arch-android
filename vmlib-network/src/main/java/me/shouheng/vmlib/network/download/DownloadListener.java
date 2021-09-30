@@ -1,4 +1,4 @@
-package me.shouheng.vmlib.network;
+package me.shouheng.vmlib.network.download;
 
 import java.io.File;
 
