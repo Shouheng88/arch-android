@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'realm-android'
 
 kapt {
     arguments {
@@ -17,6 +18,11 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath true
+            }
+        }
     }
     buildTypes {
         release {
@@ -30,4 +36,13 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${appcompatVersion}"
     implementation 'com.alibaba:arouter-api:1.5.0'
     kapt 'com.alibaba:arouter-compiler:1.2.2'
+
+    implementation "com.github.Shouheng88:startup:2.0"
+    kapt "com.github.Shouheng88:startup-compiler:1.0"
+
+    implementation "com.github.Shouheng88:utils-core:${utilsCoreVersion}"
+
+    api "io.realm:realm-annotations:$realm_version"
+    api "io.realm:realm-android-library:$realm_version"
+    api "io.realm:realm-android-kotlin-extensions:$realm_version"
 }

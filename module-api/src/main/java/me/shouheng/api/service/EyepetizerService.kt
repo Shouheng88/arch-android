@@ -1,4 +1,4 @@
-package me.shouheng.api.eyepetizer
+package me.shouheng.api.service
 
 import com.alibaba.android.arouter.facade.template.IProvider
 import me.shouheng.api.bean.HomeBean
@@ -13,6 +13,7 @@ interface EyepetizerService : IProvider {
     fun getMoreHomePage(url: String?, listener: OnGetHomeBeansListener)
 }
 
+/** Eyepetizer result callback. */
 interface OnGetHomeBeansListener {
 
     /** Called when got first page home bean data */
