@@ -2,8 +2,8 @@ package me.shouheng.service.impl
 
 import android.content.Context
 import com.alibaba.android.arouter.facade.annotation.Route
-import me.shouheng.api.eyepetizer.EyepetizerService
-import me.shouheng.api.eyepetizer.OnGetHomeBeansListener
+import me.shouheng.api.service.EyepetizerService
+import me.shouheng.api.service.OnGetHomeBeansListener
 import me.shouheng.service.repo.EyeRepo
 import me.shouheng.utils.stability.L
 

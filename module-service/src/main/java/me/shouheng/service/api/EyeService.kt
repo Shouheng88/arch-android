@@ -1,6 +1,5 @@
 package me.shouheng.service.api
 
-import kotlinx.coroutines.Deferred
 import me.shouheng.api.bean.HomeBean
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -15,8 +14,8 @@ import retrofit2.http.Url
 interface EyeService {
 
     @GET("v2/feed?&num=1")
-    fun getFirstHomeDataAsync(@Query("date") date: Long?): Deferred<HomeBean>
+    suspend fun getFirstHomeDataAsync(@Query("date") date: Long?): HomeBean
 
     @GET
-    fun getMoreHomeDataAsync(@Url url: String?): Deferred<HomeBean>
+    suspend fun getMoreHomeDataAsync(@Url url: String?): HomeBean
 }

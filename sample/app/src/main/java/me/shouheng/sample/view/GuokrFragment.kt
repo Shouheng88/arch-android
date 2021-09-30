@@ -14,6 +14,7 @@ import me.shouheng.uix.widget.rv.listener.AbsDataLoadListener
 import me.shouheng.uix.widget.rv.listener.LinearDataLoadListener
 import me.shouheng.utils.ktx.toast
 import me.shouheng.vmlib.base.ViewBindingFragment
+import me.shouheng.vmlib.comn.ContainerActivity
 import me.shouheng.vmlib.component.observeOnList
 import me.shouheng.xadapter.createAdapter
 import me.shouheng.xadapter.viewholder.onItemClick
@@ -39,7 +40,9 @@ class GuokrFragment : ViewBindingFragment<GuokrViewModel, UixLayoutSimpleListBin
                 }
                 onItemClick { adapter, _, position ->
                     (adapter.getItem(position) as? Result)?.let {
-                        toast(it.title?:"")
+                        ContainerActivity.open(GuokrDetailFragment::class.java)
+                            .put("news_id", it.id)
+                            .launch(requireContext())
                     }
                 }
             }

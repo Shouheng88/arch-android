@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'realm-android'
 apply plugin: 'kotlin-android-extensions'
 
 kapt {
@@ -38,9 +39,16 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoreVersion}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlinAndroidVersion}"
 
-    implementation "com.squareup.retrofit2:retrofit:2.4.0"
-    implementation "com.squareup.retrofit2:converter-gson:2.4.0"
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    // implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
+
+    api "io.realm:realm-annotations:$realm_version"
+    api "io.realm:realm-android-library:$realm_version"
+    api "io.realm:realm-android-kotlin-extensions:$realm_version"
+    kapt "io.realm:realm-annotations-processor:$realm_version"
+
+    implementation 'com.jakewharton:disklrucache:2.0.2'
 
     implementation "com.squareup.okhttp3:okhttp:${okHttpVersion}"
     implementation "com.google.code.gson:gson:2.8.5"
