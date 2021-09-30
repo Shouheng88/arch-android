@@ -4,6 +4,7 @@ apply plugin: 'AndResGuard'
 apply plugin: 'org.sonarqube'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'realm-android'
 
 kapt {
     arguments {
@@ -21,6 +22,11 @@ android {
         versionName rootProject.ext.android.versionName
         multiDexEnabled true
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath true
+            }
+        }
     }
     buildTypes {
         release {
@@ -108,19 +114,27 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoreVersion}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlinAndroidVersion}"
 
-    implementation "com.squareup.retrofit2:retrofit:2.4.0"
-    implementation "com.squareup.retrofit2:converter-gson:2.4.0"
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    // implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
     implementation "org.greenrobot:eventbus:3.1.1"
     implementation "com.squareup.okhttp3:okhttp:${okHttpVersion}"
     implementation "com.google.code.gson:gson:2.8.5"
     implementation 'com.alibaba:arouter-api:1.5.0'
     kapt 'com.alibaba:arouter-compiler:1.2.2'
+    implementation "com.github.bumptech.glide:glide:4.12.0"
 
     implementation "com.github.Shouheng88:utils-core:${utilsCoreVersion}"
     implementation "com.github.Shouheng88:utils-ktx:${utilsCoreVersion}"
     implementation "com.github.Shouheng88:uix-core:${uixCoreVersion}"
     implementation "com.github.Shouheng88:uix-image:1.9.0"
+    implementation "com.github.Shouheng88:startup:2.0"
+    kapt "com.github.Shouheng88:startup-compiler:1.0"
+
+    implementation "io.realm:realm-annotations:$realm_version"
+    implementation "io.realm:realm-android-library:$realm_version"
+    implementation "io.realm:realm-android-kotlin-extensions:$realm_version"
+    kapt "io.realm:realm-annotations-processor:$realm_version"
 
     // include dependent modules
     implementation project(path: ':vmlib')

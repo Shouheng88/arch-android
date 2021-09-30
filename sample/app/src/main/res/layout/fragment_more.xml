@@ -61,6 +61,18 @@
                     android:text="@string/main_more_widget_make_a_post"
                     style="@style/MenuButton"/>
 
+                <me.shouheng.uix.widget.button.NormalButton
+                    android:id="@+id/btn_long_task"
+                    app:btn_corner_radius="8dp"
+                    android:text="@string/main_more_widget_long_task"
+                    style="@style/MenuButton"/>
+
+                <me.shouheng.uix.widget.button.NormalButton
+                    android:id="@+id/btn_show_dialog"
+                    app:btn_corner_radius="8dp"
+                    android:text="@string/main_more_widget_show_a_dialog"
+                    style="@style/MenuButton"/>
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

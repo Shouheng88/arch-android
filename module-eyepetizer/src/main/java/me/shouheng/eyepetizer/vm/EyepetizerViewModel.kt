@@ -4,8 +4,8 @@ import android.app.Application
 import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.api.bean.HomeBean
 import me.shouheng.api.bean.Item
-import me.shouheng.api.eyepetizer.EyepetizerService
-import me.shouheng.api.eyepetizer.OnGetHomeBeansListener
+import me.shouheng.api.service.EyepetizerService
+import me.shouheng.api.service.OnGetHomeBeansListener
 import me.shouheng.utils.stability.L
 import me.shouheng.vmlib.base.BaseViewModel
 
@@ -77,10 +77,10 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
     /** Get items from homebean. */
     private fun getItems(homeBean: HomeBean): List<Item> {
         val list = mutableListOf<Item>()
-        homeBean.issueList.forEach { issue ->
-            issue.itemList.forEach { item ->
-                if (item.data.cover != null
-                    && item.data.author != null
+        homeBean.issueList?.forEach { issue ->
+            issue.itemList?.forEach { item ->
+                if (item.data?.cover != null
+                    && item.data?.author != null
                 ) list.add(item)
             }
         }

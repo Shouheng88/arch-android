@@ -1,5 +1,6 @@
 buildscript {
     ext.kotlinVersion = '1.5.21'
+    ext.realm_version = '10.8.0'
     repositories {
         google()
         jcenter()
@@ -14,6 +15,7 @@ buildscript {
         classpath 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.17'
         classpath 'com.github.panpf.bintray-publish:bintray-publish:1.0.0'
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3"
+        classpath "io.realm:realm-gradle-plugin:10.8.0"
     }
 }
 

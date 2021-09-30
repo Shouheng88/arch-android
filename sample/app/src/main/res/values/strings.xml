@@ -7,8 +7,9 @@
     <string name="main_input_sample">Input Sample</string>
     <string name="main_input_title_hint">Input the title</string>
     <string name="main_input_content_hint">Write something here …</string>
+    <string name="main_guokr_sample">Guokr Sample</string>
 
-    <string name="main_more_widget">More options</string>
+    <string name="main_more_widget">More Options</string>
     <string name="main_more_widget_check_permission">Check Camera Permission</string>
     <string name="main_more_widget_check_permission_granted">Permission granted!</string>
     <string name="main_more_widget_download">Download A File</string>
@@ -17,6 +18,16 @@
     <string name="main_more_widget_make_a_post">Post A Message by Bus</string>
     <string name="main_more_widget_make_a_post_receiver">Received: %1$s\nBy: %2$s</string>
     <string name="main_more_widget_make_a_post_message">VMLIB IS AWESOME!!</string>
+    <string name="main_more_widget_long_task">Make A Long Job</string>
+    <string name="main_more_widget_long_task_executing">Executing The Long Job ..</string>
+    <string name="main_more_widget_show_a_dialog">Show Dialog</string>
+    <string name="main_more_widget_back_tips">Confirm to exit this page?</string>
+    <string name="main_more_widget_network_state_changed">Network state changed: %s</string>
+
+    <string name="main_dialog_input_title">Sample for input dialog</string>
+    <string name="main_dialog_input_confirm">Confirm</string>
+    <string name="main_dialog_input_cancel">Cancel</string>
+    <string name="main_dialog_input_hint">Input something here..</string>
 
     <string name="main_again_to_exit">Again to exit</string>
 

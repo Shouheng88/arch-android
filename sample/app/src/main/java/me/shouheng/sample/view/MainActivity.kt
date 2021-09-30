@@ -68,6 +68,11 @@ class MainActivity : CommonActivity<EmptyViewModel, ActivityMainBinding>() {
                 .put(ContainerActivity.KEY_EXTRA_THEME_ID, R.style.GreenAppTheme)
                 .launch(context)
         }
+        binding.llGuokr.onDebouncedClick {
+            ContainerActivity.open(GuokrFragment::class.java)
+                .put(ContainerActivity.KEY_EXTRA_THEME_ID, R.style.GreenAppTheme)
+                .launch(context)
+        }
     }
 
     @Subscribe

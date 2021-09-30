@@ -32,6 +32,21 @@
 
         </LinearLayout>
 
+        <LinearLayout android:id="@+id/ll_guokr"
+            android:background="#AF4321"
+            style="@style/Home.Group">
+
+            <me.shouheng.uix.widget.image.CircleImageView
+                android:src="@drawable/main_guokr"
+                style="@style/Home.Image"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:text="@string/main_guokr_sample"
+                android:textColor="@android:color/white"
+                style="@style/Home.Text"/>
+
+        </LinearLayout>
+
         <LinearLayout android:id="@+id/ll_et"
             style="@style/Home.Group"
             android:background="#FF9800">

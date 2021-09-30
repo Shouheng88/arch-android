@@ -17,6 +17,11 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath true
+            }
+        }
     }
     buildTypes {
         release {
@@ -48,6 +53,8 @@ dependencies {
     kapt 'com.alibaba:arouter-compiler:1.2.2'
     implementation "com.github.bumptech.glide:glide:4.12.0"
     implementation 'com.shuyu:GSYVideoPlayer:1.6.8'
+    implementation "com.github.Shouheng88:startup:2.0"
+    kapt "com.github.Shouheng88:startup-compiler:1.0"
 
     implementation "com.github.Shouheng88:uix-core:${uixCoreVersion}"
     implementation "com.github.Shouheng88:utils-core:${utilsCoreVersion}"

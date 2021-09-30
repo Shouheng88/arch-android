@@ -40,7 +40,7 @@ class VideoDetailActivity : ViewBindingActivity<VideoDetailsViewModel, Eyepetize
     }
 
     private fun initView() {
-        binding.gsyPlayer.setUp(vm.item!!.data.playUrl, false, null, null)
+        binding.gsyPlayer.setUp(vm.item!!.data?.playUrl, false, null, null)
         binding.gsyPlayer.setIsTouchWiget(true)
         binding.gsyPlayer.isRotateViewAuto = false
         binding.gsyPlayer.isShowFullAnimation = false
@@ -59,7 +59,7 @@ class VideoDetailActivity : ViewBindingActivity<VideoDetailsViewModel, Eyepetize
 
         Glide.with(this)
             .asBitmap()
-            .load(vm.item!!.data.cover?.homepage)
+            .load(vm.item!!.data?.cover?.homepage)
             .thumbnail(Glide.with(this).asBitmap().load(R.drawable.eyepetizer_card_bg_unlike))
             .addListener(object : RequestListener<Bitmap> {
                 override fun onLoadFailed(

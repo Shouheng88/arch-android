@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    tools:viewBindingIgnore="true"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_margin="8dp"
+        android:gravity="center_vertical"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_info"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <me.shouheng.uix.widget.image.CircleImageView
+                android:id="@+id/civ_author"
+                tools:src="?attr/colorAccent"
+                android:layout_width="16dp"
+                android:layout_height="16dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_author"
+                tools:text="Sub title"
+                android:layout_marginStart="8dp"
+                android:textSize="12sp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_date"
+                tools:text="3天前"
+                android:layout_marginStart="8dp"
+                android:textSize="12sp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_above="@id/ll_info"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_title"
+                tools:text="This is the fucking long title test, wow you may wonder why???? BALABALABALA"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_tags"
+                tools:text="Sub title"
+                android:layout_marginTop="4dp"
+                android:textSize="12sp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_cover"
+        tools:src="?attr/colorAccent"
+        android:layout_gravity="center_vertical"
+        android:layout_height="100dp"
+        android:layout_width="100dp" />
+
+</LinearLayout>
