@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.scheduler.ISchedulerJob
-import me.shouheng.scheduler.ThreadMode
 import me.shouheng.startup.annotation.StartupJob
 import me.shouheng.utils.stability.L
 import me.shouheng.vmlib.BuildConfig
@@ -15,12 +14,7 @@ import me.shouheng.vmlib.BuildConfig
  * @Author wangshouheng
  * @Time 2021/9/25
  */
-@StartupJob
-class ThirdPartLibraryJob : ISchedulerJob {
-
-    override fun threadMode(): ThreadMode = ThreadMode.MAIN
-
-    override fun dependencies(): List<Class<out ISchedulerJob>> = emptyList()
+@StartupJob class ThirdPartLibraryJob : ISchedulerJob {
 
     override fun run(context: Context) {
         L.d(">>> ThirdPartLibraryJob called <<<")

@@ -9,6 +9,7 @@ apply plugin: 'realm-android'
 kapt {
     arguments {
         arg("AROUTER_MODULE_NAME", project.getName())
+        arg("STARTUP_MODULE_NAME", project.getName())
     }
 }
 
@@ -94,7 +95,7 @@ android {
 //            path "CMakeLists.txt"
 //        }
 //    }
-    ndkVersion "22.1.7171670"
+    ndkVersion "20.0.5594570"
     packagingOptions {
         exclude 'META-INF/library_release.kotlin_module'
     }
@@ -128,8 +129,8 @@ dependencies {
     implementation "com.github.Shouheng88:utils-ktx:${utilsCoreVersion}"
     implementation "com.github.Shouheng88:uix-core:${uixCoreVersion}"
     implementation "com.github.Shouheng88:uix-image:1.9.0"
-    implementation "com.github.Shouheng88:startup:2.0"
-    kapt "com.github.Shouheng88:startup-compiler:1.0"
+    implementation "com.github.Shouheng88:startup:$startupVersion"
+    kapt "com.github.Shouheng88:startup-compiler:$startupVersion"
 
     implementation "io.realm:realm-annotations:$realm_version"
     implementation "io.realm:realm-android-library:$realm_version"

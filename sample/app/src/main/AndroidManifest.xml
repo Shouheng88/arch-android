@@ -46,14 +46,6 @@
             android:theme="@style/AppTheme"
             tools:replace="android:theme"/>
         <meta-data android:name="META_DATA" android:value="test-value"/>
-        <provider
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge"
-            android:name="me.shouheng.startup.AndroidStartupProvider">
-            <meta-data android:name="me.shouheng.sample.startup.ThirdPartLibraryJob" android:value="android.startup"/>
-            <meta-data android:name="me.shouheng.sample.startup.VMLibInitJob" android:value="android.startup"/>
-        </provider>
     </application>
 
 </manifest>

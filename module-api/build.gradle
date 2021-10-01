@@ -7,6 +7,7 @@ apply plugin: 'realm-android'
 kapt {
     arguments {
         arg("AROUTER_MODULE_NAME", project.getName())
+        arg("STARTUP_MODULE_NAME", project.getName())
     }
 }
 
@@ -37,8 +38,8 @@ dependencies {
     implementation 'com.alibaba:arouter-api:1.5.0'
     kapt 'com.alibaba:arouter-compiler:1.2.2'
 
-    implementation "com.github.Shouheng88:startup:2.0"
-    kapt "com.github.Shouheng88:startup-compiler:1.0"
+    implementation "com.github.Shouheng88:startup:$startupVersion"
+    kapt "com.github.Shouheng88:startup-compiler:$startupVersion"
 
     implementation "com.github.Shouheng88:utils-core:${utilsCoreVersion}"
 

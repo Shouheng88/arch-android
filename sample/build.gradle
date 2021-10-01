@@ -51,6 +51,7 @@ ext {
     utilsCoreVersion = "2.5.0"
     uixCoreVersion = "2.0"
     recyclerviewVersion = "1.1.0"
+    startupVersion = "2.2"
 
     android = [
             compileSdkVersion: 28,

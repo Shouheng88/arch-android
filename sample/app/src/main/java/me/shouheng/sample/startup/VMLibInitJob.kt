@@ -5,7 +5,6 @@ import android.content.Context
 import me.shouheng.sample.R
 import me.shouheng.sample.view.MainActivity
 import me.shouheng.scheduler.ISchedulerJob
-import me.shouheng.scheduler.ThreadMode
 import me.shouheng.startup.annotation.StartupJob
 import me.shouheng.uix.pages.crash.CrashReportActivity
 import me.shouheng.uix.widget.button.NormalButton
@@ -21,12 +20,10 @@ import java.io.File
  * @Author wangshouheng
  * @Time 2021/9/25
  */
-@StartupJob
-class VMLibInitJob : ISchedulerJob {
+@StartupJob class VMLibInitJob : ISchedulerJob {
 
-    override fun threadMode(): ThreadMode = ThreadMode.MAIN
-
-    override fun dependencies(): List<Class<out ISchedulerJob>> = emptyList()
+    /** This initialize job has the highest priority. */
+    override fun priority(): Int = 100
 
     @SuppressLint("MissingPermission")
     override fun run(context: Context) {

@@ -2,14 +2,4 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="me.shouheng.api.api">
 
-    <application>
-        <provider
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge"
-            android:name="me.shouheng.startup.AndroidStartupProvider">
-            <meta-data android:name="me.shouheng.api.startup.ApiStartupJob" android:value="android.startup"/>
-        </provider>
-    </application>
-
 </manifest>
