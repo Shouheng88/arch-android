@@ -12,9 +12,10 @@ import kotlin.coroutines.EmptyCoroutineContext
 /** Abstract task builder based on Kotlin DSL. */
 @TaskDSLMaker abstract class AbsTaskBuilder<R> {
 
-    private var onSucceed: ((Resources<R>) -> Unit)? = null
-    private var onLoading: ((Resources<R>) -> Unit)? = null
-    private var onFailed : ((Resources<R>) -> Unit)? = null
+    private var onSucceed   :((Resources<R>) -> Unit)? = null
+    private var onLoading   :((Resources<R>) -> Unit)? = null
+    private var onFailed    :((Resources<R>) -> Unit)? = null
+    private var onProgress  :((Resources<R>) -> Unit)? = null
     private var resultLiveData: MutableLiveData<Resources<R>>? = null
 
     protected var runContext: CoroutineContext = EmptyCoroutineContext
@@ -44,13 +45,19 @@ import kotlin.coroutines.EmptyCoroutineContext
         onFailed = block
     }
 
+    /** Called when the task progress changed. */
+    fun onProgress(block: (Resources<R>) -> Unit) {
+        onProgress = block
+    }
+
     /** Notify the state has changed, must run in main thread. */
     protected suspend fun notifyStateChanged(resources: Resources<R>?) {
         withContext(Dispatchers.Main) {
             when(resources?.status) {
-                Status.SUCCESS -> { onSucceed?.invoke(resources) }
-                Status.LOADING -> { onLoading?.invoke(resources) }
-                Status.FAILED  -> { onFailed?.invoke(resources)  }
+                Status.SUCCESS  -> { onSucceed?.invoke(resources) }
+                Status.LOADING  -> { onLoading?.invoke(resources) }
+                Status.FAILED   -> { onFailed?.invoke(resources)  }
+                Status.PROGRESS -> { onProgress?.invoke(resources) }
             }
             resultLiveData?.value = resources
         }

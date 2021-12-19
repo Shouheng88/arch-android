@@ -127,9 +127,10 @@ inline fun <T> BaseViewModelOwner<*>.observeOnList(
 
 /** Builder for livedata observer. */
 class LiveDataObserverBuilder<T> {
-    private var success: ((res: Resources<T>) -> Unit)? = null
-    private var fail   : ((res: Resources<T>) -> Unit)? = null
-    private var loading: ((res: Resources<T>) -> Unit)? = null
+    private var success : ((res: Resources<T>) -> Unit)? = null
+    private var fail    : ((res: Resources<T>) -> Unit)? = null
+    private var loading : ((res: Resources<T>) -> Unit)? = null
+    private var progress: ((res: Resources<T>) -> Unit)? = null
     var stickyObserver: Boolean = false
         private set
 
@@ -153,11 +154,17 @@ class LiveDataObserverBuilder<T> {
         this.loading = loading
     }
 
+    /** Called when progress changed. */
+    fun onProgress(progress: (res: Resources<T>) -> Unit) {
+        this.progress = progress
+    }
+
     fun build(): Observer<Resources<T>> = Observer {
         when (it?.status) {
-            Status.SUCCESS -> success?.invoke(it)
-            Status.LOADING -> loading?.invoke(it)
-            Status.FAILED  -> fail?.invoke(it)
+            Status.SUCCESS  -> success?.invoke(it)
+            Status.LOADING  -> loading?.invoke(it)
+            Status.FAILED   -> fail?.invoke(it)
+            Status.PROGRESS -> progress?.invoke(it)
         }
     }
 }

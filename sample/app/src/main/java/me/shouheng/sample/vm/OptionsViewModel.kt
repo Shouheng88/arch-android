@@ -40,4 +40,17 @@ class OptionsViewModel(application: Application) : BaseViewModel(application) {
             }
         }
     }
+
+    fun doTickTick() {
+        execute<Int> {
+            task {
+                for (i in 1..9) {
+                    publishProgress(i)
+                    delay(1_000)
+                }
+                10
+            }
+            bind(getObservable(Int::class.java))
+        }
+    }
 }

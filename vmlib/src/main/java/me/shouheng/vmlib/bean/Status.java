@@ -6,12 +6,14 @@ package me.shouheng.vmlib.bean;
  * @author ShouhengWang 2019-6-29
  */
 public enum Status {
-    /** status success */
-    SUCCESS(0),
-    /** status failed */
-    FAILED( 1),
-    /** status loading */
-    LOADING(2);
+    /** Status success */
+    SUCCESS( 0),
+    /** Status failed */
+    FAILED(  1),
+    /** Status loading */
+    LOADING( 2),
+    /** Status progress changed */
+    PROGRESS(3);
 
     public final int id;
 

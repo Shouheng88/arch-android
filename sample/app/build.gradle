@@ -95,7 +95,7 @@ android {
 //            path "CMakeLists.txt"
 //        }
 //    }
-    ndkVersion "20.0.5594570"
+    ndkVersion "21.4.7075529"
     packagingOptions {
         exclude 'META-INF/library_release.kotlin_module'
     }

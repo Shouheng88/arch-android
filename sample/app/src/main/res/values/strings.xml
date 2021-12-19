@@ -21,6 +21,7 @@
     <string name="main_more_widget_long_task">Make A Long Job</string>
     <string name="main_more_widget_long_task_executing">Executing The Long Job ..</string>
     <string name="main_more_widget_show_a_dialog">Show Dialog</string>
+    <string name="main_more_widget_tick_tick">Tick tick</string>
     <string name="main_more_widget_back_tips">Confirm to exit this page?</string>
     <string name="main_more_widget_network_state_changed">Network state changed: %s</string>
 

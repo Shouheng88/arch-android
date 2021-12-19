@@ -43,6 +43,20 @@ import me.shouheng.vmlib.exception.NoNetworkException
         }
     }
 
+    /** Publish progress. */
+    fun publishProgress(data: R) {
+        GlobalScope.launch {
+            notifyStateChanged(Resources.progress(data))
+        }
+    }
+
+    /** Publish progress. */
+    fun publishProgress(progress: Resources<R>) {
+        GlobalScope.launch {
+            notifyStateChanged(progress)
+        }
+    }
+
     override fun launch(): Job {
         return GlobalScope.launch(runContext) {
             notifyStateChanged(Resources.loading())

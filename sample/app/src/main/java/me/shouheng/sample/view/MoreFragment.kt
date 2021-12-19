@@ -111,6 +111,9 @@ class MoreFragment : CommonFragment<OptionsViewModel, FragmentMoreBinding>(), Co
                 })
             }.show(childFragmentManager, "input-dialog")
         }
+        binding.btnTickTick.onDebouncedClick {
+            vm.doTickTick()
+        }
     }
 
     private fun observes() {
@@ -120,6 +123,14 @@ class MoreFragment : CommonFragment<OptionsViewModel, FragmentMoreBinding>(), Co
             }
             onLoading {
                 toast(R.string.main_more_widget_long_task_executing)
+            }
+        }
+        observeOn(Int::class.java) {
+            onProgress {
+                toast("Progress: ${it.data}")
+            }
+            onSuccess {
+                toast("Done: ${it.data}")
             }
         }
         // Register the network state.
