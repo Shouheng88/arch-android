@@ -122,6 +122,34 @@ public final class Resources<T> {
         return new Resources<>(Status.LOADING, null, null, null, udf1, udf2, udf3, udf4, udf5);
     }
 
+    public static <U> Resources<U> progress(U data) {
+        return new Resources<>(Status.PROGRESS, data, null, null, null, null, null, null, null);
+    }
+
+    public static <U> Resources<U> progress(U data, long udf1) {
+        return new Resources<>(Status.PROGRESS, data, null, null, udf1, null, null, null, null);
+    }
+
+    public static <U> Resources<U> progress(U data, double udf2) {
+        return new Resources<>(Status.PROGRESS, data, null, null, null, udf2, null, null, null);
+    }
+
+    public static <U> Resources<U> progress(U data, boolean udf3) {
+        return new Resources<>(Status.PROGRESS, data, null, null, null, null, udf3, null, null);
+    }
+
+    public static <U> Resources<U> progress(U data, String udf4) {
+        return new Resources<>(Status.PROGRESS, data, null, null, null, null, null, udf4, null);
+    }
+
+    public static <U> Resources<U> progress(U data, Object udf5) {
+        return new Resources<>(Status.PROGRESS, data, null, null, null, null, null, null, udf5);
+    }
+
+    public static <U> Resources<U> progress(U data, Long udf1, Double udf2, Boolean udf3, String udf4, Object udf5) {
+        return new Resources<>(Status.PROGRESS, data, null, null, udf1, udf2, udf3, udf4, udf5);
+    }
+
     private Resources(
             Status status,
             T data,

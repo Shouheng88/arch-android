@@ -168,7 +168,7 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
      * This method is used to call the super [onBackPressed] instead of the
      * implementation of current activity. Since the current [onBackPressed] may be override.
      */
-    fun superOnBackPressed() {
+    open fun superOnBackPressed() {
         super.onBackPressed()
     }
 

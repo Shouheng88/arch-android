@@ -1,8 +1,8 @@
 package me.shouheng.vmlib.component
 
-import androidx.lifecycle.*
-import me.shouheng.vmlib.base.BaseActivity
-import me.shouheng.vmlib.base.BaseFragment
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import me.shouheng.vmlib.base.BaseViewModelOwner
 import me.shouheng.vmlib.bean.Resources
 import me.shouheng.vmlib.bean.Status
@@ -37,21 +37,24 @@ inline fun <T> LifecycleOwner.observe(
 }
 
 /** Kotlin DSL styled observe method. */
-fun <T> LifecycleOwner.observeOn(
-    liveData: SingleLiveEvent<Resources<T>>,
+inline fun <T> LifecycleOwner.observeOn(
+    liveData: LiveData<Resources<T>>,
     init    : LiveDataObserverBuilder<T>.() -> Unit
 ) {
     val builder = LiveDataObserverBuilder<T>()
     builder.apply(init)
-    if (builder.stickyObserver) {
-        liveData.observe(this, builder.build())
-    } else {
+    // To observe livedata base on the livedata type and 'stickyObserver' field.
+    // Only when the observe type is not sticky and the livedata is unpeek type,
+    // the none-sticky will take into effect.
+    if (!builder.stickyObserver && liveData is UnPeekLiveData) {
         liveData.observe(this, builder.stickyObserver, builder.build())
+    } else {
+        liveData.observe(this, builder.build())
     }
 }
 
 /** Observe on data type. */
-fun <T> BaseViewModelOwner<*>.observeOn(
+inline fun <T> BaseViewModelOwner<*>.observeOn(
     dataType: Class<T>,
     init    : LiveDataObserverBuilder<T>.() -> Unit
 ) {
@@ -59,7 +62,7 @@ fun <T> BaseViewModelOwner<*>.observeOn(
 }
 
 /** Observe data */
-fun <T> BaseViewModelOwner<*>.observeOn(
+inline fun <T> BaseViewModelOwner<*>.observeOn(
     dataType: Class<T>,
     single  : Boolean = false,
     init    : LiveDataObserverBuilder<T>.() -> Unit
@@ -68,7 +71,7 @@ fun <T> BaseViewModelOwner<*>.observeOn(
 }
 
 /** Observe data */
-fun <T> BaseViewModelOwner<*>.observeOn(
+inline fun <T> BaseViewModelOwner<*>.observeOn(
     dataType: Class<T>,
     sid     : Int? = null,
     init    : LiveDataObserverBuilder<T>.() -> Unit
@@ -77,7 +80,7 @@ fun <T> BaseViewModelOwner<*>.observeOn(
 }
 
 /** Observe data */
-fun <T> BaseViewModelOwner<*>.observeOn(
+inline fun <T> BaseViewModelOwner<*>.observeOn(
     dataType: Class<T>,
     sid     : Int? = null,
     single  : Boolean = false,
@@ -87,7 +90,7 @@ fun <T> BaseViewModelOwner<*>.observeOn(
 }
 
 /** Observe list data */
-fun <T> BaseViewModelOwner<*>.observeOnList(
+inline fun <T> BaseViewModelOwner<*>.observeOnList(
     dataType: Class<T>,
     init    : LiveDataObserverBuilder<List<T>>.() -> Unit
 ) {
@@ -95,7 +98,7 @@ fun <T> BaseViewModelOwner<*>.observeOnList(
 }
 
 /** Observe list data */
-fun <T> BaseViewModelOwner<*>.observeOnList(
+inline fun <T> BaseViewModelOwner<*>.observeOnList(
     dataType: Class<T>,
     single  : Boolean = false,
     init    : LiveDataObserverBuilder<List<T>>.() -> Unit
@@ -104,7 +107,7 @@ fun <T> BaseViewModelOwner<*>.observeOnList(
 }
 
 /** Observe list data */
-fun <T> BaseViewModelOwner<*>.observeOnList(
+inline fun <T> BaseViewModelOwner<*>.observeOnList(
     dataType: Class<T>,
     sid     : Int? = null,
     init    : LiveDataObserverBuilder<List<T>>.() -> Unit
@@ -113,7 +116,7 @@ fun <T> BaseViewModelOwner<*>.observeOnList(
 }
 
 /** Observe list data */
-fun <T> BaseViewModelOwner<*>.observeOnList(
+inline fun <T> BaseViewModelOwner<*>.observeOnList(
     dataType: Class<T>,
     sid     : Int? = null,
     single  : Boolean = false,
@@ -124,10 +127,12 @@ fun <T> BaseViewModelOwner<*>.observeOnList(
 
 /** Builder for livedata observer. */
 class LiveDataObserverBuilder<T> {
-    private var success: ((res: Resources<T>) -> Unit)? = null
-    private var fail   : ((res: Resources<T>) -> Unit)? = null
-    private var loading: ((res: Resources<T>) -> Unit)? = null
-    internal var stickyObserver: Boolean = false
+    private var success : ((res: Resources<T>) -> Unit)? = null
+    private var fail    : ((res: Resources<T>) -> Unit)? = null
+    private var loading : ((res: Resources<T>) -> Unit)? = null
+    private var progress: ((res: Resources<T>) -> Unit)? = null
+    var stickyObserver: Boolean = false
+        private set
 
     /** To decide if observe the data as sticky. */
     fun withSticky(sticky: Boolean) {
@@ -149,11 +154,17 @@ class LiveDataObserverBuilder<T> {
         this.loading = loading
     }
 
-    internal fun build(): Observer<Resources<T>> = Observer {
+    /** Called when progress changed. */
+    fun onProgress(progress: (res: Resources<T>) -> Unit) {
+        this.progress = progress
+    }
+
+    fun build(): Observer<Resources<T>> = Observer {
         when (it?.status) {
-            Status.SUCCESS -> success?.invoke(it)
-            Status.LOADING -> loading?.invoke(it)
-            Status.FAILED  -> fail?.invoke(it)
+            Status.SUCCESS  -> success?.invoke(it)
+            Status.LOADING  -> loading?.invoke(it)
+            Status.FAILED   -> fail?.invoke(it)
+            Status.PROGRESS -> progress?.invoke(it)
         }
     }
 }

@@ -15,14 +15,8 @@ import com.chad.library.adapter.base.BaseViewHolder
 import me.shouheng.api.bean.Item
 import me.shouheng.eyepetizer.databinding.EyepetizerActivityEyepetizerBinding
 import me.shouheng.eyepetizer.vm.EyepetizerViewModel
-import me.shouheng.eyepetizer.widget.confirmOrCancel
 import me.shouheng.eyepetizer.widget.loadCover
 import me.shouheng.eyepetizer.widget.loadRoundImage
-import me.shouheng.eyepetizer.widget.simpleDialogTitle
-import me.shouheng.uix.widget.dialog.content.SimpleEditor
-import me.shouheng.uix.widget.dialog.content.simpleEditor
-import me.shouheng.uix.widget.dialog.showDialog
-import me.shouheng.uix.widget.dialog.showMessage
 import me.shouheng.uix.widget.rv.listener.AbsDataLoadListener
 import me.shouheng.uix.widget.rv.listener.LinearDataLoadListener
 import me.shouheng.uix.widget.rv.listener.ScrollDisplayListener
@@ -118,15 +112,15 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerAc
         adapter = createAdapter {
             withType(Item::class.java, R.layout.eyepetizer_item_home) {
                 onBind { helper, item ->
-                    helper.setText(R.id.tv_title, item.data.title)
-                    helper.setText(R.id.tv_sub_title, item.data.author?.name + " | " + item.data.category)
-                    helper.loadCover(context, R.id.iv_cover, item.data.cover?.homepage, R.drawable.eyepetizer_card_bg_unlike)
-                    helper.loadRoundImage(context, R.id.iv_author, item.data.author?.icon, R.mipmap.eyepetizer, 20f.dp2px())
+                    helper.setText(R.id.tv_title, item.data?.title)
+                    helper.setText(R.id.tv_sub_title, item.data?.author?.name + " | " + item.data?.category)
+                    helper.loadCover(context, R.id.iv_cover, item.data?.cover?.homepage, R.drawable.eyepetizer_card_bg_unlike)
+                    helper.loadRoundImage(context, R.id.iv_author, item.data?.author?.icon, R.mipmap.eyepetizer, 20f.dp2px())
                 }
                 this.onItemClick { _, _, position ->
                     val itemList = adapter.data[position]
                     ARouter.getInstance().build("/eyepetizer/details")
-                        .withSerializable(VideoDetailActivity.EXTRA_ITEM, itemList)
+                        .withInt(VideoDetailActivity.EXTRA_ITEM_DATA_ID, itemList.data?.id?:0)
                         .navigation()
                     ActivityUtils.overridePendingTransition(activity, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
                 }
@@ -160,20 +154,7 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerAc
 
     private fun configView() {
         binding.fab.onDebouncedClick {
-            showDialog {
-                withTitle(simpleDialogTitle(context, stringOf(R.string.eye_dialog_input_title)))
-                withContent(simpleEditor {
-                    withSingleLine(true)
-                    withHint(stringOf(R.string.eye_dialog_input_hint))
-                })
-                withBottom(confirmOrCancel(context) {
-                    (it as? SimpleEditor)?.let {
-                        showMessage {
-                            withMessage(it.getContent().toString())
-                        }
-                    }
-                })
-            }
+            toast(R.string.eye_fab_clicked)
         }
     }
 

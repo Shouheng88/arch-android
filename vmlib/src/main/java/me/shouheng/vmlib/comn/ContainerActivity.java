@@ -3,10 +3,11 @@ package me.shouheng.vmlib.comn;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
+
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import android.view.KeyEvent;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -177,7 +178,17 @@ public class ContainerActivity extends BaseActivity<EmptyViewModel> {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.container);
+        if (fragment instanceof BackEventResolver) {
+            ((BackEventResolver) fragment).onBackPressed(this);
+        } else {
+            superOnBackPressed();
+        }
+    }
+
+    @Override
+    public void superOnBackPressed() {
+        super.superOnBackPressed();
         if (activityFinishDirection != ActivityDirection.ANIMATE_NONE) {
             ActivityUtils.overridePendingTransition(this, activityFinishDirection);
         }
@@ -189,6 +200,13 @@ public class ContainerActivity extends BaseActivity<EmptyViewModel> {
         if (activityFinishDirection != ActivityDirection.ANIMATE_NONE) {
             ActivityUtils.overridePendingTransition(this, activityFinishDirection);
         }
+    }
+
+    /** Back event resolver for fragment. */
+    public interface BackEventResolver {
+
+        /** Called when the back button is pressed. */
+        void onBackPressed(ContainerActivity activity);
     }
 
     /** Command handler callback */

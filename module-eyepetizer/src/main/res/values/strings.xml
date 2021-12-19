@@ -1,8 +1,5 @@
 <resources>
     <string name="eye_app_name">Eyepetizer Sample</string>
 
-    <string name="eye_dialog_input_title">Sample for input dialog</string>
-    <string name="eye_dialog_input_confirm">Confirm</string>
-    <string name="eye_dialog_input_cancel">Cancel</string>
-    <string name="eye_dialog_input_hint">Input something here..</string>
+    <string name="eye_fab_clicked">Fab clicked</string>
 </resources>

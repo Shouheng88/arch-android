@@ -1,19 +1,24 @@
 package me.shouheng.service.repo
 
-import android.text.TextUtils
-import com.google.gson.Gson
+import io.realm.Realm
+import io.realm.RealmChangeListener
+import io.realm.RealmConfiguration
 import me.shouheng.api.bean.HomeBean
-import me.shouheng.service.api.EyeService
-import me.shouheng.service.net.Net
-import me.shouheng.service.net.Server
-import me.shouheng.utils.stability.L
-import me.shouheng.utils.store.SPUtils
-import me.shouheng.vmlib.task.executeSuspend
+import me.shouheng.api.bean.Item
+import me.shouheng.service.net.eyeService
+import me.shouheng.vmlib.task.execute
 
+/**
+ * Repo for eyepetizer. Use memory cache at first, then disk cache
+ * (by sp) and last request from network.
+ */
 class EyeRepo private constructor() {
 
     /** Memory cache */
-    private var bean: HomeBean? = null
+    private var beans = mutableListOf<HomeBean>()
+
+    /** Realm configuration. */
+    private val config = RealmConfiguration.Builder().name("eyepetizer").build()
 
     /** Get home bean data of first page */
     fun firstPage(
@@ -21,25 +26,31 @@ class EyeRepo private constructor() {
         success: (bean: HomeBean) -> Unit,
         fail: (code: String, msg: String) -> Unit
     ) {
-        if (bean != null) {
-            success(bean!!)
+        if (beans.isNotEmpty()) {
+            success(beans.first())
             return
         }
-        val json = SPUtils.get().getString("__data__")
-        if (!TextUtils.isEmpty(json)) {
-            val bean = Gson().fromJson<HomeBean>(json, HomeBean::class.java)
-            L.d("using cache")
-            success(bean)
-        }
-        executeSuspend<HomeBean> {
-            doTask {
-                Net.connectResources(Server.get(EyeService::class.java)
-                    .getFirstHomeDataAsync(date))
-                    .apply {
-                        if (isSucceed) SPUtils.get().put("__data__", Gson().toJson(data))
+        Realm.getInstance(config)
+            .where(HomeBean::class.java)
+            .findFirstAsync()
+            .addChangeListener(RealmChangeListener<HomeBean> { t ->
+                if (t.isValid) {
+                    beans.add(t)
+                    success(t)
+                }
+            })
+        execute<HomeBean> {
+            task {
+                eyeService.getFirstHomeDataAsync(date).apply {
+                    Realm.getInstance(config).executeTransaction {
+                        it.insertOrUpdate(this)
                     }
+                }
             }
-            onSucceed { success(it.data) }
+            onSucceed {
+                beans.add(it.data)
+                success(it.data)
+            }
             onFailed { fail(it.code, it.message) }
         }
     }
@@ -50,16 +61,33 @@ class EyeRepo private constructor() {
         success: (bean: HomeBean) -> Unit,
         fail: (code: String, msg: String) -> Unit
     ) {
-        executeSuspend<HomeBean> {
-            doTask {
-                Net.connectResources(Server.get(EyeService::class.java).getMoreHomeDataAsync(url))
+        execute<HomeBean> {
+            request { eyeService.getMoreHomeDataAsync(url) }
+            onSucceed {
+                beans.add(it.data)
+                success(it.data)
             }
-            onSucceed { success(it.data) }
             onFailed { fail(it.code, it.message) }
         }
     }
 
+    /** Get item by id. */
+    fun getItemById(itemId: Int): Item? {
+        beans.forEach {
+            it.issueList?.forEach { issue ->
+                issue.itemList?.forEach { item ->
+                    if (item.data?.id == itemId) {
+                        return item
+                    }
+                }
+            }
+        }
+        return null
+    }
+
     companion object {
-        val INSTANCE: EyeRepo by lazy { EyeRepo() }
+        val INSTANCE: EyeRepo by lazy(
+            mode = LazyThreadSafetyMode.SYNCHRONIZED
+        ) { EyeRepo() }
     }
 }

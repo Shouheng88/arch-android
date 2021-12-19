@@ -4,6 +4,7 @@ import android.app.Application;
 
 import me.shouheng.uix.common.UIX;
 import me.shouheng.utils.UtilsApp;
+import me.shouheng.vmlib.network.NetworkStateManager;
 
 /**
  * ===================================================================
@@ -46,6 +47,7 @@ public final class VMLib {
     public static void onCreate(Application application) {
         VMLib.app = application;
         UtilsApp.init(application);
+        NetworkStateManager.INSTANCE.init(application);
         // If you want to use uix, you don't need to initialize it in your application manually.
         if (Platform.DEPENDENCY_UIX_ANALYTICS) UIX.INSTANCE.init(application);
     }

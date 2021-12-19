@@ -1,7 +1,8 @@
-package me.shouheng.api.eyepetizer
+package me.shouheng.api.service
 
 import com.alibaba.android.arouter.facade.template.IProvider
 import me.shouheng.api.bean.HomeBean
+import me.shouheng.api.bean.Item
 
 /** Service to get eyepetizer data */
 interface EyepetizerService : IProvider {
@@ -11,8 +12,12 @@ interface EyepetizerService : IProvider {
 
     /** Request more data from left pages */
     fun getMoreHomePage(url: String?, listener: OnGetHomeBeansListener)
+
+    /** Get home bean item by id. */
+    fun getItemById(itemId: Int): Item?
 }
 
+/** Eyepetizer result callback. */
 interface OnGetHomeBeansListener {
 
     /** Called when got first page home bean data */

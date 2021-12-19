@@ -1,4 +1,9 @@
-package me.shouheng.vmlib.network;
+package me.shouheng.vmlib.network.download;
+
+import static android.Manifest.permission.ACCESS_NETWORK_STATE;
+import static android.Manifest.permission.ACCESS_WIFI_STATE;
+import static android.Manifest.permission.INTERNET;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
@@ -17,22 +22,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
-import me.shouheng.vmlib.network.interceptor.ProgressInterceptor;
-import me.shouheng.vmlib.network.interceptor.ProgressResponseCallback;
 import me.shouheng.utils.device.NetworkUtils;
 import me.shouheng.utils.stability.L;
 import me.shouheng.utils.store.IOUtils;
+import me.shouheng.vmlib.network.interceptor.ProgressInterceptor;
+import me.shouheng.vmlib.network.interceptor.ProgressResponseCallback;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-
-import static android.Manifest.permission.ACCESS_NETWORK_STATE;
-import static android.Manifest.permission.ACCESS_WIFI_STATE;
-import static android.Manifest.permission.INTERNET;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 /**
  * The downloader used to download files from network. Sample

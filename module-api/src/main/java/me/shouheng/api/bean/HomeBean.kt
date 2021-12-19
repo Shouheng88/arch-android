@@ -1,172 +1,175 @@
 package me.shouheng.api.bean
 
+import io.realm.RealmList
+import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
 import java.io.Serializable
 
 /** Eye data */
-data class HomeBean(
-    val dialog: Any,
-    val issueList: List<Issue>,
-    val newestIssueType: String,
-    val nextPageUrl: String,
-    val nextPublishTime: Long
-) : Serializable
+open class HomeBean : Serializable, RealmObject() {
+    var issueList: RealmList<Issue>? = null
+    var newestIssueType: String? = null
+    var nextPageUrl: String? = null
+    var nextPublishTime: Long? = null
+    /** We only cache the first page? = null so we can make the primary key the same. */
+    @PrimaryKey var id: String = "homebean"
+}
 
 /** Eye data */
-data class Issue(
-    val count: Int,
-    val date: Long,
-    val itemList: List<Item>,
-    val publishTime: Long,
-    val releaseTime: Long,
-    val type: String
-) : Serializable
+open class Issue: Serializable, RealmObject() {
+    var count: Int? = null
+    var date: Long? = null
+    var itemList: RealmList<Item>? = null
+    var publishTime: Long? = null
+    var releaseTime: Long? = null
+    var type: String? = null
+}
 
 /** Eye data */
-data class Item(
-    val `data`: Data,
-    val adIndex: Int,
-    val id: Int,
-    val tag: Any,
-    val type: String
-) : Serializable
+open class Item: Serializable, RealmObject() {
+    var `data`: Data? = null
+    var adIndex: Int? = null
+    var id: Int? = null
+    var tag: String? = null
+    var type: String? = null
+}
 
 /** Eye data */
-data class Data(
-    val ad: Boolean,
-    val adTrack: Any,
-    val author: Author?,
-    val campaign: Any,
-    val category: String,
-    val collected: Boolean,
-    val consumption: Consumption,
-    val cover: Cover?,
-    val dataType: String,
-    val date: Long,
-    val description: String,
-    val descriptionEditor: String,
-    val descriptionPgc: Any,
-    val duration: Int,
-    val favoriteAdTrack: Any,
-    val id: Int,
-    val idx: Int,
-    val ifLimitVideo: Boolean,
-    val label: Any,
-    val labelList: List<Any>,
-    val lastViewTime: Any,
-    val library: String,
-    val playInfo: List<PlayInfo>,
-    val playUrl: String,
-    val played: Boolean,
-    val playlists: Any,
-    val promotion: Any,
-    val provider: Provider,
-    val releaseTime: Long,
-    val remark: Any,
-    val resourceType: String,
-    val searchWeight: Int,
-    val shareAdTrack: Any,
-    val slogan: String,
-    val src: Any,
-    val subtitles: List<Any>,
-    val tags: List<Tag>,
-    val thumbPlayUrl: Any,
-    val title: String,
-    val titlePgc: Any,
-    val type: String,
-    val waterMarks: Any,
-    val webAdTrack: Any,
-    val webUrl: WebUrl
-) : Serializable
+open class Data: Serializable, RealmObject() {
+    var ad: Boolean? = null
+    var author: Author? = null
+    var campaign: String? = null
+    var category: String? = null
+    var collected: Boolean? = null
+    var consumption: Consumption? = null
+    var cover: Cover? = null
+    var dataType: String? = null
+    var date: Long? = null
+    var description: String? = null
+    var descriptionEditor: String? = null
+    var descriptionPgc: String? = null
+    var duration: Int? = null
+    var favoriteAdTrack: String? = null
+    var id: Int? = null
+    var idx: Int? = null
+    var ifLimitVideo: Boolean? = null
+    var label: String? = null
+    var labelList: RealmList<String>? = null
+    var lastViewTime: String? = null
+    var library: String? = null
+    var playInfo: RealmList<PlayInfo>? = null
+    var playUrl: String? = null
+    var played: Boolean? = null
+    var playlists: String? = null
+    var promotion: String? = null
+    var provider: Provider? = null
+    var releaseTime: Long? = null
+    var remark: String? = null
+    var resourceType: String? = null
+    var searchWeight: Int? = null
+    var shareAdTrack: String? = null
+    var slogan: String? = null
+    var src: String? = null
+    var subtitles: RealmList<String>? = null
+    var tags: RealmList<Tag>? = null
+    var thumbPlayUrl: String? = null
+    var title: String? = null
+    var titlePgc: String? = null
+    var type: String? = null
+    var waterMarks: String? = null
+    var webAdTrack: String? = null
+    var webUrl: WebUrl? = null
+}
 
 /** Eye data */
-data class PlayInfo(
-    val height: Int,
-    val name: String,
-    val type: String,
-    val url: String,
-    val urlList: List<Url>,
-    val width: Int
-) : Serializable
+open class PlayInfo: Serializable, RealmObject() {
+    var height: Int? = null
+    var name: String? = null
+    var type: String? = null
+    var url: String? = null
+    var urlList: RealmList<Url>? = null
+    var width: Int? = null
+}
 
 /** Eye data */
-data class Url(
-    val name: String,
-    val size: Int,
-    val url: String
-) : Serializable
+open class Url : Serializable, RealmObject() {
+    var name: String? = null
+    var size: Int? = null
+    var url: String? = null
+}
 
 /** Eye data */
-data class Provider(
-    val alias: String,
-    val icon: String,
-    val name: String
-) : Serializable
+open class Provider : Serializable, RealmObject() {
+    var alias: String? = null
+    var icon: String? = null
+    var name: String? = null
+}
 
 /** Eye data */
-data class WebUrl(
-    val forWeibo: String,
-    val raw: String
-) : Serializable
+open class WebUrl : Serializable, RealmObject() {
+    var forWeibo: String? = null
+    var raw: String? = null
+}
 
 /** Eye data */
-data class Tag(
-    val actionUrl: String,
-    val adTrack: Any,
-    val bgPicture: String,
-    val childTagIdList: Any,
-    val childTagList: Any,
-    val communityIndex: Int,
-    val desc: String,
-    val headerImage: String,
-    val id: Int,
-    val name: String,
-    val tagRecType: String
-) : Serializable
+open class Tag : Serializable, RealmObject() {
+    var actionUrl: String? = null
+    var adTrack: String? = null
+    var bgPicture: String? = null
+    var childTagIdList: String? = null
+    var childTagList: String? = null
+    var communityIndex: Int? = null
+    var desc: String? = null
+    var headerImage: String? = null
+    var id: Int? = null
+    var name: String? = null
+    var tagRecType: String? = null
+}
 
 /** Eye data */
-data class Consumption(
-    val collectionCount: Int,
-    val replyCount: Int,
-    val shareCount: Int
-) : Serializable
+open class Consumption : Serializable, RealmObject() {
+    var collectionCount: Int? = null
+    var replyCount: Int? = null
+    var shareCount: Int? = null
+}
 
 /** Eye data */
-data class Cover(
-    val blurred: String,
-    val detail: String,
-    val feed: String,
-    val homepage: String,
-    val sharing: Any
-) : Serializable
+open class Cover : Serializable, RealmObject() {
+    var blurred: String? = null
+    var detail: String? = null
+    var feed: String? = null
+    var homepage: String? = null
+    var sharing: String? = null
+}
 
 /** Eye data */
-data class Author(
-    val adTrack: Any,
-    val approvedNotReadyVideoCount: Int,
-    val description: String,
-    val expert: Boolean,
-    val follow: Follow,
-    val icon: String,
-    val id: Int,
-    val ifPgc: Boolean,
-    val latestReleaseTime: Long,
-    val link: String,
-    val name: String,
-    val recSort: Int,
-    val shield: Shield,
-    val videoNum: Int
-) : Serializable
+open class Author : Serializable, RealmObject() {
+    var adTrack: String? = null
+    var approvedNotReadyVideoCount: Int? = null
+    var description: String? = null
+    var expert: Boolean? = null
+    var follow: Follow? = null
+    var icon: String? = null
+    var id: Int? = null
+    var ifPgc: Boolean? = null
+    var latestReleaseTime: Long? = null
+    var link: String? = null
+    var name: String? = null
+    var recSort: Int? = null
+    var shield: Shield? = null
+    var videoNum: Int? = null
+}
 
 /** Eye data */
-data class Shield(
-    val itemId: Int,
-    val itemType: String,
-    val shielded: Boolean
-) : Serializable
+open class Shield : Serializable, RealmObject() {
+    var itemId: Int? = null
+    var itemType: String? = null
+    var shielded: Boolean? = null
+}
 
 /** Eye data */
-data class Follow(
-    val followed: Boolean,
-    val itemId: Int,
-    val itemType: String
-) : Serializable
+open class Follow: Serializable, RealmObject() {
+    var followed: Boolean? = null
+    var itemId: Int? = null
+    var itemType: String? = null
+}

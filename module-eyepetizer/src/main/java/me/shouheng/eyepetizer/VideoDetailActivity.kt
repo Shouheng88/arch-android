@@ -15,7 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.shouheng.api.bean.Item
 import me.shouheng.eyepetizer.databinding.EyepetizerActivityVideoDetailsBinding
 import me.shouheng.eyepetizer.vm.VideoDetailsViewModel
 import me.shouheng.utils.constant.ActivityDirection
@@ -35,12 +34,12 @@ class VideoDetailActivity : ViewBindingActivity<VideoDetailsViewModel, Eyepetize
     }
 
     private fun initData() {
-        val item = intent?.getSerializableExtra(EXTRA_ITEM) as Item
-        vm.item = item
+        val itemId = intent?.getIntExtra(EXTRA_ITEM_DATA_ID, 0)?:0
+        vm.requestItemById(itemId)
     }
 
     private fun initView() {
-        binding.gsyPlayer.setUp(vm.item!!.data.playUrl, false, null, null)
+        binding.gsyPlayer.setUp(vm.item!!.data?.playUrl, false, null, null)
         binding.gsyPlayer.setIsTouchWiget(true)
         binding.gsyPlayer.isRotateViewAuto = false
         binding.gsyPlayer.isShowFullAnimation = false
@@ -59,7 +58,7 @@ class VideoDetailActivity : ViewBindingActivity<VideoDetailsViewModel, Eyepetize
 
         Glide.with(this)
             .asBitmap()
-            .load(vm.item!!.data.cover?.homepage)
+            .load(vm.item!!.data?.cover?.homepage)
             .thumbnail(Glide.with(this).asBitmap().load(R.drawable.eyepetizer_card_bg_unlike))
             .addListener(object : RequestListener<Bitmap> {
                 override fun onLoadFailed(
@@ -101,6 +100,6 @@ class VideoDetailActivity : ViewBindingActivity<VideoDetailsViewModel, Eyepetize
     }
 
     companion object {
-        const val EXTRA_ITEM = "video_details_item"
+        const val EXTRA_ITEM_DATA_ID = "video_details_item"
     }
 }

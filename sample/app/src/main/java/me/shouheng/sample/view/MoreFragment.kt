@@ -6,6 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.FragmentMoreBinding
 import me.shouheng.sample.event.SimpleEvent
+import me.shouheng.sample.vm.OptionsViewModel
+import me.shouheng.sample.widget.confirmOrCancel
+import me.shouheng.sample.widget.simpleDialogContent
+import me.shouheng.sample.widget.simpleDialogTitle
+import me.shouheng.uix.common.anno.DialogStyle
+import me.shouheng.uix.widget.dialog.content.SimpleEditor
+import me.shouheng.uix.widget.dialog.content.simpleEditor
+import me.shouheng.uix.widget.dialog.createDialog
+import me.shouheng.uix.widget.dialog.showMessage
 import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.ktx.onDebouncedClick
 import me.shouheng.utils.ktx.stringOf
@@ -15,10 +24,11 @@ import me.shouheng.utils.store.PathUtils
 import me.shouheng.vmlib.anno.FragmentConfiguration
 import me.shouheng.vmlib.base.CommonFragment
 import me.shouheng.vmlib.comn.ContainerActivity
-import me.shouheng.vmlib.comn.EmptyViewModel
+import me.shouheng.vmlib.component.observeOn
 import me.shouheng.vmlib.component.post
-import me.shouheng.vmlib.network.DownloadListener
-import me.shouheng.vmlib.network.Downloader
+import me.shouheng.vmlib.network.NetworkStateManager
+import me.shouheng.vmlib.network.download.DownloadListener
+import me.shouheng.vmlib.network.download.Downloader
 import java.io.File
 
 /**
@@ -27,7 +37,7 @@ import java.io.File
  * @author ShouhengWang 2019-6-29
  */
 @FragmentConfiguration(shareViewModel = true, useEventBus = true)
-class MoreFragment : CommonFragment<EmptyViewModel, FragmentMoreBinding>() {
+class MoreFragment : CommonFragment<OptionsViewModel, FragmentMoreBinding>(), ContainerActivity.BackEventResolver {
 
     private val downloadUrl = "https://images.unsplash.com/photo-1501879779179-4576bae71d8" +
             "d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&dl=vladimir-riabinin-diMBLU4FzDQ-unsplash.jpg"
@@ -36,6 +46,7 @@ class MoreFragment : CommonFragment<EmptyViewModel, FragmentMoreBinding>() {
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         initViews()
+        observes()
     }
 
     @SuppressLint("MissingPermission")
@@ -51,7 +62,8 @@ class MoreFragment : CommonFragment<EmptyViewModel, FragmentMoreBinding>() {
         binding.btnDownload.onDebouncedClick {
             Downloader.getInstance()
                 .setOnlyWifi(true)
-                .download(downloadUrl, PathUtils.getExternalStoragePath(), object : DownloadListener {
+                .download(downloadUrl, PathUtils.getExternalStoragePath(), object :
+                    DownloadListener {
                     override fun onError(errorCode: Int) {
                         toast("Download : error $errorCode")
                     }
@@ -80,5 +92,60 @@ class MoreFragment : CommonFragment<EmptyViewModel, FragmentMoreBinding>() {
         binding.btnVmPost.onDebouncedClick {
             post(SimpleEvent(stringOf(R.string.main_more_widget_make_a_post_message)))
         }
+        binding.btnLongTask.onDebouncedClick {
+            vm.doLongTask()
+        }
+        binding.btnShowDialog.onDebouncedClick {
+            createDialog {
+                withTitle(simpleDialogTitle(requireContext(), stringOf(R.string.main_dialog_input_title)))
+                withContent(simpleEditor {
+                    withSingleLine(true)
+                    withHint(stringOf(R.string.main_dialog_input_hint))
+                })
+                withBottom(confirmOrCancel(requireContext()) {
+                    (it as? SimpleEditor)?.let {
+                        requireContext().showMessage {
+                            withMessage(it.getContent().toString())
+                        }
+                    }
+                })
+            }.show(childFragmentManager, "input-dialog")
+        }
+        binding.btnTickTick.onDebouncedClick {
+            vm.doTickTick()
+        }
+    }
+
+    private fun observes() {
+        observeOn(vm.longTaskLiveData) {
+            onSuccess {
+                binding.btnLongTask.text = it.data
+            }
+            onLoading {
+                toast(R.string.main_more_widget_long_task_executing)
+            }
+        }
+        observeOn(Int::class.java) {
+            onProgress {
+                toast("Progress: ${it.data}")
+            }
+            onSuccess {
+                toast("Done: ${it.data}")
+            }
+        }
+        // Register the network state.
+        NetworkStateManager.observe(this, false, {
+            toast(stringOf(R.string.main_more_widget_network_state_changed).format("${it.connected}"))
+        })
+    }
+
+    override fun onBackPressed(activity: ContainerActivity) {
+        createDialog {
+            withStyle(DialogStyle.STYLE_WRAP)
+            withContent(simpleDialogContent(stringOf(R.string.main_more_widget_back_tips)))
+            withBottom(confirmOrCancel(requireContext()) {
+                activity.superOnBackPressed()
+            })
+        }.show(childFragmentManager, "input-dialog")
     }
 }

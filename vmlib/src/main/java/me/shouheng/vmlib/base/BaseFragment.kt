@@ -52,7 +52,7 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment(), BaseViewModelOwner<
             .firstOrNull { ViewModel::class.java.isAssignableFrom(it as Class<*>) } as? Class<U>
             ?: throw IllegalStateException("You must specify a view model class.")
         return if (shareViewModel) {
-            ViewModelProviders.of(activity!!)[vmClass]
+            ViewModelProviders.of(requireActivity())[vmClass]
         } else {
             ViewModelProviders.of(this)[vmClass]
         }
