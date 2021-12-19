@@ -2,6 +2,7 @@ package me.shouheng.service.impl
 
 import android.content.Context
 import com.alibaba.android.arouter.facade.annotation.Route
+import me.shouheng.api.bean.Item
 import me.shouheng.api.service.EyepetizerService
 import me.shouheng.api.service.OnGetHomeBeansListener
 import me.shouheng.service.repo.EyeRepo
@@ -30,6 +31,10 @@ class EyepetizerServiceImpl : EyepetizerService {
         }, { code, msg ->
             listener.onError(code, msg)
         })
+    }
+
+    override fun getItemById(itemId: Int): Item? {
+        return EyeRepo.INSTANCE.getItemById(itemId)
     }
 
     override fun init(context: Context?) {

@@ -120,7 +120,7 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerAc
                 this.onItemClick { _, _, position ->
                     val itemList = adapter.data[position]
                     ARouter.getInstance().build("/eyepetizer/details")
-                        .withSerializable(VideoDetailActivity.EXTRA_ITEM, itemList)
+                        .withInt(VideoDetailActivity.EXTRA_ITEM_DATA_ID, itemList.data?.id?:0)
                         .navigation()
                     ActivityUtils.overridePendingTransition(activity, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
                 }

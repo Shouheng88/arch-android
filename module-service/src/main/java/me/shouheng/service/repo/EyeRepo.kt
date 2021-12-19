@@ -4,6 +4,7 @@ import io.realm.Realm
 import io.realm.RealmChangeListener
 import io.realm.RealmConfiguration
 import me.shouheng.api.bean.HomeBean
+import me.shouheng.api.bean.Item
 import me.shouheng.service.net.eyeService
 import me.shouheng.vmlib.task.execute
 
@@ -14,7 +15,7 @@ import me.shouheng.vmlib.task.execute
 class EyeRepo private constructor() {
 
     /** Memory cache */
-    private var bean: HomeBean? = null
+    private var beans = mutableListOf<HomeBean>()
 
     /** Realm configuration. */
     private val config = RealmConfiguration.Builder().name("eyepetizer").build()
@@ -25,8 +26,8 @@ class EyeRepo private constructor() {
         success: (bean: HomeBean) -> Unit,
         fail: (code: String, msg: String) -> Unit
     ) {
-        if (bean != null) {
-            success(bean!!)
+        if (beans.isNotEmpty()) {
+            success(beans.first())
             return
         }
         Realm.getInstance(config)
@@ -34,6 +35,7 @@ class EyeRepo private constructor() {
             .findFirstAsync()
             .addChangeListener(RealmChangeListener<HomeBean> { t ->
                 if (t.isValid) {
+                    beans.add(t)
                     success(t)
                 }
             })
@@ -45,7 +47,10 @@ class EyeRepo private constructor() {
                     }
                 }
             }
-            onSucceed { success(it.data) }
+            onSucceed {
+                beans.add(it.data)
+                success(it.data)
+            }
             onFailed { fail(it.code, it.message) }
         }
     }
@@ -58,9 +63,26 @@ class EyeRepo private constructor() {
     ) {
         execute<HomeBean> {
             request { eyeService.getMoreHomeDataAsync(url) }
-            onSucceed { success(it.data) }
+            onSucceed {
+                beans.add(it.data)
+                success(it.data)
+            }
             onFailed { fail(it.code, it.message) }
         }
+    }
+
+    /** Get item by id. */
+    fun getItemById(itemId: Int): Item? {
+        beans.forEach {
+            it.issueList?.forEach { issue ->
+                issue.itemList?.forEach { item ->
+                    if (item.data?.id == itemId) {
+                        return item
+                    }
+                }
+            }
+        }
+        return null
     }
 
     companion object {

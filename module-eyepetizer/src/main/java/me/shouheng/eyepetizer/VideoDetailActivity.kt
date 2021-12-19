@@ -15,7 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.shouheng.api.bean.Item
 import me.shouheng.eyepetizer.databinding.EyepetizerActivityVideoDetailsBinding
 import me.shouheng.eyepetizer.vm.VideoDetailsViewModel
 import me.shouheng.utils.constant.ActivityDirection
@@ -35,8 +34,8 @@ class VideoDetailActivity : ViewBindingActivity<VideoDetailsViewModel, Eyepetize
     }
 
     private fun initData() {
-        val item = intent?.getSerializableExtra(EXTRA_ITEM) as Item
-        vm.item = item
+        val itemId = intent?.getIntExtra(EXTRA_ITEM_DATA_ID, 0)?:0
+        vm.requestItemById(itemId)
     }
 
     private fun initView() {
@@ -101,6 +100,6 @@ class VideoDetailActivity : ViewBindingActivity<VideoDetailsViewModel, Eyepetize
     }
 
     companion object {
-        const val EXTRA_ITEM = "video_details_item"
+        const val EXTRA_ITEM_DATA_ID = "video_details_item"
     }
 }
