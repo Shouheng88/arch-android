@@ -187,6 +187,11 @@ public final class Resources<T> {
         return status == Status.LOADING;
     }
 
+    /** Is currently progress state */
+    public boolean isProgress() {
+        return status == Status.PROGRESS;
+    }
+
     public Throwable getThrowable() {
         return throwable;
     }

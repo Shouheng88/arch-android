@@ -4,8 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import me.shouheng.vmlib.base.BaseViewModelOwner
-import me.shouheng.vmlib.bean.Resources
-import me.shouheng.vmlib.bean.Status
+import me.shouheng.vmlib.bean.*
 
 /** Add observe method to lifecycle owner. */
 inline fun <T> LifecycleOwner.observe(
@@ -28,11 +27,7 @@ inline fun <T> LifecycleOwner.observe(
     crossinline loading: (res: Resources<T>) -> Unit
 ) {
     liveData.observe(this, {
-        when (it?.status) {
-            Status.SUCCESS -> success(it)
-            Status.LOADING -> loading(it)
-            Status.FAILED  -> fail(it)
-        }
+        it.onSuccess(success).onLoading(loading).onFailed(fail)
     })
 }
 
@@ -131,6 +126,7 @@ class LiveDataObserverBuilder<T> {
     private var fail    : ((res: Resources<T>) -> Unit)? = null
     private var loading : ((res: Resources<T>) -> Unit)? = null
     private var progress: ((res: Resources<T>) -> Unit)? = null
+
     var stickyObserver: Boolean = false
         private set
 
@@ -159,12 +155,15 @@ class LiveDataObserverBuilder<T> {
         this.progress = progress
     }
 
-    fun build(): Observer<Resources<T>> = Observer {
-        when (it?.status) {
-            Status.SUCCESS  -> success?.invoke(it)
-            Status.LOADING  -> loading?.invoke(it)
-            Status.FAILED   -> fail?.invoke(it)
-            Status.PROGRESS -> progress?.invoke(it)
+    fun build(): Observer<Resources<T>> = Observer { resources ->
+        resources.onSuccess {
+            success?.invoke(it)
+        }.onLoading {
+            loading?.invoke(it)
+        }.onFailed {
+            fail?.invoke(it)
+        }.onProgress {
+            progress?.invoke(it)
         }
     }
 }
