@@ -47,7 +47,7 @@
             android:textSize="16sp"
             android:background="@android:color/white"
             android:layout_width="match_parent"
-            android:layout_height="200dp"/>
+            android:layout_height="80dp"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_title"
@@ -68,5 +68,13 @@
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:src="@drawable/ic_check_white_18dp"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

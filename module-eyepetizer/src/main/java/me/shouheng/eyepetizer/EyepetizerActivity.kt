@@ -30,6 +30,7 @@ import me.shouheng.utils.stability.L
 import me.shouheng.utils.ui.BarUtils
 import me.shouheng.vmlib.anno.ActivityConfiguration
 import me.shouheng.vmlib.base.ViewBindingActivity
+import me.shouheng.vmlib.component.LiveDataObserverBuilder
 import me.shouheng.vmlib.component.observeOnList
 import me.shouheng.xadapter.createAdapter
 import me.shouheng.xadapter.viewholder.onItemClick
@@ -158,7 +159,13 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerAc
         }
     }
 
-    /** The kotlin DSL styled observe method. */
+    /**
+     * The kotlin DSL styled observe method.
+     *
+     * 1.对于分页场景：建议自己维护数据，比如 [EyepetizerViewModel.items]，然后在 oncreate 的时候塞值
+     * 观察的时候使用 [LiveDataObserverBuilder.withSticky] 并设置 false 注册非粘性观察。
+     * 2.对于非分页场景：建议直接使用 [LiveDataObserverBuilder.withSticky] 并设置为 true 直接获取数据即可。
+     */
     private fun observes() {
         observeOnList(Item::class.java) {
             withSticky(false)

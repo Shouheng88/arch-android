@@ -36,13 +36,22 @@ inline fun <T> LifecycleOwner.observeOn(
     liveData: LiveData<Resources<T>>,
     init    : LiveDataObserverBuilder<T>.() -> Unit
 ) {
+    observeOn(liveData, null, init)
+}
+
+/** Kotlin DSL styled observe method. */
+inline fun <T> LifecycleOwner.observeOn(
+    liveData: LiveData<Resources<T>>,
+    sticky  : Boolean? = null,
+    init    : LiveDataObserverBuilder<T>.() -> Unit
+) {
     val builder = LiveDataObserverBuilder<T>()
     builder.apply(init)
     // To observe livedata base on the livedata type and 'stickyObserver' field.
     // Only when the observe type is not sticky and the livedata is unpeek type,
     // the none-sticky will take into effect.
-    if (!builder.stickyObserver && liveData is UnPeekLiveData) {
-        liveData.observe(this, builder.stickyObserver, builder.build())
+    if ((!builder.sticky || sticky == false) && liveData is UnPeekLiveData) {
+        liveData.observe(this, false, builder.build())
     } else {
         liveData.observe(this, builder.build())
     }
@@ -53,7 +62,7 @@ inline fun <T> BaseViewModelOwner<*>.observeOn(
     dataType: Class<T>,
     init    : LiveDataObserverBuilder<T>.() -> Unit
 ) {
-    observeOn(getViewModel().getObservable(dataType), init)
+    observeOn(dataType, null, false, init)
 }
 
 /** Observe data */
@@ -81,7 +90,8 @@ inline fun <T> BaseViewModelOwner<*>.observeOn(
     single  : Boolean = false,
     init    : LiveDataObserverBuilder<T>.() -> Unit
 ) {
-    observeOn(getViewModel().getObservable(dataType, sid, single), init)
+    observeOn(getViewModel().getObservable(dataType, sid, single, Status.SUCCESS), init)
+    observeOn(getViewModel().getObservable(dataType, sid, single, null), false, init)
 }
 
 /** Observe list data */
@@ -117,7 +127,8 @@ inline fun <T> BaseViewModelOwner<*>.observeOnList(
     single  : Boolean = false,
     init    : LiveDataObserverBuilder<List<T>>.() -> Unit
 ) {
-    observeOn(getViewModel().getListObservable(dataType, sid, single), init)
+    observeOn(getViewModel().getListObservable(dataType, sid, single, Status.SUCCESS),  init)
+    observeOn(getViewModel().getListObservable(dataType, sid, single, null),  false, init)
 }
 
 /** Builder for livedata observer. */
@@ -127,12 +138,12 @@ class LiveDataObserverBuilder<T> {
     private var loading : ((res: Resources<T>) -> Unit)? = null
     private var progress: ((res: Resources<T>) -> Unit)? = null
 
-    var stickyObserver: Boolean = false
+    var sticky: Boolean = true
         private set
 
     /** To decide if observe the data as sticky. */
     fun withSticky(sticky: Boolean) {
-        stickyObserver = sticky
+        this.sticky = sticky
     }
 
     /** Called when livedata is success. */

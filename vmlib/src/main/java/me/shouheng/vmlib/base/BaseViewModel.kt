@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import me.shouheng.vmlib.anno.ViewModelConfiguration
 import me.shouheng.vmlib.bean.Resources
+import me.shouheng.vmlib.bean.Status
 import me.shouheng.vmlib.bus.Bus
 import me.shouheng.vmlib.component.LiveDataHolder
 import me.shouheng.vmlib.component.SingleLiveEvent
@@ -36,10 +37,11 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
      */
     fun <T> getObservable(
         dataType: Class<T>,
-        sid: Int? = null,
-        single: Boolean = false
+        sid: Int?             = null,
+        single: Boolean       = false,
+        targetStatus: Status? = Status.SUCCESS
     ): SingleLiveEvent<Resources<T>> {
-        return holder.getLiveData(dataType, sid, single) as SingleLiveEvent<Resources<T>>
+        return holder.getLiveData(dataType, sid, single, targetStatus) as SingleLiveEvent<Resources<T>>
     }
 
     /**
@@ -54,39 +56,58 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
      */
     fun <T> getListObservable(
         dataType: Class<T>,
-        sid: Int? = null,
-        single: Boolean = false
+        sid: Int?             = null,
+        single: Boolean       = false,
+        targetStatus: Status? = Status.SUCCESS
     ): SingleLiveEvent<Resources<List<T>>> {
-        return listHolder.getLiveData(dataType, sid, single) as SingleLiveEvent<Resources<List<T>>>
+        return listHolder.getLiveData(dataType, sid, single, targetStatus) as SingleLiveEvent<Resources<List<T>>>
     }
 
     /** Set success state of data type */
     fun <T> setSuccess(
         dataType: Class<T>,
         data: T,
-        sid: Int? = null,
+        sid: Int?       = null,
         single: Boolean = false,
-        udf1: Long? = null,
-        udf2: Double? = null,
-        udf3: Boolean? = null,
-        udf4: String? = null,
-        udf5: Any? = null
+        udf1: Long?     = null,
+        udf2: Double?   = null,
+        udf3: Boolean?  = null,
+        udf4: String?   = null,
+        udf5: Any?      = null
     ) {
-        getObservable(dataType, sid, single).value = Resources.success(data, udf1, udf2, udf3, udf4, udf5)
+        getObservable(dataType, sid, single, Status.SUCCESS).value =
+            Resources.success(data, udf1, udf2, udf3, udf4, udf5)
+    }
+
+    /** Set progress state of data type */
+    fun <T> setProgress(
+        dataType: Class<T>,
+        data: T,
+        sid: Int?       = null,
+        single: Boolean = false,
+        udf1: Long?     = null,
+        udf2: Double?   = null,
+        udf3: Boolean?  = null,
+        udf4: String?   = null,
+        udf5: Any?      = null
+    ) {
+        getObservable(dataType, sid, single, null).value =
+            Resources.progress(data, udf1, udf2, udf3, udf4, udf5)
     }
 
     /** Set loading state of data type */
     fun <T> setLoading(
         dataType: Class<T>,
-        sid: Int? = null,
+        sid: Int?       = null,
         single: Boolean = false,
-        udf1: Long? = null,
-        udf2: Double? = null,
-        udf3: Boolean? = null,
-        udf4: String? = null,
-        udf5: Any? = null
+        udf1: Long?     = null,
+        udf2: Double?   = null,
+        udf3: Boolean?  = null,
+        udf4: String?   = null,
+        udf5: Any?      = null
     ) {
-        getObservable(dataType, sid, single).value = Resources.loading(udf1, udf2, udf3, udf4, udf5)
+        getObservable(dataType, sid, single, null).value =
+            Resources.loading(udf1, udf2, udf3, udf4, udf5)
     }
 
     /** Set fail state of data type */
@@ -94,44 +115,63 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
         dataType: Class<T>,
         code: String?,
         message: String?,
-        sid: Int? = null,
+        sid: Int?       = null,
         single: Boolean = false,
-        udf1: Long? = null,
-        udf2: Double? = null,
-        udf3: Boolean? = null,
-        udf4: String? = null,
-        udf5: Any? = null
+        udf1: Long?     = null,
+        udf2: Double?   = null,
+        udf3: Boolean?  = null,
+        udf4: String?   = null,
+        udf5: Any?      = null
     ) {
-        getObservable(dataType, sid, single).value = Resources.failed(code, message, udf1, udf2, udf3, udf4, udf5)
+        getObservable(dataType, sid, single, null).value =
+            Resources.failed(code, message, udf1, udf2, udf3, udf4, udf5)
     }
 
     /** Set success state of list data type */
     fun <T> setListSuccess(
         dataType: Class<T>,
         data: List<T>,
-        sid: Int? = null,
+        sid: Int?       = null,
         single: Boolean = false,
-        udf1: Long? = null,
-        udf2: Double? = null,
-        udf3: Boolean? = null,
-        udf4: String? = null,
-        udf5: Any? = null
+        udf1: Long?     = null,
+        udf2: Double?   = null,
+        udf3: Boolean?  = null,
+        udf4: String?   = null,
+        udf5: Any?      = null
     ) {
-        getListObservable(dataType, sid, single).value = Resources.success(data, udf1, udf2, udf3, udf4, udf5)
+        getListObservable(dataType, sid, single, Status.SUCCESS).value =
+            Resources.success(data, udf1, udf2, udf3, udf4, udf5)
+    }
+
+    /** Set progress state of list data type */
+    fun <T> setListProgress(
+        dataType: Class<T>,
+        data: List<T>,
+        sid: Int?       = null,
+        single: Boolean = false,
+        udf1: Long?     = null,
+        udf2: Double?   = null,
+        udf3: Boolean?  = null,
+        udf4: String?   = null,
+        udf5: Any?      = null
+    ) {
+        getListObservable(dataType, sid, single, null).value =
+            Resources.progress(data, udf1, udf2, udf3, udf4, udf5)
     }
 
     /** Set loading state of list data type */
     fun <T> setListLoading(
         dataType: Class<T>,
-        sid: Int? = null,
+        sid: Int?       = null,
         single: Boolean = false,
-        udf1: Long? = null,
-        udf2: Double? = null,
-        udf3: Boolean? = null,
-        udf4: String? = null,
-        udf5: Any? = null
+        udf1: Long?     = null,
+        udf2: Double?   = null,
+        udf3: Boolean?  = null,
+        udf4: String?   = null,
+        udf5: Any?      = null
     ) {
-        getListObservable(dataType, sid, single).value = Resources.loading(udf1, udf2, udf3, udf4, udf5)
+        getListObservable(dataType, sid, single, null).value =
+            Resources.loading(udf1, udf2, udf3, udf4, udf5)
     }
 
     /** Set fail state of list data type */
@@ -139,15 +179,16 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
         dataType: Class<T>,
         code: String?,
         message: String?,
-        sid: Int? = null,
+        sid: Int?       = null,
         single: Boolean = false,
-        udf1: Long? = null,
-        udf2: Double? = null,
-        udf3: Boolean? = null,
-        udf4: String? = null,
-        udf5: Any? = null
+        udf1: Long?     = null,
+        udf2: Double?   = null,
+        udf3: Boolean?  = null,
+        udf4: String?   = null,
+        udf5: Any?      = null
     ) {
-        getListObservable(dataType, sid, single).value = Resources.failed(code, message, udf1, udf2, udf3, udf4, udf5)
+        getListObservable(dataType, sid, single, null).value =
+            Resources.failed(code, message, udf1, udf2, udf3, udf4, udf5)
     }
 
     override fun onCleared() {

@@ -2,6 +2,7 @@ package me.shouheng.vmlib.base
 
 import androidx.lifecycle.LifecycleOwner
 import me.shouheng.vmlib.bean.Resources
+import me.shouheng.vmlib.bean.Status
 import me.shouheng.vmlib.component.observe
 
 /**
@@ -56,7 +57,8 @@ interface BaseViewModelOwner<U : BaseViewModel> : LifecycleOwner {
         fail:    (res: Resources<T>) -> Unit = {},
         loading: (res: Resources<T>) -> Unit = {}
     ) {
-        observe(getViewModel().getObservable(dataType, sid, single), success, fail, loading)
+        observe(getViewModel().getObservable(dataType, sid, single, Status.SUCCESS), success, fail, loading)
+        observe(getViewModel().getObservable(dataType, sid, single, null), success, fail, loading)
     }
 
     /** Observe list data */
@@ -100,6 +102,7 @@ interface BaseViewModelOwner<U : BaseViewModel> : LifecycleOwner {
         fail:    (res: Resources<List<T>>) -> Unit = {},
         loading: (res: Resources<List<T>>) -> Unit = {}
     ) {
-        observe(getViewModel().getListObservable(dataType, sid, single), success, fail, loading)
+        observe(getViewModel().getListObservable(dataType, sid, single, Status.SUCCESS), success, fail, loading)
+        observe(getViewModel().getListObservable(dataType, sid, single, null), success, fail, loading)
     }
 }

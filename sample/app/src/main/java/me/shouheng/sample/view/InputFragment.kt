@@ -6,6 +6,7 @@ import me.shouheng.sample.R
 import me.shouheng.sample.databinding.FragmentInputBinding
 import me.shouheng.sample.vm.InputViewModel
 import me.shouheng.sample.widget.onTextChanged
+import me.shouheng.utils.ktx.onDebouncedClick
 import me.shouheng.utils.ktx.stringOf
 import me.shouheng.utils.ktx.toast
 import me.shouheng.vmlib.base.ViewBindingFragment
@@ -25,6 +26,14 @@ class InputFragment : ViewBindingFragment<InputViewModel, FragmentInputBinding>(
         binding.etTitle.onTextChanged { vm.setTitle(it.toString()) }
         binding.etContent.onTextChanged { vm.setContent(it.toString()) }
 
+        binding.fab.onDebouncedClick {
+            vm.setTitleFailed()
+        }
+        binding.fab.setOnLongClickListener {
+            vm.setContentFailed()
+            true
+        }
+
         /** This is a invalid observe method, since events of title and content change
          * all are followed with a sid [InputViewModel.SID_TITLE] and [InputViewModel.SID_CONTENT]. */
         observe(String::class.java, {
@@ -34,12 +43,18 @@ class InputFragment : ViewBindingFragment<InputViewModel, FragmentInputBinding>(
         /** This is a [observe] styled observe method on string with sid [InputViewModel.SID_TITLE]. */
         observe(String::class.java, InputViewModel.SID_TITLE, {
             binding.tvTitle.text = it.data
+        }, {
+            toast(it.message)
         })
 
         /** This is a [observeOn] styled observe method on string with sid [InputViewModel.SID_CONTENT]. */
         observeOn(String::class.java, InputViewModel.SID_CONTENT) {
+            withSticky(true)
             onSuccess {
                 binding.tvContent.text = it.data
+            }
+            onFail {
+                toast(it.message)
             }
         }
     }

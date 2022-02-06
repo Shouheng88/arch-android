@@ -9,7 +9,9 @@
         <activity android:name="me.shouheng.eyepetizer.EyepetizerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity android:name="me.shouheng.eyepetizer.VideoDetailActivity"
-                  android:theme="@style/VideoTheme"/>
+            android:theme="@style/VideoTheme"/>
+        <activity android:name="me.shouheng.vmlib.comn.ContainerActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
     </application>
 
 </manifest>

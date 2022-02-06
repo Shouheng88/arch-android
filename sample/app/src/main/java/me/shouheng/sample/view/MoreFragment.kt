@@ -114,6 +114,9 @@ class MoreFragment : CommonFragment<OptionsViewModel, FragmentMoreBinding>(), Co
         binding.btnTickTick.onDebouncedClick {
             vm.doTickTick()
         }
+        binding.fab.onDebouncedClick {
+            activity?.recreate()
+        }
     }
 
     private fun observes() {
@@ -125,7 +128,7 @@ class MoreFragment : CommonFragment<OptionsViewModel, FragmentMoreBinding>(), Co
                 toast(R.string.main_more_widget_long_task_executing)
             }
         }
-        observeOn(Int::class.java) {
+        observeOn(vm.bindLiveData) {
             onProgress {
                 toast("Progress: ${it.data}")
             }

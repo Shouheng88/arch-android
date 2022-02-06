@@ -1,11 +1,13 @@
 package me.shouheng.vmlib.component;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import me.shouheng.vmlib.bean.Resources;
+import me.shouheng.vmlib.bean.Status;
 
 /**
  * One holder for {@link androidx.lifecycle.LiveData}
@@ -17,9 +19,11 @@ public class LiveDataHolder<T> {
 
     private Map<String, SingleLiveEvent> map = new HashMap<>();
 
-    public MutableLiveData<Resources<T>> getLiveData(Class dataType, Integer sid, boolean single) {
+    public MutableLiveData<Resources<T>> getLiveData(
+            Class dataType, Integer sid, boolean single, @Nullable Status targetStatus) {
         String key = dataType.getName() + "_" + single;
         if (sid != null) key = key + "_" + sid;
+        if (targetStatus != null) key = key + "_" + targetStatus.name();
         return getLiveDataInner(key, single);
     }
 

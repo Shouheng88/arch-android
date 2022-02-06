@@ -19,6 +19,8 @@ class OptionsViewModel(application: Application) : BaseViewModel(application) {
 
     val longTaskLiveData = MutableLiveData<Resources<String>>()
 
+    val bindLiveData = MutableLiveData<Resources<Int>>()
+
     /**
      * Do a long time task. This is used to show sample for viewmodel scoped
      * task [execute] logic. The task is bound with viewmodel lifecycle. If the
@@ -50,7 +52,7 @@ class OptionsViewModel(application: Application) : BaseViewModel(application) {
                 }
                 10
             }
-            bind(getObservable(Int::class.java))
+            bind(bindLiveData)
         }
     }
 }

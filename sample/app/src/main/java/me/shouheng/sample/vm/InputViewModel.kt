@@ -23,6 +23,14 @@ class InputViewModel(application: Application) : BaseViewModel(application) {
         setSuccess(String::class.java, content, SID_CONTENT)
     }
 
+    fun setTitleFailed() {
+        setFailed(String::class.java, "-1", "title failed", SID_TITLE)
+    }
+
+    fun setContentFailed() {
+        setFailed(String::class.java, "-1", "content failed", SID_CONTENT)
+    }
+
     companion object {
         const val SID_TITLE     = 1
         const val SID_CONTENT   = 2
