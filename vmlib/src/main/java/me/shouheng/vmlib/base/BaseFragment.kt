@@ -48,7 +48,8 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment(), BaseViewModelOwner<
      * @return the view model instance.
      */
     protected fun createViewModel(): U {
-        val vmClass = (this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments
+        val vmClass = (this.javaClass.genericSuperclass as ParameterizedType)
+            .actualTypeArguments
             .firstOrNull { ViewModel::class.java.isAssignableFrom(it as Class<*>) } as? Class<U>
             ?: throw IllegalStateException("You must specify a view model class.")
         return if (shareViewModel) {
@@ -58,9 +59,15 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment(), BaseViewModelOwner<
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val layoutResId = getLayoutResId()
-        require(layoutResId > 0) { "The subclass must provider a valid layout resources id." }
+        require(layoutResId > 0) {
+            "The subclass must provider a valid layout resources id."
+        }
         return inflater.inflate(layoutResId, container, false)
     }
 
@@ -79,9 +86,13 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment(), BaseViewModelOwner<
      */
     protected fun checkPermission(@Permission permission: Int, onGetPermission: () -> Unit) {
         if (activity is BaseActivity<*>) {
-            PermissionUtils.checkPermissions<BaseActivity<*>?>((activity as BaseActivity<*>?)!!, { onGetPermission() }, permission)
+            PermissionUtils.checkPermissions<BaseActivity<*>?>(
+                (activity as BaseActivity<*>?)!!
+                , { onGetPermission() }
+                , permission)
         } else {
-            L.w("Request permission failed due to the associated activity was not instance of CommonActivity")
+            L.w("Request permission failed due to " +
+                    "the associated activity was not instance of CommonActivity")
         }
     }
 
@@ -93,9 +104,13 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment(), BaseViewModelOwner<
      */
     protected fun checkPermissions(onGetPermission: () -> Unit, @Permission vararg permissions: Int) {
         if (activity is BaseActivity<*>) {
-            PermissionUtils.checkPermissions<BaseActivity<*>?>((activity as BaseActivity<*>?)!!, { onGetPermission() }, *permissions)
+            PermissionUtils.checkPermissions<BaseActivity<*>?>(
+                (activity as BaseActivity<*>?)!!
+                , { onGetPermission() }
+                , *permissions)
         } else {
-            L.w("Request permissions failed due to the associated activity was not instance of CommonActivity")
+            L.w("Request permissions failed due to " +
+                    "the associated activity was not instance of CommonActivity")
         }
     }
 

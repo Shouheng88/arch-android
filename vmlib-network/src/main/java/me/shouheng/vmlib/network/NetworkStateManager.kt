@@ -1,5 +1,6 @@
 package me.shouheng.vmlib.network
 
+import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -24,9 +25,9 @@ object NetworkStateManager {
     private var networkStateReceiver: NetworkStateReceiver? = null
 
     /** Initialize this manager. */
-    fun init(context: Context) {
+    fun init(app: Application) {
         networkStateReceiver = NetworkStateReceiver()
-        context.registerReceiver(
+        app.registerReceiver(
             networkStateReceiver,
             IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         )

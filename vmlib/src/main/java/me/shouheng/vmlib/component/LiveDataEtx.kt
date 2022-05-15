@@ -11,9 +11,9 @@ inline fun <T> LifecycleOwner.observe(
     liveData: LiveData<T>,
     crossinline onChanged: (t: T?)->Unit
 ) {
-    liveData.observe(this, {
+    liveData.observe(this) {
         onChanged(it)
-    })
+    }
 }
 
 /**
@@ -26,9 +26,9 @@ inline fun <T> LifecycleOwner.observe(
     crossinline fail   : (res: Resources<T>) -> Unit,
     crossinline loading: (res: Resources<T>) -> Unit
 ) {
-    liveData.observe(this, {
+    liveData.observe(this) {
         it.onSuccess(success).onLoading(loading).onFailed(fail)
-    })
+    }
 }
 
 /** Kotlin DSL styled observe method. */

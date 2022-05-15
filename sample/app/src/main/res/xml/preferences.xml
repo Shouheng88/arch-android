@@ -6,6 +6,7 @@
         <Preference android:title="@string/setting_category_personal_theme"
             android:summary="@string/setting_category_personal_theme_sub"
             android:persistent="false"
+            android:icon="@drawable/eyepetizer_baseline_mail_24"
             android:key="key_setting_theme"/>
 
         <SwitchPreference android:title="@string/setting_category_personal_beautify_date"

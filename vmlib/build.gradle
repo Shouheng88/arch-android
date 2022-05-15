@@ -58,6 +58,7 @@ dependencies {
     compileOnly 'com.umeng.umsdk:apm:1.2.0'// 推荐，错误分析升级为U-APM产品，关注crash数据需集成
     compileOnly "com.github.Shouheng88:uix-core:${uixCoreVersion}"
     compileOnly "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1"
+    compileOnly "androidx.preference:preference-ktx:$preference_version"
 
     api "com.github.Shouheng88:utils-core:${utilsCoreVersion}"
     api "com.github.Shouheng88:utils-ktx:${utilsCoreVersion}"

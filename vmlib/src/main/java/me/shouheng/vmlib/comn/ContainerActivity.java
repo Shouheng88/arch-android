@@ -142,13 +142,15 @@ public class ContainerActivity extends BaseActivity<EmptyViewModel> {
                 if (Fragment.class.isAssignableFrom(fragmentClass)) {
                     Fragment fragment = (Fragment) fragmentClass.newInstance();
                     fragment.setArguments(bundle);
-                    getSupportFragmentManager().beginTransaction()
+                    getSupportFragmentManager()
+                            .beginTransaction()
                             .replace(R.id.container, fragment)
                             .commit();
                 } else if (android.app.Fragment.class.isAssignableFrom(fragmentClass)) {
                     android.app.Fragment fragment = (android.app.Fragment) fragmentClass.newInstance();
                     fragment.setArguments(bundle);
-                    getFragmentManager().beginTransaction()
+                    getFragmentManager()
+                            .beginTransaction()
                             .replace(R.id.container, fragment)
                             .commit();
                 }
@@ -159,8 +161,10 @@ public class ContainerActivity extends BaseActivity<EmptyViewModel> {
                 }
             }
         } catch (InstantiationException e) {
+            e.printStackTrace();
             L.d(e);
         } catch (IllegalAccessException e) {
+            e.printStackTrace();
             L.d(e);
         }
     }

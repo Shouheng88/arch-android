@@ -19,7 +19,8 @@ public abstract class CommonActivity<U extends BaseViewModel, T extends ViewData
 
     @Override
     protected void setupContentView(@Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(this), getLayoutResId(), null, false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(this)
+                , getLayoutResId(), null, false);
         setContentView(binding.getRoot());
     }
 

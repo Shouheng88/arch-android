@@ -42,12 +42,19 @@ object DefaultExceptionHandler : ExceptionHandler {
                     else                  -> Pair("$NETWORK_ERROR", "Network error")
                 }
             }
-            is JsonParseException, is JSONException, is ParseException, is MalformedJsonException -> Pair("$RESULT_PARSE", "Parse error")
+            is JsonParseException
+                , is JSONException
+                , is ParseException
+                , is MalformedJsonException
+                                          -> Pair("$RESULT_PARSE", "Parse error")
             is ConnectException           -> Pair("$NETWORK_ERROR", "Connect error")
             is javax.net.ssl.SSLException -> Pair("$SSL_ERROR", "SSL error")
-            is ConnectTimeoutException, is java.net.SocketTimeoutException -> Pair("$TIMEOUT_ERROR", "SSL error")
-            is java.net.UnknownHostException -> Pair("$UNKNOWN_HOST", "Unknown host")
-            else -> null
+            is ConnectTimeoutException
+                , is java.net.SocketTimeoutException
+                                          -> Pair("$TIMEOUT_ERROR", "SSL error")
+            is java.net.UnknownHostException
+                                          -> Pair("$UNKNOWN_HOST", "Unknown host")
+            else                          -> null
         }
     }
 }

@@ -33,4 +33,6 @@ abstract class ViewBindingActivity<U : BaseViewModel, T : ViewBinding> : BaseAct
         }
     }
 
+    /** Check if [binding] is initialized. */
+    fun isBindingInitialized(): Boolean = this::binding.isInitialized
 }

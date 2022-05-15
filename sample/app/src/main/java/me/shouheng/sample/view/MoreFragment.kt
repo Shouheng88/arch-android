@@ -82,7 +82,7 @@ class MoreFragment : CommonFragment<OptionsViewModel, FragmentMoreBinding>(), Co
                 })
         }
         binding.btnPref.onDebouncedClick {
-            ContainerActivity.openFragment(SamplePreference::class.java)
+            ContainerActivity.open(SamplePreference::class.java)
                 .put(ContainerActivity.KEY_EXTRA_THEME_ID, R.style.RedAppTheme)
                 .put(ContainerActivity.KEY_EXTRA_ACTIVITY_DIRECTION, ActivityDirection.ANIMATE_SLIDE_BOTTOM_FROM_TOP)
                 .withDirection(ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)

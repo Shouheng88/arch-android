@@ -14,8 +14,6 @@ abstract class ViewBindingFragment<U : BaseViewModel, T : ViewBinding> : BaseFra
     protected lateinit var binding: T
         private set
 
-    protected var isBindingInitialized: Boolean = false
-
     /** useless */
     @Deprecated(
         message = "Deprecated method, the root view will be derived from view binding.",
@@ -35,9 +33,10 @@ abstract class ViewBindingFragment<U : BaseViewModel, T : ViewBinding> : BaseFra
         // fix 2021-06-26 there is no need to try exception, since even if you caught the exception,
         // it will throw another exception when trying to get root from binding.
         binding = method.invoke(null, inflater) as T
-        isBindingInitialized = true
         // fix 2020-06-27 remove #doCreateView() callback since it will be called after #onViewCreated()
         return binding.root
     }
 
+    /** Check if [binding] is initialized. */
+    fun isBindingInitialized(): Boolean = this::binding.isInitialized
 }

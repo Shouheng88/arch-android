@@ -24,7 +24,9 @@ object GlobalExceptionManager {
     fun handleException(t: Throwable): Pair<String, String> {
         handlers.forEach {
             val result = it.handleException(t)
-            if (result != null) return result
+            if (result != null) {
+                return result
+            }
         }
         return when(t) {
             is NoNetworkException -> "-1" to "Please check your network"
