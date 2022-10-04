@@ -28,7 +28,7 @@ class GuokrDetailViewModel(application: Application) : BaseViewModel(application
             }
 
             override fun onFailed(code: String, msg: String) {
-                setFailed(GuokrNewsContent::class.java, code, msg)
+                setFailure(GuokrNewsContent::class.java, code, msg)
             }
         })
     }

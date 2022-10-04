@@ -1,42 +1,35 @@
-package me.shouheng.vmlib.base;
+package me.shouheng.vmlib.base
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 
 /**
  * The base common fragment implementation for MVVMs. Example:
  *
- * @author <a href="mailto:shouheng2020@gmail.com">ShouhengWang</a>
+ * @author [ShouhengWang](mailto:shouheng2020@gmail.com)
  * @version 2019-6-29
  */
-public abstract class CommonFragment<U extends BaseViewModel, T extends ViewDataBinding> extends BaseFragment<U> {
+abstract class CommonFragment<U : BaseViewModel, T : ViewDataBinding> : BaseFragment<U>() {
 
-    private T binding;
+    protected lateinit var binding: T
+        private set
 
-    @Nullable
-    @Override
-    public View onCreateView(
-            @NonNull LayoutInflater inflater,
-            @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState
-    ) {
-        int layoutResId = getLayoutResId();
-        if (layoutResId <= 0) {
-            throw new IllegalArgumentException("The subclass must provider a valid layout resources id.");
-        }
-        binding = DataBindingUtil.inflate(inflater, layoutResId, null, false);
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val layoutResId = getLayoutResId()
+        require(layoutResId > 0) { "The subclass must provider a valid layout resources id." }
+        binding = DataBindingUtil.inflate(inflater, layoutResId, null, false)
         // fix 2020-06-27 remove #doCreateView() callback since it will be called after #onViewCreated()
-        return binding.getRoot();
+        return binding.root
     }
 
-    protected T getBinding() {
-        return binding;
-    }
+    /** Check if [binding] is initialized. */
+    fun isBindingInitialized(): Boolean = this::binding.isInitialized
 }

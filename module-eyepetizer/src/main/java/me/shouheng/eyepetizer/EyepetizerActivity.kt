@@ -2,6 +2,7 @@ package me.shouheng.eyepetizer
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
@@ -45,7 +46,7 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerAc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        L.e("EyepetizerActivity#onCreate $this $vm")
+        L.e("EyepetizerActivity#onCreate $this $vm test[${savedInstanceState?.getString("test")}]")
     }
 
     override fun onStart() {
@@ -151,6 +152,7 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerAc
         binding.rv.setEmptyView(binding.ev)
         // Use the cached value in viewmodel.
         adapter.setNewData(vm.items)
+        L.i("Last vm [$vm] and data size [${vm.items.size}]")
     }
 
     private fun configView() {
@@ -195,5 +197,10 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerAc
                 dataLoadListener?.loading = false
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        outState?.putString("test", "test_value")
     }
 }

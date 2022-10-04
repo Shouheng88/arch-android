@@ -13,6 +13,8 @@ import me.shouheng.uix.widget.databinding.UixLayoutSimpleListBinding
 import me.shouheng.uix.widget.rv.listener.AbsDataLoadListener
 import me.shouheng.uix.widget.rv.listener.LinearDataLoadListener
 import me.shouheng.utils.ktx.toast
+import me.shouheng.utils.stability.L
+import me.shouheng.vmlib.anno.FragmentConfiguration
 import me.shouheng.vmlib.base.ViewBindingFragment
 import me.shouheng.vmlib.comn.ContainerActivity
 import me.shouheng.vmlib.component.observeOnList
@@ -25,7 +27,8 @@ import me.shouheng.xadapter.viewholder.onItemClick
  * @Author wangshouheng
  * @Time 2021/9/25
  */
-class GuokrFragment : ViewBindingFragment<GuokrViewModel, UixLayoutSimpleListBinding>() {
+@FragmentConfiguration(shareViewModel = true)
+class GuokrFragment: ViewBindingFragment<GuokrViewModel, UixLayoutSimpleListBinding>() {
 
     private val adapter: BaseQuickAdapter<Result, BaseViewHolder> by lazy {
         createAdapter {
@@ -53,8 +56,9 @@ class GuokrFragment : ViewBindingFragment<GuokrViewModel, UixLayoutSimpleListBin
     override fun doCreateView(savedInstanceState: Bundle?) {
         initList()
         observes()
-        vm.getNews()
+        vm.getNews(this@GuokrFragment.toString())
         adapter.setNewData(vm.news)
+        L.d("Current guokr news size [${vm.news.size}] vm[$vm] activity[$activity] fid[${this@GuokrFragment}]")
     }
 
     private fun initList() {
@@ -64,7 +68,7 @@ class GuokrFragment : ViewBindingFragment<GuokrViewModel, UixLayoutSimpleListBin
         binding.v.bind(binding.rv)
         dataLoadListener = object : LinearDataLoadListener(binding.rv.layoutManager as LinearLayoutManager) {
             override fun loadMore() {
-                vm.getNews()
+                vm.getNews(this@GuokrFragment.toString())
             }
         }
         binding.rv.addOnScrollListener(dataLoadListener!!)

@@ -4,10 +4,10 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import me.shouheng.vmlib.anno.ViewModelConfiguration
 import me.shouheng.vmlib.bean.Resources
-import me.shouheng.vmlib.bean.Status
 import me.shouheng.vmlib.bus.Bus
-import me.shouheng.vmlib.component.LiveDataHolder
-import me.shouheng.vmlib.component.SingleLiveEvent
+import me.shouheng.vmlib.component.IntermediateLiveData
+import me.shouheng.vmlib.component.LiveDataPool
+import me.shouheng.vmlib.component.ResourceLiveData
 
 /**
  * Basic implementation of common ViewModel.
@@ -19,177 +19,127 @@ import me.shouheng.vmlib.component.SingleLiveEvent
  * @version 2019-6-29
  */
 open class BaseViewModel(application: Application) : AndroidViewModel(application) {
-    private val holder = LiveDataHolder<Any>()
-    private val listHolder: LiveDataHolder<*> = LiveDataHolder<List<*>>()
+
+    private val liveDataPool = LiveDataPool<Any>()
+
+    private val listLiveDataPool: LiveDataPool<*> = LiveDataPool<List<*>>()
+
+    private val intermediateLiveData = IntermediateLiveData()
 
     /** If the view model use event bus */
     private var useEventBus = false
 
-    /**
-     * Get the LiveData of given type and flag
-     *
-     * @param dataType the data type
-     * @param sid      the identity of live data, used to distinguish two livedata of same data type
-     * @param single   is single event
-     * @param <T>      the generic data type.
-     * @return         the live data.
-     * @see SingleLiveEvent
-     */
-    fun <T> getObservable(
-        dataType: Class<T>,
-        sid: Int?             = null,
-        single: Boolean       = false,
-        targetStatus: Status? = Status.SUCCESS
-    ): SingleLiveEvent<Resources<T>> {
-        return holder.getLiveData(dataType, sid, single, targetStatus) as SingleLiveEvent<Resources<T>>
+    /** Get a livedata of given type and sid which is used to distinguish two livedata of same type. */
+    fun <T> getObservable(dataType: Class<T>, sid: Int? = null): ResourceLiveData<T> {
+        return liveDataPool.acquireLiveData(dataType, sid, intermediateLiveData) as ResourceLiveData<T>
     }
 
-    /**
-     * Get the LiveData of given list type and flag
-     *
-     * @param dataType the data type
-     * @param sid      the identity of live data, used to distinguish two livedata of same data type
-     * @param single   is single event
-     * @param <T>      the generic data type.
-     * @return         the live data.
-     * @see SingleLiveEvent
-     */
-    fun <T> getListObservable(
-        dataType: Class<T>,
-        sid: Int?             = null,
-        single: Boolean       = false,
-        targetStatus: Status? = Status.SUCCESS
-    ): SingleLiveEvent<Resources<List<T>>> {
-        return listHolder.getLiveData(dataType, sid, single, targetStatus) as SingleLiveEvent<Resources<List<T>>>
+    /** Get a livedata of given list type and sid which is used to distinguish two livedata of same type. */
+    fun <T> getListObservable(dataType: Class<T>, sid: Int? = null): ResourceLiveData<List<T>> {
+        return listLiveDataPool.acquireLiveData(dataType, sid, intermediateLiveData) as ResourceLiveData<List<T>>
     }
+
+    /** Get a value base on [dataType] and [sid]. */
+    fun <T> getValue(dataType: Class<T>, sid: Int? = null): T? = getObservable(dataType, sid).value?.data
+
+    /** Get a list value base on [dataType] and [sid]. */
+    fun <T> getListValue(dataType: Class<T>, sid: Int? = null): List<T>? = getListObservable(dataType, sid).value?.data
 
     /** Set success state of data type */
     fun <T> setSuccess(
         dataType: Class<T>,
         data: T,
         sid: Int?       = null,
-        single: Boolean = false,
         udf1: Long?     = null,
         udf2: Double?   = null,
         udf3: Boolean?  = null,
         udf4: String?   = null,
         udf5: Any?      = null
-    ) {
-        getObservable(dataType, sid, single, Status.SUCCESS).value =
-            Resources.success(data, udf1, udf2, udf3, udf4, udf5)
-    }
+    ) { getObservable(dataType, sid).value = Resources.success(data, udf1, udf2, udf3, udf4, udf5) }
 
     /** Set progress state of data type */
     fun <T> setProgress(
         dataType: Class<T>,
         data: T,
         sid: Int?       = null,
-        single: Boolean = false,
         udf1: Long?     = null,
         udf2: Double?   = null,
         udf3: Boolean?  = null,
         udf4: String?   = null,
         udf5: Any?      = null
-    ) {
-        getObservable(dataType, sid, single, null).value =
-            Resources.progress(data, udf1, udf2, udf3, udf4, udf5)
-    }
+    ) { getObservable(dataType, sid).value = Resources.progress(data, udf1, udf2, udf3, udf4, udf5) }
 
     /** Set loading state of data type */
     fun <T> setLoading(
         dataType: Class<T>,
         sid: Int?       = null,
-        single: Boolean = false,
         udf1: Long?     = null,
         udf2: Double?   = null,
         udf3: Boolean?  = null,
         udf4: String?   = null,
         udf5: Any?      = null
-    ) {
-        getObservable(dataType, sid, single, null).value =
-            Resources.loading(udf1, udf2, udf3, udf4, udf5)
-    }
+    ) { getObservable(dataType, sid).value = Resources.loading(udf1, udf2, udf3, udf4, udf5) }
 
     /** Set fail state of data type */
-    fun <T> setFailed(
+    fun <T> setFailure(
         dataType: Class<T>,
         code: String?,
         message: String?,
         sid: Int?       = null,
-        single: Boolean = false,
         udf1: Long?     = null,
         udf2: Double?   = null,
         udf3: Boolean?  = null,
         udf4: String?   = null,
         udf5: Any?      = null
-    ) {
-        getObservable(dataType, sid, single, null).value =
-            Resources.failed(code, message, udf1, udf2, udf3, udf4, udf5)
-    }
+    ) { getObservable(dataType, sid).value = Resources.failure(code, message, udf1, udf2, udf3, udf4, udf5) }
 
     /** Set success state of list data type */
     fun <T> setListSuccess(
         dataType: Class<T>,
         data: List<T>,
         sid: Int?       = null,
-        single: Boolean = false,
         udf1: Long?     = null,
         udf2: Double?   = null,
         udf3: Boolean?  = null,
         udf4: String?   = null,
         udf5: Any?      = null
-    ) {
-        getListObservable(dataType, sid, single, Status.SUCCESS).value =
-            Resources.success(data, udf1, udf2, udf3, udf4, udf5)
-    }
+    ) { getListObservable(dataType, sid).value = Resources.success(data, udf1, udf2, udf3, udf4, udf5) }
 
     /** Set progress state of list data type */
     fun <T> setListProgress(
         dataType: Class<T>,
         data: List<T>,
         sid: Int?       = null,
-        single: Boolean = false,
         udf1: Long?     = null,
         udf2: Double?   = null,
         udf3: Boolean?  = null,
         udf4: String?   = null,
         udf5: Any?      = null
-    ) {
-        getListObservable(dataType, sid, single, null).value =
-            Resources.progress(data, udf1, udf2, udf3, udf4, udf5)
-    }
+    ) { getListObservable(dataType, sid).value = Resources.progress(data, udf1, udf2, udf3, udf4, udf5) }
 
     /** Set loading state of list data type */
     fun <T> setListLoading(
         dataType: Class<T>,
         sid: Int?       = null,
-        single: Boolean = false,
         udf1: Long?     = null,
         udf2: Double?   = null,
         udf3: Boolean?  = null,
         udf4: String?   = null,
         udf5: Any?      = null
-    ) {
-        getListObservable(dataType, sid, single, null).value =
-            Resources.loading(udf1, udf2, udf3, udf4, udf5)
-    }
+    ) { getListObservable(dataType, sid).value = Resources.loading(udf1, udf2, udf3, udf4, udf5) }
 
     /** Set fail state of list data type */
-    fun <T> setListFailed(
+    fun <T> setListFailure(
         dataType: Class<T>,
         code: String?,
         message: String?,
         sid: Int?       = null,
-        single: Boolean = false,
         udf1: Long?     = null,
         udf2: Double?   = null,
         udf3: Boolean?  = null,
         udf4: String?   = null,
         udf5: Any?      = null
-    ) {
-        getListObservable(dataType, sid, single, null).value =
-            Resources.failed(code, message, udf1, udf2, udf3, udf4, udf5)
-    }
+    ) { getListObservable(dataType, sid).value = Resources.failure(code, message, udf1, udf2, udf3, udf4, udf5) }
 
     override fun onCleared() {
         if (useEventBus) {

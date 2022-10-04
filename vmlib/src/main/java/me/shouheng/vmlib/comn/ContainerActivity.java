@@ -140,19 +140,26 @@ public class ContainerActivity extends BaseActivity<EmptyViewModel> {
             }
             if (fragmentClass != null) {
                 if (Fragment.class.isAssignableFrom(fragmentClass)) {
-                    Fragment fragment = (Fragment) fragmentClass.newInstance();
-                    fragment.setArguments(bundle);
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.container, fragment)
-                            .commit();
+                    // fix 2022-10-03 add new judge
+                    Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.container);
+                    if (fragment == null || savedInstanceState == null || fragment.getClass() != fragmentClass) {
+                        fragment = (Fragment) fragmentClass.newInstance();
+                        fragment.setArguments(bundle);
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.container, fragment)
+                                .commit();
+                    }
                 } else if (android.app.Fragment.class.isAssignableFrom(fragmentClass)) {
-                    android.app.Fragment fragment = (android.app.Fragment) fragmentClass.newInstance();
-                    fragment.setArguments(bundle);
-                    getFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.container, fragment)
-                            .commit();
+                    android.app.Fragment fragment = getFragmentManager().findFragmentById(R.id.container);
+                    if (fragment == null || savedInstanceState == null || fragment.getClass() != fragmentClass) {
+                        fragment = (android.app.Fragment) fragmentClass.newInstance();
+                        fragment.setArguments(bundle);
+                        getFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.container, fragment)
+                                .commit();
+                    }
                 }
             } else {
                 // handle command by command handler

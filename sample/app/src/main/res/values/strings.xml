@@ -4,9 +4,17 @@
     <string name="main_eye_demo_name">Eyepetizer Videos</string>
     <string name="main_github_demo_name">Github Stars</string>
 
-    <string name="main_input_sample">Input Sample</string>
+    <string name="main_library_sample">Architecture</string>
     <string name="main_input_title_hint">Input the title</string>
-    <string name="main_input_content_hint">Write something here …</string>
+    <string name="main_input_content_hint">Write content here</string>
+    <string name="main_input_title_with">Title: %s</string>
+    <string name="main_input_content_with">Content: %s</string>
+    <string name="main_input_sample_hint">View the performance of each status when observe:\n
+    - Sticky: the value of \'success\' status will be recovered\n
+    - Not Sticky: the value of \'progress\', \'loading\' &amp; \'failure\' status will be ignored</string>
+    <string name="main_input_title_intermediate_error">Cause a title intermediate failure</string>
+    <string name="main_input_content_intermediate_error">Cause a content intermediate failure</string>
+    <string name="main_input_add_child_fragment">Add child fragment</string>
     <string name="main_guokr_sample">Guokr Sample</string>
 
     <string name="main_more_widget">More Options</string>

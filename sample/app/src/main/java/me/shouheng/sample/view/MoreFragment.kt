@@ -137,9 +137,9 @@ class MoreFragment : CommonFragment<OptionsViewModel, FragmentMoreBinding>(), Co
             }
         }
         // Register the network state.
-        NetworkStateManager.observe(this, false, {
+        NetworkStateManager.observe(this, false) {
             toast(stringOf(R.string.main_more_widget_network_state_changed).format("${it.connected}"))
-        })
+        }
     }
 
     override fun onBackPressed(activity: ContainerActivity) {

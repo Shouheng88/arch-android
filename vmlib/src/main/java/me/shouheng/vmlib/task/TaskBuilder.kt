@@ -36,7 +36,7 @@ import me.shouheng.vmlib.exception.NoNetworkException
         realTask = {
             if (!NetworkUtils.isConnected()) {
                 val result = GlobalExceptionManager.handleException(NoNetworkException())
-                Resources.failed(result.first, result.second)
+                Resources.failure(result.first, result.second)
             } else {
                 Resources.success(task())
             }
@@ -64,7 +64,7 @@ import me.shouheng.vmlib.exception.NoNetworkException
                 realTask?.invoke()
             } catch (e: Throwable) {
                 val result = GlobalExceptionManager.handleException(e)
-                Resources.failed<R>(result.first, result.second).apply {
+                Resources.failure<R>(result.first, result.second).apply {
                     throwable = e
                 }
             }

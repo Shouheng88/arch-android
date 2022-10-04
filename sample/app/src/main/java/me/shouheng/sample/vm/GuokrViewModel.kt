@@ -6,6 +6,7 @@ import me.shouheng.api.bean.GuokrNews
 import me.shouheng.api.bean.Result
 import me.shouheng.api.service.GuokrService
 import me.shouheng.api.service.OnGetResultListener
+import me.shouheng.utils.stability.L
 import me.shouheng.vmlib.base.BaseViewModel
 
 /**
@@ -24,7 +25,8 @@ class GuokrViewModel(application: Application) : BaseViewModel(application) {
     val news = mutableListOf<Result>()
 
     /** Get guokr news */
-    fun getNews() {
+    fun getNews(fid: String) {
+        L.d("Requesting guokr news of offset[$offset] and limit[$limit] for fid[$fid].")
         guokrService.getGuokrNews(offset, limit, object : OnGetResultListener<GuokrNews> {
             override fun onSuccess(data: GuokrNews) {
                 offset += limit
@@ -34,7 +36,7 @@ class GuokrViewModel(application: Application) : BaseViewModel(application) {
             }
 
             override fun onFailed(code: String, msg: String) {
-                setListFailed(Result::class.java, code, msg)
+                setListFailure(Result::class.java, code, msg)
             }
         })
     }

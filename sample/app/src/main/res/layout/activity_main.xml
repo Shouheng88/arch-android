@@ -52,11 +52,11 @@
             android:background="#FF9800">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:src="@drawable/main_baseline_edit_24"
+                android:src="@drawable/main_wb_incandescent_24"
                 style="@style/Home.Image"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:text="@string/main_input_sample"
+                android:text="@string/main_library_sample"
                 android:textColor="@android:color/white"
                 style="@style/Home.Text"/>
 

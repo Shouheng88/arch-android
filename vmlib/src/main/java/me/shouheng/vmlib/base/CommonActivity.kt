@@ -1,30 +1,28 @@
-package me.shouheng.vmlib.base;
+package me.shouheng.vmlib.base
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
+import android.os.Bundle
+import android.view.LayoutInflater
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 
 /**
  * The basic common implementation for MMVMs activity.
  *
- * @author <a href="mailto:shouheng2020@gmail.com">ShouhengWang</a>
+ * @author [ShouhengWang](mailto:shouheng2020@gmail.com)
  * @version 2019-6-29
  */
-public abstract class CommonActivity<U extends BaseViewModel, T extends ViewDataBinding> extends BaseActivity<U> {
+abstract class CommonActivity<U : BaseViewModel, T : ViewDataBinding> : BaseActivity<U>() {
 
-    private T binding;
+    protected lateinit var binding: T
+        private set
 
-    @Override
-    protected void setupContentView(@Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(this)
-                , getLayoutResId(), null, false);
-        setContentView(binding.getRoot());
+    override fun setupContentView(savedInstanceState: Bundle?) {
+        binding = DataBindingUtil.inflate(
+            LayoutInflater.from(this), getLayoutResId(), null, false
+        )
+        setContentView(binding.root)
     }
 
-    protected T getBinding() {
-        return binding;
-    }
+    /** Check if [binding] is initialized. */
+    fun isBindingInitialized(): Boolean = this::binding.isInitialized
 }

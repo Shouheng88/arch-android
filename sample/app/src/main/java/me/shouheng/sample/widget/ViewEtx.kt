@@ -11,7 +11,7 @@ import me.shouheng.api.bean.Result
 import me.shouheng.sample.R
 
 /** Method extension for [EditText]. */
-inline fun EditText.onTextChanged(
+inline fun EditText.afterTextChanged(
     crossinline onChanged: (s: Editable?) -> Unit
 ) {
     this.addTextChangedListener(object : TextWatcher {

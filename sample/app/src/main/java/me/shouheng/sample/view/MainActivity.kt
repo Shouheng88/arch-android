@@ -56,7 +56,7 @@ class MainActivity : CommonActivity<EmptyViewModel, ActivityMainBinding>() {
         }
         binding.llEt.onDebouncedClick {
             /** Sample for [ContainerActivity]. */
-            ContainerActivity.open(InputFragment::class.java)
+            ContainerActivity.open(ArchitectureFragment::class.java)
                 .put(ContainerActivity.KEY_EXTRA_ACTIVITY_DIRECTION, ActivityDirection.ANIMATE_SLIDE_BOTTOM_FROM_TOP)
                 .put(ContainerActivity.KEY_EXTRA_THEME_ID, R.style.RedAppTheme)
                 .launch(context)

@@ -50,7 +50,7 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
 
             override fun onError(code: String, msg: String) {
                 L.d("Got home bean error")
-                setListFailed(Item::class.java, code, msg)
+                setListFailure(Item::class.java, code, msg)
             }
         })
     }
@@ -69,7 +69,7 @@ class EyepetizerViewModel(application: Application) : BaseViewModel(application)
 
             override fun onError(code: String, msg: String) {
                 L.d("Got next page home bean error")
-                setListFailed(Item::class.java, code, msg, udf3 = true)
+                setListFailure(Item::class.java, code, msg, udf3 = true)
             }
         })
     }
