@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.FragmentArchitectureBinding
 import me.shouheng.sample.vm.ArchitectureViewModel
-import me.shouheng.sample.widget.afterTextChanged
+import me.shouheng.guokr.widget.afterTextChanged
 import me.shouheng.utils.ktx.gone
 import me.shouheng.utils.ktx.onDebouncedClick
 import me.shouheng.utils.ktx.stringOf

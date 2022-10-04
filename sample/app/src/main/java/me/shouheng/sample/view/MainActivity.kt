@@ -3,6 +3,7 @@ package me.shouheng.sample.view
 import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import me.shouheng.guokr.view.GuokrFragment
 import me.shouheng.sample.R
 import me.shouheng.sample.databinding.ActivityMainBinding
 import me.shouheng.sample.event.SimpleEvent

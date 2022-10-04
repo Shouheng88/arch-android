@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 //apply plugin: 'com.github.panpf.bintray-publish'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
+//apply plugin: 'kotlin-android-extensions'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
@@ -64,7 +64,7 @@ dependencies {
     api "com.github.Shouheng88:utils-ktx:${utilsCoreVersion}"
     api "com.github.Shouheng88:compressor:1.6.0"
 //    api "com.github.Shouheng88:vmlib-network:$publishVersion"
-    api project(":vmlib-network")
+    api project(":vmlib_network")
 }
 
 //publish {

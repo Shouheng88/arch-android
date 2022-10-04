@@ -1,6 +1,10 @@
-include ':app', ':vmlib', ':vmlib-network', ':module-api', ':module-service', ':module-eyepetizer'
+include ':app', ':vmlib', ':vmlib_network', ':biz_common'
+include ':biz_eyepetizer_api', ':biz_eyepetizer_impl'
+include ':biz_guokr_api', 'biz_guokr_impl'
 project(':vmlib').projectDir = new File('../vmlib')
-project(':vmlib-network').projectDir = new File('../vmlib-network')
-project(':module-api').projectDir = new File('../module-api')
-project(':module-service').projectDir = new File('../module-service')
-project(':module-eyepetizer').projectDir = new File('../module-eyepetizer')
+project(':vmlib_network').projectDir = new File('../vmlib_network')
+project(':biz_common').projectDir = new File('../biz_common')
+project(':biz_eyepetizer_api').projectDir = new File('../biz_eyepetizer_api')
+project(':biz_eyepetizer_impl').projectDir = new File('../biz_eyepetizer_impl')
+project(':biz_guokr_api').projectDir = new File('../biz_guokr_api')
+project(':biz_guokr_impl').projectDir = new File('../biz_guokr_impl')
