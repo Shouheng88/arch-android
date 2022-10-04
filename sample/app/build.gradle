@@ -116,6 +116,7 @@ dependencies {
     implementation project(path: ':vmlib')
 //    implementation "com.github.Shouheng88:vmlib:1.6.1"
     implementation project(path: ':biz_common')
+    implementation project(path: ':biz_common_api')
     implementation project(path: ':vmlib_network')
     implementation project(path: ':biz_eyepetizer_api')
     implementation project(path: ':biz_eyepetizer_impl')

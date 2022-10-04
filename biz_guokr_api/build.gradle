@@ -37,8 +37,12 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     kapt 'com.alibaba:arouter-compiler:1.2.2'
+
+    api "io.realm:realm-annotations:$realm_version"
+    api "io.realm:realm-android-library:$realm_version"
+    api "io.realm:realm-android-kotlin-extensions:$realm_version"
     kapt "io.realm:realm-annotations-processor:$realm_version"
 
     implementation project(path: ':vmlib')
-    implementation project(path: ':biz_common')
+    implementation project(path: ':biz_common_api')
 }
