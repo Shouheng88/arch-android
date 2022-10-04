@@ -2,6 +2,7 @@ package me.shouheng.guokr.view
 
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import me.shouheng.guokr.R
@@ -27,6 +28,7 @@ import me.shouheng.xadapter.viewholder.onItemClick
  * @Author wangshouheng
  * @Time 2021/9/25
  */
+@Route(path = "/guokr/entrance")
 @FragmentConfiguration(shareViewModel = true)
 class GuokrFragment: ViewBindingFragment<GuokrViewModel, UixLayoutSimpleListBinding>() {
 

@@ -122,4 +122,6 @@ dependencies {
     implementation project(path: ':biz_eyepetizer_impl')
     implementation project(path: ':biz_guokr_api')
     implementation project(path: ':biz_guokr_impl')
+    implementation project(path: ':biz_home_api')
+    implementation project(path: ':biz_home_impl')
 }

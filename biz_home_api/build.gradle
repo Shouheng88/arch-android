@@ -31,25 +31,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    viewBinding {
-        enabled true
-    }
-    android {
-        lintOptions {
-            abortOnError false
-        }
-    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.shuyu:GSYVideoPlayer:1.6.8'
-
     kapt 'com.alibaba:arouter-compiler:1.2.2'
-    kapt "com.github.Shouheng88:startup-compiler:$startupVersion"
 
     implementation project(path: ':vmlib')
-    implementation project(path: ':biz_common')
-    implementation project(path: ':biz_eyepetizer_api')
+    implementation project(path: ':biz_common_api')
 }

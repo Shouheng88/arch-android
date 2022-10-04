@@ -15,6 +15,6 @@ import me.shouheng.utils.stability.L
 class EyepetizerApiStartupJob : ISchedulerJob {
 
     override fun run(context: Context) {
-        L.d(">>> ApiStartupJob called <<<")
+        L.d(">>> EyepetizerApiStartupJob called <<<")
     }
 }

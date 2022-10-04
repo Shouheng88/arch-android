@@ -1,12 +1,11 @@
-package me.shouheng.sample.view
+package me.shouheng.home.view
 
 import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
-import me.shouheng.guokr.view.GuokrFragment
-import me.shouheng.sample.R
-import me.shouheng.sample.databinding.ActivityMainBinding
-import me.shouheng.sample.event.SimpleEvent
+import me.shouheng.home.R
+import me.shouheng.home.databinding.HomeActivityBinding
+import me.shouheng.home.event.SimpleEvent
 import me.shouheng.utils.app.ActivityUtils
 import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.ktx.dp
@@ -31,16 +30,16 @@ import org.greenrobot.eventbus.Subscribe
  *
  * @author ShouhengWang 2019-6-29
  */
-@Route(path = "/app/debug")
+@Route(path = "/home/entrance")
 @ActivityConfiguration(
     useEventBus = true,
     exitDirection = ActivityDirection.ANIMATE_SLIDE_BOTTOM_FROM_TOP
 )
-class MainActivity : CommonActivity<EmptyViewModel, ActivityMainBinding>() {
+class HomeActivity : CommonActivity<EmptyViewModel, HomeActivityBinding>() {
 
     private var onBackPressed: Long = -1
 
-    override fun getLayoutResId(): Int = R.layout.activity_main
+    override fun getLayoutResId(): Int = R.layout.home_activity
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         initViews()
@@ -56,7 +55,7 @@ class MainActivity : CommonActivity<EmptyViewModel, ActivityMainBinding>() {
             ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_FORWARD)
         }
         binding.llEt.onDebouncedClick {
-            /** Sample for [ContainerActivity]. */
+            /* Sample for [ContainerActivity]. */
             ContainerActivity.open(ArchitectureFragment::class.java)
                 .put(ContainerActivity.KEY_EXTRA_ACTIVITY_DIRECTION, ActivityDirection.ANIMATE_SLIDE_BOTTOM_FROM_TOP)
                 .put(ContainerActivity.KEY_EXTRA_THEME_ID, R.style.RedAppTheme)
@@ -64,21 +63,20 @@ class MainActivity : CommonActivity<EmptyViewModel, ActivityMainBinding>() {
             ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
         }
         binding.llMore.onDebouncedClick {
-            /** [ContainerActivity] use default animation. */
+            /* [ContainerActivity] use default animation. */
             ContainerActivity.open(MoreFragment::class.java)
                 .put(ContainerActivity.KEY_EXTRA_THEME_ID, R.style.GreenAppTheme)
                 .launch(context)
         }
         binding.llGuokr.onDebouncedClick {
-            ContainerActivity.open(GuokrFragment::class.java)
-                .put(ContainerActivity.KEY_EXTRA_THEME_ID, R.style.GreenAppTheme)
-                .launch(context)
+            ContainerActivity.open(HOME_COMMAND_LAUNCH_GUOKR).launch(context)
         }
     }
 
     @Subscribe
     fun onGetMessage(event: SimpleEvent) {
-        toast(stringOf(R.string.main_more_widget_make_a_post_receiver).format(event.msg, this.javaClass.simpleName))
+        toast(stringOf(R.string.main_more_widget_make_a_post_receiver)
+            .format(event.msg, this.javaClass.simpleName))
     }
 
     override fun onBackPressed() {
@@ -88,5 +86,9 @@ class MainActivity : CommonActivity<EmptyViewModel, ActivityMainBinding>() {
             toast(R.string.main_again_to_exit)
         }
         onBackPressed = System.currentTimeMillis()
+    }
+
+    companion object {
+        const val HOME_COMMAND_LAUNCH_GUOKR = 0x00011
     }
 }

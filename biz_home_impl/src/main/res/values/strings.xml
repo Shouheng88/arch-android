@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">Android VMLib</string>
-
     <string name="main_eye_demo_name">Eyepetizer Videos</string>
     <string name="main_github_demo_name">Github Stars</string>
 

@@ -1,15 +1,15 @@
-package me.shouheng.sample.view
+package me.shouheng.home.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import me.shouheng.sample.R
-import me.shouheng.sample.databinding.FragmentMoreBinding
-import me.shouheng.sample.event.SimpleEvent
-import me.shouheng.sample.vm.OptionsViewModel
-import me.shouheng.sample.widget.confirmOrCancel
-import me.shouheng.sample.widget.simpleDialogContent
-import me.shouheng.sample.widget.simpleDialogTitle
+import me.shouheng.home.R
+import me.shouheng.home.databinding.HomeFragmentMoreBinding
+import me.shouheng.home.event.SimpleEvent
+import me.shouheng.home.vm.OptionsViewModel
+import me.shouheng.home.widget.confirmOrCancel
+import me.shouheng.home.widget.simpleDialogContent
+import me.shouheng.home.widget.simpleDialogTitle
 import me.shouheng.uix.common.anno.DialogStyle
 import me.shouheng.uix.widget.dialog.content.SimpleEditor
 import me.shouheng.uix.widget.dialog.content.simpleEditor
@@ -37,12 +37,12 @@ import java.io.File
  * @author ShouhengWang 2019-6-29
  */
 @FragmentConfiguration(shareViewModel = true, useEventBus = true)
-class MoreFragment : CommonFragment<OptionsViewModel, FragmentMoreBinding>(), ContainerActivity.BackEventResolver {
+class MoreFragment : CommonFragment<OptionsViewModel, HomeFragmentMoreBinding>(), ContainerActivity.BackEventResolver {
 
     private val downloadUrl = "https://images.unsplash.com/photo-1501879779179-4576bae71d8" +
             "d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&dl=vladimir-riabinin-diMBLU4FzDQ-unsplash.jpg"
 
-    override fun getLayoutResId(): Int = R.layout.fragment_more
+    override fun getLayoutResId(): Int = R.layout.home_fragment_more
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         initViews()

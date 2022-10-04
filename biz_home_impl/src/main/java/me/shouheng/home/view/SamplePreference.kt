@@ -1,10 +1,10 @@
-package me.shouheng.sample.view
+package me.shouheng.home.view
 
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.preference.Preference
-import me.shouheng.sample.R
+import me.shouheng.home.R
 import me.shouheng.utils.ktx.colorOf
 import me.shouheng.utils.ktx.drawableOf
 import me.shouheng.utils.ktx.tint
@@ -25,13 +25,13 @@ class SamplePreference : BasePreferenceFragment<EmptyViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.setBackgroundColor(colorOf(R.color.cold_theme_background))
+        view.setBackgroundColor(colorOf(R.color.home_theme_background))
         findPreference<Preference>("key_exit")?.setOnPreferenceClickListener {
             activity?.finish()
             true
         }
         findPreference<Preference>("key_setting_theme")?.apply {
-            this.icon = drawableOf(R.drawable.eyepetizer_baseline_mail_24).tint(Color.BLACK)
+            this.icon = drawableOf(R.drawable.home_baseline_edit_24).tint(Color.BLACK)
         }
     }
 }

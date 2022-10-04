@@ -1,8 +1,11 @@
-package me.shouheng.sample.widget
+package me.shouheng.home.widget
 
 import android.content.Context
 import android.graphics.Color
-import me.shouheng.sample.R
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
+import me.shouheng.home.R
 import me.shouheng.uix.common.anno.BottomButtonStyle
 import me.shouheng.uix.common.bean.textStyle
 import me.shouheng.uix.widget.dialog.content.IDialogContent
@@ -13,6 +16,21 @@ import me.shouheng.uix.widget.dialog.title.IDialogTitle
 import me.shouheng.uix.widget.dialog.title.simpleTitle
 import me.shouheng.utils.ktx.attrColorOf
 import me.shouheng.utils.ktx.stringOf
+
+/** Method extension for [EditText]. */
+inline fun EditText.afterTextChanged(
+    crossinline onChanged: (s: Editable?) -> Unit
+) {
+    this.addTextChangedListener(object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+        override fun afterTextChanged(s: Editable?) {
+            onChanged(s)
+        }
+    })
+}
 
 /** Suggest to wrap your own logic to global methods. */
 fun confirmOrCancel(

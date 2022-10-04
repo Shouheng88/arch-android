@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.MainActivity">
+    tools:context="me.shouheng.home.view.HomeActivity">
 
     <LinearLayout
         android:orientation="vertical"
@@ -37,7 +37,7 @@
             style="@style/Home.Group">
 
             <me.shouheng.uix.widget.image.CircleImageView
-                android:src="@drawable/main_guokr"
+                android:src="@drawable/guokr_icon"
                 style="@style/Home.Image"/>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -52,7 +52,7 @@
             android:background="#FF9800">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:src="@drawable/main_wb_incandescent_24"
+                android:src="@drawable/home_wb_incandescent_24"
                 style="@style/Home.Image"/>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -67,7 +67,7 @@
             style="@style/Home.Group">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:src="@drawable/main_baseline_widgets_24"
+                android:src="@drawable/home_baseline_widgets_24"
                 style="@style/Home.Image"/>
 
             <androidx.appcompat.widget.AppCompatTextView

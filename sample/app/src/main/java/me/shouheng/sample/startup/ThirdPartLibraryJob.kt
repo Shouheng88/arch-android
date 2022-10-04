@@ -14,7 +14,8 @@ import me.shouheng.vmlib.BuildConfig
  * @Author wangshouheng
  * @Time 2021/9/25
  */
-@StartupJob class ThirdPartLibraryJob : ISchedulerJob {
+@StartupJob
+class ThirdPartLibraryJob : ISchedulerJob {
 
     override fun run(context: Context) {
         L.d(">>> ThirdPartLibraryJob called <<<")

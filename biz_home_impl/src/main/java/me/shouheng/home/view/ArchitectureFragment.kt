@@ -1,11 +1,11 @@
-package me.shouheng.sample.view
+package me.shouheng.home.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import me.shouheng.sample.R
-import me.shouheng.sample.databinding.FragmentArchitectureBinding
-import me.shouheng.sample.vm.ArchitectureViewModel
-import me.shouheng.guokr.widget.afterTextChanged
+import me.shouheng.home.R
+import me.shouheng.home.databinding.HomeFragmentArchitectureBinding
+import me.shouheng.home.vm.ArchitectureViewModel
+import me.shouheng.home.widget.afterTextChanged
 import me.shouheng.utils.ktx.gone
 import me.shouheng.utils.ktx.onDebouncedClick
 import me.shouheng.utils.ktx.stringOf
@@ -22,7 +22,7 @@ import me.shouheng.vmlib.component.observeOn
  * @Time 2021/9/25
  */
 @FragmentConfiguration(shareViewModel = true)
-class ArchitectureFragment: ViewBindingFragment<ArchitectureViewModel, FragmentArchitectureBinding>() {
+class ArchitectureFragment: ViewBindingFragment<ArchitectureViewModel, HomeFragmentArchitectureBinding>() {
 
     override fun doCreateView(savedInstanceState: Bundle?) {
         initViews()

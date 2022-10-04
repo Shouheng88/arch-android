@@ -1,4 +1,4 @@
-package me.shouheng.sample.vm
+package me.shouheng.home.vm
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData

@@ -3,7 +3,7 @@ package me.shouheng.sample.startup
 import android.annotation.SuppressLint
 import android.content.Context
 import me.shouheng.sample.R
-import me.shouheng.sample.view.MainActivity
+import me.shouheng.sample.view.SplashActivity
 import me.shouheng.scheduler.ISchedulerJob
 import me.shouheng.startup.annotation.StartupJob
 import me.shouheng.uix.pages.crash.CrashReportActivity
@@ -35,7 +35,7 @@ import java.io.File
                 .setContent("Please report this issue to the manger.")
                 .setImage(R.drawable.uix_crash_error_image)
                 .setMessage(crashInfo)
-                .setRestartActivity(MainActivity::class.java)
+                .setRestartActivity(SplashActivity::class.java)
                 .launch()
         }
         // Custom UIX library.
