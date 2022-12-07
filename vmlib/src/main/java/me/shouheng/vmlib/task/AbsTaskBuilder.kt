@@ -58,6 +58,7 @@ import kotlin.coroutines.EmptyCoroutineContext
                 Status.LOADING  -> { onLoading?.invoke(resources) }
                 Status.FAILED   -> { onFailed?.invoke(resources)  }
                 Status.PROGRESS -> { onProgress?.invoke(resources) }
+                else -> { /* do nothing */  }
             }
             resultLiveData?.value = resources
         }

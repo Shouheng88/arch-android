@@ -4,14 +4,14 @@ import android.content.Context
 import androidx.multidex.MultiDexApplication
 import io.realm.Realm
 import me.shouheng.startup.launchStartup
-import me.shouheng.vmlib.VMLib
+import me.shouheng.vmlib.Arch
 
 /** App for VMLib sample.  @author ShouhengWang 2019-6-29 */
 class App : MultiDexApplication() {
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
-        VMLib.onCreate(this)
+        Arch.onCreate(this)
         launchStartup(this) {
             scanAnnotations()
         }

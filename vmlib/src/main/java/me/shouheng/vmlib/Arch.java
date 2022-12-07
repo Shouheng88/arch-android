@@ -2,7 +2,6 @@ package me.shouheng.vmlib;
 
 import android.app.Application;
 
-import me.shouheng.uix.common.UIX;
 import me.shouheng.utils.UtilsApp;
 import me.shouheng.vmlib.network.NetworkStateManager;
 
@@ -17,12 +16,12 @@ import me.shouheng.vmlib.network.NetworkStateManager;
  *
  * ==================================================================
  *
- * Call {@link VMLib#onCreate(Application)} in your application to initialize the library.
+ * Call {@link Arch#onCreate(Application)} in your application to initialize the library.
  *
  * @author <a href="mailto:shouheng2020@gmail.com">ShouhengWang</a>
  * @version Date: 2019-6-29
  */
-public final class VMLib {
+public final class Arch {
 
     private static Application app;
 
@@ -45,10 +44,8 @@ public final class VMLib {
      * @param application the application
      */
     public static void onCreate(Application application) {
-        VMLib.app = application;
+        Arch.app = application;
         UtilsApp.init(application);
         NetworkStateManager.INSTANCE.init(application);
-        // If you want to use uix, you don't need to initialize it in your application manually.
-        if (Platform.DEPENDENCY_UIX_ANALYTICS) UIX.INSTANCE.init(application);
     }
 }

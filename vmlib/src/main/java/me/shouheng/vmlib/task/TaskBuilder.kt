@@ -16,29 +16,29 @@ import me.shouheng.vmlib.exception.NoNetworkException
      * By default, the task execute in [runContext].
      * You can use [executeOn] to specify the execute context.
      */
-    fun task(task: suspend () -> R) {
-        realTask = { Resources.success(task.invoke()) }
+    fun task(body: suspend () -> R) {
+        realTask = { Resources.success(body.invoke()) }
     }
 
     /**
-     * The task to execute. Different from [task], this method will directly
-     * get resources result from [task].
+     * The task to execute. Different from [body], this method will directly
+     * get resources result from [body].
      */
-    fun resources(task: suspend () -> Resources<R>) {
-        realTask = task
+    fun resources(body: suspend () -> Resources<R>) {
+        realTask = body
     }
 
     /**
-     * Make a network request. Different from [task] and [resources], this method
+     * Make a network request. Different from [body] and [resources], this method
      * Will check the network state before make the real network request.
      */
-    fun request(task: suspend () -> R) {
+    fun request(body: suspend () -> R) {
         realTask = {
             if (!NetworkUtils.isConnected()) {
                 val result = GlobalExceptionManager.handleException(NoNetworkException())
                 Resources.failure(result.first, result.second)
             } else {
-                Resources.success(task())
+                Resources.success(body())
             }
         }
     }
