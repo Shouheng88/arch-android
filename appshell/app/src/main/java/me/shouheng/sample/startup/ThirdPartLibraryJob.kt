@@ -6,7 +6,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.scheduler.ISchedulerJob
 import me.shouheng.startup.annotation.StartupJob
 import me.shouheng.utils.stability.L
-import me.shouheng.vmlib.BuildConfig
+import me.shouheng.sample.BuildConfig
 
 /**
  * Third part library initialize job.
@@ -14,8 +14,7 @@ import me.shouheng.vmlib.BuildConfig
  * @Author wangshouheng
  * @Time 2021/9/25
  */
-@StartupJob
-class ThirdPartLibraryJob : ISchedulerJob {
+@StartupJob class ThirdPartLibraryJob : ISchedulerJob {
 
     override fun run(context: Context) {
         L.d(">>> ThirdPartLibraryJob called <<<")

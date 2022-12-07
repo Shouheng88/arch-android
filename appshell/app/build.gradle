@@ -119,9 +119,9 @@ dependencies {
     implementation project(path: ':biz_common_api')
     implementation project(path: ':vmlib_network')
     implementation project(path: ':biz_eyepetizer_api')
-    implementation project(path: ':biz_eyepetizer_impl')
+    implementation project(path: ':biz_eyepetizer')
     implementation project(path: ':biz_guokr_api')
-    implementation project(path: ':biz_guokr_impl')
+    implementation project(path: ':biz_guokr')
     implementation project(path: ':biz_home_api')
-    implementation project(path: ':biz_home_impl')
+    implementation project(path: ':biz_home')
 }
