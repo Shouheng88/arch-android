@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.viewbinding.ViewBinding
 import me.shouheng.utils.stability.L
-import java.lang.IllegalStateException
 import java.lang.reflect.ParameterizedType
 
 /** Base activity support view binding. */
 abstract class ViewBindingActivity<U : BaseViewModel, T : ViewBinding> : BaseActivity<U>() {
 
-    protected lateinit var binding: T
-        private set
+    protected var binding: T? = null
 
     /** Don't need to use the layout resource id anymore. */
     @Deprecated(
@@ -27,12 +25,9 @@ abstract class ViewBindingActivity<U : BaseViewModel, T : ViewBinding> : BaseAct
         val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
         try {
             binding = method.invoke(null, LayoutInflater.from(context)) as T
-            setContentView(binding.root)
+            setContentView(binding?.root)
         } catch (e: Exception) {
             L.e("Failed to inflate view binding,", e)
         }
     }
-
-    /** Check if [binding] is initialized. */
-    fun isBindingInitialized(): Boolean = this::binding.isInitialized
 }

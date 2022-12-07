@@ -1,6 +1,7 @@
 package me.shouheng.home.view
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import me.shouheng.home.R
@@ -47,14 +48,14 @@ class HomeActivity : CommonActivity<EmptyViewModel, HomeActivityBinding>() {
 
     private fun initViews() {
         BarUtils.setStatusBarLightMode(this, true)
-        setSupportActionBar(binding.toolbar)
+        setSupportActionBar(binding!!.toolbar)
         supportActionBar?.setTitle(R.string.app_name)
-        binding.lsv.update(0f.dp())
-        binding.llEye.onDebouncedClick {
+        binding!!.lsv.update(0f.dp())
+        binding!!.llEye.onDebouncedClick {
             ARouter.getInstance().build("/eyepetizer/main").navigation()
             ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_FORWARD)
         }
-        binding.llEt.onDebouncedClick {
+        binding!!.llEt.onDebouncedClick {
             /* Sample for [ContainerActivity]. */
             ContainerActivity.open(ArchitectureFragment::class.java)
                 .put(ContainerActivity.KEY_EXTRA_ACTIVITY_DIRECTION, ActivityDirection.ANIMATE_SLIDE_BOTTOM_FROM_TOP)
@@ -62,14 +63,14 @@ class HomeActivity : CommonActivity<EmptyViewModel, HomeActivityBinding>() {
                 .launch(context)
             ActivityUtils.overridePendingTransition(this, ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
         }
-        binding.llMore.onDebouncedClick {
+        binding!!.llMore.onDebouncedClick {
             /* [ContainerActivity] use default animation. */
             ContainerActivity.open(MoreFragment::class.java)
                 .put(ContainerActivity.KEY_EXTRA_THEME_ID, R.style.GreenAppTheme)
                 .launch(context)
         }
-        binding.llGuokr.onDebouncedClick {
-            ContainerActivity.open(HOME_COMMAND_LAUNCH_GUOKR).launch(context)
+        binding!!.llGuokr.onDebouncedClick {
+            ContainerActivity.openWith(GuokrFragmentProvider::class.java).launch(context)
         }
     }
 

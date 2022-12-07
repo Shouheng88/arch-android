@@ -40,22 +40,22 @@ class VideoDetailActivity : ViewBindingActivity<VideoDetailsViewModel, Eyepetize
     }
 
     private fun initView() {
-        binding.gsyPlayer.setUp(vm.item!!.data?.playUrl, false, null, null)
-        binding.gsyPlayer.setIsTouchWiget(true)
-        binding.gsyPlayer.isRotateViewAuto = false
-        binding.gsyPlayer.isShowFullAnimation = false
-        binding.gsyPlayer.isLockLand = false
-        binding.gsyPlayer.isNeedLockFull = true
-        binding.gsyPlayer.fullscreenButton.onDebouncedClick {
-            binding.gsyPlayer.startWindowFullscreen(this, true, true);
+        binding!!.gsyPlayer.setUp(vm.item!!.data?.playUrl, false, null, null)
+        binding!!.gsyPlayer.setIsTouchWiget(true)
+        binding!!.gsyPlayer.isRotateViewAuto = false
+        binding!!.gsyPlayer.isShowFullAnimation = false
+        binding!!.gsyPlayer.isLockLand = false
+        binding!!.gsyPlayer.isNeedLockFull = true
+        binding!!.gsyPlayer.fullscreenButton.onDebouncedClick {
+            binding!!.gsyPlayer.startWindowFullscreen(this, true, true);
         }
-        binding.gsyPlayer.backButton.onDebouncedClick {
+        binding!!.gsyPlayer.backButton.onDebouncedClick {
             onBackPressed()
         }
 
         val imageView = ImageView(this)
         imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-        binding.gsyPlayer.setThumbImageView(imageView)
+        binding!!.gsyPlayer.setThumbImageView(imageView)
 
         Glide.with(this)
             .asBitmap()
@@ -81,7 +81,7 @@ class VideoDetailActivity : ViewBindingActivity<VideoDetailsViewModel, Eyepetize
                         val res = withContext(Dispatchers.IO) {
                             ImageUtils.fastBlur(resource, 1f, 25f)
                         }
-                        binding.ivBg.setImageBitmap(res)
+                        binding!!.ivBg.setImageBitmap(res)
                     }
                     return true
                 }

@@ -44,6 +44,6 @@ class GuokrDetailFragment : ViewBindingFragment<GuokrDetailViewModel, GuokrFragm
         $body
         </div></body>
         </html>"""
-        binding.wv.loadDataWithBaseURL("x-data://base", result, "text/html", "utf-8", null)
+        binding?.wv?.loadDataWithBaseURL("x-data://base", result, "text/html", "utf-8", null)
     }
 }

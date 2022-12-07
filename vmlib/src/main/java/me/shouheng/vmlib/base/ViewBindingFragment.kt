@@ -5,14 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
-import java.lang.IllegalStateException
 import java.lang.reflect.ParameterizedType
 
 /** Base fragment for view binding. */
 abstract class ViewBindingFragment<U : BaseViewModel, T : ViewBinding> : BaseFragment<U>() {
 
-    protected lateinit var binding: T
-        private set
+    protected var binding: T? = null
 
     /** useless */
     @Deprecated(
@@ -34,9 +32,6 @@ abstract class ViewBindingFragment<U : BaseViewModel, T : ViewBinding> : BaseFra
         // it will throw another exception when trying to get root from binding.
         binding = method.invoke(null, inflater) as T
         // fix 2020-06-27 remove #doCreateView() callback since it will be called after #onViewCreated()
-        return binding.root
+        return binding?.root
     }
-
-    /** Check if [binding] is initialized. */
-    fun isBindingInitialized(): Boolean = this::binding.isInitialized
 }

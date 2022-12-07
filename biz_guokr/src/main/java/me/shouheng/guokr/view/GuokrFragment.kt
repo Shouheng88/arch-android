@@ -64,16 +64,16 @@ class GuokrFragment: ViewBindingFragment<GuokrViewModel, UixLayoutSimpleListBind
     }
 
     private fun initList() {
-        binding.rv.adapter = adapter
+        binding?.rv?.adapter = adapter
         adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
-        binding.rv.setEmptyView(binding.ev)
-        binding.v.bind(binding.rv)
-        dataLoadListener = object : LinearDataLoadListener(binding.rv.layoutManager as LinearLayoutManager) {
+        binding?.rv?.setEmptyView(binding!!.ev)
+        binding?.v?.bind(binding!!.rv)
+        dataLoadListener = object : LinearDataLoadListener(binding?.rv?.layoutManager as LinearLayoutManager) {
             override fun loadMore() {
                 vm.getNews(this@GuokrFragment.toString())
             }
         }
-        binding.rv.addOnScrollListener(dataLoadListener!!)
+        binding?.rv?.addOnScrollListener(dataLoadListener!!)
     }
 
     private fun observes() {
@@ -81,12 +81,12 @@ class GuokrFragment: ViewBindingFragment<GuokrViewModel, UixLayoutSimpleListBind
             onSuccess {
                 adapter.addData(it.data)
                 dataLoadListener?.loading = false
-                binding.ev.showEmpty()
+                binding?.ev?.showEmpty()
             }
             onFail {
                 toast(it.message)
                 dataLoadListener?.loading = false
-                binding.ev.showEmpty()
+                binding?.ev?.showEmpty()
             }
         }
     }

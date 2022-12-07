@@ -15,8 +15,7 @@ import androidx.databinding.ViewDataBinding
  */
 abstract class CommonFragment<U : BaseViewModel, T : ViewDataBinding> : BaseFragment<U>() {
 
-    protected lateinit var binding: T
-        private set
+    protected var binding: T? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,9 +26,6 @@ abstract class CommonFragment<U : BaseViewModel, T : ViewDataBinding> : BaseFrag
         require(layoutResId > 0) { "The subclass must provider a valid layout resources id." }
         binding = DataBindingUtil.inflate(inflater, layoutResId, null, false)
         // fix 2020-06-27 remove #doCreateView() callback since it will be called after #onViewCreated()
-        return binding.root
+        return binding?.root
     }
-
-    /** Check if [binding] is initialized. */
-    fun isBindingInitialized(): Boolean = this::binding.isInitialized
 }

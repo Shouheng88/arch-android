@@ -33,20 +33,20 @@ class ArchitectureFragment: ViewBindingFragment<ArchitectureViewModel, HomeFragm
         val isSubChild = arguments?.getBoolean(ARG_KEY_IS_SUB_CHILD) == true
 
         if (isSubChild) {
-            binding.bar.gone()
-            binding.childContainer.gone()
-            binding.btnAddChild.gone()
+            binding?.bar?.gone()
+            binding?.childContainer?.gone()
+            binding?.btnAddChild?.gone()
         } else {
-            (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+            (activity as AppCompatActivity).setSupportActionBar(binding!!.toolbar)
             (activity as AppCompatActivity).supportActionBar?.title = stringOf(R.string.main_library_sample)
         }
 
-        binding.etTitle.afterTextChanged { vm.setTitle(it.toString()) }
-        binding.etContent.afterTextChanged { vm.setContent(it.toString()) }
+        binding?.etTitle?.afterTextChanged { vm.setTitle(it.toString()) }
+        binding?.etContent?.afterTextChanged { vm.setContent(it.toString()) }
 
-        binding.btnTitleError.onDebouncedClick { vm.causeTitleFailure() }
-        binding.btnContentError.onDebouncedClick { vm.causeContentFailure() }
-        binding.btnAddChild.onDebouncedClick { replaceFragmentNecessary() }
+        binding?.btnTitleError?.onDebouncedClick { vm.causeTitleFailure() }
+        binding?.btnContentError?.onDebouncedClick { vm.causeContentFailure() }
+        binding?.btnAddChild?.onDebouncedClick { replaceFragmentNecessary() }
     }
 
     private fun replaceFragmentNecessary() {
@@ -79,10 +79,10 @@ class ArchitectureFragment: ViewBindingFragment<ArchitectureViewModel, HomeFragm
             withSticky(false) // Force none sticky!!
             onSuccess {
                 L.d("title value changed [${it.data}]")
-                binding.tvTitle.text = stringOf(R.string.main_input_title_with, it.data)
+                binding?.tvTitle?.text = stringOf(R.string.main_input_title_with, it.data)
             }
             onFail {
-                binding.tvTitle.text = stringOf(R.string.main_input_title_with, it.message)
+                binding?.tvTitle?.text = stringOf(R.string.main_input_title_with, it.message)
             }
         }
 
@@ -91,10 +91,10 @@ class ArchitectureFragment: ViewBindingFragment<ArchitectureViewModel, HomeFragm
             withSticky(true)
             onSuccess {
                 L.d("content value changed [${it.data}]")
-                binding.tvContent.text = stringOf(R.string.main_input_content_with, it.data)
+                binding?.tvContent?.text = stringOf(R.string.main_input_content_with, it.data)
             }
             onFail {
-                binding.tvContent.text = stringOf(R.string.main_input_content_with, it.message)
+                binding?.tvContent?.text = stringOf(R.string.main_input_content_with, it.message)
             }
         }
     }

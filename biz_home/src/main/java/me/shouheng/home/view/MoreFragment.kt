@@ -51,15 +51,15 @@ class MoreFragment : CommonFragment<OptionsViewModel, HomeFragmentMoreBinding>()
 
     @SuppressLint("MissingPermission")
     private fun initViews() {
-        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        (activity as AppCompatActivity).setSupportActionBar(binding!!.toolbar)
         (activity as AppCompatActivity).supportActionBar?.title = stringOf(R.string.main_more_widget)
 
-        binding.btnCheckPermission.onDebouncedClick {
+        binding!!.btnCheckPermission.onDebouncedClick {
             checkPermission(Permission.CAMERA) {
                 toast(R.string.main_more_widget_check_permission_granted)
             }
         }
-        binding.btnDownload.onDebouncedClick {
+        binding!!.btnDownload.onDebouncedClick {
             Downloader.getInstance()
                 .setOnlyWifi(true)
                 .download(downloadUrl, PathUtils.getExternalStoragePath(), object :
@@ -81,21 +81,21 @@ class MoreFragment : CommonFragment<OptionsViewModel, HomeFragmentMoreBinding>()
                     }
                 })
         }
-        binding.btnPref.onDebouncedClick {
+        binding!!.btnPref.onDebouncedClick {
             ContainerActivity.open(SamplePreference::class.java)
                 .put(ContainerActivity.KEY_EXTRA_THEME_ID, R.style.RedAppTheme)
                 .put(ContainerActivity.KEY_EXTRA_ACTIVITY_DIRECTION, ActivityDirection.ANIMATE_SLIDE_BOTTOM_FROM_TOP)
                 .withDirection(ActivityDirection.ANIMATE_SLIDE_TOP_FROM_BOTTOM)
                 .launch(requireContext())
         }
-        binding.btnCrash.onDebouncedClick { 1/0 }
-        binding.btnVmPost.onDebouncedClick {
+        binding!!.btnCrash.onDebouncedClick { 1/0 }
+        binding!!.btnVmPost.onDebouncedClick {
             post(SimpleEvent(stringOf(R.string.main_more_widget_make_a_post_message)))
         }
-        binding.btnLongTask.onDebouncedClick {
+        binding!!.btnLongTask.onDebouncedClick {
             vm.doLongTask()
         }
-        binding.btnShowDialog.onDebouncedClick {
+        binding!!.btnShowDialog.onDebouncedClick {
             createDialog {
                 withTitle(simpleDialogTitle(requireContext(), stringOf(R.string.main_dialog_input_title)))
                 withContent(simpleEditor {
@@ -111,10 +111,10 @@ class MoreFragment : CommonFragment<OptionsViewModel, HomeFragmentMoreBinding>()
                 })
             }.show(childFragmentManager, "input-dialog")
         }
-        binding.btnTickTick.onDebouncedClick {
+        binding!!.btnTickTick.onDebouncedClick {
             vm.doTickTick()
         }
-        binding.fab.onDebouncedClick {
+        binding!!.fab.onDebouncedClick {
             activity?.recreate()
         }
     }
@@ -122,7 +122,7 @@ class MoreFragment : CommonFragment<OptionsViewModel, HomeFragmentMoreBinding>()
     private fun observes() {
         observeOn(vm.longTaskLiveData) {
             onSuccess {
-                binding.btnLongTask.text = it.data
+                binding!!.btnLongTask.text = it.data
             }
             onLoading {
                 toast(R.string.main_more_widget_long_task_executing)

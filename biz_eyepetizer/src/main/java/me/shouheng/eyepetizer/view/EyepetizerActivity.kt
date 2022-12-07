@@ -85,7 +85,7 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerAc
 
     private fun configToolbar() {
         BarUtils.setStatusBarLightMode(this, true)
-        setSupportActionBar(binding.toolbar)
+        setSupportActionBar(binding?.toolbar)
         supportActionBar?.title = stringOf(R.string.eye_app_name)
     }
 
@@ -106,7 +106,7 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerAc
         super.onConfigurationChanged(newConfig)
         val landscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         val lm = if (landscape) GridLayoutManager(context, 2) else LinearLayoutManager(context)
-        binding.rv.layoutManager = lm
+        binding!!.rv.layoutManager = lm
     }
 
     private fun configList() {
@@ -134,35 +134,35 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerAc
                 }
             }
         }
-        binding.rv.layoutManager = lm
-        binding.rv.adapter = adapter
+        binding?.rv?.layoutManager = lm
+        binding?.rv?.adapter = adapter
         dataLoadListener = object : LinearDataLoadListener(lm) {
             override fun loadMore() {
                 vm.nextPage()
             }
         }
-        binding.rv.addOnScrollListener(dataLoadListener!!)
-        binding.rv.addOnScrollListener(object : ScrollDisplayListener() {
+        binding?.rv?.addOnScrollListener(dataLoadListener!!)
+        binding?.rv?.addOnScrollListener(object : ScrollDisplayListener() {
             override fun display(show: Boolean) {
                 if (show) {
-                    binding.fab.animate().translationY(0f)
+                    binding!!.fab.animate().translationY(0f)
                         .setInterpolator(DecelerateInterpolator(2f)).start()
                 } else {
-                    val lp = binding.fab.layoutParams as FrameLayout.LayoutParams
-                    binding.fab.animate().translationY((binding.fab.height+lp.bottomMargin).toFloat())
+                    val lp = binding!!.fab.layoutParams as FrameLayout.LayoutParams
+                    binding!!.fab.animate().translationY((binding!!.fab.height+lp.bottomMargin).toFloat())
                         .setInterpolator(AccelerateInterpolator(2f)).start()
                 }
             }
         })
-        binding.s.bind(binding.rv)
-        binding.rv.setEmptyView(binding.ev)
+        binding?.s?.bind(binding!!.rv)
+        binding?.rv?.setEmptyView(binding!!.ev)
         // Use the cached value in viewmodel.
         adapter.setNewData(vm.items)
         L.i("Last vm [$vm] and data size [${vm.items.size}]")
     }
 
     private fun configView() {
-        binding.fab.onDebouncedClick {
+        binding!!.fab.onDebouncedClick {
             toast(R.string.eye_fab_clicked)
         }
     }
@@ -185,7 +185,7 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerAc
                 } else {
                     adapter.addData(it.data)
                 }
-                binding.ev.showEmpty()
+                binding?.ev?.showEmpty()
                 dataLoadListener?.loading = false
             }
             onLoading {
@@ -193,13 +193,13 @@ class EyepetizerActivity : ViewBindingActivity<EyepetizerViewModel, EyepetizerAc
                 // The udf3 is the flag for loading more.
                 // We only need to show loading progress bar for first page.
                 if (it.udf3 == false) {
-                    binding.ev.showLoading()
+                    binding?.ev?.showLoading()
                 }
             }
             onFail {
                 L.d("On eyepetizer request failed!")
                 toast(it.message)
-                binding.ev.showEmpty()
+                binding?.ev?.showEmpty()
                 dataLoadListener?.loading = false
             }
         }

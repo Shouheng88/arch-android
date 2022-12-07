@@ -2,16 +2,13 @@ package me.shouheng.vmlib.base
 
 import android.os.Bundle
 import android.preference.Preference
-import android.text.TextUtils
 import androidx.annotation.StringRes
 import androidx.annotation.XmlRes
 import androidx.lifecycle.*
 import androidx.preference.PreferenceFragmentCompat
-import com.umeng.analytics.MobclickAgent
 import me.shouheng.utils.permission.Permission
 import me.shouheng.utils.permission.PermissionUtils
 import me.shouheng.utils.stability.L
-import me.shouheng.vmlib.Platform
 import me.shouheng.vmlib.anno.FragmentConfiguration
 import me.shouheng.vmlib.bus.Bus
 import me.shouheng.vmlib.component.*
@@ -24,10 +21,10 @@ import java.lang.reflect.ParameterizedType
  * @version 2019-10-02 13:15
  */
 abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragmentCompat(), BaseViewModelOwner<U> {
+
     protected val vm: U by lazy { createViewModel() }
 
     private var useEventBus = false
-    private var umengConfig: UMenuConfig? = null
 
     override fun getViewModel(): U = vm
 
@@ -115,24 +112,6 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragmentCom
         return findPreference(key) as? T
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (Platform.DEPENDENCY_UMENG_ANALYTICS
-            && umengConfig != null
-            && umengConfig?.manual == false) {
-            MobclickAgent.onPageStart(umengConfig?.pageName?:"")
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (Platform.DEPENDENCY_UMENG_ANALYTICS
-            && umengConfig != null
-            && umengConfig?.manual == false) {
-            MobclickAgent.onPageEnd(umengConfig?.pageName?:"")
-        }
-    }
-
     override fun onDestroy() {
         if (useEventBus) {
             Bus.get().unregister(this)
@@ -144,12 +123,6 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragmentCom
         val configuration = this.javaClass.getAnnotation(FragmentConfiguration::class.java)
         if (configuration != null) {
             useEventBus = configuration.useEventBus
-            umengConfig = UMenuConfig(
-                if (TextUtils.isEmpty(configuration.umeng.pageName))
-                    javaClass.simpleName else configuration.umeng.pageName,
-                false,
-                configuration.umeng.useUmengManual
-            )
         }
     }
 }

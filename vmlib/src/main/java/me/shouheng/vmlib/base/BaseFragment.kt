@@ -1,17 +1,14 @@
 package me.shouheng.vmlib.base
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.*
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
-import com.umeng.analytics.MobclickAgent
 import me.shouheng.utils.permission.Permission
 import me.shouheng.utils.permission.PermissionUtils
 import me.shouheng.utils.stability.L
-import me.shouheng.vmlib.Platform
 import me.shouheng.vmlib.anno.FragmentConfiguration
 import me.shouheng.vmlib.bus.Bus
 import me.shouheng.vmlib.component.*
@@ -27,7 +24,6 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment(), BaseViewModelOwner<
     protected val vm: U by lazy { createViewModel() }
     private var shareViewModel = false
     private var useEventBus = false
-    private var umengConfig: UMenuConfig? = null
 
     /** Get the layout resource id from subclass. */
     @LayoutRes protected abstract fun getLayoutResId(): Int
@@ -115,26 +111,10 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment(), BaseViewModelOwner<
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (useEventBus) Bus.get().register(this)
+        if (useEventBus) {
+            Bus.get().register(this)
+        }
         super.onCreate(savedInstanceState)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (Platform.DEPENDENCY_UMENG_ANALYTICS
-            && umengConfig != null
-            && umengConfig?.manual == false) {
-            MobclickAgent.onPageStart(umengConfig?.pageName?:"")
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (Platform.DEPENDENCY_UMENG_ANALYTICS
-            && umengConfig != null
-            && umengConfig?.manual == false) {
-            MobclickAgent.onPageEnd(umengConfig?.pageName?:"")
-        }
     }
 
     override fun onDestroy() {
@@ -149,12 +129,6 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment(), BaseViewModelOwner<
         if (configuration != null) {
             shareViewModel = configuration.shareViewModel
             useEventBus = configuration.useEventBus
-            umengConfig = UMenuConfig(
-                if (TextUtils.isEmpty(configuration.umeng.pageName))
-                    javaClass.simpleName else configuration.umeng.pageName,
-                false,
-                configuration.umeng.useUmengManual
-            )
         }
     }
 }

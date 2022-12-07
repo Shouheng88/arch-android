@@ -13,16 +13,12 @@ import androidx.databinding.ViewDataBinding
  */
 abstract class CommonActivity<U : BaseViewModel, T : ViewDataBinding> : BaseActivity<U>() {
 
-    protected lateinit var binding: T
-        private set
+    protected var binding: T? = null
 
     override fun setupContentView(savedInstanceState: Bundle?) {
         binding = DataBindingUtil.inflate(
             LayoutInflater.from(this), getLayoutResId(), null, false
         )
-        setContentView(binding.root)
+        setContentView(binding?.root)
     }
-
-    /** Check if [binding] is initialized. */
-    fun isBindingInitialized(): Boolean = this::binding.isInitialized
 }
