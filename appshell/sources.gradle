@@ -1,0 +1,147 @@
+import groovy.json.JsonSlurper
+
+def sourceSwitches = new HashMap<String, SourceSwitch>()
+
+// Load sources configurations.
+parseSourcesConfiguration(sourceSwitches)
+
+// Checkout remote sources.
+checkoutRemoteSources(sourceSwitches)
+
+// Replace dependencies with sources.
+replaceDependenciesWithSources(sourceSwitches)
+
+/** Parse sources configuration from sources.json. */
+def parseSourcesConfiguration(sourceSwitches) {
+    def settings = getSettings()
+    def rootAbsolutePath = settings.rootDir.absolutePath
+    def sourceFile = new File(rootAbsolutePath + "/sources.json")
+    logd("source.json exists: ${sourceFile.exists()}, ${sourceFile.path}")
+    try {
+        def sources = new JsonSlurper().parseText(sourceFile.text)
+        if (sources != null && sources.size() > 0) {
+            sources.each { source ->
+                def children = new ArrayList<SourceSwitchChild>()
+                source.children.each { child ->
+                    children.add(new SourceSwitchChild(child.name, child.path))
+                }
+                def sourceSwitch = new SourceSwitch(source.name, source.url, source.branch, source.artifact, source.open, children)
+                sourceSwitches.put(source.name, sourceSwitch)
+            }
+        }
+        logd(sourceSwitches)
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+}
+
+/** Checkout remote sources if necessary. */
+def checkoutRemoteSources(sourceSwitches) {
+    def settings = getSettings()
+    def rootAbsolutePath = settings.rootDir.absolutePath
+    def sourcesRootPath = new File(rootAbsolutePath).parent
+    def sourcesDirectory = new File(sourcesRootPath, "open_sources")
+    if (!sourcesDirectory.exists()) sourcesDirectory.mkdirs()
+    sourceSwitches.forEach { name, sourceSwitch ->
+        if (sourceSwitch.open) {
+            def sourceDirectory = new File(sourcesDirectory, name)
+            if (!sourceDirectory.exists()) {
+                logd("clone start [$name] branch [${sourceSwitch.branch}]")
+                "git clone -b ${sourceSwitch.branch} ${sourceSwitch.url} ".execute(null, sourcesDirectory).waitFor()
+                logd("clone completed [$name] branch [${sourceSwitch.branch}]")
+            } else {
+                def sb = new StringBuffer()
+                "git rev-parse --abbrev-ref HEAD ".execute(null, sourceDirectory).waitForProcessOutput(sb, System.err)
+                def currentBranch = sb.toString().trim()
+                if (currentBranch != sourceSwitch.branch) {
+                    logd("checkout start current branch [${currentBranch}], checkout branch [${sourceSwitch.branch}]")
+                    def out = new StringBuffer()
+                    "git pull".execute(null, sourceDirectory).waitFor()
+                    "git checkout -b ${sourceSwitch.branch} origin/${sourceSwitch.branch}"
+                            .execute(null, sourceDirectory).waitForProcessOutput(out, System.err)
+                    logd("checkout completed: ${out.toString().trim()}")
+                }
+            }
+            // After checkout sources, include them as subprojects.
+            sourceSwitch.children.each { child ->
+                settings.include(":${child.name}")
+                settings.project(":${child.name}").projectDir = new File(sourcesDirectory, child.path)
+            }
+        }
+    }
+}
+
+/** Replace dependencies with sources. */
+def replaceDependenciesWithSources(sourceSwitches) {
+    def gradle = settings.gradle
+    gradle.projectsLoaded {
+        gradle.rootProject.subprojects {
+            configurations.all {
+                resolutionStrategy.dependencySubstitution {
+                    sourceSwitches.forEach { name, sourceSwitch ->
+                        sourceSwitch.children.each { child ->
+                            substitute module("${sourceSwitch.artifact}:${child.name}") with project(":${child.name}")
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+class SourceSwitch {
+    def name
+    def url
+    def branch
+    def artifact
+    def open
+    def children
+
+    SourceSwitch(def name,
+                 def url,
+                 def branch,
+                 def artifact,
+                 def open,
+                 def children) {
+        this.name = name
+        this.url = url
+        this.branch = branch
+        this.artifact = artifact
+        this.open = open
+        this.children = children
+    }
+
+    @Override
+    public String toString() {
+        return "SourceSwitch{" +
+                "name=" + name +
+                ", url=" + url +
+                ", branch=" + branch +
+                ", artifact=" + artifact +
+                ", open=" + open +
+                ", children=" + children +
+                '}';
+    }
+}
+
+class SourceSwitchChild {
+    def name
+    def path
+
+    SourceSwitchChild(def name, def path) {
+        this.name = name
+        this.path = path
+    }
+
+    @Override
+    public String toString() {
+        return "SourceSwitchChild{" +
+                "name=" + name +
+                ", path=" + path +
+                '}';
+    }
+}
+
+def logd(def message) {
+    println("Source switch >>> " + message)
+}
