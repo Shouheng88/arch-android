@@ -25,7 +25,7 @@ def parseSourcesConfiguration(sourceSwitches) {
                 source.children.each { child ->
                     children.add(new SourceSwitchChild(child.name, child.path))
                 }
-                def sourceSwitch = new SourceSwitch(source.name, source.url, source.branch, source.artifact, source.open, children)
+                def sourceSwitch = new SourceSwitch(source.name, source.url, source.branch, source.group, source.open, children)
                 sourceSwitches.put(source.name, sourceSwitch)
             }
         }
@@ -80,7 +80,7 @@ def replaceDependenciesWithSources(sourceSwitches) {
                 resolutionStrategy.dependencySubstitution {
                     sourceSwitches.forEach { name, sourceSwitch ->
                         sourceSwitch.children.each { child ->
-                            substitute module("${sourceSwitch.artifact}:${child.name}") with project(":${child.name}")
+                            substitute module("${sourceSwitch.group}:${child.name}") with project(":${child.name}")
                         }
                     }
                 }
@@ -93,20 +93,20 @@ class SourceSwitch {
     def name
     def url
     def branch
-    def artifact
+    def group
     def open
     def children
 
     SourceSwitch(def name,
                  def url,
                  def branch,
-                 def artifact,
+                 def group,
                  def open,
                  def children) {
         this.name = name
         this.url = url
         this.branch = branch
-        this.artifact = artifact
+        this.group = group
         this.open = open
         this.children = children
     }
@@ -117,7 +117,7 @@ class SourceSwitch {
                 "name=" + name +
                 ", url=" + url +
                 ", branch=" + branch +
-                ", artifact=" + artifact +
+                ", group=" + group +
                 ", open=" + open +
                 ", children=" + children +
                 '}';

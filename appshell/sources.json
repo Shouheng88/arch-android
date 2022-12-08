@@ -3,7 +3,7 @@
     "name": "AndroidUtils",
     "url": "git@github.com:Shouheng88/AndroidUtils.git",
     "branch": "feature-2.8.0",
-    "artifact": "com.github.Shouheng88",
+    "group": "com.github.Shouheng88",
     "open": true,
     "children": [
       {
