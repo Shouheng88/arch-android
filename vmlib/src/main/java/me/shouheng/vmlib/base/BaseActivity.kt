@@ -30,7 +30,6 @@ import java.lang.reflect.ParameterizedType
 abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), PermissionResultResolver, BaseViewModelOwner<U> {
     protected val vm: U by lazy { createViewModel() }
     private var useEventBus = false
-    private var needLogin = true
 
     /** Grouped values with [ActivityConfiguration].*/
     private var exitDirection = ActivityDirection.ANIMATE_NONE
@@ -74,14 +73,6 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
     protected fun getFragment(@IdRes resId: Int): Fragment? {
         return supportFragmentManager.findFragmentById(resId)
     }
-
-    /**
-     * Does the user need login to enter this activity. This value was set by the
-     * [ActivityConfiguration.needLogin], you can judge this value and implement your logic.
-     *
-     * @return true if the user need login.
-     */
-    protected fun needLogin(): Boolean = needLogin
 
     /**
      * Correspond to fragment's [Fragment.getContext]
@@ -148,7 +139,6 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
         val configuration = this.javaClass.getAnnotation(ActivityConfiguration::class.java)
         if (configuration != null) {
             useEventBus = configuration.useEventBus
-            needLogin = configuration.needLogin
             exitDirection = configuration.exitDirection
         }
     }

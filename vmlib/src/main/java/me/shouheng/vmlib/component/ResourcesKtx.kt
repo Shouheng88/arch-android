@@ -1,4 +1,6 @@
-package me.shouheng.vmlib.bean
+package me.shouheng.vmlib.component
+
+import me.shouheng.vmlib.bean.Resources
 
 inline fun <T> Resources<T>.onSuccess(
     block: (res: Resources<T>) -> Unit

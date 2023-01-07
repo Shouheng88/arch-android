@@ -15,9 +15,6 @@ annotation class ActivityConfiguration(
     /** Will the event bus will be used in this view. */
     val useEventBus: Boolean = false,
 
-    /** Does the user need login to get into this activity. */
-    val needLogin: Boolean = true,
-
     /** The activity exit direction */
     @ActivityDirection val exitDirection: Int = ActivityDirection.ANIMATE_EASE_IN_OUT
 )
