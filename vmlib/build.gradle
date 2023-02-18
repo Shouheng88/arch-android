@@ -53,8 +53,8 @@ dependencies {
     compileOnly "org.greenrobot:eventbus:3.1.1"
     compileOnly "org.simple:androideventbus:1.0.5.1"
     // 友盟统计SDK
-    compileOnly  'com.umeng.umsdk:common:9.4.4'// 必选
-    compileOnly  'com.umeng.umsdk:asms:1.4.1'// 必选
+    compileOnly 'com.umeng.umsdk:common:9.4.4'// 必选
+    compileOnly 'com.umeng.umsdk:asms:1.4.1'// 必选
     compileOnly 'com.umeng.umsdk:apm:1.2.0'// 推荐，错误分析升级为U-APM产品，关注crash数据需集成
     compileOnly "com.github.Shouheng88:uix-core:${uixCoreVersion}"
     compileOnly "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1"

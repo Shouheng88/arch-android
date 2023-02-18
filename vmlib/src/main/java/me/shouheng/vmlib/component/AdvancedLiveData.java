@@ -63,7 +63,7 @@ public class AdvancedLiveData<T> extends MutableLiveData<T> {
      */
     @Override
     public void postValue(T value) {
-        postValue(value, true);
+        postValue(value, false);
     }
 
     /**
