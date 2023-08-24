@@ -3,14 +3,12 @@ package me.shouheng.vmlib.base
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.text.TextUtils
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
-import com.umeng.analytics.MobclickAgent
 import me.shouheng.utils.app.ActivityUtils
 import me.shouheng.utils.constant.ActivityDirection
 import me.shouheng.utils.permission.PermissionResultHandler
@@ -18,7 +16,6 @@ import me.shouheng.utils.permission.PermissionResultResolver
 import me.shouheng.utils.permission.callback.OnGetPermissionCallback
 import me.shouheng.utils.permission.callback.PermissionResultCallback
 import me.shouheng.utils.permission.callback.PermissionResultCallbackImpl
-import me.shouheng.vmlib.Platform
 import me.shouheng.vmlib.anno.ActivityConfiguration
 import me.shouheng.vmlib.bus.Bus
 import me.shouheng.vmlib.component.*
@@ -33,10 +30,8 @@ import java.lang.reflect.ParameterizedType
 abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), PermissionResultResolver, BaseViewModelOwner<U> {
     protected val vm: U by lazy { createViewModel() }
     private var useEventBus = false
-    private var needLogin = true
 
     /** Grouped values with [ActivityConfiguration].*/
-    private var umengConfig: UMenuConfig? = null
     private var exitDirection = ActivityDirection.ANIMATE_NONE
     private var onGetPermissionCallback: OnGetPermissionCallback? = null
 
@@ -80,14 +75,6 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
     }
 
     /**
-     * Does the user need login to enter this activity. This value was set by the
-     * [ActivityConfiguration.needLogin], you can judge this value and implement your logic.
-     *
-     * @return true if the user need login.
-     */
-    protected fun needLogin(): Boolean = needLogin
-
-    /**
      * Correspond to fragment's [Fragment.getContext]
      *
      * @return context
@@ -126,30 +113,6 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
             permissions, grantResults, permissionResultCallback)
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (Platform.DEPENDENCY_UMENG_ANALYTICS
-            && umengConfig != null
-            && umengConfig?.manual == false) {
-            if (umengConfig?.hasFragment == true) {
-                MobclickAgent.onPageStart(umengConfig?.pageName?:"")
-            }
-            MobclickAgent.onResume(this)
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (Platform.DEPENDENCY_UMENG_ANALYTICS
-            && umengConfig != null
-            && umengConfig?.manual == false) {
-            if (umengConfig?.hasFragment == true) {
-                MobclickAgent.onPageEnd(umengConfig?.pageName?:"")
-            }
-            MobclickAgent.onPause(this)
-        }
-    }
-
     override fun onDestroy() {
         if (useEventBus) {
             Bus.get().unregister(this)
@@ -176,14 +139,7 @@ abstract class BaseActivity<U : BaseViewModel> : AppCompatActivity(), Permission
         val configuration = this.javaClass.getAnnotation(ActivityConfiguration::class.java)
         if (configuration != null) {
             useEventBus = configuration.useEventBus
-            needLogin = configuration.needLogin
             exitDirection = configuration.exitDirection
-            umengConfig = UMenuConfig(
-                if (TextUtils.isEmpty(configuration.umeng.pageName))
-                    javaClass.simpleName else configuration.umeng.pageName,
-                configuration.umeng.fragmentActivity,
-                configuration.umeng.useUmengManual
-            )
         }
     }
 }

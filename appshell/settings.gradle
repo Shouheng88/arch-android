@@ -1,0 +1,18 @@
+rootProject.name = "arch"
+include ':app', ':vmlib', ':vmlib_network'
+include ':biz_common', ':biz_common_api'
+include ':biz_eyepetizer_api', ':biz_eyepetizer'
+include ':biz_guokr_api', 'biz_guokr'
+include ':biz_home_api', 'biz_home'
+project(':vmlib').projectDir = new File('../vmlib')
+project(':vmlib_network').projectDir = new File('../vmlib_network')
+project(':biz_common_api').projectDir = new File('../biz_common_api')
+project(':biz_common').projectDir = new File('../biz_common')
+project(':biz_eyepetizer_api').projectDir = new File('../biz_eyepetizer_api')
+project(':biz_eyepetizer').projectDir = new File('../biz_eyepetizer')
+project(':biz_guokr_api').projectDir = new File('../biz_guokr_api')
+project(':biz_guokr').projectDir = new File('../biz_guokr')
+project(':biz_home_api').projectDir = new File('../biz_home_api')
+project(':biz_home').projectDir = new File('../biz_home')
+
+apply from: "sources.gradle"

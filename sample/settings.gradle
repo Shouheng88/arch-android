@@ -1,6 +1,0 @@
-include ':app', ':vmlib', ':vmlib-network', ':module-api', ':module-service', ':module-eyepetizer'
-project(':vmlib').projectDir = new File('../vmlib')
-project(':vmlib-network').projectDir = new File('../vmlib-network')
-project(':module-api').projectDir = new File('../module-api')
-project(':module-service').projectDir = new File('../module-service')
-project(':module-eyepetizer').projectDir = new File('../module-eyepetizer')

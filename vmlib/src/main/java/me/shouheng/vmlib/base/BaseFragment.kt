@@ -1,17 +1,14 @@
 package me.shouheng.vmlib.base
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.*
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
-import com.umeng.analytics.MobclickAgent
 import me.shouheng.utils.permission.Permission
 import me.shouheng.utils.permission.PermissionUtils
 import me.shouheng.utils.stability.L
-import me.shouheng.vmlib.Platform
 import me.shouheng.vmlib.anno.FragmentConfiguration
 import me.shouheng.vmlib.bus.Bus
 import me.shouheng.vmlib.component.*
@@ -27,7 +24,6 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment(), BaseViewModelOwner<
     protected val vm: U by lazy { createViewModel() }
     private var shareViewModel = false
     private var useEventBus = false
-    private var umengConfig: UMenuConfig? = null
 
     /** Get the layout resource id from subclass. */
     @LayoutRes protected abstract fun getLayoutResId(): Int
@@ -48,7 +44,8 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment(), BaseViewModelOwner<
      * @return the view model instance.
      */
     protected fun createViewModel(): U {
-        val vmClass = (this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments
+        val vmClass = (this.javaClass.genericSuperclass as ParameterizedType)
+            .actualTypeArguments
             .firstOrNull { ViewModel::class.java.isAssignableFrom(it as Class<*>) } as? Class<U>
             ?: throw IllegalStateException("You must specify a view model class.")
         return if (shareViewModel) {
@@ -58,9 +55,15 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment(), BaseViewModelOwner<
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val layoutResId = getLayoutResId()
-        require(layoutResId > 0) { "The subclass must provider a valid layout resources id." }
+        require(layoutResId > 0) {
+            "The subclass must provider a valid layout resources id."
+        }
         return inflater.inflate(layoutResId, container, false)
     }
 
@@ -79,9 +82,13 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment(), BaseViewModelOwner<
      */
     protected fun checkPermission(@Permission permission: Int, onGetPermission: () -> Unit) {
         if (activity is BaseActivity<*>) {
-            PermissionUtils.checkPermissions<BaseActivity<*>?>((activity as BaseActivity<*>?)!!, { onGetPermission() }, permission)
+            PermissionUtils.checkPermissions<BaseActivity<*>?>(
+                (activity as BaseActivity<*>?)!!
+                , { onGetPermission() }
+                , permission)
         } else {
-            L.w("Request permission failed due to the associated activity was not instance of CommonActivity")
+            L.w("Request permission failed due to " +
+                    "the associated activity was not instance of CommonActivity")
         }
     }
 
@@ -93,33 +100,21 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment(), BaseViewModelOwner<
      */
     protected fun checkPermissions(onGetPermission: () -> Unit, @Permission vararg permissions: Int) {
         if (activity is BaseActivity<*>) {
-            PermissionUtils.checkPermissions<BaseActivity<*>?>((activity as BaseActivity<*>?)!!, { onGetPermission() }, *permissions)
+            PermissionUtils.checkPermissions<BaseActivity<*>?>(
+                (activity as BaseActivity<*>?)!!
+                , { onGetPermission() }
+                , *permissions)
         } else {
-            L.w("Request permissions failed due to the associated activity was not instance of CommonActivity")
+            L.w("Request permissions failed due to " +
+                    "the associated activity was not instance of CommonActivity")
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (useEventBus) Bus.get().register(this)
+        if (useEventBus) {
+            Bus.get().register(this)
+        }
         super.onCreate(savedInstanceState)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (Platform.DEPENDENCY_UMENG_ANALYTICS
-            && umengConfig != null
-            && umengConfig?.manual == false) {
-            MobclickAgent.onPageStart(umengConfig?.pageName?:"")
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (Platform.DEPENDENCY_UMENG_ANALYTICS
-            && umengConfig != null
-            && umengConfig?.manual == false) {
-            MobclickAgent.onPageEnd(umengConfig?.pageName?:"")
-        }
     }
 
     override fun onDestroy() {
@@ -134,12 +129,6 @@ abstract class BaseFragment<U : BaseViewModel> : Fragment(), BaseViewModelOwner<
         if (configuration != null) {
             shareViewModel = configuration.shareViewModel
             useEventBus = configuration.useEventBus
-            umengConfig = UMenuConfig(
-                if (TextUtils.isEmpty(configuration.umeng.pageName))
-                    javaClass.simpleName else configuration.umeng.pageName,
-                false,
-                configuration.umeng.useUmengManual
-            )
         }
     }
 }

@@ -1,73 +1,52 @@
 package me.shouheng.vmlib.component
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
+import androidx.annotation.RestrictTo
+import androidx.lifecycle.*
+import me.shouheng.utils.stability.L
 import me.shouheng.vmlib.base.BaseViewModelOwner
-import me.shouheng.vmlib.bean.Resources
-import me.shouheng.vmlib.bean.Status
+import me.shouheng.vmlib.bean.*
 
-/** Add observe method to lifecycle owner. */
-inline fun <T> LifecycleOwner.observe(
-    liveData: LiveData<T>,
-    crossinline onChanged: (t: T?)->Unit
-) {
-    liveData.observe(this, {
-        onChanged(it)
-    })
+/**
+ * Combine multiple livedata in one: the observer of combined live data will
+ * receive all data change events of [liveDataList].
+ */
+fun <T> combine(
+    vararg liveDataList: LiveData<T>
+): MediatorLiveData<T> {
+    return MediatorLiveData<T>().apply {
+        liveDataList.forEach {
+            addSource(it) { value ->
+                this.value = value
+            }
+        }
+    }
 }
 
 /**
- * Add observe method to lifecycle owner. Callbacks of [success], [fail] and [loading]
- * are required, since, otherwise, it might be ambiguous with another [observe] method.
+ * Make current livedata as a single live event live data.
  */
-inline fun <T> LifecycleOwner.observe(
-    liveData: LiveData<Resources<T>>,
-    crossinline success: (res: Resources<T>) -> Unit,
-    crossinline fail   : (res: Resources<T>) -> Unit,
-    crossinline loading: (res: Resources<T>) -> Unit
-) {
-    liveData.observe(this, {
-        when (it?.status) {
-            Status.SUCCESS -> success(it)
-            Status.LOADING -> loading(it)
-            Status.FAILED  -> fail(it)
-        }
-    })
+fun <T> AdvancedLiveData<T>.asSingle(): AdvancedLiveData<T> {
+    return SingleLiveEventWrapper(this)
 }
 
 /** Kotlin DSL styled observe method. */
 inline fun <T> LifecycleOwner.observeOn(
     liveData: LiveData<Resources<T>>,
     init    : LiveDataObserverBuilder<T>.() -> Unit
-) {
-    val builder = LiveDataObserverBuilder<T>()
+): Observer<Resources<T>> {
+    val builder = LiveDataObserverBuilder(liveData)
     builder.apply(init)
-    // To observe livedata base on the livedata type and 'stickyObserver' field.
-    // Only when the observe type is not sticky and the livedata is unpeek type,
-    // the none-sticky will take into effect.
-    if (!builder.stickyObserver && liveData is UnPeekLiveData) {
-        liveData.observe(this, builder.stickyObserver, builder.build())
-    } else {
-        liveData.observe(this, builder.build())
-    }
+    return builder.build(this)
 }
 
-/** Observe on data type. */
+/** Kotlin DSL styled observe method. */
 inline fun <T> BaseViewModelOwner<*>.observeOn(
-    dataType: Class<T>,
+    liveData: LiveData<Resources<T>>,
     init    : LiveDataObserverBuilder<T>.() -> Unit
-) {
-    observeOn(getViewModel().getObservable(dataType), init)
-}
-
-/** Observe data */
-inline fun <T> BaseViewModelOwner<*>.observeOn(
-    dataType: Class<T>,
-    single  : Boolean = false,
-    init    : LiveDataObserverBuilder<T>.() -> Unit
-) {
-    observeOn(dataType, null, single, init)
+): Observer<Resources<T>> {
+    val builder = LiveDataObserverBuilder(liveData)
+    builder.apply(init)
+    return builder.build(this)
 }
 
 /** Observe data */
@@ -75,35 +54,10 @@ inline fun <T> BaseViewModelOwner<*>.observeOn(
     dataType: Class<T>,
     sid     : Int? = null,
     init    : LiveDataObserverBuilder<T>.() -> Unit
-) {
-    observeOn(dataType, sid, false, init)
-}
-
-/** Observe data */
-inline fun <T> BaseViewModelOwner<*>.observeOn(
-    dataType: Class<T>,
-    sid     : Int? = null,
-    single  : Boolean = false,
-    init    : LiveDataObserverBuilder<T>.() -> Unit
-) {
-    observeOn(getViewModel().getObservable(dataType, sid, single), init)
-}
-
-/** Observe list data */
-inline fun <T> BaseViewModelOwner<*>.observeOnList(
-    dataType: Class<T>,
-    init    : LiveDataObserverBuilder<List<T>>.() -> Unit
-) {
-    observeOnList(dataType, null, false, init)
-}
-
-/** Observe list data */
-inline fun <T> BaseViewModelOwner<*>.observeOnList(
-    dataType: Class<T>,
-    single  : Boolean = false,
-    init    : LiveDataObserverBuilder<List<T>>.() -> Unit
-) {
-    observeOnList(dataType, null, single, init)
+): Observer<Resources<T>> {
+    val viewModel = getViewModel()
+    val livedata = viewModel.getObservable(dataType, sid)
+    return observeOn(livedata, init)
 }
 
 /** Observe list data */
@@ -111,32 +65,26 @@ inline fun <T> BaseViewModelOwner<*>.observeOnList(
     dataType: Class<T>,
     sid     : Int? = null,
     init    : LiveDataObserverBuilder<List<T>>.() -> Unit
-) {
-    observeOnList(dataType, sid, false, init)
-}
-
-/** Observe list data */
-inline fun <T> BaseViewModelOwner<*>.observeOnList(
-    dataType: Class<T>,
-    sid     : Int? = null,
-    single  : Boolean = false,
-    init    : LiveDataObserverBuilder<List<T>>.() -> Unit
-) {
-    observeOn(getViewModel().getListObservable(dataType, sid, single), init)
+): Observer<Resources<List<T>>> {
+    val viewModel = getViewModel()
+    val livedata = viewModel.getListObservable(dataType, sid)
+    return observeOn(livedata,  init)
 }
 
 /** Builder for livedata observer. */
-class LiveDataObserverBuilder<T> {
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+class LiveDataObserverBuilder<T> constructor(private val liveData: LiveData<Resources<T>>) {
     private var success : ((res: Resources<T>) -> Unit)? = null
     private var fail    : ((res: Resources<T>) -> Unit)? = null
     private var loading : ((res: Resources<T>) -> Unit)? = null
     private var progress: ((res: Resources<T>) -> Unit)? = null
-    var stickyObserver: Boolean = false
+
+    var sticky: Boolean = true
         private set
 
     /** To decide if observe the data as sticky. */
     fun withSticky(sticky: Boolean) {
-        stickyObserver = sticky
+        this.sticky = sticky
     }
 
     /** Called when livedata is success. */
@@ -159,12 +107,27 @@ class LiveDataObserverBuilder<T> {
         this.progress = progress
     }
 
-    fun build(): Observer<Resources<T>> = Observer {
-        when (it?.status) {
-            Status.SUCCESS  -> success?.invoke(it)
-            Status.LOADING  -> loading?.invoke(it)
-            Status.FAILED   -> fail?.invoke(it)
-            Status.PROGRESS -> progress?.invoke(it)
+    fun build(owner: LifecycleOwner): Observer<Resources<T>> = Observer<Resources<T>> { resources ->
+        resources.onSuccess {
+            success?.invoke(it)
+        }.onLoading {
+            loading?.invoke(it)
+        }.onFailure {
+            fail?.invoke(it)
+        }.onProgress {
+            progress?.invoke(it)
+        }
+    }.apply {
+        if (sticky) {
+            liveData.observe(owner, this)
+        } else {
+            if (liveData is AdvancedLiveData) {
+                liveData.observe(owner, sticky, this)
+            } else {
+                L.w("Current livedata is not an implementation of AdvancedLiveData, " +
+                        "the sticky action won't take into effect.")
+                liveData.observe(owner, this)
+            }
         }
     }
 }

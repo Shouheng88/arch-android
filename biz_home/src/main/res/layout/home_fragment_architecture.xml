@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="#f0f0f0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            tools:title="Sample"
+            app:titleTextColor="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <me.shouheng.uix.widget.text.ClearEditText
+                android:id="@+id/et_title"
+                android:hint="@string/main_input_title_hint"
+                style="@style/Arch.Input"/>
+
+            <me.shouheng.uix.widget.text.ClearEditText
+                android:id="@+id/et_content"
+                android:hint="@string/main_input_content_hint"
+                android:lines="3"
+                style="@style/Arch.Input"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_title"
+                tools:text="121212"
+                style="@style/Arch.Text"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_content"
+                tools:text="121212"
+                style="@style/Arch.Text"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:text="@string/main_input_sample_hint"
+                android:textSize="12sp"
+                style="@style/Arch.Text"/>
+
+            <Button
+                android:id="@+id/btn_title_error"
+                android:text="@string/main_input_title_intermediate_error"
+                style="@style/Arch.Button"/>
+
+            <Button
+                android:id="@+id/btn_content_error"
+                android:text="@string/main_input_content_intermediate_error"
+                style="@style/Arch.Button"/>
+
+            <Button
+                android:id="@+id/btn_add_child"
+                android:text="@string/main_input_add_child_fragment"
+                style="@style/Arch.Button"/>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="match_parent"/>
+
+        <FrameLayout
+            android:id="@+id/child_container"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,127 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'AndResGuard'
+apply plugin: 'org.sonarqube'
+apply plugin: 'kotlin-kapt'
+//apply plugin: 'kotlin-android-extensions'
+apply plugin: 'realm-android'
+
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+        arg("STARTUP_MODULE_NAME", project.getName())
+    }
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    defaultConfig {
+        applicationId "me.shouheng.sample"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+        multiDexEnabled true
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath true
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    viewBinding {
+        enabled true
+    }
+    dataBinding {
+        enabled true
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+    flavorDimensions "default"
+    productFlavors {
+        dev {
+            dimension "default"
+            buildConfigField "Boolean", "OVERSEA", "false"
+            buildConfigField "String", "HOST", "\"https://meiyan.tech/\""
+            buildConfigField "String", "BILLING_HOST", "\"http://oversea.meiyan.tech/\""
+        }
+    }
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+    }
+    andResGuard {
+        mappingFile = null
+        // Do NOT enable 7zip compression(use7zip) when you distribute your APP on Google Play: https://github.com/shwenzhang/AndResGuard/issues/233
+        use7zip = true
+        useSign = true
+        keepRoot = false
+        whiteList = [
+                // for fabric
+                "R.string.com.crashlytics.*",
+                // for google-services
+                "R.string.google_app_id",
+                "R.string.gcm_defaultSenderId",
+                "R.string.default_web_client_id",
+                "R.string.ga_trackingId",
+                "R.string.firebase_database_url",
+                "R.string.google_api_key",
+                "R.string.google_crash_reporting_api_key"
+        ]
+        compressFilePattern = [
+                "*.png",
+                "*.jpg",
+                "*.jpeg",
+                "*.gif",
+        ]
+        sevenzip {
+            artifact = 'com.tencent.mm:SevenZip:1.2.13'
+        }
+    }
+//    externalNativeBuild {
+//        cmake {
+//            path "CMakeLists.txt"
+//        }
+//    }
+    ndkVersion "21.4.7075529"
+    packagingOptions {
+        exclude 'META-INF/library_release.kotlin_module'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    kapt 'com.alibaba:arouter-compiler:1.2.2'
+    kapt "com.github.Shouheng88:startup-compiler:$startupVersion"
+    kapt "io.realm:realm-annotations-processor:$realm_version"
+
+    // include dependent modules
+    implementation project(path: ':vmlib')
+//    implementation "com.github.Shouheng88:vmlib:1.6.1"
+    implementation project(path: ':biz_common')
+    implementation project(path: ':biz_common_api')
+    implementation project(path: ':vmlib_network')
+    implementation project(path: ':biz_eyepetizer_api')
+    implementation project(path: ':biz_eyepetizer')
+    implementation project(path: ':biz_guokr_api')
+    implementation project(path: ':biz_guokr')
+    implementation project(path: ':biz_home_api')
+    implementation project(path: ':biz_home')
+}

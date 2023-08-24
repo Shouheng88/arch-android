@@ -1,0 +1,61 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+//apply plugin: 'realm-android'
+//apply plugin: 'kotlin-android-extensions'
+
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+        arg("STARTUP_MODULE_NAME", project.getName())
+    }
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath true
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+
+    api 'androidx.multidex:multidex:2.0.1'
+    api "androidx.appcompat:appcompat:${appcompatVersion}"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoreVersion}"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlinAndroidVersion}"
+
+    api 'com.alibaba:arouter-api:1.5.0'
+    kapt 'com.alibaba:arouter-compiler:1.2.2'
+
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoreVersion}"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlinAndroidVersion}"
+
+    api "com.google.code.gson:gson:2.8.5"
+
+    api "com.github.Shouheng88:utils-core:${utilsCoreVersion}"
+    api "com.github.Shouheng88:utils-ktx:${utilsCoreVersion}"
+    api "com.github.Shouheng88:startup:$startupVersion"
+    kapt "com.github.Shouheng88:startup-compiler:$startupVersion"
+
+    api project(path: ':vmlib')
+    api project(path: ':vmlib_network')
+}

@@ -2,17 +2,13 @@ package me.shouheng.vmlib.base
 
 import android.os.Bundle
 import android.preference.Preference
-import android.preference.PreferenceFragment
-import android.text.TextUtils
 import androidx.annotation.StringRes
 import androidx.annotation.XmlRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
-import com.umeng.analytics.MobclickAgent
+import androidx.preference.PreferenceFragmentCompat
 import me.shouheng.utils.permission.Permission
 import me.shouheng.utils.permission.PermissionUtils
 import me.shouheng.utils.stability.L
-import me.shouheng.vmlib.Platform
 import me.shouheng.vmlib.anno.FragmentConfiguration
 import me.shouheng.vmlib.bus.Bus
 import me.shouheng.vmlib.component.*
@@ -24,28 +20,16 @@ import java.lang.reflect.ParameterizedType
  * @author [ShouhengWang](mailto:shouheng2020@gmail.com)
  * @version 2019-10-02 13:15
  */
-abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(), BaseViewModelOwner<U> {
+abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragmentCompat(), BaseViewModelOwner<U> {
+
     protected val vm: U by lazy { createViewModel() }
+
     private var useEventBus = false
-    private var umengConfig: UMenuConfig? = null
-
-    private val lifecycle = LifecycleRegistry(this)
-
-    /**
-     * The lifecycle of preference is associated with the activity.
-     * So, here, we force the activity bind with this fragment is subclass of [AppCompatActivity].
-     *
-     * @WARN: THE ACTIVITY MIGHT BE ATTACHED WHEN THIS METHOD IS CALLED, SO YOU SHOULD AT
-     * LEAST CALL THIS METHOD AFTER [onActivityCreated]. FOR EXAMPLE, CALLING [LiveData.observe]
-     * METHOD, WHICH CALL THIS METHOD INDIRECTLY.
-     */
-    override fun getLifecycle(): Lifecycle = lifecycle
 
     override fun getViewModel(): U = vm
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         if (useEventBus) Bus.get().register(this)
-        super.onCreate(savedInstanceState)
         val preferencesResId = getPreferencesResId()
         require(preferencesResId > 0) { "The subclass must provider a valid preference resources id." }
         addPreferencesFromResource(preferencesResId)
@@ -71,7 +55,8 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
      * @return the view model instance.
      */
     protected fun createViewModel(): U {
-        val vmClass = (this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments
+        val vmClass = (this.javaClass.genericSuperclass as ParameterizedType)
+            .actualTypeArguments
             .firstOrNull { ViewModel::class.java.isAssignableFrom(it as Class<*>) } as? Class<U>
             ?: throw IllegalStateException("You must specify a view model class.")
         return ViewModelProviders.of((activity as androidx.fragment.app.FragmentActivity))[vmClass]
@@ -85,9 +70,13 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
      */
     protected fun checkPermission(@Permission permission: Int, onGetPermission: () -> Unit) {
         if (activity is BaseActivity<*>) {
-            PermissionUtils.checkPermissions<BaseActivity<*>?>((activity as BaseActivity<*>?)!!, { onGetPermission() }, permission)
+            PermissionUtils.checkPermissions<BaseActivity<*>?>(
+                (activity as BaseActivity<*>?)!!
+                , { onGetPermission() }
+                , permission)
         } else {
-            L.w("Request permission failed due to the associated activity was not instance of CommonActivity")
+            L.w("Request permission failed due to the " +
+                    "associated activity was not instance of CommonActivity")
         }
     }
 
@@ -99,9 +88,13 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
      */
     protected fun checkPermissions(onGetPermission: () -> Unit, @Permission vararg permissions: Int) {
         if (activity is BaseActivity<*>) {
-            PermissionUtils.checkPermissions<BaseActivity<*>?>((activity as BaseActivity<*>?)!!, { onGetPermission() }, *permissions)
+            PermissionUtils.checkPermissions<BaseActivity<*>?>(
+                (activity as BaseActivity<*>?)!!
+                , { onGetPermission() }
+                , *permissions)
         } else {
-            L.w("Request permissions failed due to the associated activity was not instance of CommonActivity")
+            L.w("Request permissions failed due to the " +
+                    "associated activity was not instance of CommonActivity")
         }
     }
 
@@ -119,31 +112,6 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
         return findPreference(key) as? T
     }
 
-    /** Get support fragment manager  */
-    protected fun sfm(): androidx.fragment.app.FragmentManager? {
-        return if (activity is AppCompatActivity) {
-            (activity as AppCompatActivity).supportFragmentManager
-        } else null
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (Platform.DEPENDENCY_UMENG_ANALYTICS
-            && umengConfig != null
-            && umengConfig?.manual == false) {
-            MobclickAgent.onPageStart(umengConfig?.pageName?:"")
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (Platform.DEPENDENCY_UMENG_ANALYTICS
-            && umengConfig != null
-            && umengConfig?.manual == false) {
-            MobclickAgent.onPageEnd(umengConfig?.pageName?:"")
-        }
-    }
-
     override fun onDestroy() {
         if (useEventBus) {
             Bus.get().unregister(this)
@@ -155,12 +123,6 @@ abstract class BasePreferenceFragment<U : BaseViewModel> : PreferenceFragment(),
         val configuration = this.javaClass.getAnnotation(FragmentConfiguration::class.java)
         if (configuration != null) {
             useEventBus = configuration.useEventBus
-            umengConfig = UMenuConfig(
-                if (TextUtils.isEmpty(configuration.umeng.pageName))
-                    javaClass.simpleName else configuration.umeng.pageName,
-                false,
-                configuration.umeng.useUmengManual
-            )
         }
     }
 }

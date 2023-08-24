@@ -15,7 +15,4 @@ annotation class FragmentConfiguration(
 
     /** Will the event bus will be used in this view. */
     val useEventBus: Boolean = false,
-
-    /** Umeng configuration. */
-    val umeng: UmengConfiguration = UmengConfiguration()
 )

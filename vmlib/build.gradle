@@ -2,17 +2,17 @@ apply plugin: 'com.android.library'
 //apply plugin: 'com.github.panpf.bintray-publish'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
+//apply plugin: 'kotlin-android-extensions'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 android {
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
-        minSdkVersion rootProject.ext.android.minSdkVersion
-        targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode rootProject.ext.android.versionCode
-        versionName rootProject.ext.android.versionName
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -53,17 +53,18 @@ dependencies {
     compileOnly "org.greenrobot:eventbus:3.1.1"
     compileOnly "org.simple:androideventbus:1.0.5.1"
     // 友盟统计SDK
-    compileOnly  'com.umeng.umsdk:common:9.4.4'// 必选
-    compileOnly  'com.umeng.umsdk:asms:1.4.1'// 必选
+    compileOnly 'com.umeng.umsdk:common:9.4.4'// 必选
+    compileOnly 'com.umeng.umsdk:asms:1.4.1'// 必选
     compileOnly 'com.umeng.umsdk:apm:1.2.0'// 推荐，错误分析升级为U-APM产品，关注crash数据需集成
     compileOnly "com.github.Shouheng88:uix-core:${uixCoreVersion}"
     compileOnly "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1"
+    compileOnly "androidx.preference:preference-ktx:$preference_version"
 
     api "com.github.Shouheng88:utils-core:${utilsCoreVersion}"
     api "com.github.Shouheng88:utils-ktx:${utilsCoreVersion}"
     api "com.github.Shouheng88:compressor:1.6.0"
 //    api "com.github.Shouheng88:vmlib-network:$publishVersion"
-    api project(":vmlib-network")
+    api project(":vmlib_network")
 }
 
 //publish {
