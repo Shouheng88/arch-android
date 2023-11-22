@@ -1,10 +1,10 @@
 package me.shouheng.vmlib.base
 
 import android.os.Bundle
-import android.preference.Preference
 import androidx.annotation.StringRes
 import androidx.annotation.XmlRes
 import androidx.lifecycle.*
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import me.shouheng.utils.permission.Permission
 import me.shouheng.utils.permission.PermissionUtils
