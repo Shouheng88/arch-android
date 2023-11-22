@@ -44,8 +44,8 @@ task clean(type: Delete) {
 }
 
 ext {
-    appcompatVersion = '1.2.0'
-    publishVersion = "3.0"
+    appcompat_version = '1.2.0'
+    releaseVersion = "3.0"
     kotlinCoreVersion = "1.1.1"
     kotlinAndroidVersion = "1.1.1"
     okHttpVersion = "4.7.2"
@@ -61,5 +61,4 @@ ext {
     targetSdkVersion  = 28
     versionCode       = 1
     versionName       = "1.0"
-    releaseVersion    = "1.0"
 }

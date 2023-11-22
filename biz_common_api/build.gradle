@@ -37,7 +37,7 @@ dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
 
     api 'androidx.multidex:multidex:2.0.1'
-    api "androidx.appcompat:appcompat:${appcompatVersion}"
+    api "androidx.appcompat:appcompat:${appcompat_version}"
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoreVersion}"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlinAndroidVersion}"
