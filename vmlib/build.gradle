@@ -11,8 +11,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode rootProject.ext.versionCode
-        versionName rootProject.ext.versionName
+        versionCode 1
+        versionName '1.0'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -41,7 +41,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "androidx.appcompat:appcompat:${appcompatVersion}"
+    implementation "androidx.appcompat:appcompat:${appcompat_version}"
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
@@ -56,15 +56,15 @@ dependencies {
     compileOnly 'com.umeng.umsdk:common:9.4.4'// 必选
     compileOnly 'com.umeng.umsdk:asms:1.4.1'// 必选
     compileOnly 'com.umeng.umsdk:apm:1.2.0'// 推荐，错误分析升级为U-APM产品，关注crash数据需集成
-    compileOnly "com.github.Shouheng88:uix-core:${uixCoreVersion}"
+    compileOnly "com.github.Shouheng88:uix-core:${ui_version}"
     compileOnly "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1"
     compileOnly "androidx.preference:preference-ktx:$preference_version"
 
-    api "com.github.Shouheng88:utils-core:${utilsCoreVersion}"
-    api "com.github.Shouheng88:utils-ktx:${utilsCoreVersion}"
+    api "com.github.Shouheng88:utils-core:${utils_version}"
+    api "com.github.Shouheng88:utils-ktx:${utils_version}"
     api "com.github.Shouheng88:compressor:1.6.0"
 //    api "com.github.Shouheng88:vmlib-network:$publishVersion"
-    api project(":vmlib_network")
+    api project(":vmlib-network")
 }
 
 //publish {
@@ -91,7 +91,7 @@ publishing {
         mavenJava(MavenPublication) {
             groupId 'com.github.Shouheng88'
             artifactId 'vmlib'
-            version rootProject.ext.publishVersion
+            version rootProject.ext.releaseVersion
             // Two artifacts, the `aar` and the sources
             artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
             artifact androidSourcesJar

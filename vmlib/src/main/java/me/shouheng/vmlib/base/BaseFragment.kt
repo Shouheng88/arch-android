@@ -21,8 +21,11 @@ import java.lang.reflect.ParameterizedType
  * @version 2019-6-29
  */
 abstract class BaseFragment<U : BaseViewModel> : Fragment(), BaseViewModelOwner<U> {
+
     protected val vm: U by lazy { createViewModel() }
+
     private var shareViewModel = false
+
     private var useEventBus = false
 
     /** Get the layout resource id from subclass. */

@@ -1,5 +1,7 @@
 package me.shouheng.vmlib.bean;
 
+import androidx.annotation.Nullable;
+
 /**
  * The wrapped resource class to transfer data between view model, view and model.
  *
@@ -12,6 +14,7 @@ public final class Resources<T> {
     public final Status status;
 
     /** The data of current resources, read only. */
+    @Nullable
     public final T data;
 
     /** The code, read only. */
@@ -38,31 +41,31 @@ public final class Resources<T> {
     /** The throwable for resources. */
     private Throwable throwable;
 
-    public static <U> Resources<U> success(U data) {
+    public static <U> Resources<U> success(@Nullable U data) {
         return new Resources<>(Status.SUCCESS, data, null, null, null, null, null, null, null);
     }
 
-    public static <U> Resources<U> success(U data, long udf1) {
+    public static <U> Resources<U> success(@Nullable U data, long udf1) {
         return new Resources<>(Status.SUCCESS, data, null, null, udf1, null, null, null, null);
     }
 
-    public static <U> Resources<U> success(U data, double udf2) {
+    public static <U> Resources<U> success(@Nullable U data, double udf2) {
         return new Resources<>(Status.SUCCESS, data, null, null, null, udf2, null, null, null);
     }
 
-    public static <U> Resources<U> success(U data, boolean udf3) {
+    public static <U> Resources<U> success(@Nullable U data, boolean udf3) {
         return new Resources<>(Status.SUCCESS, data, null, null, null, null, udf3, null, null);
     }
 
-    public static <U> Resources<U> success(U data, String udf4) {
+    public static <U> Resources<U> success(@Nullable U data, String udf4) {
         return new Resources<>(Status.SUCCESS, data, null, null, null, null, null, udf4, null);
     }
 
-    public static <U> Resources<U> success(U data, Object udf5) {
+    public static <U> Resources<U> success(@Nullable U data, Object udf5) {
         return new Resources<>(Status.SUCCESS, data, null, null, null, null, null, null, udf5);
     }
 
-    public static <U> Resources<U> success(U data, Long udf1, Double udf2, Boolean udf3, String udf4, Object udf5) {
+    public static <U> Resources<U> success(@Nullable U data, Long udf1, Double udf2, Boolean udf3, String udf4, Object udf5) {
         return new Resources<>(Status.SUCCESS, data, null, null, udf1, udf2, udf3, udf4, udf5);
     }
 
@@ -122,37 +125,37 @@ public final class Resources<T> {
         return new Resources<>(Status.LOADING, null, null, null, udf1, udf2, udf3, udf4, udf5);
     }
 
-    public static <U> Resources<U> progress(U data) {
+    public static <U> Resources<U> progress(@Nullable U data) {
         return new Resources<>(Status.PROGRESS, data, null, null, null, null, null, null, null);
     }
 
-    public static <U> Resources<U> progress(U data, long udf1) {
+    public static <U> Resources<U> progress(@Nullable U data, long udf1) {
         return new Resources<>(Status.PROGRESS, data, null, null, udf1, null, null, null, null);
     }
 
-    public static <U> Resources<U> progress(U data, double udf2) {
+    public static <U> Resources<U> progress(@Nullable U data, double udf2) {
         return new Resources<>(Status.PROGRESS, data, null, null, null, udf2, null, null, null);
     }
 
-    public static <U> Resources<U> progress(U data, boolean udf3) {
+    public static <U> Resources<U> progress(@Nullable U data, boolean udf3) {
         return new Resources<>(Status.PROGRESS, data, null, null, null, null, udf3, null, null);
     }
 
-    public static <U> Resources<U> progress(U data, String udf4) {
+    public static <U> Resources<U> progress(@Nullable U data, String udf4) {
         return new Resources<>(Status.PROGRESS, data, null, null, null, null, null, udf4, null);
     }
 
-    public static <U> Resources<U> progress(U data, Object udf5) {
+    public static <U> Resources<U> progress(@Nullable U data, Object udf5) {
         return new Resources<>(Status.PROGRESS, data, null, null, null, null, null, null, udf5);
     }
 
-    public static <U> Resources<U> progress(U data, Long udf1, Double udf2, Boolean udf3, String udf4, Object udf5) {
+    public static <U> Resources<U> progress(@Nullable U data, Long udf1, Double udf2, Boolean udf3, String udf4, Object udf5) {
         return new Resources<>(Status.PROGRESS, data, null, null, udf1, udf2, udf3, udf4, udf5);
     }
 
     private Resources(
             Status status,
-            T data,
+            @Nullable T data,
             String code,
             String message,
             Long udf1,

@@ -9,7 +9,10 @@ import java.lang.reflect.ParameterizedType
 /** Base activity support view binding. */
 abstract class ViewBindingActivity<U : BaseViewModel, T : ViewBinding> : BaseActivity<U>() {
 
-    protected var binding: T? = null
+    private lateinit var _binding: T
+
+    protected val binding: T
+        get() = _binding
 
     /** Don't need to use the layout resource id anymore. */
     @Deprecated(
@@ -24,10 +27,13 @@ abstract class ViewBindingActivity<U : BaseViewModel, T : ViewBinding> : BaseAct
             ?: throw IllegalStateException("You must specify a view binding class.")
         val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
         try {
-            binding = method.invoke(null, LayoutInflater.from(context)) as T
-            setContentView(binding?.root)
-        } catch (e: Exception) {
+            _binding = method.invoke(null, LayoutInflater.from(context)) as T
+            setContentView(_binding.root)
+        } catch (e: Throwable) {
             L.e("Failed to inflate view binding,", e)
         }
     }
+
+    /** Check if binding is initialized. */
+    protected fun isBindingInitialized(): Boolean = ::_binding.isInitialized
 }
