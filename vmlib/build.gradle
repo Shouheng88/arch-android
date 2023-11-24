@@ -63,7 +63,7 @@ dependencies {
     api "com.github.Shouheng88:utils-core:${utils_version}"
     api "com.github.Shouheng88:utils-ktx:${utils_version}"
     api "com.github.Shouheng88:compressor:1.6.0"
-//    api "com.github.Shouheng88:vmlib-network:$publishVersion"
+//    api "com.github.Shouheng88:vmlib-network:$releaseVersion"
     api project(":vmlib-network")
 }
 
