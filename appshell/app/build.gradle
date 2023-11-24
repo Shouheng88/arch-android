@@ -65,7 +65,7 @@ android {
     andResGuard {
         mappingFile = null
         // Do NOT enable 7zip compression(use7zip) when you distribute your APP on Google Play: https://github.com/shwenzhang/AndResGuard/issues/233
-        use7zip = true
+        use7zip = isWindows()
         useSign = true
         keepRoot = false
         whiteList = [
@@ -87,7 +87,9 @@ android {
                 "*.gif",
         ]
         sevenzip {
-            artifact = 'com.tencent.mm:SevenZip:1.2.13'
+            if (isWindows()) {
+                artifact = 'com.tencent.mm:SevenZip:1.2.21'
+            }
         }
     }
 //    externalNativeBuild {
@@ -105,6 +107,11 @@ android {
     }
 }
 
+/** Is current environment windows or mac. */
+static def isWindows() {
+    return org.gradle.internal.os.OperatingSystem.current().isWindows()
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -117,7 +124,7 @@ dependencies {
 //    implementation "com.github.Shouheng88:vmlib:1.6.1"
     implementation project(path: ':biz_common')
     implementation project(path: ':biz_common_api')
-    implementation project(path: ':vmlib_network')
+    implementation project(path: ':vmlib-network')
     implementation project(path: ':biz_eyepetizer_api')
     implementation project(path: ':biz_eyepetizer')
     implementation project(path: ':biz_guokr_api')

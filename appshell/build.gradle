@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlinVersion = '1.5.21'
+    ext.kotlin_version = '1.5.21'
     ext.realm_version = '10.8.0'
     repositories {
         google()
@@ -12,7 +12,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
-        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlinVersion"
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
         classpath 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.17'
         classpath 'com.github.panpf.bintray-publish:bintray-publish:1.0.0'
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3"
@@ -44,13 +44,13 @@ task clean(type: Delete) {
 }
 
 ext {
-    appcompatVersion = '1.2.0'
-    publishVersion = "3.0"
+    appcompat_version = '1.2.0'
+    releaseVersion = "3.0.1"
     kotlinCoreVersion = "1.1.1"
     kotlinAndroidVersion = "1.1.1"
-    okHttpVersion = "4.7.2"
-    utilsCoreVersion = "2.6.0"
-    uixCoreVersion = "2.0"
+    ok_http_version = "4.7.2"
+    utils_version = "2.8.7"
+    ui_version = "2.9.6"
     recyclerviewVersion = "1.1.0"
     startupVersion = "2.2"
     preference_version = "1.2.0"
@@ -61,5 +61,4 @@ ext {
     targetSdkVersion  = 28
     versionCode       = 1
     versionName       = "1.0"
-    releaseVersion    = "1.0"
 }

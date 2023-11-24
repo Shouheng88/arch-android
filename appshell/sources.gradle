@@ -39,7 +39,7 @@ def parseSourcesConfiguration(sourceSwitches) {
 def checkoutRemoteSources(sourceSwitches) {
     def settings = getSettings()
     def rootAbsolutePath = settings.rootDir.absolutePath
-    def sourcesRootPath = new File(rootAbsolutePath).parent
+    def sourcesRootPath = new File(rootAbsolutePath)
     def sourcesDirectory = new File(sourcesRootPath, "open_sources")
     if (!sourcesDirectory.exists()) sourcesDirectory.mkdirs()
     sourceSwitches.forEach { name, sourceSwitch ->
@@ -60,6 +60,8 @@ def checkoutRemoteSources(sourceSwitches) {
                     "git checkout -b ${sourceSwitch.branch} origin/${sourceSwitch.branch}"
                             .execute(null, sourceDirectory).waitForProcessOutput(out, System.err)
                     logd("checkout completed: ${out.toString().trim()}")
+                } else {
+                    "git pull".execute(null, sourceDirectory).waitFor()
                 }
             }
             // After checkout sources, include them as subprojects.
@@ -79,8 +81,10 @@ def replaceDependenciesWithSources(sourceSwitches) {
             configurations.all {
                 resolutionStrategy.dependencySubstitution {
                     sourceSwitches.forEach { name, sourceSwitch ->
-                        sourceSwitch.children.each { child ->
-                            substitute module("${sourceSwitch.group}:${child.name}") with project(":${child.name}")
+                        if (sourceSwitch.open) {
+                            sourceSwitch.children.each { child ->
+                                substitute module("${sourceSwitch.group}:${child.name}") with project(":${child.name}")
+                            }
                         }
                     }
                 }

@@ -1,6 +1,7 @@
 package me.shouheng.vmlib.base
 
 import android.app.Application
+import androidx.annotation.RestrictTo
 import androidx.lifecycle.AndroidViewModel
 import me.shouheng.vmlib.anno.ViewModelConfiguration
 import me.shouheng.vmlib.bean.Resources
@@ -30,11 +31,13 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
     private var useEventBus = false
 
     /** Get a livedata of given type and sid which is used to distinguish two livedata of same type. */
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     fun <T> getObservable(dataType: Class<T>, sid: Int? = null): ResourceLiveData<T> {
         return liveDataPool.acquireLiveData(dataType, sid, intermediateLiveData) as ResourceLiveData<T>
     }
 
     /** Get a livedata of given list type and sid which is used to distinguish two livedata of same type. */
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     fun <T> getListObservable(dataType: Class<T>, sid: Int? = null): ResourceLiveData<List<T>> {
         return listLiveDataPool.acquireLiveData(dataType, sid, intermediateLiveData) as ResourceLiveData<List<T>>
     }
@@ -46,9 +49,9 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
     fun <T> getListValue(dataType: Class<T>, sid: Int? = null): List<T>? = getListObservable(dataType, sid).value?.data
 
     /** Set success state of data type */
-    fun <T> setSuccess(
+    protected fun <T> setSuccess(
         dataType: Class<T>,
-        data: T,
+        data: T?,
         sid: Int?       = null,
         udf1: Long?     = null,
         udf2: Double?   = null,
@@ -58,9 +61,9 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
     ) { getObservable(dataType, sid).value = Resources.success(data, udf1, udf2, udf3, udf4, udf5) }
 
     /** Set progress state of data type */
-    fun <T> setProgress(
+    protected fun <T> setProgress(
         dataType: Class<T>,
-        data: T,
+        data: T?,
         sid: Int?       = null,
         udf1: Long?     = null,
         udf2: Double?   = null,
@@ -70,7 +73,7 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
     ) { getObservable(dataType, sid).value = Resources.progress(data, udf1, udf2, udf3, udf4, udf5) }
 
     /** Set loading state of data type */
-    fun <T> setLoading(
+    protected fun <T> setLoading(
         dataType: Class<T>,
         sid: Int?       = null,
         udf1: Long?     = null,
@@ -81,7 +84,7 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
     ) { getObservable(dataType, sid).value = Resources.loading(udf1, udf2, udf3, udf4, udf5) }
 
     /** Set fail state of data type */
-    fun <T> setFailure(
+    protected fun <T> setFailure(
         dataType: Class<T>,
         code: String?,
         message: String?,
@@ -94,9 +97,9 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
     ) { getObservable(dataType, sid).value = Resources.failure(code, message, udf1, udf2, udf3, udf4, udf5) }
 
     /** Set success state of list data type */
-    fun <T> setListSuccess(
+    protected fun <T> setListSuccess(
         dataType: Class<T>,
-        data: List<T>,
+        data: List<T>?,
         sid: Int?       = null,
         udf1: Long?     = null,
         udf2: Double?   = null,
@@ -106,9 +109,9 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
     ) { getListObservable(dataType, sid).value = Resources.success(data, udf1, udf2, udf3, udf4, udf5) }
 
     /** Set progress state of list data type */
-    fun <T> setListProgress(
+    protected fun <T> setListProgress(
         dataType: Class<T>,
-        data: List<T>,
+        data: List<T>?,
         sid: Int?       = null,
         udf1: Long?     = null,
         udf2: Double?   = null,
@@ -118,7 +121,7 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
     ) { getListObservable(dataType, sid).value = Resources.progress(data, udf1, udf2, udf3, udf4, udf5) }
 
     /** Set loading state of list data type */
-    fun <T> setListLoading(
+    protected fun <T> setListLoading(
         dataType: Class<T>,
         sid: Int?       = null,
         udf1: Long?     = null,
@@ -129,7 +132,7 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
     ) { getListObservable(dataType, sid).value = Resources.loading(udf1, udf2, udf3, udf4, udf5) }
 
     /** Set fail state of list data type */
-    fun <T> setListFailure(
+    protected fun <T> setListFailure(
         dataType: Class<T>,
         code: String?,
         message: String?,

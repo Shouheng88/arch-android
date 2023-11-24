@@ -93,7 +93,7 @@ class LiveDataObserverBuilder<T> constructor(private val liveData: LiveData<Reso
     }
 
     /** Called when livedata is fail. */
-    fun onFail(fail: (res: Resources<T>) -> Unit) {
+    fun onFailure(fail: (res: Resources<T>) -> Unit) {
         this.fail = fail
     }
 
