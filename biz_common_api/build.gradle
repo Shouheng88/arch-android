@@ -38,24 +38,24 @@ dependencies {
 
     api 'androidx.multidex:multidex:2.0.1'
     api "androidx.appcompat:appcompat:${appcompat_version}"
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoreVersion}"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlinAndroidVersion}"
 
     api 'com.alibaba:arouter-api:1.5.0'
     kapt 'com.alibaba:arouter-compiler:1.2.2'
 
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoreVersion}"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlinAndroidVersion}"
 
     api "com.google.code.gson:gson:2.8.5"
 
-    api "com.github.Shouheng88:utils-core:${utilsCoreVersion}"
-    api "com.github.Shouheng88:utils-ktx:${utilsCoreVersion}"
+    api "com.github.Shouheng88:utils-core:${utils_version}"
+    api "com.github.Shouheng88:utils-ktx:${utils_version}"
     api "com.github.Shouheng88:startup:$startupVersion"
     kapt "com.github.Shouheng88:startup-compiler:$startupVersion"
 
     api project(path: ':vmlib')
-    api project(path: ':vmlib_network')
+    api project(path: ':vmlib-network')
 }

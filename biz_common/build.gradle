@@ -39,7 +39,7 @@ dependencies {
     api 'androidx.multidex:multidex:2.0.1'
     api "androidx.appcompat:appcompat:${appcompat_version}"
     api 'com.google.android.material:material:1.1.0'
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoreVersion}"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlinAndroidVersion}"
     api "androidx.preference:preference-ktx:$preference_version"
@@ -47,7 +47,7 @@ dependencies {
     api 'com.alibaba:arouter-api:1.5.0'
     kapt 'com.alibaba:arouter-compiler:1.2.2'
 
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoreVersion}"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlinAndroidVersion}"
 
@@ -55,7 +55,7 @@ dependencies {
     api "com.squareup.retrofit2:converter-gson:2.9.0"
     // implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
     api "org.greenrobot:eventbus:3.1.1"
-    api "com.squareup.okhttp3:okhttp:${okHttpVersion}"
+    api "com.squareup.okhttp3:okhttp:${ok_http_version}"
     api "com.google.code.gson:gson:2.8.5"
     api "com.github.bumptech.glide:glide:4.12.0"
 
@@ -66,13 +66,13 @@ dependencies {
 
     api 'com.jakewharton:disklrucache:2.0.2'
 
-    api "com.github.Shouheng88:utils-core:${utilsCoreVersion}"
-    api "com.github.Shouheng88:utils-ktx:${utilsCoreVersion}"
-    api "com.github.Shouheng88:uix-core:${uixCoreVersion}"
+    api "com.github.Shouheng88:utils-core:${utils_version}"
+    api "com.github.Shouheng88:utils-ktx:${utils_version}"
+    api "com.github.Shouheng88:uix-core:${ui_version}"
     api "com.github.Shouheng88:uix-image:1.9.0"
     api "com.github.Shouheng88:startup:$startupVersion"
     kapt "com.github.Shouheng88:startup-compiler:$startupVersion"
 
     api project(path: ':vmlib')
-    api project(path: ':vmlib_network')
+    api project(path: ':vmlib-network')
 }
