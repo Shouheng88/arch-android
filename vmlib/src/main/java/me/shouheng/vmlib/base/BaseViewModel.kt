@@ -48,6 +48,15 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
     /** Get a list value base on [dataType] and [sid]. */
     fun <T> getListValue(dataType: Class<T>, sid: Int? = null): List<T>? = getListObservable(dataType, sid).value?.data
 
+    /** Use resource to notify the value. */
+    protected fun <T> setResources(
+        dataType: Class<T>,
+        resources: Resources<T>,
+        sid: Int? = null,
+    ) {
+        getObservable(dataType, sid).value = resources
+    }
+
     /** Set success state of data type */
     protected fun <T> setSuccess(
         dataType: Class<T>,
@@ -95,6 +104,15 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
         udf4: String?   = null,
         udf5: Any?      = null
     ) { getObservable(dataType, sid).value = Resources.failure(code, message, udf1, udf2, udf3, udf4, udf5) }
+
+    /** Use resource to notify the value. */
+    protected fun <T> setListResources(
+        dataType: Class<T>,
+        resources: Resources<List<T>>,
+        sid: Int?       = null,
+    ) {
+        getListObservable(dataType, sid).value = resources
+    }
 
     /** Set success state of list data type */
     protected fun <T> setListSuccess(
