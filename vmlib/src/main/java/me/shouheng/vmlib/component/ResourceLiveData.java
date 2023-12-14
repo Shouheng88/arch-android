@@ -31,8 +31,15 @@ public class ResourceLiveData<T> extends AdvancedLiveData<Resources<T>> {
     @Override
     public void observe(@NonNull LifecycleOwner owner, boolean sticky, @NonNull Observer<? super Resources<T>> observer) {
         super.observe(owner, sticky, observer);
-        intermediateLiveData.observe(owner, IntermediateLiveData.createIntermediateObserver(this
-                , intermediateLiveEvent -> observer.onChanged((Resources<T>) intermediateLiveEvent.getData())));
+        Observer<? super IntermediateLiveData.IntermediateLiveEvent> intermediateLiveEventObserver =
+                IntermediateLiveData.createIntermediateObserver(this, intermediateLiveEvent -> {
+                    Resources<T> data;
+                    if (intermediateLiveEvent != null
+                            && (data = (Resources<T>) intermediateLiveEvent.getData()) != null) {
+                        observer.onChanged(data);
+                    }
+                });
+        intermediateLiveData.observe(owner, intermediateLiveEventObserver);
     }
 
     /**
@@ -43,6 +50,11 @@ public class ResourceLiveData<T> extends AdvancedLiveData<Resources<T>> {
     @Override
     public void setValue(@Nullable Resources<T> resources) {
         if (resources == null || resources.isSuccess()) {
+            // 将中间 livedata 置空，意味着清理之前的消息，这是为了防止消息乱序，比如，当页面处于后台的时候，
+            // 该 livedata 先后获取到了两个类型的事件，一个 loading 和一个 success，那么，此时当页面回来
+            // 的时候，可能会收到这两个事件，因为它们是两个 livedata，并且此时无法保证两个 livedata 发送的
+            // 顺序，因此，在这种情况下，直接将中间过程的 livedata 置为空
+            intermediateLiveData.setValue(null);
             super.setValue(resources);
         } else  {
             IntermediateLiveData.IntermediateLiveEvent event =

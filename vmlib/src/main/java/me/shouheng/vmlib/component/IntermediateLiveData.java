@@ -26,7 +26,9 @@ public class IntermediateLiveData extends AdvancedLiveData<IntermediateLiveData.
     }
 
     public static <T> Observer<? super IntermediateLiveEvent> createIntermediateObserver(
-            @NonNull LiveData<T> liveData, @NonNull Observer<? super IntermediateLiveEvent> observer) {
+            @NonNull LiveData<T> liveData,
+            @NonNull Observer<? super IntermediateLiveEvent> observer
+    ) {
         String key = acquireIntermediateLiveEventKey(liveData);
         return new IntermediateLiveEventObserver(key, observer);
     }
@@ -78,7 +80,7 @@ public class IntermediateLiveData extends AdvancedLiveData<IntermediateLiveData.
 
         @Override
         public void onChanged(IntermediateLiveEvent intermediateLiveEvent) {
-            if (targetKey.equals(intermediateLiveEvent.targetKey)) {
+            if (intermediateLiveEvent != null && targetKey.equals(intermediateLiveEvent.targetKey)) {
                 observer.onChanged(intermediateLiveEvent);
             }
         }
