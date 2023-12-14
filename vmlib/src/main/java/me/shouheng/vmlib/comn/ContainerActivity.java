@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import java.io.Serializable;
 
 import me.shouheng.uix.pages.web.FragmentKeyDown;
 import me.shouheng.utils.app.ActivityUtils;
@@ -37,6 +40,8 @@ public class ContainerActivity extends BaseActivity<EmptyViewModel> {
 
     /** Key for the activity finish direction. */
     public static final String KEY_EXTRA_ACTIVITY_DIRECTION     = "__extra_key_activity_direction";
+
+    public static final String KEY_EXTRA_UI_CUSTOM_STRATEGY     = "__extra_key_ui_custom_strategy__";
 
     /** The activity finish direction. */
     @ActivityDirection private int activityFinishDirection = ActivityDirection.ANIMATE_NONE;
@@ -86,11 +91,38 @@ public class ContainerActivity extends BaseActivity<EmptyViewModel> {
         // if we used "?attr/xxxx" as custom attribute to customize themes, we have
         // to change the theme of activity as well. So, be able to custom theme of
         // container was a necessary.
-        int themeId = getIntent().getIntExtra(KEY_EXTRA_THEME_ID, -1);
-        if (themeId != -1) setTheme(themeId);
+        Intent intent = getIntent();
+        int themeId = intent.getIntExtra(KEY_EXTRA_THEME_ID, -1);
+        if (themeId != -1) {
+            setTheme(themeId);
+        }
+        UICustomStrategy strategy = getUICustomStrategy(intent);
+        if (strategy != null) {
+            strategy.beforeCreateView(this);
+        }
         activityFinishDirection = getIntent().getIntExtra(
                 KEY_EXTRA_ACTIVITY_DIRECTION, ActivityDirection.ANIMATE_NONE);
         super.onCreate(savedInstanceState);
+        if (strategy != null) {
+            strategy.afterCreateView(this);
+        }
+    }
+
+    /** Get ui custom strategy. */
+    private UICustomStrategy getUICustomStrategy(Intent intent) {
+        UICustomStrategy strategy = null;
+        if (intent.hasExtra(KEY_EXTRA_UI_CUSTOM_STRATEGY)) {
+            Serializable serializable = intent.getSerializableExtra(KEY_EXTRA_UI_CUSTOM_STRATEGY);
+            if (serializable instanceof Class
+                    && UICustomStrategy.class.isAssignableFrom((Class<?>) serializable)) {
+                try {
+                    strategy = ((Class<UICustomStrategy>) serializable).newInstance();
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
+            }
+        }
+        return strategy;
     }
 
     @Override
@@ -236,6 +268,16 @@ public class ContainerActivity extends BaseActivity<EmptyViewModel> {
         if (activityFinishDirection != ActivityDirection.ANIMATE_NONE) {
             ActivityUtils.overridePendingTransition(this, activityFinishDirection);
         }
+    }
+
+    /** UI custom strategy. */
+    public interface UICustomStrategy {
+
+        /** This method will be called before {@link #onCreate(Bundle)} called. */
+        void beforeCreateView(@NonNull ContainerActivity activity);
+
+        /** This method will be called after {@link #onCreate(Bundle)} called. */
+        void afterCreateView(@NonNull ContainerActivity activity);
     }
 
     /** Back event resolver for fragment. */
